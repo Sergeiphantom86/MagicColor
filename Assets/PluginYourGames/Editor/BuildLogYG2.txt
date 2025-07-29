@@ -1,0 +1,3 @@
+Build path: C:/Pro/MagicalColorPuzzle 3D/Новая папка/Build
+Build number: 4
+PluginYG version: 2.0032
