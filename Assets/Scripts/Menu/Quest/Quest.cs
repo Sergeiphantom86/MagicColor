@@ -1,12 +1,10 @@
 using System;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Quest : MonoBehaviour
 {
-    [Header("Quest Settings")]
-    [SerializeField] private int _questID;
-    [SerializeField] private string _questName;
     [TextArea][SerializeField] private string _questDescription;
 
     [Header("Puzzle Unlock")]
@@ -18,18 +16,46 @@ public class Quest : MonoBehaviour
 
     private bool _isCompleted;
     private bool _isUnlocked;
+    private int _reward;
+    private PuzzleSelector _selector;
+    private GameSaveSystem _gameSaveSystem;
+
+    public int Index {  get; private set; }
+    public string QuestName { get; private set; }
 
     public bool IsUnlocked => _isUnlocked;
+
+    public bool IsCompleted => _isCompleted;
 
     public event Action<Quest> OnCompleted;
 
     private void Awake()
     {
+        _reward = 100;
+        _selector = GetComponentInChildren<PuzzleSelector>();
+        _gameSaveSystem = FindAnyObjectByType<GameSaveSystem>();
+       
         TryGetComponent(out _questButton);
-
-        _questButton.onClick.AddListener(OnQuestClicked);
+        
+        _questButton.onClick.AddListener(OnClicked);
 
         ResetState();
+    }
+
+    private void Start()
+    {
+        if (_selector != null)
+        {
+            QuestName = _selector.GetName();
+        }
+    }
+
+    public void SetIndex(int index)
+    {
+        if (index > 0)
+        {
+            _reward *= index;
+        }
     }
 
     public void ResetState()
@@ -68,10 +94,10 @@ public class Quest : MonoBehaviour
         _questButton.interactable = _isUnlocked && _isCompleted == false;
     }
 
-    private void OnQuestClicked()
+    private void OnClicked()
     {
         if (_isUnlocked == false || _isCompleted) return;
-
+        _gameSaveSystem.CurrentValue = _reward;
         OnCompleted?.Invoke(this);
     }
 }

@@ -94,6 +94,7 @@ public class TouchDragInput : MonoBehaviour
             return hit.collider.transform == transform ||
                    hit.collider.transform.IsChildOf(transform);
         }
+
         return false;
     }
 }

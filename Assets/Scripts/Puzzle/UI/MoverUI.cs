@@ -8,10 +8,7 @@ public class MoverUI
 
     public Sequence EnableMotionAnimation(Transform transform, float duration, Camera camera, Sequence sequence, float positionScreenX,float positionScreenY, float positionScreenZ = 0)
     {
-        if (sequence == null)
-        {
-            sequence = DOTween.Sequence();
-        }
+        TryAssignSequence(sequence);
 
         _targetPosition = camera.ViewportToWorldPoint(new Vector3(positionScreenX, positionScreenY, positionScreenZ));
 
@@ -20,13 +17,18 @@ public class MoverUI
 
     public void EnableAnimationResizing(Transform transform, float duration, Sequence sequence, float scale = 0)
     {
-        if (sequence == null)
-        {
-            sequence = DOTween.Sequence();
-        }
+        TryAssignSequence(sequence);
 
         _targetScale = transform.localScale * scale;
 
         sequence.Join(transform.DOScale(_targetScale, duration).SetEase(Ease.OutBack));
+    }
+
+    private void TryAssignSequence(Sequence sequence)
+    {
+        if (sequence == null)
+        {
+            sequence = DOTween.Sequence();
+        }
     }
 }

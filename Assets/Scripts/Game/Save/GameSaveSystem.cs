@@ -1,39 +1,25 @@
 using UnityEngine;
-using YG;
 
 public class GameSaveSystem : MonoBehaviour
 {
-    
+    [SerializeField]
+    [Tooltip("Current saved value (non-negative)")]
+    private int _currentValue;
 
-    public void SaveNPCState(string npcKey, int state)
+    public int CurrentValue
     {
-        if (string.IsNullOrEmpty(npcKey))
+        get => _currentValue;
+        set
         {
-            Debug.LogError("NPC key is null or empty! Save aborted.");
-            return;
+            if (value < 0)
+            {
+                Debug.LogWarning($"Attempted to set negative value: {value}. Using 0 instead.");
+                _currentValue = 0;
+            }
+            else
+            {
+                _currentValue = value;
+            }
         }
-
-        if (YG2.saves == null || YG2.saves.NpcStates == null)
-            return;
-
-        if (YG2.saves.NpcStates.ContainsKey(npcKey))
-            YG2.saves.NpcStates[npcKey] = state;
-        else
-            YG2.saves.NpcStates.Add(npcKey, state);
-
-        YG2.SaveProgress();
-    }
-
-    public int LoadNPCState(string npcKey, int defaultState = 0)
-    {
-        if (YG2.saves == null || YG2.saves.NpcStates == null)
-            return defaultState;
-
-        if (YG2.saves.NpcStates.TryGetValue(npcKey, out int state))
-        {
-            return state;
-        }
-
-        return defaultState;
     }
 }

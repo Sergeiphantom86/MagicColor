@@ -6,7 +6,7 @@ using YG.Utils.LB;
 [RequireComponent(typeof(StarsController))]
 public class LeaderboardStars : MonoBehaviour
 {
-    private string _leaderboardName = "PuzzleDogBestTime";
+    private string _leaderboardName;
     private StarsController _starsController;
     private int _lastSavedScore;
     private int _maxStars = 5;
@@ -24,21 +24,21 @@ public class LeaderboardStars : MonoBehaviour
     private void Start()
     {
         _lastSavedScore = PlayerPrefs.GetInt("LastLevelTime", 0);
-        Debug.Log($"Loaded saved time: {_lastSavedScore}s");
+
         LoadLeaderboard();
     }
 
-    public void LoadLeaderboard() => YG2.GetLeaderboard(_leaderboardName);
-
-    public void SavePlayerTime(float timeInSeconds)
+    public void SavePlayerTime(float timeInSeconds, string leaderboardName)
     {
         int seconds = Mathf.RoundToInt(timeInSeconds);
-
+        _leaderboardName = leaderboardName;
         _lastSavedScore = seconds;
         PlayerPrefs.SetInt("LastLevelTime", seconds);
 
         YG2.SetLBTimeConvert(_leaderboardName, timeInSeconds);
     }
+
+    private void LoadLeaderboard() => YG2.GetLeaderboard(_leaderboardName);
 
     private void OnLeaderboardLoaded(LBData data)
     {

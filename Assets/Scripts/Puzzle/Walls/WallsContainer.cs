@@ -13,7 +13,10 @@ public class WallsContainer : MonoBehaviour
     private void Awake()
     {
         _walls = new List<WallEngine>();
+    }
 
+    private void Start()
+    {
         InitializeWalls();
     }
 

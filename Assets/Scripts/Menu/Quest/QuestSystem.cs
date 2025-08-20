@@ -4,61 +4,92 @@ using YG;
 
 public class QuestSystem : MonoBehaviour
 {
-    [Header("Quest Settings")]
-    [SerializeField] private List<Quest> _allQuests;
-    [SerializeField] private Quest _activeQuest;
+    private int _currentQuestIndex;
+    private Quest _active;
+    private IReadOnlyList<Quest> _quests;
+    private QuestCollector _questCollector;
 
-    private static int _questCount = 0;
-
-    private void Start()
+    private void Awake()
     {
-        if (YG2.saves.QuestID >= 0 && YG2.saves.QuestID <= _allQuests.Count) return;
-        
-        InitializeQuests();
+        _questCollector = GetComponent<QuestCollector>();
+
+        if (_questCollector == null)
+        {
+            Debug.LogError("QuestCollector not found!");
+            return;
+        }
+
+        if (YG2.saves == null)
+        {
+            Debug.LogError("QuestCollector not found!");
+            return;
+        }
+  
+        _currentQuestIndex = YG2.saves.QuestIndex;
     }
 
-    private void InitializeQuests()
+    private void OnEnable()
     {
-        if (_allQuests.Count == 0) return;
-        if (_allQuests.Count < _questCount) return;
-        
-        for (int i = 0; i <= _questCount; i++)
+        _questCollector.HasListCreated += Initialize;;
+    }
+
+    private void OnDisable()
+    {
+        _questCollector.HasListCreated -= Initialize;
+    }
+
+    private void Initialize(IReadOnlyList<Quest> quests)
+    {
+        if (quests == null || quests.Count == 0) return;
+
+        _quests = quests;
+        SetNextIndex();
+        ProcessSavedProgress();
+    }
+
+    private void SetNextIndex()
+    {
+        if (YG2.saves.Complete && YG2.saves.IsSimilar)
         {
-            _allQuests[i].Unlock();
-            SetActiveQuest(_allQuests[i]);
-            _allQuests[i].OnCompleted += HandleQuestCompleted;
+            _currentQuestIndex++;
+
+            YG2.saves.SetQuestIndex(_currentQuestIndex);
         }
     }
 
-    private void HandleQuestCompleted(Quest completedQuest)
+    private void ProcessSavedProgress()
     {
-        if (completedQuest == _activeQuest)
+        for (int i = 0; i <= _currentQuestIndex; i++)
         {
-            _questCount = _allQuests.IndexOf(_activeQuest) +1;
+            _active = _quests[i];
+
+            if (_active.IsUnlocked == false)
+            {
+                _active.Unlock();
+                _active.OnCompleted += OnCompleted;
+            }
         }
+
+        _active.SetActiveIndicator(true);
     }
 
-    private void SetActiveQuest(Quest quest)
+    private void OnCompleted(Quest quest)
     {
-        if (quest == null || _allQuests.Contains(quest) == false || !quest.IsUnlocked) return;
-
-        if (_activeQuest != null)
+        if (_active == quest)
         {
-            _activeQuest.SetActiveIndicator(false);
+            YG2.saves.SetSimilarity(true);
+            
+            return;
         }
 
-        _activeQuest = quest;
-        _activeQuest.SetActiveIndicator(true);
+        YG2.saves.SetSimilarity(false);
     }
 
     private void OnDestroy()
     {
-        foreach (var quest in _allQuests)
+        for (int i = 0; i <= _currentQuestIndex; i++)
         {
-            if (quest != null) quest.OnCompleted -= HandleQuestCompleted;
+            _active.OnCompleted -= OnCompleted;
         }
-
-        YG2.saves.SetQuestID(_questCount);
-        YG2.SaveProgress();
     }
 }

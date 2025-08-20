@@ -8,6 +8,7 @@ public class PuzzleSelector : MonoBehaviour
     [SerializeField] private Button _button;
 
     private Image _puzzleImage;
+    private string _puzzleName;
 
     private void Awake()
     {
@@ -19,6 +20,19 @@ public class PuzzleSelector : MonoBehaviour
             Debug.LogError("Button не назначен");
             return;
         }
+
+        if (_puzzleImage == null)
+        {
+            Debug.LogError("Image не назначен");
+            return;
+        }
+
+        _puzzleName = _puzzleImage.sprite.name;
+    }
+
+    public string GetName()
+    {
+        return _puzzleName;
     }
 
     private void OnEnable()

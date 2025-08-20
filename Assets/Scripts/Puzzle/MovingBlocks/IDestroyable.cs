@@ -1,4 +1,6 @@
+using UnityEngine;
+
 public interface IDestroyable
 {
-    void Destroy(bool destroyImmediately = false);
+    void Destroy(Transform waypoint, Transform endPoint);
 }

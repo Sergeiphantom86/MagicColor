@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class SceneLoader : MonoBehaviour
 
     [SerializeField] private float _fadeDuration;
     [SerializeField] private float _minLoadTime;
+    [SerializeField] private LoadingRotator _loadingRotator;
 
     private CanvasGroup _canvasGroup;
     private Coroutine _loadingCoroutine;
@@ -40,6 +42,8 @@ public class SceneLoader : MonoBehaviour
         _canvasGroup.alpha = _isFirstLoad ? 1f : 0f;
         _canvasGroup.interactable = false;
         _canvasGroup.blocksRaycasts = false;
+
+        _loadingRotator.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -64,6 +68,8 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator LoadSceneProcess(string sceneName)
     {
+        _loadingRotator.gameObject.SetActive(true);
+
         yield return _panelFader.Fade(1f, true).WaitForCompletion();
 
         float loadStartTime = Time.realtimeSinceStartup;
@@ -84,6 +90,8 @@ public class SceneLoader : MonoBehaviour
 
         asyncLoad.allowSceneActivation = true;
 
+        _loadingRotator.gameObject.SetActive(false);
+
         yield return null;
 
         yield return _panelFader.Fade(0, false).WaitForCompletion();
@@ -96,8 +104,7 @@ public class SceneLoader : MonoBehaviour
         for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
             string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
-            string sceneNameInBuild = Path.GetFileNameWithoutExtension(scenePath);
-            if (sceneNameInBuild == sceneName) return true;
+            if (Path.GetFileNameWithoutExtension(scenePath) == sceneName) return true;
         }
 
         Debug.LogError($"—цена '{sceneName}' не найдена в настройках сборки!");

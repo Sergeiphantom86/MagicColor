@@ -6,7 +6,7 @@ public class Tutorial : MonoBehaviour
     private const string IsSwipe = nameof(IsSwipe);
     private const string IsClick = nameof(IsClick);
 
-    private static bool s_isFinished;
+    private static bool _isFinished;
 
     private Animator _animator;
     private ParticleSystem _particleSystem;
@@ -15,7 +15,7 @@ public class Tutorial : MonoBehaviour
     public bool IsClickAllowed { get; private set; }
     public bool IsTutorialActive => gameObject.activeSelf;
 
-    private void Start()
+    private void Awake()
     {
         _animator = GetComponent<Animator>();
         _particleSystem = GetComponentInChildren<ParticleSystem>();
@@ -33,11 +33,14 @@ public class Tutorial : MonoBehaviour
             return;
         }
 
-        if (s_isFinished)
+        if (_isFinished)
         {
             gameObject.SetActive(false);
         }
+    }
 
+    private void Start()
+    {
         StartTutorial();
     }
 
@@ -47,13 +50,6 @@ public class Tutorial : MonoBehaviour
 
         IsSwipeAllowed = true;
         IsClickAllowed = false;
-    }
-
-    public void ResetTutorial()
-    {
-        _animator.SetBool(IsSwipe, false);
-        gameObject.SetActive(true);
-        s_isFinished = false;
     }
 
     public void CompleteSwapStep()
@@ -77,6 +73,6 @@ public class Tutorial : MonoBehaviour
 
         IsSwipeAllowed = false;
         IsClickAllowed = false;
-        s_isFinished = true;
+        _isFinished = true;
     }
 }
