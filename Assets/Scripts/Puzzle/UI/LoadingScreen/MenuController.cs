@@ -6,18 +6,21 @@ using static SceneLoader;
 public class MenuController : MonoBehaviour
 {
     private const string AfterPuzzleRewardID = "after_puzzle_reward";
-    private const string Menu = nameof(Menu);
+    private const string Roulette = nameof(Roulette);
 
     [SerializeField] private MenuButtons _menuButtons;
     [SerializeField] private AnimatorPuzzle _animation;
     [SerializeField] private ImageAnalyzer _imageAnalyzer;
     [SerializeField] private Timer _timer;
     [SerializeField] private PanelFader _panelFader;
+    [SerializeField] private Roulette _roulette;
+    private GameSaveSystem _gameSaveSystem;
 
     private bool _adInProgress;
 
     private void Awake()
     {
+        _gameSaveSystem = FindObjectOfType<GameSaveSystem>();
         ValidateComponents();
         _menuButtons.Initialize(HandleStartButton, HandleResumeButton);
     }
@@ -59,7 +62,10 @@ public class MenuController : MonoBehaviour
 
     private void HandlePuzzleComplete()
     {
-        _panelFader.FadeIn(() => _menuButtons.ShowResumeButton());
+        _panelFader.FadeIn(() => 
+        {
+            _menuButtons.ShowResumeButton();
+        });
     }
 
     private void HandleResumeButton()
@@ -81,6 +87,7 @@ public class MenuController : MonoBehaviour
             YG2.RewardedAdvShow(AfterPuzzleRewardID, null);
             return true;
         }
+
         return false;
     }
 
@@ -105,7 +112,7 @@ public class MenuController : MonoBehaviour
     {
         _adInProgress = false;
         YG2.saves.ResetSprite();
-        Instance.LoadSceneWithSplash(Menu);
+        Instance.LoadSceneWithSplash(Roulette);
     }
 
     private void ValidateComponents()
@@ -117,6 +124,9 @@ public class MenuController : MonoBehaviour
             Debug.LogWarning("AnimatorPuzzle не назначен", this);
 
         if (_panelFader == null)
-            Debug.LogWarning("PanelFader не назначен", this);
+            Debug.LogWarning("PanelFader не назначен", this); 
+
+        if (_gameSaveSystem == null)
+            Debug.LogWarning("GameSaveSystem не назначен", this);
     }
 }

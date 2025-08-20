@@ -100,15 +100,12 @@ public class Repainter : MonoBehaviour
     {
         return (
             Colors: ShuffleColors(_colors),
-            Walls: SelectRandomColorables(colorables, _colors.Count)
-        );
+            Walls: SelectRandomColorables(colorables, _colors.Count));
     }
 
     private List<Color> ShuffleColors(List<Color> colors)
     {
-        return colors
-            .OrderBy(_ => Guid.NewGuid())
-            .ToList();
+        return colors.OrderBy(_ => Guid.NewGuid()).ToList();
     }
 
     private List<IColorable> SelectRandomColorables(List<IColorable> colorables, int maxCount)

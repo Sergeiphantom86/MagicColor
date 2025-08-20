@@ -5,9 +5,9 @@ using System;
 
 public class ImageAnalyzer : MonoBehaviour
 {
-    [SerializeField] private Sprite _sprite;
     private bool _ignoreTransparent;
     private float _ignoredAlpha;
+    private Sprite _sprite;
     private Texture2D _texture;
     private IColorPrecision _colorPrecision;
     private Dictionary<Color, List<Vector3>> _colorGroups;

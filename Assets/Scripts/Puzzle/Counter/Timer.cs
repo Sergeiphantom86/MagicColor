@@ -14,8 +14,6 @@ public class Timer : MonoBehaviour
 
     public bool IsRunning { get; private set; }
 
-    public event Action<string, float> OnRecord;
-
     private void Update()
     {
         if (PauseManager.IsPaused) return;
@@ -58,21 +56,11 @@ public class Timer : MonoBehaviour
 
         if (_leaderboardStars != null)
         {
-            _leaderboardStars.SavePlayerTime(_value);
+            _leaderboardStars.SavePlayerTime(_value, name);
         }
         else
         {
             Debug.LogError("LeaderboardStars not found!");
-        }
-
-        if (PuzzleDataTransfer.PuzzleResultTime > _value || PuzzleDataTransfer.PuzzleResultTime == 0 )
-        {
-            PuzzleDataTransfer.PuzzleResultTime = _value;
-            OnRecord?.Invoke(GetSpriteKey(name), _value);
-        }
-        else
-        {
-            PuzzleDataTransfer.PuzzleResultTime = _value;
         }
     }
 
@@ -80,10 +68,5 @@ public class Timer : MonoBehaviour
     {
         if (IsRunning == false) return;
         IsRunning = false;
-    }
-
-    private string GetSpriteKey(string puzzleId)
-    {
-        return $"{puzzleId}";
     }
 }

@@ -65,7 +65,6 @@ public class FragmentSpawner : MonoBehaviour
         if (_animator == null)
             throw new ArgumentNullException(nameof(_animator), "AnimatorPuzzle не назначен!");
 
-
         foreach (var colorGroup in colorGroups)
         {
             _spawnedFragments[colorGroup.Key] = new Queue<Fragment>(

@@ -3,42 +3,29 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Fragment : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem _particleSystem;
     private SpriteRenderer _renderer;
     private float _startAlpha;
     private int _finalAlpha;
     private Color _newColor;
 
-    public Color Color => _renderer.color;
+    public SpriteRenderer Renderer => _renderer;
+    public Color Color { get; private set; }
 
     private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
         _startAlpha = 0.3f;
         _finalAlpha = 1;
-
-        if (_particleSystem == null)
-            _particleSystem = GetComponent<ParticleSystem>();
     }
 
-    public bool IsValid()
+    private void Start()
     {
-        return _renderer != null && _renderer.sprite != null;
+        Color = _renderer.color;
     }
 
     public void SetColor(Color color)
     {
         _renderer.color = color;
-    }
-
-    public Color GetColor()
-    {
-        if (TryGetComponent<SpriteRenderer>(out var renderer))
-        {
-            return renderer.color;
-        }
-
-        return Color.white;
     }
 
     public void TurnOnTransparency()

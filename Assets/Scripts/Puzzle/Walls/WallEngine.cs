@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-[RequireComponent(typeof(ColorCollisionHandler), typeof(Rigidbody))]
+[RequireComponent(typeof(ColorCollisionHandler))]
 public class WallEngine : MonoBehaviour
 {
     private bool _isMoving;
@@ -46,6 +46,7 @@ public class WallEngine : MonoBehaviour
     private void OnBlockTouch(Block block)
     {
         if (_isMoving || block == null) return;
+
         StartMovement();
     }
 

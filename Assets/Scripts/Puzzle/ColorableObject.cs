@@ -4,12 +4,32 @@ using UnityEngine;
 public class ColorableObject : MonoBehaviour, IColorable
 {
     private Renderer _renderer;
+    private Indicator _indicator;
 
     private void Awake()
     {
-        _renderer = GetComponent<Renderer>();
+        CacheComponents();
 
         ValidateRenderer();
+
+        if (_indicator != null)
+        {
+            _indicator.TurnOffSpriteRenderer();
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (_renderer == null)
+        {
+            CacheComponents();
+        }
+    }
+
+    private void CacheComponents()
+    {
+        _renderer = GetComponentInChildren<Renderer>(true); 
+        _indicator = GetComponentInChildren<Indicator>(true);
     }
 
     public void SetColor(Color color)
@@ -21,7 +41,15 @@ public class ColorableObject : MonoBehaviour, IColorable
         }
 
         if (_renderer.material != null)
+        {
             _renderer.material.color = color;
+
+            if (_indicator != null)
+            {
+                _indicator.TurnOnSpriteRenderer();
+            }
+        }
+
         else
             Debug.LogError($"Material missing on {name}'s renderer", this);
     }

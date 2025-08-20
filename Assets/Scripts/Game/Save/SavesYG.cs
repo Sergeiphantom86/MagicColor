@@ -1,45 +1,76 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace YG
 {
     public partial class SavesYG
     {
         private Sprite _sprite;
+        private static long _currentCoin;
+        private static long _currentCrystal;
+        private static int _questIndex;
+        private bool _complete;
+        private bool _isSimilar;
 
         public SavesYG()
         {
             MusicVolume = 0.8f;
             SoundVolume = 0.8f;
             CountStars = 0;
-            IsMusicEnabled = true;
-            NpcStates = new Dictionary<string, int>();
-            PuzzleBestTimes = new Dictionary<string, float>();
         }
 
-        public Dictionary<string, int> NpcStates { get; private set; }
-        public Dictionary<string, float> PuzzleBestTimes { get; private set; }
-
         public float MusicVolume { get; private set; }
-        public float SoundVolume {get; private set; }
-        public bool IsMusicEnabled{get; private set;}
-        public int CountStars{get; private set;}
 
-        public int QuestID { get; private set; }
+        public float SoundVolume { get; private set; }
+
+        public int CountStars { get; private set; }
+
+        public int QuestIndex => _questIndex;
+
+        public long CurrentCoin => _currentCoin;
+
+        public long CurrentCrystal => _currentCrystal;
 
         public Sprite Sprite => _sprite;
 
-        internal void SetSprite(Sprite sprite)
-        {
-            if (sprite == null) return;
-            if (_sprite != null) return;
+        public bool Complete => _complete;
+        public bool IsSimilar => _isSimilar;
 
-            _sprite = sprite;
+        public void SetAssembledPuzzle(bool complete)
+        {
+            _complete = complete;
         }
 
-        public void ResetSprite()
+        public void SetSimilarity(bool isSimilar)
         {
-            _sprite = null;
+            _isSimilar = isSimilar;
+        }
+
+        public void SetCurrentCoin(long amount)
+        {
+            if (amount < 0) return;
+
+            _currentCoin += amount;
+        }
+
+        public void SetCurrentCrystal(long amount)
+        {
+            if (amount < 0) return;
+
+            _currentCrystal += amount;
+        }
+
+        public void SetQuestIndex(int questInex)
+        {
+            if (questInex < 0) return;
+
+            _questIndex = questInex;
+        }
+
+        public void SetCountStars(int count)
+        {
+            if (count < 0) return;
+
+            CountStars = count;
         }
 
         public void SetVolume(string name, float volume)
@@ -54,18 +85,17 @@ namespace YG
             }
         }
 
-        public void SetQuestID(int questID)
+        public void ResetSprite()
         {
-            //if(questID < 0 ) return;
-
-            //Debug.Log("ijvbfov");
-            
-            QuestID = questID;
+            _sprite = null;
         }
 
-        public void SetCountStars(int count)
+        public void SetSprite(Sprite sprite)
         {
-            CountStars = count;
+            if (sprite == null) return;
+            if (_sprite != null) return;
+
+            _sprite = sprite;
         }
     }
 }
