@@ -2,25 +2,35 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(PathMover), typeof(TouchColorTransparency), typeof(Renderer))]
 public class Block : ColorableObject, IDestroyable
 {
     private Vector2Int _gridPosition;
     private PathMover _pathMover;
     private InkSpawner _inkSpawner;
     private Renderer _renderer;
-    
+    private TouchDragInput _touchDragInput;
+
     public event Action<Block> OnDestroyed;
 
     private void Awake()
     {
         _pathMover = GetComponent<PathMover>();
+        _touchDragInput = GetComponent<TouchDragInput>();
         _inkSpawner = GetComponentInChildren<InkSpawner>();
         _renderer = GetComponent<Renderer>();
     }
 
     public void Destroy(Transform waypoint, Transform endPoint)
     {
+        LetGo();
+        AssignOriginal();
         _pathMover.Move(waypoint, endPoint, ExecuteDestruction);
+    }
+
+    private void LetGo()
+    {
+        _touchDragInput.ThrowOff();
     }
 
     private void ExecuteDestruction()

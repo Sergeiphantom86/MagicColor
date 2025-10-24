@@ -120,6 +120,7 @@ public class Repainter : MonoBehaviour
     {
         for (int i = 0; i < Mathf.Min(colors.Count, colorables.Count); i++)
         {
+            colorables[i]?.InstallRepainted();
             colorables[i]?.SetColor(colors[i]);
         }
     }

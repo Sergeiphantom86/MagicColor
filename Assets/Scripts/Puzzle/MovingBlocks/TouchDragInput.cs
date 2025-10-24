@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(GridDragMovement), typeof(Magnifier))]
+[RequireComponent(typeof(GridDragMovement), typeof(Magnifier), typeof(TouchColorTransparency))]
 public class TouchDragInput : MonoBehaviour
 {
     [SerializeField] private EffectsHandler _effectsHandler;
@@ -11,10 +11,12 @@ public class TouchDragInput : MonoBehaviour
     private Camera _mainCamera;
     private Magnifier _selectable;
     private GridDragMovement _dragMovement;
+    private IColorable _colorable;
 
     private void Awake()
     {
         _mainCamera = Camera.main;
+        _colorable = GetComponent<IColorable>();
         _dragMovement = GetComponent<GridDragMovement>();
         _selectable = GetComponent<Magnifier>();
         _ieffectsHandler = _effectsHandler;
@@ -47,7 +49,7 @@ public class TouchDragInput : MonoBehaviour
                 break;
 
             case TouchPhase.Moved:
-                if (_isSelected) Move(_touch.position);
+                Move(_touch.position);
                 break;
 
             case TouchPhase.Ended:
@@ -63,25 +65,28 @@ public class TouchDragInput : MonoBehaviour
         {
             _isSelected = true;
             _selectable.Select();
-            _dragMovement.BeginInteraction(position);
+            _dragMovement.BeginInteraction(position, transform.position);
             _ieffectsHandler?.PlayDragSound();
+            _colorable.AssignOriginal();
         }
     }
 
     private void Move(Vector2 position)
     {
-        _dragMovement.ProcessInput(position);
+        if (_isSelected)
+            _dragMovement.ProcessInput(position, transform.position);
     }
 
-    private void ThrowOff()
+    public void ThrowOff()
     {
         if (_isSelected)
         {
             _isSelected = false;
             _selectable.Deselect();
-            _dragMovement.EndInteraction();
+            _dragMovement.EndInteraction(transform.position);
             _ieffectsHandler?.Stop();
             _ieffectsHandler?.PlayEndDragging();
+            _colorable.Disable();
         }
     }
 

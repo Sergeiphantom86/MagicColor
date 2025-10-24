@@ -21,17 +21,17 @@ public class LeaderboardWallet : MonoBehaviour
     private void OnEnable() 
     {
         _wallet.OnBalanceChanged += SavePlayerBalance;
-        YG2.onGetLeaderboard += OnLeaderboardLoaded;
+        YG2.onGetLeaderboard += ShowPlayerStats;
     } 
     private void OnDisable()
     {
         _wallet.OnBalanceChanged -= SavePlayerBalance;
-        YG2.onGetLeaderboard -= OnLeaderboardLoaded;
+        YG2.onGetLeaderboard -= ShowPlayerStats;
     }
 
     private void Start()
     {
-        LoadLeaderboard();
+        Load();
     }
 
     public void SavePlayerBalance(long balance, string name)
@@ -41,7 +41,7 @@ public class LeaderboardWallet : MonoBehaviour
         if (balance > 0)
         {
             YG2.SetLeaderboard(_leaderboardName, (int)Mathf.Clamp(balance, 1, int.MaxValue));
-            LoadLeaderboard();
+            Load();
         }
     }
 
@@ -53,7 +53,7 @@ public class LeaderboardWallet : MonoBehaviour
         YG2.GetLeaderboard(_leaderboardName, 1, 0, "");
     }
 
-    private void OnLeaderboardLoaded(LBData data)
+    private void ShowPlayerStats(LBData data)
     {
         //LoadPlayerRank();
 
@@ -76,6 +76,6 @@ public class LeaderboardWallet : MonoBehaviour
         //_icon.SetRank($"{data.currentPlayer.rank}");
     }
 
-    private void LoadLeaderboard() => 
+    private void Load() => 
         YG2.GetLeaderboard(_leaderboardName);
 }

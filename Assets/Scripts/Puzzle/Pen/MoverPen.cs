@@ -24,7 +24,6 @@ public class MoverPen : MonoBehaviour, IMover
         _mainCamera = Camera.main;
         _tiltController = GetComponent<PenTiltController>();
         _scaleController = GetComponent<PenScaleController>();
-
         _screenCenter = _mainCamera.ViewportToWorldPoint(
            new Vector3(ScreenCenterRatio, ScreenCenterRatio, _mainCamera.nearClipPlane));
     }
@@ -52,8 +51,6 @@ public class MoverPen : MonoBehaviour, IMover
         FinalizeMove();
     }
 
-    public void RegisterMoveCompleteCallback(Action callback) => _onMoveComplete = callback;
-
     private void PrepareForProgrammaticMove()
     {
         _isProgrammaticMove = true;
@@ -63,6 +60,9 @@ public class MoverPen : MonoBehaviour, IMover
 
     private IEnumerator ExecuteMoveSequence(Vector3 targetPosition, float duration)
     {
+        targetPosition.z += -0.1f;
+        targetPosition.y += 0.1f;
+
         yield return transform.DOMove(targetPosition, duration)
             .SetEase(Ease.OutQuad)
             .WaitForCompletion();
@@ -98,6 +98,9 @@ public class MoverPen : MonoBehaviour, IMover
     private bool HasPositionChanged() =>
         Vector3.Distance(transform.position, _basePosition) > _tiltController.PositionThreshold;
 
-    private void UpdateBasePosition() =>
+    private void UpdateBasePosition()
+    {
         _basePosition = transform.position;
+        _basePosition.z = -10;
+    }
 }

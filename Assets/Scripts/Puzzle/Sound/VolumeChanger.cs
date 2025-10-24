@@ -1,8 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
-using static UnityEngine.Rendering.DebugUI;
 
 [RequireComponent(typeof(Slider))]
 public class VolumeChanger: MonoBehaviour

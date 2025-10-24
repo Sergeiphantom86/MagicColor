@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 using YG;
 using YG.Utils.LB;
@@ -7,24 +6,27 @@ using YG.Utils.LB;
 public class LeaderboardStars : MonoBehaviour
 {
     private string _leaderboardName;
-    private StarsController _starsController;
     private int _lastSavedScore;
     private int _maxStars = 5;
     private int _minStars = 1;
     private int _maxTimeSeconds = 60;
+    private StarsController _starsController;
 
     private void Awake()
     {
+        _maxStars = 5;
+        _minStars = 1;
+        _maxTimeSeconds = 60;
         _starsController = GetComponent<StarsController>();
     }
 
-    private void OnEnable() => YG2.onGetLeaderboard += OnLeaderboardLoaded;
-    private void OnDisable() => YG2.onGetLeaderboard -= OnLeaderboardLoaded;
+    private void OnEnable() => 
+        YG2.onGetLeaderboard += OnLeaderboardLoaded;
+    private void OnDisable() => 
+        YG2.onGetLeaderboard -= OnLeaderboardLoaded;
 
     private void Start()
     {
-        _lastSavedScore = PlayerPrefs.GetInt("LastLevelTime", 0);
-
         LoadLeaderboard();
     }
 
@@ -33,7 +35,6 @@ public class LeaderboardStars : MonoBehaviour
         int seconds = Mathf.RoundToInt(timeInSeconds);
         _leaderboardName = leaderboardName;
         _lastSavedScore = seconds;
-        PlayerPrefs.SetInt("LastLevelTime", seconds);
 
         YG2.SetLBTimeConvert(_leaderboardName, timeInSeconds);
     }
@@ -57,9 +58,16 @@ public class LeaderboardStars : MonoBehaviour
 
         if (timeInSeconds > _maxTimeSeconds) return _minStars;
 
-        float progress = 1f - Mathf.Clamp01((float)timeInSeconds / _maxTimeSeconds);
-        int stars = Mathf.RoundToInt(_minStars + progress * (_maxStars - _minStars));
+        return Mathf.Clamp(GetStars(timeInSeconds), _minStars, _maxStars);
+    }
 
-        return Mathf.Clamp(stars, _minStars, _maxStars);
+    private float GetProgress(int timeInSeconds)
+    {
+        return 1f - Mathf.Clamp01((float)timeInSeconds / _maxTimeSeconds);
+    }
+
+    private int GetStars(int timeInSeconds)
+    {
+        return Mathf.RoundToInt(_minStars + GetProgress(timeInSeconds) * (_maxStars - _minStars));
     }
 }

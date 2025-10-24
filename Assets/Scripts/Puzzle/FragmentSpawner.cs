@@ -13,21 +13,23 @@ public class FragmentSpawner : MonoBehaviour
 
     private Camera _targetCamera;
     private ImageAnalyzer _imageAnalyzer;
-    private Dictionary<Color, Queue<Fragment>> _spawnedFragments;
+    private Dictionary<Color, Queue<Fragment>> _fragments;
     private Vector3 _canvasNormal;
     private Vector3 _canvasRight;
     private Vector3 _canvasUp;
     private Vector3 _offsetFromCenter;
     private float _pixelSize;
+    private int _totalCount;
 
-    public int TotalCount { get; private set; }
+    public int TotalCount => _totalCount;
+    public Dictionary<Color, Queue<Fragment>> Fragments => _fragments;
 
     public event Action OnStart;
 
     private void Awake()
     {
         _targetCamera = Camera.main;
-        _spawnedFragments = new Dictionary<Color, Queue<Fragment>>();
+        _fragments = new Dictionary<Color, Queue<Fragment>>();
         _imageAnalyzer = GetComponent<ImageAnalyzer>();
         _pixelSize = 2.0202f;
     }
@@ -44,7 +46,7 @@ public class FragmentSpawner : MonoBehaviour
 
     public Queue<Fragment> GetFragmentsByColor(Color color)
     {
-        return _spawnedFragments.TryGetValue(color, out var fragments)
+        return _fragments.TryGetValue(color, out var fragments)
             ? new Queue<Fragment>(fragments)
             : new Queue<Fragment>();
     }
@@ -67,7 +69,7 @@ public class FragmentSpawner : MonoBehaviour
 
         foreach (var colorGroup in colorGroups)
         {
-            _spawnedFragments[colorGroup.Key] = new Queue<Fragment>(
+            _fragments[colorGroup.Key] = new Queue<Fragment>(
                 colorGroup.Value.Select(pixelPosition =>
                     GetFragment(pixelPosition, colorGroup.Key))
             );
@@ -93,7 +95,7 @@ public class FragmentSpawner : MonoBehaviour
         _prefab.SetColor(pixelColor);
         _prefab.TurnOnTransparency();
 
-        TotalCount++;
+        _totalCount++;
 
         return _prefab;
     }

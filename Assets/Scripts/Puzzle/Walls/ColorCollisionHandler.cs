@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using static Unity.Collections.AllocatorManager;
 
 [RequireComponent(typeof(Renderer), typeof(Indicator), typeof(Rigidbody))]
 public class ColorCollisionHandler : MonoBehaviour
@@ -14,6 +13,7 @@ public class ColorCollisionHandler : MonoBehaviour
     private Coroutine _coroutine;
     private WaitForSeconds _waitForSeconds;
     private IColorPrecision _colorPrecision;
+    private IColorable _colorable;
     private InkSpawner _inkSpawner;
     private Indicator _indicator;
 
@@ -24,6 +24,7 @@ public class ColorCollisionHandler : MonoBehaviour
     {
         _delay = 0.1f;
         _renderer = GetComponent<Renderer>();
+        _colorable = GetComponent<IColorable>();
         _indicator = GetComponent<Indicator>();
         _inkSpawner = GetComponentInChildren<InkSpawner>();
         _waitForSeconds = new WaitForSeconds(_delay);
@@ -62,7 +63,7 @@ public class ColorCollisionHandler : MonoBehaviour
             Debug.LogError("Renderer or material missing!", this);
             return;
         }
-
+        _colorable.AssignOriginal();
         Color otherColor = colorableObject.GetColor();
         Color myColor = _renderer.material.color;
 
@@ -87,8 +88,9 @@ public class ColorCollisionHandler : MonoBehaviour
     {
         if (other.TryGetComponent(out ColorableObject _) == false)
             return;
-
+        
         TouchEnded?.Invoke(other);
+        _colorable.Disable();
 
         if (_coroutine != null)
         {
@@ -105,7 +107,8 @@ public class ColorCollisionHandler : MonoBehaviour
         {
             if (effectsHandler != null)
                 effectsHandler.Stop();
-            
+
+            _colorable.Disable();
             block.Destroy(_indicator.transform, _inkSpawner.transform);
         }
 

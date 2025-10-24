@@ -7,6 +7,7 @@ public class Activator : MonoBehaviour
     [SerializeField] private FragmentSpawner _spawner;
     [SerializeField] private BlocksContainer _blocksContainer;
     [SerializeField] private EffectsHandler _effectsHandler;
+    [SerializeField] private SequentialSpawner _sequentialSpawner;
 
     private FragmentQueueProcessor _queueProcessor;
     private IColorPrecision _colorPrecision;
@@ -22,10 +23,8 @@ public class Activator : MonoBehaviour
     {
         _transitionReducing = 0.25f;
         _duration = 0.3f;
-
         IEffectsHandler effects = _effectsHandler;
         IBlocksContainer blocksContainer = _blocksContainer;
-
         IMover mover = GetComponent<IMover>();
         IFragmentAnimator animator = GetComponent<IFragmentAnimator>();
 
@@ -65,7 +64,9 @@ public class Activator : MonoBehaviour
         }
 
         var fragments = _spawner.GetFragmentsByColor(_colorPrecision.Reduce(color));
+
         _queueProcessor.EnqueueFragments(fragments);
+        _sequentialSpawner.SpawnObject(color);
 
         if (_isProcessing == false)
         {

@@ -1,78 +1,114 @@
-using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public class GridDragMovement : MonoBehaviour
 {
     [SerializeField] private BlocksContainer _blocksContainer;
     [SerializeField] private GridSystem _gridSystem;
+    [SerializeField] private float _shiftThreshold = 0.5f;
 
-    private float _moveDuration;
-    private float _cellSize;
-    private float _delay;
-    private Vector3 _originalPosition;
+    private float _moveDuration = 0.15f;
+    private Transform _transform;
+
     private Vector3 _lastTouchWorldPosition;
     private Vector3 _accumulatedWorldDisplacement;
     private Vector2Int _currentGridPosition;
-    private WaitForSeconds _waitInitialization;
-    private Block  _block;
-    private Transform _transform;
-    private Coroutine _coroutine;
+    private Tween _currentTween;
+    private bool _hasMoved = false;
 
+    // Инициализация компонента
     private void Awake()
     {
-        _delay = 0.1f;
-        _moveDuration = 0.15f;
-        _waitInitialization = new WaitForSeconds(_delay);
-        _block = GetComponent<Block>();
-
         _transform = transform;
     }
 
-    private IEnumerator Start()
+    // Запуск после инициализации, подготовка сетки
+    private void Start()
     {
-        yield return _waitInitialization;
-
-        _gridSystem = GridSystem.Instance;
-
-        if (_gridSystem == null)
-        {
-            Debug.LogError("GridSystem not found! Add GridSystem component to an object.");
-            yield return null;
-        }
-
-        _cellSize = _gridSystem.CellSize;
-
+        InitializeGridSystem();
         PositionAllBlocks();
     }
 
-    public void BeginInteraction(Vector3 touchPosition)
+    // Начало взаимодействия: фиксация начальной позиции
+    public void BeginInteraction(Vector3 touchPosition, Vector3 originalPosition)
     {
-        _originalPosition = _transform.position;
-        _currentGridPosition = _gridSystem.WorldToGridPosition(_originalPosition);
-        _lastTouchWorldPosition = CalculateTouchWorldPosition(touchPosition);
+        _currentGridPosition = _gridSystem.WorldToGridPosition(originalPosition);
+        _lastTouchWorldPosition = CalculateTouchWorldPosition(touchPosition, originalPosition);
         _accumulatedWorldDisplacement = Vector3.zero;
-        _gridSystem.ClearCell(_currentGridPosition);
+        _hasMoved = false;
     }
 
-    public void ProcessInput(Vector3 touchPosition)
+    // Обработка перемещения: вычисление смещения
+    public void ProcessInput(Vector3 touchPosition, Vector3 originalPosition)
     {
-        Vector3 worldTouchPoint = CalculateTouchWorldPosition(touchPosition);
+        Vector3 worldTouchPoint = CalculateTouchWorldPosition(touchPosition, originalPosition);
         Vector3 delta = worldTouchPoint - _lastTouchWorldPosition;
         _lastTouchWorldPosition = worldTouchPoint;
         _accumulatedWorldDisplacement += delta;
 
-        if (_accumulatedWorldDisplacement.sqrMagnitude > _cellSize * _cellSize)
-            AttemptShift();
+        float cellSize = _gridSystem.CellSize;
+
+        if (_accumulatedWorldDisplacement.sqrMagnitude > cellSize)
+        {
+            _hasMoved = true;
+            AttemptShift(_accumulatedWorldDisplacement);
+        }
     }
 
-    public void EndInteraction()
+    // Завершение взаимодействия: финальное позиционирование
+    public void EndInteraction(Vector3 position)
     {
-        if (_gridSystem.WorldToGridPosition(_transform.position) != _currentGridPosition)
-            PositionAtCell(_gridSystem.WorldToGridPosition(_transform.position));
+        if (_hasMoved == false)
+        {
+            PositionAtCell(_currentGridPosition);
+        }
+        else if (_gridSystem.WorldToGridPosition(position) != _currentGridPosition)
+        {
+            PositionAtCell(_gridSystem.WorldToGridPosition(position));
+        }
 
         _accumulatedWorldDisplacement = Vector3.zero;
     }
 
+    // Попытка сдвига блока при достаточном перемещении
+    private void AttemptShift(Vector3 accumulatedWorldDisplacement)
+    {
+        float absDx = Mathf.Abs(accumulatedWorldDisplacement.x);
+        float absDz = Mathf.Abs(accumulatedWorldDisplacement.z);
+
+        Vector2Int shiftDirection = GetShiftDirection(absDx, absDz);
+        Vector2Int newGridPos = CalculateNewGridPosition(shiftDirection);
+
+        if (CanShiftToPosition(newGridPos) == false) return;
+
+        _gridSystem.ClearCell(_currentGridPosition);
+        ExecuteShift(newGridPos);
+    }
+
+    // Определение направления сдвига
+    private Vector2Int GetShiftDirection(float absDx, float absDz)
+    {
+        return absDx >= absDz ?
+            new Vector2Int(_accumulatedWorldDisplacement.x > 0 ? 1 : -1, 0) :
+            new Vector2Int(0, _accumulatedWorldDisplacement.z > 0 ? 1 : -1);
+    }
+
+    // Вычисление новой позиции в сетке
+    private Vector2Int CalculateNewGridPosition(Vector2Int shiftDirection) =>
+        ClampToGridBounds(_currentGridPosition + shiftDirection);
+
+    // Проверка возможности перемещения в ячейку
+    private bool CanShiftToPosition(Vector2Int newGridPosition) =>
+        newGridPosition != _currentGridPosition && _gridSystem.IsCellEmpty(newGridPosition);
+
+    // Выполнение сдвига и обновление сетки
+    private void ExecuteShift(Vector2Int newGridPosition)
+    {
+        PositionAtCell(newGridPosition);
+        _accumulatedWorldDisplacement = Vector3.zero;
+    }
+
+    // Позиционирование всех блоков в сетке
     private void PositionAllBlocks()
     {
         foreach (var block in _blocksContainer.Blocks)
@@ -83,6 +119,15 @@ public class GridDragMovement : MonoBehaviour
         }
     }
 
+    // Инициализация системы сетки
+    private void InitializeGridSystem()
+    {
+        _gridSystem = GridSystem.Instance;
+        if (_gridSystem == null)
+            Debug.LogError("GridSystem not found! Add GridSystem component to an object.");
+    }
+
+    // Плавное перемещение в конкретную ячейку
     private void PositionAtCell(Vector2Int newGridPosition)
     {
         newGridPosition = ClampToGridBounds(newGridPosition);
@@ -91,93 +136,33 @@ public class GridDragMovement : MonoBehaviour
         _gridSystem.ClearCell(_currentGridPosition);
         _gridSystem.UpdateCell(newGridPosition, gameObject);
 
-        if (_coroutine != null)
+        if (_currentTween != null && _currentTween.IsActive())
         {
-            StopCoroutine(_coroutine);
+            _currentTween.Kill();
         }
 
-        _coroutine = StartCoroutine(SmoothMoveCoroutine(_gridSystem.GridToWorldPosition(newGridPosition)));
+        _currentTween = _transform.DOMove(
+            _gridSystem.GridToWorldPosition(newGridPosition),
+            _moveDuration
+        ).SetEase(Ease.OutQuad);
 
         _currentGridPosition = newGridPosition;
     }
 
-    private IEnumerator SmoothMoveCoroutine(Vector3 targetPosition)
-    {
-        Vector3 startPosition = _transform.position;
-        float elapsed = 0f;
-
-        while (elapsed < _moveDuration)
-        {
-            _transform.position = Vector3.Lerp(startPosition, targetPosition, elapsed / _moveDuration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        _transform.position = targetPosition;
-    }
-
-    private void AttemptShift()
-    {
-        float absDx = Mathf.Abs(_accumulatedWorldDisplacement.x / _cellSize);
-        float absDz = Mathf.Abs(_accumulatedWorldDisplacement.z / _cellSize);
-
-        if (HasSufficientMovement(absDx, absDz) == false) return;
-
-        Vector2Int shiftDirection = GetShiftDirection(absDx, absDz);
-        Vector2Int newGridPos = CalculateNewGridPosition(shiftDirection);
-
-        if (CanShiftToPosition(newGridPos) == false)
-        {
-            _accumulatedWorldDisplacement = Vector3.zero;
-            return;
-        }
-
-        ExecuteShift(newGridPos);
-    }
-
-    private bool HasSufficientMovement(float absDx, float absDz)
-    {
-        return Mathf.Max(absDx, absDz) >= 0.8f;
-    }
-
-    private Vector2Int GetShiftDirection(float absDx, float absDz)
-    {
-        return absDx >= absDz ?
-            new Vector2Int(_accumulatedWorldDisplacement.x > 0 ? 1 : -1, 0) :
-            new Vector2Int(0, _accumulatedWorldDisplacement.z > 0 ? 1 : -1);
-    }
-
-    private Vector2Int CalculateNewGridPosition(Vector2Int shiftDirection)
-    {
-        return ClampToGridBounds(_currentGridPosition + shiftDirection);
-    }
-
-    private bool CanShiftToPosition(Vector2Int newGridPosition)
-    {
-        return newGridPosition != _currentGridPosition &&
-               _gridSystem.IsCellEmpty(newGridPosition);
-    }
-
-    private void ExecuteShift(Vector2Int newGridPosition)
-    {
-        PositionAtCell(newGridPosition);
-        _accumulatedWorldDisplacement = Vector3.zero;
-    }
-
-    private Vector3 CalculateTouchWorldPosition(Vector3 touchPosition)
+    // Преобразование экранных координат в мировые
+    private Vector3 CalculateTouchWorldPosition(Vector3 touchPosition, Vector3 originalPosition)
     {
         Ray ray = Camera.main.ScreenPointToRay(touchPosition);
-
-        return new Plane(Vector3.up, _originalPosition).Raycast(ray, out float distance) ?
+        return new Plane(Vector3.up, originalPosition).Raycast(ray, out float distance) ?
             ray.GetPoint(distance) :
-            _originalPosition;
+            originalPosition;
     }
 
+    // Ограничение позиции в пределах сетки
     private Vector2Int ClampToGridBounds(Vector2Int gridPosition)
     {
         gridPosition.x = Mathf.Clamp(gridPosition.x, 0, _gridSystem.GridSizeX - 1);
         gridPosition.y = Mathf.Clamp(gridPosition.y, 0, _gridSystem.GridSizeY - 1);
-
         return gridPosition;
     }
 }

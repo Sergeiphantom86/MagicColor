@@ -28,11 +28,6 @@ public class PenTiltController : MonoBehaviour
         }
     }
 
-    public void Stop()
-    {
-        _tiltTween?.Kill();
-    }
-
     private void StartTween(float targetAngle)
     {
         _tiltTween?.Kill();

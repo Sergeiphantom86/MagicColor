@@ -73,23 +73,58 @@ public class GridSystem : MonoBehaviour
                gridPosition.y < _gridSizeY;
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        if (_unityGrid == null)
-            _unityGrid = GetComponent<Grid>();
+        // Получаем компонент Grid
+        Grid grid = GetComponent<Grid>();
+        if (grid == null) return;
 
-        if (_unityGrid == null) return;
+        // Рассчитываем общий размер сетки
+        float totalWidth = _gridSizeX * grid.cellSize.x;
+        float totalDepth = _gridSizeY * grid.cellSize.z; // Используем Z для глубины
 
+        // Определяем начальную точку (левый нижний угол сетки в плоскости XZ)
+        Vector3 startPos = transform.position;
+
+        // Цвет для отрисовки сетки
         Gizmos.color = Color.cyan;
 
-        for (int x = 0; x < _gridSizeX; x++)
+        // Рисуем линии вдоль оси X
+        for (int z = 0; z <= _gridSizeY; z++)
         {
-            for (int y = 0; y < _gridSizeY; y++)
+            Vector3 lineStart = startPos + new Vector3(0, 0, z * grid.cellSize.z);
+            Vector3 lineEnd = lineStart + new Vector3(totalWidth, 0, 0);
+            Gizmos.DrawLine(lineStart, lineEnd);
+        }
+
+        // Рисуем линии вдоль оси Z
+        for (int x = 0; x <= _gridSizeX; x++)
+        {
+            Vector3 lineStart = startPos + new Vector3(x * grid.cellSize.x, 0, 0);
+            Vector3 lineEnd = lineStart + new Vector3(0, 0, totalDepth);
+            Gizmos.DrawLine(lineStart, lineEnd);
+        }
+
+        // Дополнительно: рисуем занятые ячейки (только во время игры)
+        if (Application.isPlaying && _grid != null)
+        {
+            Gizmos.color = new Color(1, 0, 0, 1f); // Полупрозрачный красный
+            for (int x = 0; x < _gridSizeX; x++)
             {
-                Vector3 center = _unityGrid.GetCellCenterWorld(new Vector3Int(x, y, 0));
-                Vector3 size = new Vector3(_unityGrid.cellSize.x, 0.1f, _unityGrid.cellSize.y);
-                Gizmos.DrawWireCube(center, size);
+                for (int z = 0; z < _gridSizeY; z++)
+                {
+                    if (_grid[x, z] != null)
+                    {
+                        Vector3 cellCenter = startPos + new Vector3(
+                            x * grid.cellSize.x + grid.cellSize.x / 2,
+                            0,
+                            z * grid.cellSize.z + grid.cellSize.z / 2
+                        );
+                        Gizmos.DrawCube(cellCenter, new Vector3(grid.cellSize.x, 0.1f, grid.cellSize.z));
+                    }
+                }
             }
         }
     }
+
 }
