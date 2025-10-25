@@ -62,7 +62,7 @@ public class Activator : MonoBehaviour
             _totalCountPixel = _spawner.TotalCount;
             _remainingPixels = _totalCountPixel;
         }
-
+        
         var fragments = _spawner.GetFragmentsByColor(_colorPrecision.Reduce(color));
 
         _queueProcessor.EnqueueFragments(fragments);
@@ -81,14 +81,13 @@ public class Activator : MonoBehaviour
         yield return _queueProcessor.ProcessQueueRoutine(transform.position, _duration, _transitionReducing);
 
         _isProcessing = false;
-
-        CheckPuzzleComplete();
     }
 
     private void HandleFragmentActivated()
     {
         _remainingPixels--;
         CheckPuzzleComplete();
+        _sequentialSpawner.Reduce();
     }
 
     private void CheckPuzzleComplete()

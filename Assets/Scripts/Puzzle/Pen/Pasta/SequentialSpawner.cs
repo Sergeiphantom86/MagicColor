@@ -1,23 +1,24 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SequentialSpawner : MonoBehaviour
 {
     [Header("Spawn Settings")]
     [SerializeField] private Placeholder _objectToSpawn;
-    [SerializeField] private Pen _pen;
 
-    private EndPoint _endPoint;
     private float _nextSpawnYPosition;
     private float _defaultDuration;
     private Transform _transform;
-    private GrowUpwards _growUpwards;
+    private Placeholder _placeholder;
+    private List<Placeholder> _placeholders;
 
     private void Awake()
     {
         _defaultDuration = 1;
         _transform = transform;
         _nextSpawnYPosition = 0f;
+        _placeholders = new List<Placeholder>();
     }
 
     public void SpawnObject(Color color)
@@ -28,50 +29,56 @@ public class SequentialSpawner : MonoBehaviour
             return;
         }
 
-        Placeholder newObject = Instantiate(_objectToSpawn, _transform);
-
-        newObject.transform.localPosition = new Vector3(0, _nextSpawnYPosition, 0);
-        newObject.SetActive(true);
-
-        if (newObject.TryGetComponent(out GrowUpwards growUpwards))
+        if (color == null)
         {
-            growUpwards.FillPen(color, newObject);
+            Debug.LogError("Сolor for the appearance is null!", this);
+            return;
         }
 
-        if (newObject.TryGetComponent(out IColorable colorable))
-        {
-            colorable.SetColor(color);
-            colorable.SetAlpha(color, 1);
-        }
-
-        StartCoroutine(FindAndUpdatePointsInSpawnedObject(newObject));
+        StartCoroutine(UpdatePointInCreatedObject(GetPlaceholder(), color));
     }
 
-    private IEnumerator FindAndUpdatePointsInSpawnedObject(Placeholder spawnedObject)
+    public void Reduce()
     {
-        _growUpwards = spawnedObject.GetComponent<GrowUpwards>();
-
-        yield return new WaitForSeconds(GetDelayTime());
-
-        EndPoint newEndPoint = spawnedObject.GetComponentInChildren<EndPoint>();
-
-        if (newEndPoint != null) _endPoint = newEndPoint;
-
-        if (_endPoint != null )
+        if (_placeholder == null)
         {
-            Vector3 endPointWorldPos = _endPoint.transform.position;
-            Vector3 endPointLocalPos = _transform.InverseTransformPoint(endPointWorldPos);
+            _placeholder = _placeholders[0];
+            Debug.Log("If");
+            _placeholders.RemoveAt(0);
+        }
 
-            _nextSpawnYPosition = endPointLocalPos.y;
-        }
-        else
-        {
-            Debug.LogError("Не удалось найти StartPoint или EndPoint в созданном объекте!");
-        }
+        _placeholder.ReduceSize();
+        Debug.Log("ReduceSize");
     }
 
-    private float GetDelayTime()
+    private IEnumerator UpdatePointInCreatedObject(Placeholder spawnedObject, Color color)
     {
-        return _growUpwards != null ? _growUpwards.GetDuration() : _defaultDuration;
+        if (spawnedObject != null)
+        {
+            spawnedObject.ShowFillings(color, _nextSpawnYPosition);
+        }
+
+        yield return new WaitForSeconds(GetDelayTime(spawnedObject.Duration));
+
+        AssignNextSpawnPosition(spawnedObject.PositionEndPoint);
+    }
+
+    private float GetDelayTime(float duration)
+    {
+        return duration <= 0  ? duration : _defaultDuration;
+    }
+
+    private void AssignNextSpawnPosition(Vector3 position)
+    {
+        _nextSpawnYPosition = _transform.InverseTransformPoint(position).y;
+    }
+
+    private Placeholder GetPlaceholder()
+    {
+        Placeholder placeholder = Instantiate(_objectToSpawn, _transform);
+
+        _placeholders.Add(placeholder);
+        
+        return placeholder;
     }
 }

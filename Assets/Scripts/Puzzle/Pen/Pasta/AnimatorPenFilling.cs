@@ -1,53 +1,63 @@
-using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
+using UnityEngine;
 
 [RequireComponent(typeof(DustSizeCalculator))]
-public class GrowUpwards : MonoBehaviour
+public class AnimatorPenFilling : MonoBehaviour
 {
     [SerializeField] private FragmentSpawner _fragmentSpawner;
 
     private DustSizeCalculator _dustSizeCalculator;
     private float _duration;
     private Vector3 _initialScale;
+    private float _currentOccupancy;
+
+    public int Size { get; private set; }
 
     private void Awake()
     {
         _duration = 1f;
         _initialScale = new Vector3(12, 0, 12);
         _dustSizeCalculator = GetComponent<DustSizeCalculator>();
+        _currentOccupancy = 0f;
+    }
+
+    public void UpdatePenSize(int quantity, Placeholder placeholder)
+    {
+        if (placeholder == null || quantity < 0) return;
+
+        Size = quantity;
+        _currentOccupancy = GetQuantityOccupancy(quantity);
+
+        ChangeSize(placeholder, _currentOccupancy);
+        ChangePosition(placeholder, _currentOccupancy);
     }
 
     public void FillPen(Color color, Placeholder placeholder)
     {
-        int fragmentCount = 0;
+        int fragmentCount = GetFragmentCount(color);
+        UpdatePenSize(fragmentCount, placeholder);
+    }
 
-        if (_fragmentSpawner == null || _fragmentSpawner.Fragments == null || placeholder == null)
+    private int GetFragmentCount(Color color)
+    {
+        if (_fragmentSpawner == null || _fragmentSpawner.Fragments == null)
         {
             Debug.LogError("FragmentSpawner or Fragments dictionary is null!", this);
-            return;
+            return 0;
         }
 
         if (_fragmentSpawner.Fragments.TryGetValue(color, out Queue<Fragment> fragments))
         {
-            fragmentCount = fragments?.Count ?? 0;
+            return fragments?.Count ?? 0;
         }
 
-        GrowUpward(fragmentCount, placeholder);
+        return 0;
     }
 
     public float GetDuration() => _duration;
 
-    private void GrowUpward(int quantity, Placeholder placeholder)
-    {
-        if (placeholder == null || quantity < 0) return;
-
-        ChangeSize(placeholder, GetQuantityOccupancy(quantity));
-
-        ChangePosition(placeholder, GetQuantityOccupancy(quantity));
-    }
-
-    private void ChangeSize(Placeholder placeholder, float occupancy)
+    public void ChangeSize(Placeholder placeholder, float occupancy)
     {
         placeholder.transform.DOScale(
            GetNewScaleY(occupancy), _duration)
@@ -84,6 +94,7 @@ public class GrowUpwards : MonoBehaviour
     {
         return GetNewScaleY(occupancy).y - _initialScale.y;
     }
+
     private float GetQuantityOccupancy(int quantity)
     {
         if (_dustSizeCalculator == null)
