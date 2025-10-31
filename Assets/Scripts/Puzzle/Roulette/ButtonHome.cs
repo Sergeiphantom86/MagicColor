@@ -1,0 +1,108 @@
+using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using YG;
+
+[RequireComponent(typeof(Voiceover), typeof(Button))]
+public class ButtonHome : MonoBehaviour
+{
+    private const string Menu = nameof(Menu);
+
+    [SerializeField] private Warner _warner;
+    [SerializeField] private CoinWallet _coin;
+    [SerializeField] private AudioClip _audioClip;
+    [SerializeField] private AudioClip _errorSound;
+    [SerializeField] private CrystalWallet _crystal;
+    [SerializeField] private ButtonController _buttonController;
+
+    private Voiceover _voiceover;
+    private Button _button;
+    private bool _isSpin;
+    private int _extraTime;
+
+    private void Awake()
+    {
+        _extraTime = 2;
+        _voiceover = GetComponent<Voiceover>();
+        _button = GetComponent<Button>();
+    }
+
+    private void OnEnable()
+    {
+        _buttonController.OnTurned += AllowWindowClosure;
+    }
+
+    private void OnDisable()
+    {
+        _buttonController.OnTurned -= AllowWindowClosure;
+    }
+
+    private void Start()
+    {
+        _button.onClick.AddListener(Play);
+    }
+
+    private void Play()
+    {
+        if (_isSpin == false)
+        {
+            _warner.TurnOn();
+            _button.interactable = false;
+
+            StartCoroutine(WaitForWindowClose(_errorSound, true, _extraTime, () =>
+                _warner.TurnOff()));
+
+            return;
+        }
+
+        _button.interactable = false;
+        StartCoroutine(WaitForWindowClose(_audioClip, true,0, () =>
+        LoadTargetScene()));
+    }
+
+    private void LoadTargetScene()
+    {
+        YG2.saves.SetAssembledPuzzle(false);
+
+        if (SceneLoader.Instance == null)
+        {
+            Debug.LogError("SceneLoader instance not found! Using default load.");
+            SceneManager.LoadScene("Menu");
+            return;
+        }
+
+        if (_coin != null && _crystal != null)
+        {
+            SaveProgress();
+        }
+
+        SceneLoader.Instance.LoadSceneWithSplash(Menu);
+    }
+
+    private void SaveProgress()
+    {
+        YG2.saves.SetCurrentCoin(_coin.Balance);
+        YG2.saves.SetCurrentCrystal(_crystal.Balance);
+        YG2.saves.SetAssembledPuzzle(true);
+        YG2.saves.ResetSprite();
+        YG2.SaveProgress();
+    }
+
+    private IEnumerator WaitForWindowClose(AudioClip clip, bool isOn, int duration, Action callback)
+    {
+        _voiceover.PlaySfx(clip);
+
+        yield return new WaitForSeconds(clip.length + duration);
+
+        _button.interactable = isOn;
+
+        callback.Invoke();
+    }
+
+    private void AllowWindowClosure()
+    {
+        _isSpin = true;
+    }
+}

@@ -12,6 +12,7 @@ public class TouchDragInput : MonoBehaviour
     private Magnifier _selectable;
     private GridDragMovement _dragMovement;
     private IColorable _colorable;
+    private Vector3 _lastMousePosition;
 
     private void Awake()
     {
@@ -20,7 +21,6 @@ public class TouchDragInput : MonoBehaviour
         _dragMovement = GetComponent<GridDragMovement>();
         _selectable = GetComponent<Magnifier>();
         _ieffectsHandler = _effectsHandler;
-
 
         if (_ieffectsHandler == null)
         {
@@ -38,8 +38,18 @@ public class TouchDragInput : MonoBehaviour
 
     private void Update()
     {
-        if (Input.touchCount == 0) return;
+        if (Input.touchCount > 0)
+        {
+            HandleTochInput();
+        }
+        else
+        {
+            HandleMouseInput();
+        }
+    }
 
+    private void HandleTochInput()
+    {
         _touch = Input.GetTouch(0);
 
         switch (_touch.phase)
@@ -59,6 +69,26 @@ public class TouchDragInput : MonoBehaviour
         }
     }
 
+    private void HandleMouseInput()
+    {
+        Vector3 currentMousePosition = Input.mousePosition;
+
+        switch (true)
+        {
+            case bool _ when Input.GetMouseButtonDown(0):
+                SelectBlock(currentMousePosition);
+                break;
+
+            case bool _ when Input.GetMouseButton(0) && _isSelected:
+                Move(currentMousePosition);
+                break;
+
+            case bool _ when Input.GetMouseButtonUp(0) && _isSelected:
+                ThrowOff();
+                break;
+        }
+    }
+
     private void SelectBlock(Vector2 position)
     {
         if (IsTouchingThisObject(position))
@@ -66,7 +96,6 @@ public class TouchDragInput : MonoBehaviour
             _isSelected = true;
             _selectable.Select();
             _dragMovement.BeginInteraction(position, transform.position);
-            _ieffectsHandler?.PlayDragSound();
             _colorable.AssignOriginal();
         }
     }
@@ -74,7 +103,9 @@ public class TouchDragInput : MonoBehaviour
     private void Move(Vector2 position)
     {
         if (_isSelected)
+        {
             _dragMovement.ProcessInput(position, transform.position);
+        }
     }
 
     public void ThrowOff()
@@ -83,8 +114,6 @@ public class TouchDragInput : MonoBehaviour
         {
             _isSelected = false;
             _selectable.Deselect();
-            _dragMovement.EndInteraction(transform.position);
-            _ieffectsHandler?.Stop();
             _ieffectsHandler?.PlayEndDragging();
             _colorable.Disable();
         }
