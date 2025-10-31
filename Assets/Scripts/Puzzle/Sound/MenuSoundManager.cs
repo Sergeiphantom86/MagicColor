@@ -103,10 +103,10 @@ public class MenuSoundManager : MonoBehaviour
         _musicSource.Play();
     }
 
-    private void SetVolume(string slider, float volume)
+    private void SetVolume(VolumeChanger volumeChanger, float volume)
     {
-        UpdateMixerVolume(slider, volume);
-        YG2.saves.SetVolume(slider, volume);
+        UpdateMixerVolume(volumeChanger.name, volume);
+        YG2.saves.SetVolume(volumeChanger, volume);
         SaveVolumeSettings();
     }
 

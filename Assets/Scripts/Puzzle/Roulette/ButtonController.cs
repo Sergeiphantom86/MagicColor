@@ -6,9 +6,10 @@ public class ButtonController : MonoBehaviour
 {
     [SerializeField] private Button _button;
 
-    private Func<bool> _globalInteractableCondition;
-    private Action _onClickAction;
     private bool _localBlock;
+
+    public event Func<bool> GlobalInteractableCondition;
+    public event Action OnTurned;
 
     private void Awake()
     {
@@ -22,8 +23,8 @@ public class ButtonController : MonoBehaviour
 
     public void Initialize(Func<bool> globalInteractableCondition, Action onClickAction = null)
     {
-        _globalInteractableCondition = globalInteractableCondition;
-        _onClickAction = onClickAction;
+        GlobalInteractableCondition = globalInteractableCondition;
+        OnTurned = onClickAction;
         UpdateState();
     }
 
@@ -35,16 +36,16 @@ public class ButtonController : MonoBehaviour
 
     public void UpdateState()
     {
-        bool isInteractable = _localBlock == false && (_globalInteractableCondition?.Invoke() ?? false);
+        bool isInteractable = _localBlock == false && (GlobalInteractableCondition?.Invoke() ?? false);
 
         _button.interactable = isInteractable;
     }
 
     private void HandleClick()
     {
-        if (_button.interactable && _onClickAction != null)
+        if (_button.interactable && OnTurned != null)
         {
-            _onClickAction.Invoke();
+            OnTurned.Invoke();
         }
     }
 

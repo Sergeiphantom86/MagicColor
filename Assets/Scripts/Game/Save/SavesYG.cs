@@ -26,6 +26,8 @@ namespace YG
 
         public int QuestIndex => _questIndex;
 
+        public float MusicPlaybackTime {  get; private set; }
+
         public long CurrentCoin => _currentCoin;
 
         public long CurrentCrystal => _currentCrystal;
@@ -52,6 +54,11 @@ namespace YG
             _currentCoin += amount;
         }
 
+        public void SetMusicPlaybackTime(float time)
+        {
+            MusicPlaybackTime = time;
+        }
+
         public void SetCurrentCrystal(long amount)
         {
             if (amount < 0) return;
@@ -73,9 +80,9 @@ namespace YG
             CountStars = count;
         }
 
-        public void SetVolume(string name, float volume)
+        public void SetVolume(VolumeChanger volumeChanger, float volume)
         {
-            if (nameof(MusicVolume) == name)
+            if (volumeChanger is MusicVolumeController)
             {
                 MusicVolume = volume;
             }
