@@ -7,7 +7,7 @@ public class GridDragMovement : MonoBehaviour
     [SerializeField] private GridSystem _gridSystem;
     [SerializeField] private float _shiftThreshold = 0.5f;
 
-    private float _moveDuration = 0.15f;
+    private float _moveDuration;
     private Transform _transform;
 
     private Vector3 _lastTouchWorldPosition;
@@ -16,20 +16,18 @@ public class GridDragMovement : MonoBehaviour
     private Tween _currentTween;
     private bool _hasMoved = false;
 
-    // Инициализация компонента
     private void Awake()
     {
+        _moveDuration = 0.15f;
         _transform = transform;
     }
 
-    // Запуск после инициализации, подготовка сетки
     private void Start()
     {
         InitializeGridSystem();
         PositionAllBlocks();
     }
 
-    // Начало взаимодействия: фиксация начальной позиции
     public void BeginInteraction(Vector3 touchPosition, Vector3 originalPosition)
     {
         _currentGridPosition = _gridSystem.WorldToGridPosition(originalPosition);
@@ -38,7 +36,6 @@ public class GridDragMovement : MonoBehaviour
         _hasMoved = false;
     }
 
-    // Обработка перемещения: вычисление смещения
     public void ProcessInput(Vector3 touchPosition, Vector3 originalPosition)
     {
         Vector3 worldTouchPoint = CalculateTouchWorldPosition(touchPosition, originalPosition);
@@ -55,7 +52,6 @@ public class GridDragMovement : MonoBehaviour
         }
     }
 
-    // Завершение взаимодействия: финальное позиционирование
     public void EndInteraction(Vector3 position)
     {
         if (_hasMoved == false)
@@ -70,7 +66,6 @@ public class GridDragMovement : MonoBehaviour
         _accumulatedWorldDisplacement = Vector3.zero;
     }
 
-    // Попытка сдвига блока при достаточном перемещении
     private void AttemptShift(Vector3 accumulatedWorldDisplacement)
     {
         float absDx = Mathf.Abs(accumulatedWorldDisplacement.x);
@@ -85,7 +80,6 @@ public class GridDragMovement : MonoBehaviour
         ExecuteShift(newGridPos);
     }
 
-    // Определение направления сдвига
     private Vector2Int GetShiftDirection(float absDx, float absDz)
     {
         return absDx >= absDz ?
@@ -93,22 +87,18 @@ public class GridDragMovement : MonoBehaviour
             new Vector2Int(0, _accumulatedWorldDisplacement.z > 0 ? 1 : -1);
     }
 
-    // Вычисление новой позиции в сетке
     private Vector2Int CalculateNewGridPosition(Vector2Int shiftDirection) =>
         ClampToGridBounds(_currentGridPosition + shiftDirection);
 
-    // Проверка возможности перемещения в ячейку
     private bool CanShiftToPosition(Vector2Int newGridPosition) =>
         newGridPosition != _currentGridPosition && _gridSystem.IsCellEmpty(newGridPosition);
 
-    // Выполнение сдвига и обновление сетки
     private void ExecuteShift(Vector2Int newGridPosition)
     {
         PositionAtCell(newGridPosition);
         _accumulatedWorldDisplacement = Vector3.zero;
     }
 
-    // Позиционирование всех блоков в сетке
     private void PositionAllBlocks()
     {
         foreach (var block in _blocksContainer.Blocks)
@@ -119,7 +109,6 @@ public class GridDragMovement : MonoBehaviour
         }
     }
 
-    // Инициализация системы сетки
     private void InitializeGridSystem()
     {
         _gridSystem = GridSystem.Instance;
@@ -127,7 +116,6 @@ public class GridDragMovement : MonoBehaviour
             Debug.LogError("GridSystem not found! Add GridSystem component to an object.");
     }
 
-    // Плавное перемещение в конкретную ячейку
     private void PositionAtCell(Vector2Int newGridPosition)
     {
         newGridPosition = ClampToGridBounds(newGridPosition);
@@ -149,7 +137,6 @@ public class GridDragMovement : MonoBehaviour
         _currentGridPosition = newGridPosition;
     }
 
-    // Преобразование экранных координат в мировые
     private Vector3 CalculateTouchWorldPosition(Vector3 touchPosition, Vector3 originalPosition)
     {
         Ray ray = Camera.main.ScreenPointToRay(touchPosition);
@@ -158,7 +145,6 @@ public class GridDragMovement : MonoBehaviour
             originalPosition;
     }
 
-    // Ограничение позиции в пределах сетки
     private Vector2Int ClampToGridBounds(Vector2Int gridPosition)
     {
         gridPosition.x = Mathf.Clamp(gridPosition.x, 0, _gridSystem.GridSizeX - 1);

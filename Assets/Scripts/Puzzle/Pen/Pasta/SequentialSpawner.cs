@@ -43,12 +43,11 @@ public class SequentialSpawner : MonoBehaviour
         if (_placeholder == null)
         {
             _placeholder = _placeholders[0];
-            Debug.Log("If");
+
             _placeholders.RemoveAt(0);
         }
 
         _placeholder.ReduceSize();
-        Debug.Log("ReduceSize");
     }
 
     private IEnumerator UpdatePointInCreatedObject(Placeholder spawnedObject, Color color)

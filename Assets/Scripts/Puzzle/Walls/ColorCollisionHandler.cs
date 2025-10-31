@@ -14,7 +14,7 @@ public class ColorCollisionHandler : MonoBehaviour
     private WaitForSeconds _waitForSeconds;
     private IColorPrecision _colorPrecision;
     private IColorable _colorable;
-    private InkSpawner _inkSpawner;
+    private Point _point;
     private Indicator _indicator;
 
     public event Action<Block> IsTouch;
@@ -26,7 +26,7 @@ public class ColorCollisionHandler : MonoBehaviour
         _renderer = GetComponent<Renderer>();
         _colorable = GetComponent<IColorable>();
         _indicator = GetComponent<Indicator>();
-        _inkSpawner = GetComponentInChildren<InkSpawner>();
+        _point = GetComponentInChildren<Point>();
         _waitForSeconds = new WaitForSeconds(_delay);
     }
 
@@ -34,7 +34,7 @@ public class ColorCollisionHandler : MonoBehaviour
     {
         if (_renderer == null) _renderer = GetComponent<Renderer>();
         if (_indicator == null) _indicator = GetComponent<Indicator>();
-        if (_inkSpawner == null) _inkSpawner = GetComponentInChildren<InkSpawner>();
+        if (_point == null) _point = GetComponentInChildren<Point>();
     }
 
     public void Initialize(IColorPrecision colorPrecision, Activator activator)
@@ -109,7 +109,7 @@ public class ColorCollisionHandler : MonoBehaviour
                 effectsHandler.Stop();
 
             _colorable.Disable();
-            block.Destroy(_indicator.transform, _inkSpawner.transform);
+            block.Destroy(_indicator.transform, _point.transform);
         }
 
         StartCoroutine(WaitSpawn(color));
