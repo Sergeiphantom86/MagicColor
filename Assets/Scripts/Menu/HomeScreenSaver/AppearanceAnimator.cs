@@ -1,14 +1,14 @@
-using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 [RequireComponent(typeof(Sorter))]
 public class AppearanceAnimator : MonoBehaviour, IAnimatable
 {
     private float _animationDuration;
     private float _delayBetweenObjects;
-    private Vector3 _startScale;
+    private float _startSizeMultiplier;
     private Vector3 _endScale;
     private Sorter _sorter;
     private Sequence _currentSequence;
@@ -21,7 +21,7 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
 
     private void Awake()
     {
-        _startScale = Vector3.one / 2;
+        _startSizeMultiplier = 2;
         _endScale = new Vector3(20, 20, 1f);
         _delayBetweenObjects = 0.01f;
         _animationDuration = 0.5f;
@@ -69,7 +69,12 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
 
     private void SetInitialSize(Fragment fragment)
     {
-        fragment.transform.localScale = _startScale;
+        fragment.transform.localScale = GetStartScale();
+    }
+
+    private Vector3 GetStartScale()
+    {
+         return Vector3.one / _startSizeMultiplier;
     }
 
     private void AddAnimation(int index, Fragment fragment)

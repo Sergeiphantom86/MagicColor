@@ -10,21 +10,28 @@ public class Block : ColorableObject, IDestroyable
     private InkSpawner _inkSpawner;
     private Renderer _renderer;
     private TouchDragInput _touchDragInput;
+    private Voiceover _voiceover;
+    private AudioClip _audioClip;
 
     public event Action<Block> OnDestroyed;
 
-    private void Awake()
+    public void  Initialize(AudioClip audioClip)
     {
         _pathMover = GetComponent<PathMover>();
         _touchDragInput = GetComponent<TouchDragInput>();
         _inkSpawner = GetComponentInChildren<InkSpawner>();
         _renderer = GetComponent<Renderer>();
+        _voiceover = GetComponent<Voiceover>();
+        _audioClip = audioClip;
+
+        InitializeComponents();
     }
 
     public void Destroy(Transform waypoint, Transform endPoint)
     {
         LetGo();
         AssignOriginal();
+        _voiceover.PlaySfx(_audioClip);
         _pathMover.Move(waypoint, endPoint, ExecuteDestruction);
     }
 

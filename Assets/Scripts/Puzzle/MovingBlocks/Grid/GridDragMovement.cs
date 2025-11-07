@@ -1,11 +1,11 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
 
 public class GridDragMovement : MonoBehaviour
 {
     [SerializeField] private BlocksContainer _blocksContainer;
     [SerializeField] private GridSystem _gridSystem;
-    [SerializeField] private float _shiftThreshold = 0.5f;
 
     private float _moveDuration;
     private Transform _transform;
@@ -36,7 +36,7 @@ public class GridDragMovement : MonoBehaviour
         _hasMoved = false;
     }
 
-    public void ProcessInput(Vector3 touchPosition, Vector3 originalPosition)
+    public void ProcessInput(Vector3 touchPosition, Vector3 originalPosition, Voiceover voiceover, AudioClip audioClip)
     {
         Vector3 worldTouchPoint = CalculateTouchWorldPosition(touchPosition, originalPosition);
         Vector3 delta = worldTouchPoint - _lastTouchWorldPosition;
@@ -49,6 +49,7 @@ public class GridDragMovement : MonoBehaviour
         {
             _hasMoved = true;
             AttemptShift(_accumulatedWorldDisplacement);
+            voiceover.PlaySfx(audioClip);
         }
     }
 

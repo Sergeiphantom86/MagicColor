@@ -28,13 +28,30 @@ public class ColorCollisionHandler : MonoBehaviour
         _indicator = GetComponent<Indicator>();
         _point = GetComponentInChildren<Point>();
         _waitForSeconds = new WaitForSeconds(_delay);
-    }
 
-    private void OnEnable()
-    {
-        if (_renderer == null) _renderer = GetComponent<Renderer>();
-        if (_indicator == null) _indicator = GetComponent<Indicator>();
-        if (_point == null) _point = GetComponentInChildren<Point>();
+
+        if (_renderer == null || _renderer.material == null)
+        {
+            Debug.LogError("Renderer не назначен!", this);
+            return;
+        }
+
+        if (TryGetComponent(out IColorable colorable))
+        {
+            _colorable = colorable;
+        }
+
+        if (_indicator == null)
+        {
+            Debug.LogError("Indicator не назначен!", this);
+            return;
+        }
+
+        if (_point == null)
+        {
+            Debug.LogError("Point не назначен!", this);
+            return;
+        }
     }
 
     public void Initialize(IColorPrecision colorPrecision, Activator activator)
@@ -52,17 +69,6 @@ public class ColorCollisionHandler : MonoBehaviour
     {
         if (other.TryGetComponent(out ColorableObject colorableObject) == false) return;
 
-        if (_colorPrecision == null)
-        {
-            Debug.LogError("ColorPrecision not initialized!", this);
-            return;
-        }
-
-        if (_renderer == null || _renderer.material == null)
-        {
-            Debug.LogError("Renderer or material missing!", this);
-            return;
-        }
         _colorable.AssignOriginal();
         Color otherColor = colorableObject.GetColor();
         Color myColor = _renderer.material.color;

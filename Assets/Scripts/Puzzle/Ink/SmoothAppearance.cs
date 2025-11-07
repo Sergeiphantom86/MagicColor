@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class SmoothAppearance : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class SmoothAppearance : MonoBehaviour
     private bool _disableOnStart;
     private Vector3 _originalScale;
     private SmoothMoveToTarget _smoothMoveToTarget;
+    private Sequence _sequence;
 
     private void Awake()
     {
@@ -34,30 +36,24 @@ public class SmoothAppearance : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        CreateSizeChangeSequence(_originalScale, _duration).Play().
-            OnComplete(() => 
-            _smoothMoveToTarget.BeginMovement());
+        CreateSizeChangeSequence(_originalScale, _duration, () => 
+        _smoothMoveToTarget.BeginMovement());
     }
 
     public void Hide()
     {
-        Sequence disappearSequence = CreateSizeChangeSequence(Vector3.zero, _durationDeletion);
-
-        disappearSequence.OnComplete(() =>
+        CreateSizeChangeSequence(Vector3.zero, _durationDeletion, () => 
         gameObject.SetActive(false));
-
-        disappearSequence.Play();
     }
 
-    private Sequence CreateSizeChangeSequence(Vector3 scale, float duration)
+    private void CreateSizeChangeSequence(Vector3 scale, float duration, Action action = null)
     {
-        Sequence sequence = DOTween.Sequence();
-
         if (_useScale)
         {
-            sequence.Join(transform.DOScale(scale, duration).SetEase(Ease.InElastic));
-        }
+            _sequence = DOTween.Sequence();
 
-        return sequence;
+            _sequence.Join(transform.DOScale(scale, duration).Play().SetEase(Ease.InElastic)).
+                OnComplete(() => action?.Invoke());
+        }
     }
 }

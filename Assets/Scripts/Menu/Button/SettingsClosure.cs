@@ -7,6 +7,7 @@ public class SettingsClosure : MonoBehaviour
     [SerializeField] private Window _settingWindow;
     [SerializeField] private ButtonSoundHandler _buttonSound;
     [SerializeField] private AudioClip _audioClip;
+    [SerializeField] private Viewer _viewer;
 
     private Button _button;
 
@@ -26,5 +27,6 @@ public class SettingsClosure : MonoBehaviour
     {
         _buttonSound.PlayButtonSound(audioClip);
         _settingWindow.gameObject.SetActive(false);
+        _viewer.SetActive(true);
     }
 }

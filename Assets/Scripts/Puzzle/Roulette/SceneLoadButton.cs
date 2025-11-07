@@ -10,12 +10,16 @@ public class SceneLoadButton : MonoBehaviour
 
     [SerializeField] private CoinWallet _coin;
     [SerializeField] private CrystalWallet _crystal;
+    [SerializeField] private AudioClip _clip;
+    [SerializeField] private AudioClip _error;
 
     private Button _button;
+    private Voiceover _voiceover;
 
     private void Awake()
     {
         _button = GetComponent<Button>();
+        _voiceover = GetComponent<Voiceover>();
         _button.onClick.AddListener(LoadTargetScene);
     }
 
@@ -40,6 +44,11 @@ public class SceneLoadButton : MonoBehaviour
 
         YG2.saves.ResetSprite();
         SceneLoader.Instance.LoadSceneWithSplash(Menu);
+    }
+
+    private void VoiceInteractions()
+    {
+
     }
 
     private void OnDestroy()

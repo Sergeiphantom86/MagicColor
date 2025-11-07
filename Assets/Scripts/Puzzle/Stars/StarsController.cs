@@ -44,16 +44,16 @@ public class StarsController : MonoBehaviour
         YG2.saves.SetCountStars(activeCount);
     }
 
+    public void SetActive(bool isOn)
+    {
+        gameObject.SetActive(isOn);
+    }
+
     private void ResetAllStars()
     {
         foreach (var star in _stars)
         {
             star.SetInactive();
         }
-    }
-
-    public void SetActive(bool isOn)
-    {
-        gameObject.SetActive(isOn);
     }
 }

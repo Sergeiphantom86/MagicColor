@@ -3,42 +3,50 @@ using DG.Tweening;
 
 public class PenTiltController : MonoBehaviour
 {
-    [SerializeField] private float _maxTiltAngle = 30f;
-    [SerializeField] private float _maxDistance = 5f;
-    [SerializeField] private float _positionThreshold = 0.01f;
-    [SerializeField] private float _tiltDuration = 1f;
-
-    public float MaxTiltAngle => _maxTiltAngle;
-    public float MaxDistance => _maxDistance;
-    public float PositionThreshold => _positionThreshold;
-
+    private float _maxTiltAngle;
+    private float _tiltDuration;
     private float _currentAngle;
     private Tween _tiltTween;
 
-    public void Initialize(float startAngle)
+    private void Awake()
     {
-        _currentAngle = startAngle;
+        _maxTiltAngle = 50;
+        _tiltDuration = 0.2f;
+
+        _currentAngle = transform.localEulerAngles.z;
+        transform.localEulerAngles = new Vector3(0, 0, transform.localEulerAngles.z);
     }
 
-    public void ApplyTilt(float targetAngle)
+    private void Update()
     {
-        if (Mathf.Abs(targetAngle - _currentAngle) > _positionThreshold)
-        {
-            StartTween(targetAngle);
-        }
+        ApplyTiltBasedOnDistance(transform.position.x);
+    }
+
+    public void ApplyTiltBasedOnDistance(float distanceFromCenter)
+    {
+        StartTween(-GetTargetAngele(distanceFromCenter));
+    }
+
+    private float GetTargetAngele(float distanceFromCenter)
+    {
+        return distanceFromCenter * _maxTiltAngle;
     }
 
     private void StartTween(float targetAngle)
     {
         _tiltTween?.Kill();
 
-        _tiltTween = DOTween.To(() => _currentAngle,
-                angle => {
+        _tiltTween = DOTween.To(() => 
+        _currentAngle,angle =>
+                {
                     _currentAngle = angle;
                     transform.localEulerAngles = new Vector3(0, 0, angle);
                 },
-                targetAngle,_tiltDuration
-            )
-            .SetEase(Ease.OutQuad);
+                targetAngle,_tiltDuration);
+    }
+
+    private void OnDestroy()
+    {
+        _tiltTween?.Kill();
     }
 }

@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(CanvasGroup))]
+[RequireComponent(typeof(CanvasGroup), typeof(PanelFader))]
 public class SceneLoader : MonoBehaviour
 {
     private const string Loading = nameof(Loading);

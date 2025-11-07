@@ -4,37 +4,26 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer))]
 public class ColorableObject : MonoBehaviour, IColorable
 {
-    private Renderer _renderer;
+    private Renderer _curentRenderer;
     private Indicator _indicator;
     private Color _originalColor;
     private bool _isRepainted;
 
-    private void Awake()
+    public void InitializeComponents()
     {
-        CacheComponents();
+        _curentRenderer = GetComponent<Renderer>();
+
         ValidateRenderer();
 
-        SettingRenderingMode(_renderer.material);
-        SetAlpha(_renderer.material.color, 0.5f);
+        _indicator = GetComponent<Indicator>();
 
         if (_indicator != null)
         {
             _indicator.TurnOffSpriteRenderer();
         }
-    }
 
-    private void OnEnable()
-    {
-        if (_renderer == null)
-        {
-            CacheComponents();
-        }
-    }
-
-    private void CacheComponents()
-    {
-        _renderer = GetComponent<Renderer>();
-        _indicator = GetComponent<Indicator>();
+        SettingRenderingMode(_curentRenderer.material);
+        SetAlpha(_curentRenderer.material.color, 0.5f);
     }
 
     public void InstallRepainted()
@@ -44,11 +33,11 @@ public class ColorableObject : MonoBehaviour, IColorable
 
     public void SetColor(Color color)
     {
-        if (_renderer.material != null)
+        if (_curentRenderer.material != null)
         {
             if (this is Drop)
             {
-                _renderer.material.color = color;
+                _curentRenderer.material.color = color;
                 return;
             }
 
@@ -65,13 +54,13 @@ public class ColorableObject : MonoBehaviour, IColorable
         gameObject.SetActive(state);
 
     public Color GetColor() =>
-        _renderer.material.color;
+        _curentRenderer.material.color;
 
     private void ValidateRenderer()
     {
-        if (_renderer != null) return;
+        if (_curentRenderer != null) return;
 
-        if (_renderer == null)
+        if (_curentRenderer == null)
             Debug.LogError($"Renderer not found on {name}", this);
     }
 
@@ -84,24 +73,24 @@ public class ColorableObject : MonoBehaviour, IColorable
     {
         color.a = alpha;
 
-        _renderer.material.color = color;
+        _curentRenderer.material.color = color;
     }
 
     public void AssignOriginal()
     {
         if (_isRepainted)
         {
-            _renderer.material.color = _originalColor;
+            _curentRenderer.material.color = _originalColor;
             return;
         }
 
-        _renderer.material.color = Color.white;
+        _curentRenderer.material.color = Color.white;
     }
 
     public void Disable()
     {
-        _renderer.material.color = Color.white;
-        SetAlpha(_renderer.material.color, 0.5f);
+        _curentRenderer.material.color = Color.white;
+        SetAlpha(_curentRenderer.material.color, 0.5f);
     }
 
     private void SettingRenderingMode(Material material)

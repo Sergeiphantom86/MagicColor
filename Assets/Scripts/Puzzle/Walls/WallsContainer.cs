@@ -31,7 +31,7 @@ public class WallsContainer : MonoBehaviour
                 _walls.Add(_wall);
 
                 _wall.Initialize(new ColorPrecision(), _activator);
-                _wall.SetStartPosition();
+                //_wall.SetStartPosition();
             }
         }
     }

@@ -7,7 +7,8 @@ public class FragmentQueueProcessor
 {
     private readonly Queue<Fragment> _fragmentsQueue = new Queue<Fragment>();
     private readonly IMover _mover;
-    private readonly IEffectsHandler _effectsHandler;
+    private readonly Voiceover _voiceover;
+    private readonly AudioClip _pixelActivation;
     private readonly IBlocksContainer _blocksContainer;
     private readonly IFragmentAnimator _fragmentAnimator;
 
@@ -19,23 +20,32 @@ public class FragmentQueueProcessor
     private float _transitionReducing;
 
     public event Action OnFragmentActivated;
+    public event Action OnIncreaseSpeed;
 
-    public FragmentQueueProcessor(IEffectsHandler effectsHandler, IMover mover, IFragmentAnimator fragmentAnimator, IBlocksContainer blocksContainer)
+    public FragmentQueueProcessor(Voiceover voiceover, AudioClip audioClip, IMover mover, IFragmentAnimator fragmentAnimator, IBlocksContainer blocksContainer)
     {
         _mover = mover;
-        _effectsHandler = effectsHandler;
+        _voiceover = voiceover;
+        _pixelActivation = audioClip;
         _blocksContainer = blocksContainer;
         _fragmentAnimator = fragmentAnimator;
+
+        if (_blocksContainer == null) return;
 
         _blocksContainer.BlockDestroyed += RequestSpeedBoost;
     }
 
     public void Cleanup()
     {
-        if (_blocksContainer != null)
-        {
-            _blocksContainer.BlockDestroyed -= RequestSpeedBoost;
-        }
+        if (_blocksContainer == null) return;
+
+        _blocksContainer.BlockDestroyed -= RequestSpeedBoost;
+
+    }
+
+    public void SpeedUpMovement()
+    {
+        _currentDuration -= _transitionReducing;
     }
 
     public void RequestSpeedBoost()
@@ -50,7 +60,7 @@ public class FragmentQueueProcessor
     {
         foreach (var fragment in fragments)
         {
-            if (fragment != null && !_fragmentsQueue.Contains(fragment))
+            if (fragment != null && _fragmentsQueue.Contains(fragment) == false)
             {
                 _fragmentsQueue.Enqueue(fragment);
             }
@@ -75,7 +85,7 @@ public class FragmentQueueProcessor
             yield return _mover.MoveToPosition(_point.transform.position, _currentDuration);
 
             _fragmentAnimator.ActivateFragment(_point);
-            _effectsHandler.PlayPixelAppearSound();
+            _voiceover.PlaySfx(_pixelActivation);
 
             OnFragmentActivated?.Invoke();
         }
@@ -89,8 +99,7 @@ public class FragmentQueueProcessor
     {
         if (_needSpeedBoost)
         {
-            _currentDuration -= _transitionReducing;
-            _needSpeedBoost = false;
+            OnIncreaseSpeed?.Invoke();
         }
     }
 }

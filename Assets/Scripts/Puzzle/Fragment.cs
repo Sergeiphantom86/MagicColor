@@ -47,4 +47,28 @@ public class Fragment : MonoBehaviour
         if (_renderer != null)
             _renderer.sprite = sprite;
     }
+
+    public Transform GetTransform()
+    {
+        return transform;
+    }
+
+    public void SetParent(Transform transform)
+    {
+        transform.SetParent(transform);
+    }
+
+    public void SetPosition(Vector3 position)
+    {
+        transform.position = position;
+    }
+
+    public void SetLocalScale(float scale)
+    {
+        transform.localScale = Vector3.one * scale;
+    }
+    public void SetRotation(Quaternion quaternion)
+    {
+        transform.rotation = quaternion;
+    }
 }

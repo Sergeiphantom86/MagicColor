@@ -6,6 +6,10 @@ using System;
 public class BlocksContainer : MonoBehaviour, IBlocksContainer
 {
     [SerializeField] private ImageAnalyzer _imageAnalyzer;
+    [SerializeField] private AudioClip _dragg;
+    [SerializeField] private AudioClip _taking;
+    [SerializeField] private AudioClip _throwOff;
+    [SerializeField] private AudioClip _destruction;
 
     private List<Block> _blocks;
     private int _initialBlocksCount;
@@ -21,7 +25,6 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     private void Awake()
     {
         _blocks = new List<Block>();
-
         InitializeBlocks();
     }
 
@@ -31,6 +34,8 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
 
         foreach (var block in _blocks)
         {
+            block.Initialize(_destruction);
+            block.GetComponent<TouchDragInput>().SetAudioClip(_dragg, _taking, _throwOff);
             block.OnDestroyed += HandleBlockDestroyed;
         }
     }

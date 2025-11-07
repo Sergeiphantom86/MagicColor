@@ -23,10 +23,11 @@ public class Voiceover : MonoBehaviour
 
     public void PlaySfx(AudioClip clip)
     {
-        if (clip != null && _sfxSource != null)
+        if (clip != null && _sfxSource != null )
         {
-            _sfxSource.PlayOneShot(clip);
-            _sfxSource.time = 0.1f;
+            _sfxSource.clip = clip;
+            _sfxSource.time = 0.05f;
+            _sfxSource.Play();
         }
     }
 

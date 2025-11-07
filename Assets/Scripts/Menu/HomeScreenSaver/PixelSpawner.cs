@@ -1,77 +1,30 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
+[RequireComponent(typeof(PixelPool))]
 public class PixelSpawner : MonoBehaviour
 {
-    [SerializeField] private Fragment _pixelPrefab;
-    [SerializeField] private int _defaultPoolSize = 1000;
-    [SerializeField] private int _maxPoolSize = 5000;
-    [SerializeField] private bool _collectionCheck = true;
+    private float _pixelSize;
+    private PixelPool _pixelPool;
+    private List<Fragment> _pixels;
 
-    private float _spacing = 0.045f;
-    private float _pixelSize = 20f;
-    private Transform _transform;
-    private List<Fragment> _activePixels;
-    private ObjectPool<Fragment> _pixelPool;
-
-    public List<Fragment> Pixels => new List<Fragment>(_activePixels);
+    public List<Fragment> Pixels => _pixels;
+    public Dictionary<Color, List<Fragment>> DictionaryPixels { get; private set; }
 
     private void Awake()
     {
-        _transform = transform;
-        _activePixels = new List<Fragment>();
+        _pixelSize = 2;
+        _pixels = new List<Fragment>();
+        _pixelPool = GetComponent<PixelPool>();
 
-        _pixelPool = new ObjectPool<Fragment>(
-            CreatePooledItem,
-            OnTakeFromPool,
-            OnReturnedToPool,
-            OnDestroyPoolObject,
-            _collectionCheck,
-            _defaultPoolSize,
-            _maxPoolSize
-        );
-    }
-
-    private Fragment CreatePooledItem()
-    {
-        Fragment pixel = Instantiate(_pixelPrefab, _transform);
-        pixel.gameObject.SetActive(false);
-        return pixel;
-    }
-
-    private void OnTakeFromPool(Fragment pixel)
-    {
-        pixel.gameObject.SetActive(true);
-        _activePixels.Add(pixel);
-    }
-
-    private void OnReturnedToPool(Fragment pixel)
-    {
-        if (pixel != null)
+        if (_pixelPool == null)
         {
-            pixel.gameObject.SetActive(false);
-            _activePixels.Remove(pixel);
-
-            pixel.transform.SetParent(_transform);
-            pixel.transform.localPosition = Vector3.zero;
-            pixel.transform.localRotation = Quaternion.identity;
-            pixel.transform.localScale = Vector3.one;
+            Debug.Log($"PixelPool Не назначен!!!{this}");
         }
     }
 
-    private void OnDestroyPoolObject(Fragment pixel)
+    public void CreatePixels(Dictionary<Color, List<Vector3>> colorGroups, Vector2 centerOffset)
     {
-        if (pixel != null)
-        {
-            Destroy(pixel.gameObject);
-        }
-    }
-
-    public void SpawnPixels(Dictionary<Color, List<Vector3>> colorGroups, Vector2 centerOffset)
-    {
-        Clear();
-
         foreach (var colorGroup in colorGroups)
         {
             SpawnColorGroup(colorGroup.Key, colorGroup.Value, centerOffset);
@@ -82,55 +35,69 @@ public class PixelSpawner : MonoBehaviour
     {
         for (int i = 0; i < positions.Count; i++)
         {
-            Vector3 position = CalculatePosition(positions[i], centerOffset);
-            SpawnPixel(position, color);
+            CreatePixel(GetPositions(positions[i], centerOffset), color);
         }
+
+        DictionaryPixels.Add(color, _pixels);
     }
 
-    private void SpawnPixel(Vector3 position, Color color)
+    private void CreatePixel(Vector3 position, Color color)
     {
-        Fragment pixel = _pixelPool.Get();
+        if (_pixelPool == null)
+        {
+            Debug.LogError("PixelPool is not assigned!");
+            return;
+        }
+
+        Fragment pixel = _pixelPool.Pool.Get();
 
         if (pixel != null)
         {
-            pixel.transform.position = position;
-            pixel.transform.localScale = new Vector3(_pixelSize, _pixelSize, 1);
-            pixel.SetColor(color);
+            ConfigurePixel(pixel, position, color);
+
+            _pixels.Add(pixel);
         }
     }
 
-    private Vector3 CalculatePosition(Vector3 texturePosition, Vector2 centerOffset)
+    private void ConfigurePixel(Fragment pixel, Vector3 position, Color color)
     {
-        float posX = (texturePosition.x - centerOffset.x) * _pixelSize * _spacing;
-        float posY = (texturePosition.y - centerOffset.y) * _pixelSize * _spacing;
+        if (pixel == null) return;
 
-        Vector3 worldPosition = _transform.position;
-        worldPosition.x += posX;
-        worldPosition.y += posY;
+        pixel.SetParent(transform);
+        pixel.SetPosition(position);
+        pixel.SetLocalScale(_pixelSize);
+        pixel.SetRotation(Quaternion.identity);
+
+        pixel.SetColor(color);
+    }
+
+    private Vector3 GetPositions(Vector3 texturePosition, Vector2 centerOffset)
+    {
+        Vector3 worldPosition = transform.position;
+
+        worldPosition.x += GetPositionOnCoordinate(texturePosition.x, centerOffset.x);
+        worldPosition.y += GetPositionOnCoordinate(texturePosition.y, centerOffset.y);
 
         return worldPosition;
     }
 
+    private float GetPositionOnCoordinate(float texturePosition, float centerOffset)
+    {
+        return (texturePosition - centerOffset) * _pixelSize;
+    }
+
     public void Clear()
     {
-        List<Fragment> pixelsToClear = new List<Fragment>(_activePixels);
+        if (_pixels == null || _pixelPool == null) return;
 
-        foreach (Fragment pixel in pixelsToClear)
+        foreach (Fragment pixel in _pixels)
         {
             if (pixel != null)
             {
-                _pixelPool.Release(pixel);
+                _pixelPool.Pool.Release(pixel);
             }
         }
 
-        _activePixels.Clear();
-    }
-
-    private void OnDestroy()
-    {
-        if (_pixelPool != null)
-        {
-            _pixelPool.Clear();
-        }
+        _pixels.Clear();
     }
 }

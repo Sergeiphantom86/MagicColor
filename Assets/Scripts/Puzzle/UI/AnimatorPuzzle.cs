@@ -4,37 +4,43 @@ using UnityEngine;
 
 public class AnimatorPuzzle : MonoBehaviour
 {
-    [SerializeField] private Pen _pen;
-    [SerializeField] private Panel _panel;
-    [SerializeField] private Camera _cameraPuzzle;
-    [SerializeField] private Activator _activator;
-    [SerializeField] private GameObject _victoryPlaque;
-    [SerializeField] private ParticleSystem _completionParticle;
     [SerializeField] private ParticleSystem _fireworks;
-    [SerializeField] private FinalPicture _finalPicture;
-    [SerializeField] private Timer _timer;
-    [SerializeField] private float _duration;
+    [SerializeField] private ParticleSystem _completionParticle;
 
-    private float _positionImageY;
-    private float _scaleImage;
-    private float _positionScreenX;
-    private float _positionScreenZ;
+    private Pen _pen;
+    private Puzzle _puzzle;
+    private Activator _activator;
+    private FinalPicture _finalPicture;
+    private VictoryPlaque _victoryPlaque;
     private Canvas _canvas;
-    private MoverUI _moverUI;
-    private Sequence _sequence;
+    private RectTransform _rectTransform;
 
     public event Action PuzzleIsComplete;
     public event Action OnAnimationComplete;
 
     private void Awake()
     {
-        _moverUI = new MoverUI();
         _canvas = GetComponent<Canvas>();
-        _cameraPuzzle = Camera.main;
-        _positionScreenZ = _canvas.planeDistance;
-        _positionImageY = 0.5f;
-        _positionScreenX = 0.5f;
-        _scaleImage = 1.5f;
+        if (_canvas == null) Debug.LogError("Canvas component not found in children!", this);
+
+        _pen = GetComponentInChildren<Pen>();
+        if (_pen == null) Debug.LogError("Pen component not found in children!", this);
+
+        _puzzle = GetComponentInChildren<Puzzle>();
+        if (_puzzle == null) Debug.LogError("Puzzle component not found in children!", this);
+
+        _finalPicture = GetComponentInChildren<FinalPicture>();
+        if (_finalPicture == null) Debug.LogError("FinalPicture component not found in children!", this);
+
+        _victoryPlaque = GetComponentInChildren<VictoryPlaque>();
+        if (_victoryPlaque == null) Debug.LogError("VictoryPlaque component not found in children!", this);
+
+        if (_pen != null) _activator = _pen.GetComponent<Activator>();
+
+        if (_activator == null) Debug.LogError("Activator component not found on Pen object!", this);
+
+        _rectTransform = _canvas.GetComponent<RectTransform>();
+        if(_rectTransform == null) Debug.LogError("Activator component not found on Pen object!", this);
     }
 
     private void OnEnable()
@@ -49,36 +55,23 @@ public class AnimatorPuzzle : MonoBehaviour
 
     public void StartGame()
     {
-        float startPositionPanelY = 0.75f;
-        float startPositionImageY = 0.7f;
-        float startPositionPenX = 0.8f;
-        float startPositionPenY = 0.7f;
-
-        _sequence = DOTween.Sequence();
-
-        _moverUI.EnableMotionAnimation(_panel.transform, _duration, _cameraPuzzle, _sequence, _positionScreenX, startPositionPanelY, _positionScreenZ);
-        _moverUI.EnableMotionAnimation(_pen.transform, _duration, _cameraPuzzle, _sequence, startPositionPenX, startPositionPenY, _positionScreenZ);
-        _moverUI.EnableMotionAnimation(_finalPicture.transform, _duration, _cameraPuzzle, _sequence, _positionScreenX, startPositionImageY, _positionScreenZ);
+        _pen.Move(_rectTransform);
+        _puzzle.StartRotation();
     }
 
     private void LaunchFinal()
     {
-        float startPositionTimerY = 2;
-        float startPositionVictoryPlaqueY = 0.8f;
-
-        _sequence = DOTween.Sequence();
-
-        _moverUI.EnableMotionAnimation(_panel.transform, _duration, _cameraPuzzle, _sequence, _positionScreenX, startPositionTimerY, _positionScreenZ);
-        _moverUI.EnableMotionAnimation(_victoryPlaque.transform, _duration, _cameraPuzzle, _sequence, _positionScreenX, startPositionVictoryPlaqueY, _positionScreenZ)
-            .OnComplete(() => OnAnimationComplete?.Invoke());
-        _moverUI.EnableMotionAnimation(_pen.transform, _duration, _cameraPuzzle, _sequence, startPositionTimerY, startPositionTimerY, _positionScreenZ);
-        _moverUI.EnableMotionAnimation(_finalPicture.transform, _duration, _cameraPuzzle, _sequence, _positionScreenX, _positionImageY, _positionScreenZ);
+        _puzzle.Return();
+        _pen.Return(_rectTransform);
+        _finalPicture.Move(_rectTransform);
+        _finalPicture.SetPositionZ();
+        _finalPicture.Increase();
+        _victoryPlaque.Move(_rectTransform).OnComplete(() => 
+        OnAnimationComplete?.Invoke());
 
         TurnOnParticleSystem();
 
         PuzzleIsComplete?.Invoke();
-
-        _moverUI.EnableAnimationResizing(_finalPicture.transform, _duration, _sequence, _scaleImage);
     }
 
     private void TurnOnParticleSystem()

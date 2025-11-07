@@ -6,8 +6,11 @@ public class InkSpawner : MonoBehaviour
 {
     [SerializeField] private Drop _inkDropPrefab;
     [SerializeField] private Ink _ink;
+    [SerializeField] private AudioClip _spawn;
+    [SerializeField] private AudioClip _moving;
 
     private List<SmoothMoveToTarget> _smoothMovers;
+    private Voiceover _voiceover;
     private int _quantity;
     private float _gridSpacing;
     private float _spawnDelay;
@@ -21,6 +24,7 @@ public class InkSpawner : MonoBehaviour
         _gridSpacing = 0.25f;
         _smoothMovers = new List<SmoothMoveToTarget>();
         _waitForSeconds = new WaitForSeconds(_spawnDelay);
+        _voiceover = GetComponent<Voiceover>();
     }
 
     public void ActivateInkDrops(Color color)
@@ -33,7 +37,7 @@ public class InkSpawner : MonoBehaviour
         for (int i = 0; i < _quantity * _quantity; i++)
         {
             SpawnSingleInkDrop(GetRow(i), GetCol(i), color);
-
+            _voiceover.PlaySfx(_spawn);
             yield return _waitForSeconds;
         }
 
@@ -47,6 +51,7 @@ public class InkSpawner : MonoBehaviour
             if (mover != null && mover.isActiveAndEnabled)
             {
                 mover.BeginMovement();
+                _voiceover.PlaySfx(_moving);
             }
 
             yield return _waitForSeconds;

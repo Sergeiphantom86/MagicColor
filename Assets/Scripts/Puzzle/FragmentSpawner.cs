@@ -21,6 +21,7 @@ public class FragmentSpawner : MonoBehaviour
     private float _pixelSize;
     private int _totalCount;
 
+
     public int TotalCount => _totalCount;
     public Dictionary<Color, Queue<Fragment>> Fragments => _fragments;
 
@@ -31,7 +32,9 @@ public class FragmentSpawner : MonoBehaviour
         _targetCamera = Camera.main;
         _fragments = new Dictionary<Color, Queue<Fragment>>();
         _imageAnalyzer = GetComponent<ImageAnalyzer>();
-        _pixelSize = 2.0202f;
+        _pixelSize = 3.63636f;
+
+        _scale = 3.18f;
     }
 
     private void OnEnable()
@@ -103,9 +106,9 @@ public class FragmentSpawner : MonoBehaviour
     private Vector3 ConvertPixelToWorldPosition(Vector3 pixelPosition)
     {
         _offsetFromCenter = pixelPosition - _imageAnalyzer.Pivot;
-
+      
         _offsetFromCenter *= 0.05f;
-
+       
         return _transformParent.position + (_canvasRight * _offsetFromCenter.x + _canvasUp * _offsetFromCenter.y) * _pixelSize;
     }
 }

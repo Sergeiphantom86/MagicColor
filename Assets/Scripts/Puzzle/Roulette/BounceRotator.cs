@@ -5,6 +5,7 @@ public class BounceRotator : MonoBehaviour
 {
     [Header("Rotation Settings")]
     [SerializeField] private WheelAnimator _wheelAnimator;
+    [SerializeField] private AudioClip _audioClip;
 
     private bool _isRotating;
     private bool _useCooldown;
@@ -14,6 +15,7 @@ public class BounceRotator : MonoBehaviour
     private float _rotationDuration;
     private Vector3 _originalRotation;
     private Sequence _rotationSequence;
+    private Voiceover _voiceover;
 
     private void Awake()
     {
@@ -21,6 +23,7 @@ public class BounceRotator : MonoBehaviour
         _cooldownTime = 1f;
         _rotationAngle = 60;
         _rotationDuration = 0.05f;
+        _voiceover = GetComponent<Voiceover>();
 
         _originalRotation = transform.localEulerAngles;
     }
@@ -41,10 +44,10 @@ public class BounceRotator : MonoBehaviour
     {
         if (_isRotating) return;
         if (_useCooldown && Time.time - _lastRotationTime < _cooldownTime) return;
-
+        _voiceover.PlaySfx(_audioClip);
         _isRotating = true;
         _lastRotationTime = Time.time;
-
+        
         ResetRotation();
 
         _rotationSequence = DOTween.Sequence();

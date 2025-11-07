@@ -7,9 +7,11 @@ public class ButtonController : MonoBehaviour
     [SerializeField] private Button _button;
 
     private bool _localBlock;
-
+    private bool _isSpin;
     public event Func<bool> GlobalInteractableCondition;
     public event Action OnTurned;
+
+    public bool IsSpin => _isSpin;
 
     private void Awake()
     {
@@ -43,14 +45,10 @@ public class ButtonController : MonoBehaviour
 
     private void HandleClick()
     {
-        if (_button.interactable && OnTurned != null)
+        if (_button.interactable)
         {
-            OnTurned.Invoke();
+            OnTurned?.Invoke();
+            _isSpin = true;
         }
-    }
-
-    private void OnDestroy()
-    {
-        _button.onClick.RemoveListener(HandleClick);
     }
 }

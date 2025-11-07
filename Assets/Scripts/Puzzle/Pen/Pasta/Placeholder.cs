@@ -10,13 +10,13 @@ public class Placeholder : ColorableObject
     public Vector3 PositionEndPoint => _endPoint.transform.position;
     public float Duration => _animatorPenFilling.GetDuration();
 
-    public Color Color => _colorable.GetColor();
-
     private void Awake()
     {
         _colorable = GetComponent<IColorable>();
         _animatorPenFilling = GetComponent<AnimatorPenFilling>();
         _endPoint = GetComponentInChildren<EndPoint>();
+
+        InitializeComponents();
     }
 
     public void ShowFillings(Color color, float nextSpawnYPosition)

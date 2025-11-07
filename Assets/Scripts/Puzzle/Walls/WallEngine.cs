@@ -18,10 +18,10 @@ public class WallEngine : MonoBehaviour
         _colorCollisionHandler = GetComponent<ColorCollisionHandler>();
     }
 
-    private void Start()
-    {
-        SetStartPosition();
-    }
+    //private void Start()
+    //{
+    //    SetStartPosition();
+    //}
 
     private void OnEnable()
     {
@@ -53,7 +53,7 @@ public class WallEngine : MonoBehaviour
     private void StartMovement()
     {
         if (_isMoving) return;
-        
+        SetStartPosition();
         _isMoving = true;
 
         GetSequence(_startPosition + Vector3.down * _pushDistance, _moveDuration)

@@ -1,35 +1,32 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(GridDragMovement), typeof(Magnifier), typeof(TouchColorTransparency))]
 public class TouchDragInput : MonoBehaviour
 {
-    [SerializeField] private EffectsHandler _effectsHandler;
-
-    private IEffectsHandler _ieffectsHandler;
     private bool _isSelected;
+    private bool _isDragging;
     private Touch _touch;
-    private Camera _mainCamera;
     private Magnifier _selectable;
     private GridDragMovement _dragMovement;
     private IColorable _colorable;
-    private Vector3 _lastMousePosition;
+    private Voiceover _voiceover;
+    private AudioClip _dragging;
+    private AudioClip _taking;
+    private AudioClip _throwOff;
 
     private void Awake()
     {
-        _mainCamera = Camera.main;
         _colorable = GetComponent<IColorable>();
         _dragMovement = GetComponent<GridDragMovement>();
         _selectable = GetComponent<Magnifier>();
-        _ieffectsHandler = _effectsHandler;
+        _voiceover = GetComponent<Voiceover>();
 
-        if (_ieffectsHandler == null)
-        {
-            Debug.LogError("EffectsHandler not assigned in TouchDragInput", this);
-        }
         if (_dragMovement == null)
         {
             Debug.LogError("DragMovement not assigned in TouchDragInput", this);
         }
+
         if (_selectable == null)
         {
             Debug.LogError("SelectableObject not assigned in TouchDragInput", this);
@@ -46,6 +43,13 @@ public class TouchDragInput : MonoBehaviour
         {
             HandleMouseInput();
         }
+    }
+
+    public void SetAudioClip(AudioClip dragging, AudioClip taking, AudioClip throwOff)
+    {
+        _dragging = dragging;
+        _taking = taking;
+        _throwOff = throwOff;
     }
 
     private void HandleTochInput()
@@ -97,6 +101,7 @@ public class TouchDragInput : MonoBehaviour
             _selectable.Select();
             _dragMovement.BeginInteraction(position, transform.position);
             _colorable.AssignOriginal();
+            _voiceover.PlaySfx(_taking);
         }
     }
 
@@ -104,7 +109,7 @@ public class TouchDragInput : MonoBehaviour
     {
         if (_isSelected)
         {
-            _dragMovement.ProcessInput(position, transform.position);
+            _dragMovement.ProcessInput(position, transform.position, _voiceover, _dragging);
         }
     }
 
@@ -114,14 +119,14 @@ public class TouchDragInput : MonoBehaviour
         {
             _isSelected = false;
             _selectable.Deselect();
-            _ieffectsHandler?.PlayEndDragging();
             _colorable.Disable();
+            _voiceover.PlaySfx(_throwOff);
         }
     }
 
     private bool IsTouchingThisObject(Vector2 screenPosition)
     {
-        Ray ray = _mainCamera.ScreenPointToRay(screenPosition);
+        Ray ray = Camera.main.ScreenPointToRay(screenPosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {

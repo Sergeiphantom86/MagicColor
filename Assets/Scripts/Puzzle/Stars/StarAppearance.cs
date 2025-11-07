@@ -27,7 +27,6 @@ public class StarAppearance : MonoBehaviour
         _currentTween?.Kill();
         _star.SetActive(true);
         _star.transform.localScale = Vector3.one * MinScale;
-
         _currentTween = _star.transform.DOScale(Vector3.one, AnimationDuration)
             .SetDelay(delay)
             .SetEase(Ease.OutBack, overshoot: Overshoot);

@@ -16,10 +16,10 @@ public class ButtonHome : MonoBehaviour
     [SerializeField] private AudioClip _errorSound;
     [SerializeField] private CrystalWallet _crystal;
     [SerializeField] private ButtonController _buttonController;
+    [SerializeField] private ErrorPanel _errorPanel;
 
     private Voiceover _voiceover;
     private Button _button;
-    private bool _isSpin;
     private int _extraTime;
 
     private void Awake()
@@ -29,16 +29,6 @@ public class ButtonHome : MonoBehaviour
         _button = GetComponent<Button>();
     }
 
-    private void OnEnable()
-    {
-        _buttonController.OnTurned += AllowWindowClosure;
-    }
-
-    private void OnDisable()
-    {
-        _buttonController.OnTurned -= AllowWindowClosure;
-    }
-
     private void Start()
     {
         _button.onClick.AddListener(Play);
@@ -46,11 +36,11 @@ public class ButtonHome : MonoBehaviour
 
     private void Play()
     {
-        if (_isSpin == false)
+        if (_buttonController.IsSpin == false)
         {
             _warner.TurnOn();
+            _errorPanel.TurnOn();
             _button.interactable = false;
-
             StartCoroutine(WaitForWindowClose(_errorSound, true, _extraTime, () =>
                 _warner.TurnOff()));
 
@@ -93,16 +83,11 @@ public class ButtonHome : MonoBehaviour
     private IEnumerator WaitForWindowClose(AudioClip clip, bool isOn, int duration, Action callback)
     {
         _voiceover.PlaySfx(clip);
-
+       
         yield return new WaitForSeconds(clip.length + duration);
 
         _button.interactable = isOn;
 
         callback.Invoke();
-    }
-
-    private void AllowWindowClosure()
-    {
-        _isSpin = true;
     }
 }

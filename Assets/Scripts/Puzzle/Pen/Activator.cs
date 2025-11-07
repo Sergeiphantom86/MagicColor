@@ -6,42 +6,49 @@ public class Activator : MonoBehaviour
 {
     [SerializeField] private FragmentSpawner _spawner;
     [SerializeField] private BlocksContainer _blocksContainer;
-    [SerializeField] private EffectsHandler _effectsHandler;
     [SerializeField] private SequentialSpawner _sequentialSpawner;
+    [SerializeField] private AudioClip _pixelActivation;
+    [SerializeField] private AudioClip _winn;
 
     private FragmentQueueProcessor _queueProcessor;
+    private Voiceover _voiceover;
     private IColorPrecision _colorPrecision;
     private int _totalCountPixel;
     private int _remainingPixels;
     private bool _isProcessing;
     private float _transitionReducing;
     private float _duration;
+    private bool _isAccelerated;
+    private WaitForSeconds _forSeconds;
+    private float _delay;
 
     public event Action OnPuzzleComplete;
 
     private void Awake()
     {
         _transitionReducing = 0.25f;
+        _delay = 2;
         _duration = 0.3f;
-        IEffectsHandler effects = _effectsHandler;
         IBlocksContainer blocksContainer = _blocksContainer;
         IMover mover = GetComponent<IMover>();
         IFragmentAnimator animator = GetComponent<IFragmentAnimator>();
+        _voiceover = GetComponent<Voiceover>();
+        _forSeconds = new WaitForSeconds(_delay);
 
         _colorPrecision = new ColorPrecision();
-        _queueProcessor = new FragmentQueueProcessor(effects, mover, animator, blocksContainer);
+        _queueProcessor = new FragmentQueueProcessor(_voiceover, _pixelActivation, mover, animator, blocksContainer);
 
         _queueProcessor.OnFragmentActivated += HandleFragmentActivated;
     }
 
     private void OnEnable()
     {
-        _blocksContainer.StoppingTimer += SpeedFillingProcess;
+        _queueProcessor.OnIncreaseSpeed += SpeedFillingProcess;
     }
 
     private void OnDisable()
     {
-        _blocksContainer.StoppingTimer -= SpeedFillingProcess;
+        _queueProcessor.OnIncreaseSpeed -= SpeedFillingProcess;
     }
 
     private void OnDestroy()
@@ -62,7 +69,7 @@ public class Activator : MonoBehaviour
             _totalCountPixel = _spawner.TotalCount;
             _remainingPixels = _totalCountPixel;
         }
-        
+
         var fragments = _spawner.GetFragmentsByColor(_colorPrecision.Reduce(color));
 
         _queueProcessor.EnqueueFragments(fragments);
@@ -94,13 +101,24 @@ public class Activator : MonoBehaviour
     {
         if (_remainingPixels <= 0)
         {
-            _effectsHandler.PlayWinSound();
+            _voiceover.PlaySfx(_winn);
             OnPuzzleComplete?.Invoke();
         }
     }
 
-    private void SpeedFillingProcess(string name)
+    private void SpeedFillingProcess()
     {
-        _queueProcessor?.RequestSpeedBoost();
+        if (_isAccelerated == false)
+        {
+            _isAccelerated = true;
+            StartCoroutine(Wait());
+        }
+    }
+
+    private IEnumerator Wait()
+    {
+        yield return _forSeconds;
+
+        _queueProcessor.SpeedUpMovement();
     }
 }

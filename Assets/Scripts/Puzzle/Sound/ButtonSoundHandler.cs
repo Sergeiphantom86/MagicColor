@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class ButtonSoundHandler : MonoBehaviour
 {
-    [SerializeField] private AudioClip _clickSound;
     [SerializeField] private MenuSound _menuSoundManager;
 
     private ButtonCarouselController _carouselController;

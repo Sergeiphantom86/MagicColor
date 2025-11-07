@@ -15,6 +15,7 @@ public class Agitator : MonoBehaviour, IAnimatable
     private float _rotationIntensity;
     private float _scaleDownDuration;
     private float _delayBeforeDestroy;
+    private float _interval;
 
     private Viewer _viewer;
     private PixelSpawner _pixelSpawner;
@@ -23,6 +24,7 @@ public class Agitator : MonoBehaviour, IAnimatable
     private void Awake()
     {
         _delay = 1f;
+        _interval = 0.1f;
         _explosionForce = 50f;
         _explosionDuration = 1f;
         _rotationIntensity = 360f;
@@ -40,7 +42,7 @@ public class Agitator : MonoBehaviour, IAnimatable
 
     public void ResumeAnimations()
     {
-        if (_explosionSequence != null && !_explosionSequence.IsPlaying() && _explosionSequence.IsActive())
+        if (_explosionSequence != null && _explosionSequence.IsPlaying() == false && _explosionSequence.IsActive())
         {
             _explosionSequence.Play();
         }
@@ -51,11 +53,11 @@ public class Agitator : MonoBehaviour, IAnimatable
         _explosionSequence?.Kill();
         _explosionSequence = DOTween.Sequence();
 
-        _explosionSequence.AppendInterval(0.1f);
+        _explosionSequence.AppendInterval(_interval);
 
         foreach (Fragment pixel in pixels)
         {
-            if (pixel == null || !pixel.gameObject.activeInHierarchy) continue;
+            if (pixel == null || pixel.gameObject.activeInHierarchy == false) continue;
 
             AddPixelToExplosionSequence(pixel);
         }
@@ -64,7 +66,8 @@ public class Agitator : MonoBehaviour, IAnimatable
         {
             _pixelSpawner.Clear();
 
-            DOVirtual.DelayedCall(_delay, () => _viewer.ShowNextSprite());
+            DOVirtual.DelayedCall(_delay, () => 
+            _viewer.ShowNextSprite());
         });
 
         _explosionSequence.Play();
@@ -74,8 +77,7 @@ public class Agitator : MonoBehaviour, IAnimatable
     {
         if (pixel == null) return;
 
-        Sequence pixelSequence = CreatePixelExplosionSequence(pixel);
-        _explosionSequence.Join(pixelSequence);
+        _explosionSequence.Join(CreatePixelExplosionSequence(pixel));
     }
 
     private Sequence CreatePixelExplosionSequence(Fragment pixel)
@@ -88,7 +90,8 @@ public class Agitator : MonoBehaviour, IAnimatable
 
         sequence.AppendInterval(_delayBeforeDestroy);
 
-        sequence.OnComplete(() => DeactivatePixel(pixel));
+        sequence.OnComplete(() => 
+        DeactivatePixel(pixel));
 
         return sequence;
     }

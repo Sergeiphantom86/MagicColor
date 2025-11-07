@@ -11,6 +11,7 @@ public class ParticleSystemController : MonoBehaviour
     [SerializeField] private float _minScale;
     [SerializeField] private float _maxScale;
     [SerializeField] private float _firstPhaseRatio;
+    [SerializeField] private AudioClip _audioClip;
 
     private float _duration;
     private Vector2 _directionRange;
@@ -18,6 +19,7 @@ public class ParticleSystemController : MonoBehaviour
     private int _quantityMultiplier;
     private float _moveToTargetDuration;
     private float _explosionDistanceMultiplier;
+    private Voiceover _voiceover;
 
     private void Awake()
     {
@@ -27,17 +29,19 @@ public class ParticleSystemController : MonoBehaviour
         _moveToTargetDuration = 0.5f;
         _explosionDistanceMultiplier = 20f;
         _directionRange = new Vector2(-2f, 2f);
+        _voiceover = GetComponent<Voiceover>();
     }
 
     public void ActivateAtPosition(Award item)
     {
         int particleCount = GetNumberParticles(item);
-    
+        _voiceover.PlaySfx(_audioClip);
+
         for (int i = 0; i < particleCount; i++)
         {
             CreateParticle(item);
         }
-
+        
         HandleParticleComplete(item, GetDuration());
     }
 
@@ -65,11 +69,13 @@ public class ParticleSystemController : MonoBehaviour
         }
 
         ParticleAnimation anim = particle.AddComponent<ParticleAnimation>();
-
+        
         anim.Initialize(
             randomPosition: CalculateRandomPosition(),
             targetPosition: _targetTransform.position,
             settings: GetParticleAnimation());
+
+
     }
 
     private ParticleAnimation.Settings GetParticleAnimation()
