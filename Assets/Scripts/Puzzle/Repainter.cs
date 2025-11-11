@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Repainter : MonoBehaviour
 {
@@ -11,16 +11,19 @@ public class Repainter : MonoBehaviour
     private List<Color> _colors;
     private List<IColorable> _walls;
     private List<IColorable> _blocks;
+    private IBlocksContainer _iBlocksContainer;
     private ImageAnalyzer _imageAnalyzer;
 
+    public event Action<List<IColorable>> OnRecoloredWalls;
+    public event Action<List<IColorable>> OnRecoloredBlock;
 
     private void Awake()
     {
         _colors = new List<Color>();
         _walls = new List<IColorable>();
         _blocks = new List<IColorable>();
-
         _imageAnalyzer = GetComponent<ImageAnalyzer>();
+        _iBlocksContainer = _blocksContainer;
     }
 
     private void Start()
@@ -41,7 +44,7 @@ public class Repainter : MonoBehaviour
     private void InitializeColorables()
     {
         _walls = GetColorablesFromContainer(_wallsContainer.transform);
-        _blocks = GetColorablesFromContainer(_blocksContainer.transform);
+        _blocks = GetColorablesFromContainer(_iBlocksContainer.Transform);
     }
 
     private List<IColorable> GetColorablesFromContainer(Transform container)
@@ -54,22 +57,43 @@ public class Repainter : MonoBehaviour
             return list;
         }
 
+        return GetColorables(container, list);
+    }
+
+    private List<IColorable> GetColorables(Transform container, List<IColorable> IColorables)
+    {
         foreach (Transform child in container)
         {
             if (child.TryGetComponent(out IColorable colorable))
             {
-                list.Add(colorable);
+                IColorables.Add(colorable);
             }
         }
 
-        return list;
+        return IColorables;
     }
 
     private void UpdateSystem(List<Color> colors)
     {
+        if (_walls.Count < 0)
+        {
+            Debug.LogError($"Количество Walls = {_walls.Count} {this}");
+            return;
+        }
+
+        if (_blocks.Count < 0)
+        {
+            Debug.LogError($"Количество Blocks = {_blocks.Count} {this}");
+            return;
+        }
+
         UpdateColors(colors);
+
         ReplaceColors(_walls);
+        OnRecoloredWalls?.Invoke(_walls);
+
         ReplaceColors(_blocks);
+        OnRecoloredBlock?.Invoke(_blocks);
     }
 
     private void UpdateColors(List<Color> colors)
@@ -86,9 +110,9 @@ public class Repainter : MonoBehaviour
     {
         if (ShouldRepaint(colorables) == false) return;
 
-        var paintingData = PreparePaintingData(colorables);
+        var (Colors, Walls) = PreparePaintingData(colorables);
 
-        ExecutePainting(paintingData.Colors, paintingData.Walls);
+        ExecutePainting(Colors, Walls);
     }
 
     private bool ShouldRepaint(List<IColorable> colorables)

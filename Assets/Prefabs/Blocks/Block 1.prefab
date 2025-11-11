@@ -61,6 +61,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inkDropPrefab: {fileID: 0}
   _ink: {fileID: 0}
+  _spawn: {fileID: 0}
+  _moving: {fileID: 0}
 --- !u!82 &8670615052713197839
 AudioSource:
   m_ObjectHideFlags: 0
@@ -191,6 +193,7 @@ GameObject:
   - component: {fileID: 783668419665373105}
   - component: {fileID: 3907685574611127850}
   - component: {fileID: 6150168646107052191}
+  - component: {fileID: 325230668484957253}
   m_Layer: 7
   m_Name: Block 1
   m_TagString: Untagged
@@ -311,7 +314,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectedScale: 1.1
   _animationDuration: 0.1
-  effectsHandler: {fileID: 0}
 --- !u!114 &5897488402461483077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,7 +364,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _blocksContainer: {fileID: 0}
   _gridSystem: {fileID: 0}
-  _shiftThreshold: 0.5
 --- !u!114 &783668419665373105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,5 +413,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cbea8e7bf548ba6409d7467c92b12c61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &325230668484957253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6773017579242646364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04534af052f645946a97f8c9a34a0d04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

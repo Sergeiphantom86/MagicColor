@@ -12,7 +12,7 @@ public class RouletteSystem : MonoBehaviour
     [SerializeField] private Arrow _arrow;
     [SerializeField] private ParticleSystemController _explosionImplosion;
 
-    private List<Award> _items;
+    private List<Currency> _items;
     private bool _isSpinning;
 
     private void Awake()
@@ -61,7 +61,7 @@ public class RouletteSystem : MonoBehaviour
         _isSpinning = true;
         _spinButtonController.SetLocalBlock(true);
 
-        Award result = GetPrize();
+        Currency result = GetPrize();
 
         _wheelAnimator.SpinToTarget(result.GetAngle(), () =>
         {
@@ -71,11 +71,11 @@ public class RouletteSystem : MonoBehaviour
         });
     }
 
-    private Award GetPrize()
+    private Currency GetPrize()
     {
         int cumulative = 0;
 
-        foreach (Award item in _items)
+        foreach (Currency item in _items)
         {
             cumulative += item.Weight;
 

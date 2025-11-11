@@ -1,4 +1,4 @@
-public class Coin : Award
+public class Coin : Currency
 {
    
 }

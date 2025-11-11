@@ -9,7 +9,6 @@ public class PixelSpawner : MonoBehaviour
     private List<Fragment> _pixels;
 
     public List<Fragment> Pixels => _pixels;
-    public Dictionary<Color, List<Fragment>> DictionaryPixels { get; private set; }
 
     private void Awake()
     {
@@ -37,8 +36,6 @@ public class PixelSpawner : MonoBehaviour
         {
             CreatePixel(GetPositions(positions[i], centerOffset), color);
         }
-
-        DictionaryPixels.Add(color, _pixels);
     }
 
     private void CreatePixel(Vector3 position, Color color)

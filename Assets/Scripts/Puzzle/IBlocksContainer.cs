@@ -1,10 +1,11 @@
 using System;
+using UnityEngine;
 
 public interface IBlocksContainer
 {
-    event Action<string> StoppingTimer;
+    public event Action BlockDestroyed;
 
-    event Action BlockDestroyed;
+    public int ActiveBlocksCount { get; }
 
-    int ActiveBlocksCount { get; }
+    public Transform Transform  { get; }
 }

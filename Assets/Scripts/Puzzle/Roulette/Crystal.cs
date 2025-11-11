@@ -1,4 +1,4 @@
-public class Crystal : Award
+public class Crystal : Currency
 {
    
 }

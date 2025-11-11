@@ -32,7 +32,7 @@ public class ParticleSystemController : MonoBehaviour
         _voiceover = GetComponent<Voiceover>();
     }
 
-    public void ActivateAtPosition(Award item)
+    public void ActivateAtPosition(Currency item)
     {
         int particleCount = GetNumberParticles(item);
         _voiceover.PlaySfx(_audioClip);
@@ -50,14 +50,14 @@ public class ParticleSystemController : MonoBehaviour
         return _duration + _moveToTargetDuration;
     }
 
-    private int GetNumberParticles(Award item)
+    private int GetNumberParticles(Currency item)
     {
         return item is Crystal
             ? item.Value / _quantityMultiplier
             : item.Value * _quantityMultiplier;
     }
 
-    private void CreateParticle(Award item)
+    private void CreateParticle(Currency item)
     {
         GameObject particle = Instantiate(_spritePrefab, transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360f)), transform);
 
@@ -65,7 +65,7 @@ public class ParticleSystemController : MonoBehaviour
 
         if (particle.TryGetComponent(out Image image))
         {
-            image.sprite = item.Sprite;
+            image.sprite = item.Icon.sprite;
         }
 
         ParticleAnimation anim = particle.AddComponent<ParticleAnimation>();
@@ -89,7 +89,7 @@ public class ParticleSystemController : MonoBehaviour
                 firstPhaseRatio: _firstPhaseRatio);
     }
 
-    private void HandleParticleComplete(Award item, float duration)
+    private void HandleParticleComplete(Currency item, float duration)
     {
         if (item is Crystal)
         {

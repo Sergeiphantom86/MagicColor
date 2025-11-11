@@ -18,22 +18,6 @@ public class TouchColorTransparency : MonoBehaviour
         _originalColor = color;
     }
 
-    public void SetWhiteColor()
-    {
-        Color color = _renderer.material.color;
-        color = Color.white;
-        color.a = 0.5f;
-        _renderer.material.color = color;
-    }
-
-    public void ReturnColor()
-    {
-        Color color = _renderer.material.color;
-        color = _originalColor;
-        color.a = 1;
-        _renderer.material.color = color;
-    }
-
     public void SetAlpha(Color color, float alpha)
     {
         color.a = alpha;

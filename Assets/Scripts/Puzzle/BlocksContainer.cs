@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class BlocksContainer : MonoBehaviour, IBlocksContainer
 {
@@ -15,8 +15,8 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     private int _initialBlocksCount;
 
     public List<Block> Blocks => _blocks;
+    public Transform Transform => transform;
 
-    public event Action<string> StoppingTimer;
     public event Action BlockDestroyed;
 
     public int ActiveBlocksCount =>
@@ -25,29 +25,57 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     private void Awake()
     {
         _blocks = new List<Block>();
-        InitializeBlocks();
-    }
 
-    private void InitializeBlocks()
-    {
         _blocks = GetComponentsInChildren<Block>(true).ToList();
 
-        foreach (var block in _blocks)
-        {
-            block.Initialize(_destruction);
-            block.GetComponent<TouchDragInput>().SetAudioClip(_dragg, _taking, _throwOff);
-            block.OnDestroyed += HandleBlockDestroyed;
-        }
+        if (ConfirmQuantities(_blocks, "блоков") == false) return;
+
+        Initialize();
     }
 
     private void OnEnable() =>
-        _imageAnalyzer.CanPaint += SetQuantityBlocks;
+       _imageAnalyzer.CanPaint += SetQuantityBlocks;
 
     private void OnDisable() =>
         _imageAnalyzer.CanPaint -= SetQuantityBlocks;
 
-    private void SetQuantityBlocks(List<Color> colors) =>
+    private void Initialize()
+    {
+        foreach (var block in _blocks)
+        {
+            AddComponents(block);
+        }
+    }
+
+    private void SetQuantityBlocks(List<Color> colors)
+    {
+        if (ConfirmQuantities(colors, "цветов") == false) return;
+
         _initialBlocksCount = colors.Count;
+    }
+
+    private bool ConfirmQuantities<T>(ICollection<T> collection, string collectionName)
+    {
+        if (collection == null || collection.Count <= 0)
+        {
+            Debug.Log($"Количество {collectionName} = 0 {this}");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void AddComponents(Block block)
+    {
+        block.Initialize(_destruction);
+
+        block.OnDestroyed += HandleBlockDestroyed;
+
+        if (block.TryGetComponent(out TouchDragInput touchDragInput))
+        {
+            touchDragInput.SetAudioClip(_dragg, _taking, _throwOff);
+        }
+    }
 
     private void HandleBlockDestroyed(Block block)
     {
@@ -58,7 +86,6 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
 
         if (_initialBlocksCount == 0)
         {
-            StoppingTimer?.Invoke(_imageAnalyzer.GetNameSprite());
             BlockDestroyed?.Invoke();
         }
     }

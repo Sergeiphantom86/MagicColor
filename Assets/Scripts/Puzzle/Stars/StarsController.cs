@@ -4,26 +4,26 @@ using YG;
 
 public class StarsController : MonoBehaviour
 {
-    [Header("Settings")]
-    [SerializeField] private float _delayBetweenStars = 0.3f;
-    [SerializeField] private float _initialDelay = 0.5f;
-
-    private StarAppearance[] _stars;
+    private float _initialDelay;
+    private float _delayBetweenStars;
+    private StarIndicator[] _stars;
     private Sequence _animationSequence;
 
     private void Awake()
     {
-        _stars = GetComponentsInChildren<StarAppearance>();
+        _initialDelay = 0.5f;
+        _delayBetweenStars = 0.3f;
+        _stars = GetComponentsInChildren<StarIndicator>();
 
-        gameObject.SetActive(false);
+        SetActive(false);
     }
 
     private void OnEnable()
     {
-        ResetAllStars();
+        ResetAll();
     }
 
-    public void ShowStars(int activeCount)
+    public void ShowWithAnimation(int activeCount)
     {
         _animationSequence?.Kill();
 
@@ -38,10 +38,20 @@ public class StarsController : MonoBehaviour
             float delay = i * _delayBetweenStars;
 
             _animationSequence.InsertCallback(_initialDelay + delay,() => 
-            _stars[index].TurnOn(0.1f));
+            _stars[index].TurnOn());
         }
 
         YG2.saves.SetCountStars(activeCount);
+    }
+
+    public void ShowWithOutAnimation(int activeCount)
+    {
+        activeCount = Mathf.Clamp(activeCount, 0, _stars.Length);
+
+        for (int i = 0; i < activeCount; i++)
+        {
+            _stars[i].TurnOn();
+        }
     }
 
     public void SetActive(bool isOn)
@@ -49,7 +59,7 @@ public class StarsController : MonoBehaviour
         gameObject.SetActive(isOn);
     }
 
-    private void ResetAllStars()
+    private void ResetAll()
     {
         foreach (var star in _stars)
         {

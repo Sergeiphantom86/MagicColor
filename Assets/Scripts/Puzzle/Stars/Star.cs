@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Image), typeof(Voiceover))]
 public class Star : MonoBehaviour
 {
     [SerializeField] private AudioClip _audioClip;

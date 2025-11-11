@@ -4,36 +4,37 @@ using UnityEngine;
 
 public class Activator : MonoBehaviour
 {
+    [SerializeField] private AudioClip _winn;
     [SerializeField] private FragmentSpawner _spawner;
+    [SerializeField] private AudioClip _pixelActivation;
     [SerializeField] private BlocksContainer _blocksContainer;
     [SerializeField] private SequentialSpawner _sequentialSpawner;
-    [SerializeField] private AudioClip _pixelActivation;
-    [SerializeField] private AudioClip _winn;
 
-    private FragmentQueueProcessor _queueProcessor;
-    private Voiceover _voiceover;
-    private IColorPrecision _colorPrecision;
-    private int _totalCountPixel;
-    private int _remainingPixels;
-    private bool _isProcessing;
-    private float _transitionReducing;
-    private float _duration;
-    private bool _isAccelerated;
-    private WaitForSeconds _forSeconds;
     private float _delay;
+    private float _duration;
+    private bool _isProcessing;
+    private bool _isAccelerated;
+    private int _remainingPixels;
+    private int _totalCountPixel;
+    private float _transitionReducing;
+    private Voiceover _voiceover;
+    private WaitForSeconds _forSeconds;
+    private IColorPrecision _colorPrecision;
+    private FragmentQueueProcessor _queueProcessor;
 
     public event Action OnPuzzleComplete;
 
     private void Awake()
     {
-        _transitionReducing = 0.25f;
         _delay = 2;
         _duration = 0.3f;
-        IBlocksContainer blocksContainer = _blocksContainer;
-        IMover mover = GetComponent<IMover>();
-        IFragmentAnimator animator = GetComponent<IFragmentAnimator>();
-        _voiceover = GetComponent<Voiceover>();
+        _transitionReducing = 0.25f;
+
         _forSeconds = new WaitForSeconds(_delay);
+        _voiceover = GetComponent<Voiceover>();
+        IMover mover = GetComponent<IMover>();
+        IBlocksContainer blocksContainer = _blocksContainer;
+        IFragmentAnimator animator = GetComponent<IFragmentAnimator>();
 
         _colorPrecision = new ColorPrecision();
         _queueProcessor = new FragmentQueueProcessor(_voiceover, _pixelActivation, mover, animator, blocksContainer);
@@ -49,13 +50,13 @@ public class Activator : MonoBehaviour
     private void OnDisable()
     {
         _queueProcessor.OnIncreaseSpeed -= SpeedFillingProcess;
+        _queueProcessor.OnFragmentActivated -= HandleFragmentActivated;
     }
 
     private void OnDestroy()
     {
         if (_queueProcessor != null)
         {
-            _queueProcessor.OnFragmentActivated -= HandleFragmentActivated;
             _queueProcessor.Cleanup();
         }
     }
@@ -84,7 +85,7 @@ public class Activator : MonoBehaviour
     private IEnumerator ProcessingRoutine()
     {
         _isProcessing = true;
-
+       
         yield return _queueProcessor.ProcessQueueRoutine(transform.position, _duration, _transitionReducing);
 
         _isProcessing = false;
@@ -111,6 +112,7 @@ public class Activator : MonoBehaviour
         if (_isAccelerated == false)
         {
             _isAccelerated = true;
+
             StartCoroutine(Wait());
         }
     }
@@ -118,7 +120,6 @@ public class Activator : MonoBehaviour
     private IEnumerator Wait()
     {
         yield return _forSeconds;
-
         _queueProcessor.SpeedUpMovement();
     }
 }

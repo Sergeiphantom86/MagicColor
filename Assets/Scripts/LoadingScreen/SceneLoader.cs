@@ -14,7 +14,7 @@ public class SceneLoader : MonoBehaviour
 
     [SerializeField] private float _fadeDuration;
     [SerializeField] private float _minLoadTime;
-    [SerializeField] private LoadingRotator _loadingRotator;
+    //[SerializeField] private LoadingRotator _loadingRotator;
 
     private CanvasGroup _canvasGroup;
     private Coroutine _loadingCoroutine;
@@ -43,7 +43,7 @@ public class SceneLoader : MonoBehaviour
         _canvasGroup.interactable = false;
         _canvasGroup.blocksRaycasts = false;
 
-        _loadingRotator.gameObject.SetActive(false);
+        //_loadingRotator.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -68,7 +68,7 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator LoadSceneProcess(string sceneName)
     {
-        _loadingRotator.gameObject.SetActive(true);
+        //_loadingRotator.gameObject.SetActive(true);
 
         yield return _panelFader.Fade(1f, true).WaitForCompletion();
 
@@ -90,7 +90,7 @@ public class SceneLoader : MonoBehaviour
 
         asyncLoad.allowSceneActivation = true;
 
-        _loadingRotator.gameObject.SetActive(false);
+        //_loadingRotator.gameObject.SetActive(false);
 
         yield return null;
 

@@ -66,6 +66,16 @@ namespace YG
             _currentCrystal += amount;
         }
 
+        public void SetCurrency(Wallet wallet, long amount)
+        {
+            if (amount <= 0) return;
+
+            if (wallet is CoinWallet)
+                _currentCoin += amount;
+            else if(wallet is CrystalWallet)
+                _currentCrystal += amount;
+        }
+
         public void SetQuestIndex(int questInex)
         {
             if (questInex < 0) return;
@@ -83,13 +93,9 @@ namespace YG
         public void SetVolume(VolumeChanger volumeChanger, float volume)
         {
             if (volumeChanger is MusicVolumeController)
-            {
                 MusicVolume = volume;
-            }
             else
-            {
                 SoundVolume = volume;
-            }
         }
 
         public void ResetSprite()

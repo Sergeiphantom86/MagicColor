@@ -73,8 +73,8 @@ public class ButtonHome : MonoBehaviour
 
     private void SaveProgress()
     {
-        YG2.saves.SetCurrentCoin(_coin.Balance);
-        YG2.saves.SetCurrentCrystal(_crystal.Balance);
+        YG2.saves.SetCurrency(_coin, _coin.Balance);
+        YG2.saves.SetCurrency(_crystal, _crystal.Balance);
         YG2.saves.SetAssembledPuzzle(true);
         YG2.saves.ResetSprite();
         YG2.SaveProgress();

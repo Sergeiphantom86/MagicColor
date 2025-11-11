@@ -1,6 +1,7 @@
 using UnityEngine;
 using YG;
 
+[RequireComponent(typeof(StarsController))]
 public class QuantityMenuStarsIndicator : MonoBehaviour
 {
     private StarsController _starsController;
@@ -19,7 +20,7 @@ public class QuantityMenuStarsIndicator : MonoBehaviour
     {
         if (YG2.saves.CountStars != 0)
         {
-            _starsController.ShowStars(YG2.saves.CountStars);
+            _starsController.ShowWithAnimation(YG2.saves.CountStars);
         }
     }
 }

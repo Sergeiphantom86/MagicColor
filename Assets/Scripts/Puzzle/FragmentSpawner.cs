@@ -10,17 +10,16 @@ public class FragmentSpawner : MonoBehaviour
     [SerializeField] private float _scale;
     [SerializeField] private Transform _transformParent;
     [SerializeField] private AnimatorPuzzle _animator;
+    [SerializeField] private Canvas _canvas;
 
+    private int _totalCount;
+    private Vector3 _canvasUp;
+    private Vector3 _canvasRight;
     private Camera _targetCamera;
+    private Vector3 _canvasNormal;
+    private Vector3 _offsetFromCenter;
     private ImageAnalyzer _imageAnalyzer;
     private Dictionary<Color, Queue<Fragment>> _fragments;
-    private Vector3 _canvasNormal;
-    private Vector3 _canvasRight;
-    private Vector3 _canvasUp;
-    private Vector3 _offsetFromCenter;
-    private float _pixelSize;
-    private int _totalCount;
-
 
     public int TotalCount => _totalCount;
     public Dictionary<Color, Queue<Fragment>> Fragments => _fragments;
@@ -32,9 +31,7 @@ public class FragmentSpawner : MonoBehaviour
         _targetCamera = Camera.main;
         _fragments = new Dictionary<Color, Queue<Fragment>>();
         _imageAnalyzer = GetComponent<ImageAnalyzer>();
-        _pixelSize = 3.63636f;
-
-        _scale = 3.18f;
+        _scale = 4.4f;
     }
 
     private void OnEnable()
@@ -70,6 +67,14 @@ public class FragmentSpawner : MonoBehaviour
         if (_animator == null)
             throw new ArgumentNullException(nameof(_animator), "AnimatorPuzzle не назначен!");
 
+        GetFragments(colorGroups);
+
+        _animator.StartGame();
+        OnStart?.Invoke();
+    }
+
+    private void GetFragments(Dictionary<Color, List<Vector3>> colorGroups)
+    {
         foreach (var colorGroup in colorGroups)
         {
             _fragments[colorGroup.Key] = new Queue<Fragment>(
@@ -77,23 +82,17 @@ public class FragmentSpawner : MonoBehaviour
                     GetFragment(pixelPosition, colorGroup.Key))
             );
         }
-
-        if (_animator != null)
-        {
-            _animator.StartGame();
-        }
-
-        OnStart?.Invoke();
     }
 
     private Fragment GetFragment(Vector3 pixelPosition, Color pixelColor)
     {
         _prefab = Instantiate(_prefab);
 
-        _prefab.transform.position = ConvertPixelToWorldPosition(pixelPosition);
-        _prefab.transform.rotation = Quaternion.LookRotation(_canvasNormal);
         _prefab.transform.SetParent(_transformParent);
-        _prefab.transform.localScale = Vector3.one * _scale;
+
+        _prefab.SetPosition(ConvertPixelToWorldPosition(pixelPosition));
+        _prefab.SetRotation(Quaternion.LookRotation(_canvasNormal));
+        _prefab.SetLocalScale(_scale);
 
         _prefab.SetColor(pixelColor);
         _prefab.TurnOnTransparency();
@@ -105,10 +104,25 @@ public class FragmentSpawner : MonoBehaviour
 
     private Vector3 ConvertPixelToWorldPosition(Vector3 pixelPosition)
     {
+        return GetPosition(pixelPosition);
+    }
+
+    private Vector3 GetPosition(Vector3 pixelPosition)
+    {
+        return _transformParent.position + GetOffsetPreviousPixel(pixelPosition);
+    }
+
+    private Vector3 GetOffsetPreviousPixel(Vector3 pixelPosition)
+    {
+        return _canvasRight * GetOffsetFromCenter(pixelPosition).x + _canvasUp * GetOffsetFromCenter(pixelPosition).y;
+    }
+
+    private Vector3 GetOffsetFromCenter(Vector3 pixelPosition)
+    {
         _offsetFromCenter = pixelPosition - _imageAnalyzer.Pivot;
-      
-        _offsetFromCenter *= 0.05f;
-       
-        return _transformParent.position + (_canvasRight * _offsetFromCenter.x + _canvasUp * _offsetFromCenter.y) * _pixelSize;
+
+        _offsetFromCenter *= 0.14f;
+
+        return _offsetFromCenter;
     }
 }

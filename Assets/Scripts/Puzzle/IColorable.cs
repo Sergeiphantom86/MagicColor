@@ -9,4 +9,5 @@ public interface IColorable
     public void AssignOriginal();
     public void Disable();
     public void SetAlpha(Color color, float alpha);
+    public bool IsRepainted { get; }
 }

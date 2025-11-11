@@ -14,6 +14,8 @@ public class MenuController : MonoBehaviour
     [SerializeField] private Timer _timer;
     [SerializeField] private PanelFader _panelFader;
     [SerializeField] private Roulette _roulette;
+    [SerializeField] private TutorialPuzzle _tutorialPuzzle;
+
     private GameSaveSystem _gameSaveSystem;
 
     private bool _adInProgress;
@@ -31,7 +33,7 @@ public class MenuController : MonoBehaviour
             _animation.PuzzleIsComplete += HandlePuzzleComplete;
 
         YG2.onCloseRewardedAdv += OnAdClosed;
-        YG2.onErrorRewardedAdv += OnAdError;
+        YG2.onErrorRewardedAdv += OnAdClosed;
     }
 
     private void OnDisable()
@@ -40,7 +42,7 @@ public class MenuController : MonoBehaviour
             _animation.PuzzleIsComplete -= HandlePuzzleComplete;
 
         YG2.onCloseRewardedAdv -= OnAdClosed;
-        YG2.onErrorRewardedAdv -= OnAdError;
+        YG2.onErrorRewardedAdv -= OnAdClosed;
     }
 
     private void OnDestroy()
@@ -50,13 +52,26 @@ public class MenuController : MonoBehaviour
 
     private void HandleStartButton()
     {
-        if (YG2.saves.Sprite == null)
+        if (_tutorialPuzzle == null)
         {
-            Debug.LogWarning("Sprite is missing in EntryPoint");
+            if (YG2.saves == null && YG2.saves.Sprite == null)
+            {
+                Debug.LogError("YG2.saves is null!");
+                return;
+            }
+
+            LoadScene(YG2.saves.Sprite);
+            return;
         }
 
-        _imageAnalyzer.AnalyzeTexture(YG2.saves.Sprite);
-        _panelFader.FadeOut(() => _menuButtons.HideStartButton());
+        LoadScene(_tutorialPuzzle.Sprite);
+    }
+
+    private void LoadScene(Sprite sprite)
+    {
+        _imageAnalyzer.AnalyzeTexture(sprite);
+        _panelFader.FadeOut(() => 
+        _menuButtons.HideStartButton());
         _timer.StartTimer();
     }
 
@@ -76,7 +91,7 @@ public class MenuController : MonoBehaviour
         }
         else
         {
-            LoadMenuScene();
+            OnAdClosed();
         }
     }
 
@@ -95,15 +110,6 @@ public class MenuController : MonoBehaviour
     {
         if (_adInProgress)
         {
-            LoadMenuScene();
-        }
-    }
-
-    private void OnAdError()
-    {
-        if (_adInProgress)
-        {
-            Debug.LogError("Rewarded ad error");
             LoadMenuScene();
         }
     }

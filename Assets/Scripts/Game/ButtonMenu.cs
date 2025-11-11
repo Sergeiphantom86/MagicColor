@@ -4,11 +4,11 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class ButtonMenu : MonoBehaviour
 {
-    [SerializeField] private PauseManager _pauseManager;
+    [SerializeField] private PauseMenu _pauseMenu;
 
     private Button _button;
 
-    public PauseManager PauseManager => _pauseManager;
+    public PauseMenu PauseMenu => _pauseMenu;
 
     private void Awake()
     {

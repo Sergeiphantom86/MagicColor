@@ -95,6 +95,7 @@ public class InkSpawner : MonoBehaviour
     {
         float x = transform.position.x + (col * _gridSpacing);
         float z = transform.position.z + (row * _gridSpacing);
+
         return new Vector3(x, transform.position.y, z);
     }
 }

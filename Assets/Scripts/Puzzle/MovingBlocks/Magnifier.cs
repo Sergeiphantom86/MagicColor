@@ -5,7 +5,6 @@ public class Magnifier : MonoBehaviour
 {
     [SerializeField] private float _selectedScale;
     [SerializeField] private float _animationDuration;
-    [SerializeField] private EffectsHandler effectsHandler;
 
     private Vector3 _originalScale;
     private Tween _scaleTween;

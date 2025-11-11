@@ -1,26 +1,26 @@
-using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(GridDragMovement), typeof(Magnifier), typeof(TouchColorTransparency))]
+[RequireComponent(typeof(GridDragMovement), typeof(Magnifier), typeof(InputHandler))]
+[RequireComponent(typeof(IColorable), typeof(Voiceover))]
 public class TouchDragInput : MonoBehaviour
 {
     private bool _isSelected;
-    private bool _isDragging;
-    private Touch _touch;
     private Magnifier _selectable;
-    private GridDragMovement _dragMovement;
     private IColorable _colorable;
+    private GridDragMovement _dragMovement;
+    private InputHandler _inputHandler;
     private Voiceover _voiceover;
-    private AudioClip _dragging;
     private AudioClip _taking;
     private AudioClip _throwOff;
+    private AudioClip _dragging;
 
     private void Awake()
     {
         _colorable = GetComponent<IColorable>();
-        _dragMovement = GetComponent<GridDragMovement>();
         _selectable = GetComponent<Magnifier>();
         _voiceover = GetComponent<Voiceover>();
+        _inputHandler = GetComponent<InputHandler>();
+        _dragMovement = GetComponent<GridDragMovement>();
 
         if (_dragMovement == null)
         {
@@ -31,18 +31,30 @@ public class TouchDragInput : MonoBehaviour
         {
             Debug.LogError("SelectableObject not assigned in TouchDragInput", this);
         }
+
+        if (_colorable == null)
+        {
+            Debug.LogError("IColorable not assigned in TouchDragInput", this);
+        }
+
+        if (_voiceover == null)
+        {
+            Debug.LogError("Voiceover not assigned in TouchDragInput", this);
+        }
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        if (Input.touchCount > 0)
-        {
-            HandleTochInput();
-        }
-        else
-        {
-            HandleMouseInput();
-        }
+        _inputHandler.OnSelected += SelectBlock;
+        _inputHandler.OnMoved += Move;
+        _inputHandler.OnThrowed += ThrowOff;
+    }
+
+    private void OnDisable()
+    {
+        _inputHandler.OnSelected -= SelectBlock;
+        _inputHandler.OnMoved -= Move;
+        _inputHandler.OnThrowed -= ThrowOff;
     }
 
     public void SetAudioClip(AudioClip dragging, AudioClip taking, AudioClip throwOff)
@@ -52,57 +64,13 @@ public class TouchDragInput : MonoBehaviour
         _throwOff = throwOff;
     }
 
-    private void HandleTochInput()
-    {
-        _touch = Input.GetTouch(0);
-
-        switch (_touch.phase)
-        {
-            case TouchPhase.Began:
-                SelectBlock(_touch.position);
-                break;
-
-            case TouchPhase.Moved:
-                Move(_touch.position);
-                break;
-
-            case TouchPhase.Ended:
-            case TouchPhase.Canceled:
-                ThrowOff();
-                break;
-        }
-    }
-
-    private void HandleMouseInput()
-    {
-        Vector3 currentMousePosition = Input.mousePosition;
-
-        switch (true)
-        {
-            case bool _ when Input.GetMouseButtonDown(0):
-                SelectBlock(currentMousePosition);
-                break;
-
-            case bool _ when Input.GetMouseButton(0) && _isSelected:
-                Move(currentMousePosition);
-                break;
-
-            case bool _ when Input.GetMouseButtonUp(0) && _isSelected:
-                ThrowOff();
-                break;
-        }
-    }
-
     private void SelectBlock(Vector2 position)
     {
-        if (IsTouchingThisObject(position))
-        {
-            _isSelected = true;
-            _selectable.Select();
-            _dragMovement.BeginInteraction(position, transform.position);
-            _colorable.AssignOriginal();
-            _voiceover.PlaySfx(_taking);
-        }
+        _isSelected = true;
+        _selectable.Select();
+        _dragMovement.BeginInteraction(position, transform.position);
+        _colorable.AssignOriginal();
+        _voiceover.PlaySfx(_taking);
     }
 
     private void Move(Vector2 position)
@@ -122,18 +90,5 @@ public class TouchDragInput : MonoBehaviour
             _colorable.Disable();
             _voiceover.PlaySfx(_throwOff);
         }
-    }
-
-    private bool IsTouchingThisObject(Vector2 screenPosition)
-    {
-        Ray ray = Camera.main.ScreenPointToRay(screenPosition);
-
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            return hit.collider.transform == transform ||
-                   hit.collider.transform.IsChildOf(transform);
-        }
-
-        return false;
     }
 }

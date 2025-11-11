@@ -1,7 +1,8 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
 
-public class RotatorX : MonoBehaviour
+public class Rotator : MonoBehaviour
 {
     [Header("Rotation Settings")]
     [SerializeField] private float _duration;
@@ -14,8 +15,9 @@ public class RotatorX : MonoBehaviour
     [SerializeField] private LoopType _loopType;
 
     private Tween _rotationTween;
-
     private float _returnAngle;
+
+    public event Action OnRotated;
 
     private void Awake()
     {
@@ -38,7 +40,7 @@ public class RotatorX : MonoBehaviour
 
         _rotationTween = transform.DORotate(new Vector3(targetAngleX, 0, 0), _duration, _rotateMode)
             .SetEase(_easeType)
-            .SetLoops(_loops, _loopType);
+            .SetLoops(_loops, _loopType).OnComplete(() => OnRotated?.Invoke());
     }
 
     private void OnDestroy()

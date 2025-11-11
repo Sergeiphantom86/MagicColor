@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using YG;
 
 [RequireComponent(typeof(AnimationController), typeof(ImageAnalyzer))]
 public class Viewer : MonoBehaviour
@@ -21,6 +22,16 @@ public class Viewer : MonoBehaviour
     private void Start()
     {
         ShowNextSprite();
+    }
+
+    private void OnEnable()
+    {
+        _animationController?.ResumeAllAnimations();
+    }
+
+    private void OnDisable()
+    {
+        _animationController?.PauseAllAnimations();
     }
 
     public void SetActive(bool active)
@@ -50,6 +61,7 @@ public class Viewer : MonoBehaviour
         if (_isTransitioning || _spriteSequence.Count == 0) return;
 
         _isTransitioning = true;
+        
         int nextIndex = GetNextSpriteIndex();
 
         if (nextIndex >= 0 && nextIndex < _spriteSequence.Count)
@@ -65,15 +77,5 @@ public class Viewer : MonoBehaviour
         if (_spriteSequence.Count == 0) return -1;
         _currentSpriteIndex = (_currentSpriteIndex + 1) % _spriteSequence.Count;
         return _currentSpriteIndex;
-    }
-
-    private void OnEnable()
-    {
-        _animationController?.ResumeAllAnimations();
-    }
-
-    private void OnDisable()
-    {
-        _animationController?.PauseAllAnimations();
     }
 }

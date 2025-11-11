@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Puzzle : MonoBehaviour
 {
-    private RotatorX _rotation;
+    private Rotator _rotation;
 
     private void Awake()
     {
-        _rotation = GetComponent<RotatorX>();
+        _rotation = GetComponent<Rotator>();
     }
 
     public void Return()

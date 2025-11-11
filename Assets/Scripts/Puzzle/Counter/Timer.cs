@@ -7,18 +7,15 @@ public class Timer : MonoBehaviour
     [SerializeField] private TMP_Text _timerText;
     [SerializeField] private string _timeFormat = "mm':'ss";
     [SerializeField] private BlocksContainer _blocksContainer;
-    [SerializeField] private LeaderboardStars _leaderboardStars;
+    [SerializeField] private StarCounter _starCounter;
 
     private float _value;
+    private bool _isRunning;
     private TimeSpan _span;
-
-    public bool IsRunning { get; private set; }
 
     private void Update()
     {
-        if (PauseManager.IsPaused) return;
-
-        if (IsRunning)
+        if (_isRunning)
         {
             _value += Time.unscaledDeltaTime;
 
@@ -29,44 +26,38 @@ public class Timer : MonoBehaviour
 
     private void OnEnable()
     {
-        _blocksContainer.StoppingTimer += StopAndSave;
+        _blocksContainer.BlockDestroyed += StopAndSave;
     }
 
     private void OnDisable()
     {
-        _blocksContainer.StoppingTimer -= StopAndSave;
+        _blocksContainer.BlockDestroyed -= StopAndSave;
     }
 
     public void StartTimer()
     {
-        if (IsRunning) return;
-        IsRunning = true;
+        if (_isRunning) return;
+        _isRunning = true;
         _value = 0f;
     }
 
-    public void StopAndSave(string name)
+    public void StopAndSave()
     {
-        if (string.IsNullOrEmpty(name))
+        if (_starCounter == null)
         {
-            Debug.LogError("Sprite name is null or empty");
+            Debug.LogError("StarCounter not found!");
             return;
         }
 
+
         Stop();
 
-        if (_leaderboardStars != null)
-        {
-            _leaderboardStars.SavePlayerTime(_value, name);
-        }
-        else
-        {
-            Debug.LogError("LeaderboardStars not found!");
-        }
+        _starCounter.SavePlayerTime(_value);
     }
 
     public void Stop()
     {
-        if (IsRunning == false) return;
-        IsRunning = false;
+        if (_isRunning == false) return;
+        _isRunning = false;
     }
 }

@@ -3,12 +3,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Award : MonoBehaviour
+public class Currency : MonoBehaviour
 {
-    private TextMeshProUGUI _textMeshPro;
+    [SerializeField] private TextMeshProUGUI _textMeshPro;
+    [SerializeField] private Image _image;
+
     private WeightCalculator _weightCalculator;
     private GameSaveSystem  _saveSystem;
-    private Image _image;
     private int _value;
     private int _weight;
     private int _indexInRoulette;
@@ -18,15 +19,15 @@ public class Award : MonoBehaviour
 
     public int Value => _value;
 
-    public Sprite Sprite => _image.sprite;
+    public Image Icon => _image;
 
     public int Winn => _saveSystem.CurrentValue;
 
     private void Awake()
     {
         _weightCalculator = new WeightCalculator();
-        _textMeshPro = GetComponentInChildren<TextMeshProUGUI>(true);
-        _image = GetComponentInChildren<Image>(true);
+        _textMeshPro = GetComponentInChildren<TextMeshProUGUI>();
+        _image = GetComponentInChildren<Image>();
         _saveSystem = FindObjectOfType<GameSaveSystem>();
 
         if (_textMeshPro == null)
@@ -64,11 +65,6 @@ public class Award : MonoBehaviour
         return _indexInRoulette * _sectorSize + GetSectorCenter();
     }
 
-    private float GetSectorCenter()
-    {
-        return _sectorSize / 2f;
-    }
-
     protected void SetValue(string value)
     {
         if (int.TryParse(value, out int parsedValue))
@@ -76,6 +72,12 @@ public class Award : MonoBehaviour
             _value = parsedValue;
         }
     }
+
+    private float GetSectorCenter()
+    {
+        return _sectorSize / 2f;
+    }
+
 
     private string GetCleanNumericString(string textMeshPro)
     {

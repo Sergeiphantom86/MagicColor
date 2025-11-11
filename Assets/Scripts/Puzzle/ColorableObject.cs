@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Renderer))]
@@ -8,6 +7,8 @@ public class ColorableObject : MonoBehaviour, IColorable
     private Indicator _indicator;
     private Color _originalColor;
     private bool _isRepainted;
+
+    public bool IsRepainted => _isRepainted;
 
     public void InitializeComponents()
     {
@@ -20,6 +21,11 @@ public class ColorableObject : MonoBehaviour, IColorable
         if (_indicator != null)
         {
             _indicator.TurnOffSpriteRenderer();
+        }
+
+        if (_curentRenderer == null)
+        {
+            Debug.Log($"Renderer = null {this}");
         }
 
         SettingRenderingMode(_curentRenderer.material);

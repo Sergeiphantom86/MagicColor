@@ -2,19 +2,25 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 
-public class StarAppearance : MonoBehaviour
+[RequireComponent(typeof(Image))]
+public class StarIndicator : MonoBehaviour
 {
     private Star _star;
     private Image _inactivePart;
-
-    private const float AnimationDuration = 0.5f;
-    private const float MinScale = 0.2f;
-    private const float Overshoot = 1.5f;
+    private float _duration;
+    private float _minScale;
+    private float _overshoot;
+    private float _delay;
 
     private Tweener _currentTween;
 
     private void Awake() 
     {
+        _delay = 0.1f;
+        _duration = 0.5f;
+        _minScale = 0.2f;
+        _overshoot = 1.5f;
+
         _inactivePart = GetComponent<Image>();
         _star = GetComponentInChildren<Star>();
 
@@ -22,14 +28,14 @@ public class StarAppearance : MonoBehaviour
         _star.SetActive(false);
     }
 
-    public void TurnOn(float delay)
+    public void TurnOn()
     {
         _currentTween?.Kill();
         _star.SetActive(true);
-        _star.transform.localScale = Vector3.one * MinScale;
-        _currentTween = _star.transform.DOScale(Vector3.one, AnimationDuration)
-            .SetDelay(delay)
-            .SetEase(Ease.OutBack, overshoot: Overshoot);
+        _star.transform.localScale = Vector3.one * _minScale;
+        _currentTween = _star.transform.DOScale(Vector3.one, _duration)
+            .SetDelay(_delay)
+            .SetEase(Ease.OutBack, overshoot: _overshoot);
     }
 
     public void SetInactive()

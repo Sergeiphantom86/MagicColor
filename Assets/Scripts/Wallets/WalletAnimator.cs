@@ -9,14 +9,19 @@ public class WalletAnimator : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _textMeshPro;
 
     private Wallet _wallet;
-    private long _displayedBalance;
     private Tween _balanceTween;
-    private float _animationDuration = 0.5f;
+    private long _displayedBalance;
+    private float _animationDuration;
+    private WaitForSeconds _waitForSeconds;
+    private NumberFormatter _numberFormatter;
 
     private void Awake()
     {
+        _animationDuration = 0.5f;
         _wallet = GetComponent<Wallet>();
         _displayedBalance = _wallet.Balance;
+        _waitForSeconds = new WaitForSeconds(_wallet.Duration);
+        _numberFormatter = new NumberFormatter();
         UpdateBalanceText();
 
         _wallet.OnBalanceChanged += HandleBalanceChanged;
@@ -29,7 +34,7 @@ public class WalletAnimator : MonoBehaviour
 
     private void UpdateBalanceText()
     {
-        _textMeshPro.text = NumberFormatter.FormatNumber(_displayedBalance);
+        _textMeshPro.text = _numberFormatter.FormatNumber(_displayedBalance);
     }
 
     private void OnDestroy()
@@ -40,7 +45,7 @@ public class WalletAnimator : MonoBehaviour
 
     private IEnumerator WaitEndAnimation(long newBalance)
     {
-        yield return new WaitForSeconds(_wallet.Duration);
+        yield return _waitForSeconds;
 
         _balanceTween?.Kill();
 
@@ -49,7 +54,8 @@ public class WalletAnimator : MonoBehaviour
         {
             _displayedBalance = animatedValue;
             UpdateBalanceText();
-        }, newBalance, _animationDuration
-        ).SetEase(Ease.OutQuad);
+        }, 
+        newBalance, _animationDuration).
+        SetEase(Ease.OutQuad);
     }
 }

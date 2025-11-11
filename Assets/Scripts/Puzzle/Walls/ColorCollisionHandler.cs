@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer), typeof(Indicator), typeof(Rigidbody))]
+[RequireComponent(typeof(Renderer), typeof(Indicator))]
 public class ColorCollisionHandler : MonoBehaviour
 {
     [SerializeField] private EffectsHandler effectsHandler;
@@ -16,6 +16,8 @@ public class ColorCollisionHandler : MonoBehaviour
     private IColorable _colorable;
     private Point _point;
     private Indicator _indicator;
+    private Lock  _lock;
+    private Wall _wall;
 
     public event Action<Block> IsTouch;
     public event Action<Collider> TouchEnded;
@@ -27,6 +29,7 @@ public class ColorCollisionHandler : MonoBehaviour
         _colorable = GetComponent<IColorable>();
         _indicator = GetComponent<Indicator>();
         _point = GetComponentInChildren<Point>();
+        _wall = GetComponent<Wall>();
         _waitForSeconds = new WaitForSeconds(_delay);
 
 
@@ -65,36 +68,54 @@ public class ColorCollisionHandler : MonoBehaviour
             Debug.LogError("ColorPrecision не назначен!", this);
     }
 
+    public void UnblockWall()
+    {
+        _lock.Unblock();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
+        if (other.TryGetComponent(out Lock @lock))
+        {
+            _lock = @lock;
+        }
+
         if (other.TryGetComponent(out ColorableObject colorableObject) == false) return;
 
         _colorable.AssignOriginal();
+
         Color otherColor = colorableObject.GetColor();
-        Color myColor = _renderer.material.color;
 
         if (otherColor == Color.white) return;
 
-        if (_colorPrecision.Match(myColor, otherColor) == false) return;
+        if (_colorPrecision.Match(_renderer.material.color, otherColor) == false) return;
 
         if (_coroutine != null)
         {
             StopCoroutine(_coroutine);
         }
-
-        if (colorableObject is Block block)
+        
+        if (colorableObject is Block block && _wall.IsBlocked == false)
         {
             _coroutine = StartCoroutine(WaitForComparison(block, otherColor));
             IsTouch?.Invoke(block);
         }
+        else if(_lock != null)
+        {
+            _lock.ShakeUp();
+            IsTouch?.Invoke(null);
+        }
     }
-
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out ColorableObject _) == false)
-            return;
-        
+        if (other.TryGetComponent(out Lock _))
+        {
+            _wall.Unblock();
+        }
+
+        if (other.TryGetComponent(out ColorableObject _) == false) return;
+
         TouchEnded?.Invoke(other);
         _colorable.Disable();
 
@@ -115,10 +136,12 @@ public class ColorCollisionHandler : MonoBehaviour
                 effectsHandler.Stop();
 
             _colorable.Disable();
+
             block.Destroy(_indicator.transform, _point.transform);
         }
 
         StartCoroutine(WaitSpawn(color));
+
         _coroutine = null;
     }
 

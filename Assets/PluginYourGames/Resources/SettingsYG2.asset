@@ -150,7 +150,7 @@ MonoBehaviour:
     enable: 1
     saveScoreAnonymousPlayers: 1
     listLBSim:
-    - technoName: Coin
+    - technoName: CoinWallet
       entries: '1. Max: 7123
 
         2. Maria: 15321
@@ -233,7 +233,7 @@ MonoBehaviour:
         rank: 1
         score: 1000000
         extraData: 
-    - technoName: Crystal
+    - technoName: CrystalWallet
       entries: '1. Max: 7123
 
         2. Maria: 15321

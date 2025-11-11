@@ -16,7 +16,7 @@ TagManager:
   - Block
   - NPC
   - Wall
-  - 
+  - Pen
   - 
   - 
   - 
@@ -41,4 +41,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Pen
+    uniqueID: 2105806371
     locked: 0

@@ -1,26 +1,29 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class WallsContainer : MonoBehaviour
 {
+    [SerializeField] private Bag _bag;
     [SerializeField] private Activator _activator;
     [SerializeField] private AnimatorPuzzle _animator;
     [SerializeField] private List<IColorable> _colorables;
 
     private List<WallEngine> _walls;
-    WallEngine _wall;
+    private WallEngine _wall;
+    private ColorPrecision _colorPrecision;
 
     private void Awake()
     {
         _walls = new List<WallEngine>();
+        _colorPrecision = new ColorPrecision();
     }
 
     private void Start()
     {
-        InitializeWalls();
+        InitializeWalls(_colorPrecision, _activator, _bag);
     }
 
-    private void InitializeWalls()
+    private void InitializeWalls(ColorPrecision colorPrecision, Activator activator, Bag bag)
     {
         foreach (Transform child in transform)
         {
@@ -30,8 +33,7 @@ public class WallsContainer : MonoBehaviour
             {
                 _walls.Add(_wall);
 
-                _wall.Initialize(new ColorPrecision(), _activator);
-                //_wall.SetStartPosition();
+                _wall.Initialize(colorPrecision, activator, bag);
             }
         }
     }

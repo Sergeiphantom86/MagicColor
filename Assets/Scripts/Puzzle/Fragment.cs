@@ -9,18 +9,13 @@ public class Fragment : MonoBehaviour
     private Color _newColor;
 
     public SpriteRenderer Renderer => _renderer;
-    public Color Color { get; private set; }
 
     private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
         _startAlpha = 0.3f;
         _finalAlpha = 1;
-    }
-
-    private void Start()
-    {
-        Color = _renderer.color;
+        _renderer.sortingOrder = 1;
     }
 
     public void SetColor(Color color)
@@ -30,27 +25,18 @@ public class Fragment : MonoBehaviour
 
     public void TurnOnTransparency()
     {
-        _newColor = _renderer.color;
-        _newColor.a = _startAlpha;
-        _renderer.color = _newColor;
+        CustomizeColor(_startAlpha);
     }
 
     public void TurnOffTransparency()
     {
-        _newColor = _renderer.color;
-        _newColor.a = _finalAlpha;
-        _renderer.color = _newColor;
+        CustomizeColor(_finalAlpha);
     }
 
     public void SetSprite(Sprite sprite)
     {
         if (_renderer != null)
             _renderer.sprite = sprite;
-    }
-
-    public Transform GetTransform()
-    {
-        return transform;
     }
 
     public void SetParent(Transform transform)
@@ -70,5 +56,12 @@ public class Fragment : MonoBehaviour
     public void SetRotation(Quaternion quaternion)
     {
         transform.rotation = quaternion;
+    }
+
+    private void CustomizeColor(float alpha)
+    {
+        _newColor = _renderer.color;
+        _newColor.a = alpha;
+        _renderer.color = _newColor;
     }
 }
