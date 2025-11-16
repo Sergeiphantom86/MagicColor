@@ -73,6 +73,11 @@ public class ColorCollisionHandler : MonoBehaviour
         _lock.Unblock();
     }
 
+    public void TriggerContactEvent(Block block)
+    {
+        IsTouch?.Invoke(block);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Lock @lock))

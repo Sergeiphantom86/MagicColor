@@ -35,7 +35,7 @@ public class ParticleSystemController : MonoBehaviour
     public void ActivateAtPosition(Currency item)
     {
         int particleCount = GetNumberParticles(item);
-        _voiceover.PlaySfx(_audioClip);
+        _voiceover.Play(_audioClip);
 
         for (int i = 0; i < particleCount; i++)
         {

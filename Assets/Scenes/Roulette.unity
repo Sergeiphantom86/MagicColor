@@ -465,6 +465,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cff06d17a98fbb44f8ab86314e179ab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _errorPanel: {fileID: 391226998}
+  _buttonController: {fileID: 2066598843}
 --- !u!1 &333972885
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,6 +1224,10 @@ PrefabInstance:
     - target: {fileID: 658952401342394789, guid: 54d1a4480a9a045ad97447d4e63f0d40, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 658952401776008832, guid: 54d1a4480a9a045ad97447d4e63f0d40, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 658952401776008838, guid: 54d1a4480a9a045ad97447d4e63f0d40, type: 3}
       propertyPath: m_Name
@@ -2566,6 +2572,7 @@ GameObject:
   - component: {fileID: 2092913065}
   - component: {fileID: 2092913064}
   - component: {fileID: 2092913063}
+  - component: {fileID: 2092913066}
   m_Layer: 5
   m_Name: Home
   m_TagString: Untagged
@@ -2801,7 +2808,20 @@ MonoBehaviour:
   _errorSound: {fileID: 8300000, guid: 1ed8fb76fc64e4e46847348138782234, type: 3}
   _crystal: {fileID: 1223904300}
   _buttonController: {fileID: 2066598843}
-  _errorPanel: {fileID: 391226998}
+--- !u!114 &2092913066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092913057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d938b1a7a0c62f444a293305d671929b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _coinWallet: {fileID: 2076118305}
+  _crystalWallet: {fileID: 1223904300}
 --- !u!1 &2133039014
 GameObject:
   m_ObjectHideFlags: 0

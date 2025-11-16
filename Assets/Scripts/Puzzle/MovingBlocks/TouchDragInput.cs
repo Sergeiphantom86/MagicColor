@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(GridDragMovement), typeof(Magnifier), typeof(InputHandler))]
@@ -13,6 +14,9 @@ public class TouchDragInput : MonoBehaviour
     private AudioClip _taking;
     private AudioClip _throwOff;
     private AudioClip _dragging;
+
+    public event Action<Vector2> OnTouchClick;
+    public event Action<Vector2> OnTouchDrag;
 
     private void Awake()
     {
@@ -70,7 +74,10 @@ public class TouchDragInput : MonoBehaviour
         _selectable.Select();
         _dragMovement.BeginInteraction(position, transform.position);
         _colorable.AssignOriginal();
-        _voiceover.PlaySfx(_taking);
+        _voiceover.Play(_taking);
+
+        OnTouchClick?.Invoke(position);
+
     }
 
     private void Move(Vector2 position)
@@ -78,6 +85,7 @@ public class TouchDragInput : MonoBehaviour
         if (_isSelected)
         {
             _dragMovement.ProcessInput(position, transform.position, _voiceover, _dragging);
+            OnTouchDrag?.Invoke(position);
         }
     }
 
@@ -88,7 +96,7 @@ public class TouchDragInput : MonoBehaviour
             _isSelected = false;
             _selectable.Deselect();
             _colorable.Disable();
-            _voiceover.PlaySfx(_throwOff);
+            _voiceover.Play(_throwOff);
         }
     }
 }

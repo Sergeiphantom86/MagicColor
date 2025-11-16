@@ -1,4 +1,5 @@
 using UnityEngine;
+using YG;
 
 [RequireComponent(typeof(Renderer))]
 public class ColorableObject : MonoBehaviour, IColorable
@@ -59,8 +60,15 @@ public class ColorableObject : MonoBehaviour, IColorable
     public void SetActive(bool state) =>
         gameObject.SetActive(state);
 
-    public Color GetColor() =>
-        _curentRenderer.material.color;
+    public Color GetColor()
+    {
+        if (_curentRenderer != null)
+        {
+            return _curentRenderer.material.color;
+        }
+        
+        return Color.red;
+    }
 
     private void ValidateRenderer()
     {
@@ -95,8 +103,11 @@ public class ColorableObject : MonoBehaviour, IColorable
 
     public void Disable()
     {
-        _curentRenderer.material.color = Color.white;
-        SetAlpha(_curentRenderer.material.color, 0.5f);
+        if (YG2.saves.IsTransparency)
+        {
+            _curentRenderer.material.color = Color.white;
+            SetAlpha(_curentRenderer.material.color, 0.5f);
+        }
     }
 
     private void SettingRenderingMode(Material material)

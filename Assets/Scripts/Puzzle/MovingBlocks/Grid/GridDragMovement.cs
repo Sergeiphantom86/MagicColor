@@ -49,7 +49,7 @@ public class GridDragMovement : MonoBehaviour
         {
             _hasMoved = true;
             AttemptShift(_accumulatedWorldDisplacement);
-            voiceover.PlaySfx(audioClip);
+            voiceover.Play(audioClip);
         }
     }
 
@@ -102,11 +102,14 @@ public class GridDragMovement : MonoBehaviour
 
     private void PositionAllBlocks()
     {
-        foreach (var block in _blocksContainer.Blocks)
+        if (_blocksContainer != null)
         {
-            Vector2Int gridPosition = ClampToGridBounds(_gridSystem.WorldToGridPosition(block.transform.position));
-            block.transform.position = _gridSystem.GridToWorldPosition(gridPosition);
-            _gridSystem.UpdateCell(gridPosition, block.gameObject);
+            foreach (var block in _blocksContainer.Blocks)
+            {
+                Vector2Int gridPosition = ClampToGridBounds(_gridSystem.WorldToGridPosition(block.transform.position));
+                block.transform.position = _gridSystem.GridToWorldPosition(gridPosition);
+                _gridSystem.UpdateCell(gridPosition, block.gameObject);
+            }
         }
     }
 

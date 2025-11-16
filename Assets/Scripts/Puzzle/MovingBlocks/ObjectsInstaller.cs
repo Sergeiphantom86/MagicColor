@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using YG;
 
 [RequireComponent(typeof(Repainter))]
 public class ObjectsInstaller : MonoBehaviour
@@ -21,6 +22,21 @@ public class ObjectsInstaller : MonoBehaviour
         _desiredBlockCount = 3;
         _repainter = GetComponent<Repainter>();
         _angleRotationHorizontal = new Vector3(60, 0, 0);
+
+        if (_repainter == null)
+        {
+            Debug.LogError("Repainter == null");
+            return;
+        }
+
+        if (YG2.saves.IsTutorial == false)
+        {
+            _key.gameObject.SetActive(false);
+            _lock.gameObject.SetActive(false);
+            Debug.Log("ofkvof");
+            _key = null;
+            _lock = null;
+        }
     }
 
     private void OnEnable()
@@ -50,13 +66,12 @@ public class ObjectsInstaller : MonoBehaviour
     {
         if (CanPlaceLock() == false) return;
 
-        foreach (var colorable in colorables)
+        var eligibleWall = colorables
+            .FirstOrDefault(colorable => IsEligibleWallForLock(colorable)) as Wall;
+
+        if (eligibleWall != null)
         {
-            if (IsEligibleWallForLock(colorable))
-            {
-                PlaceLockOnWall((Wall)colorable);
-                break;
-            }
+            PlaceLockOnWall(eligibleWall);
         }
     }
 
@@ -70,6 +85,11 @@ public class ObjectsInstaller : MonoBehaviour
         {
             PlaceKeyOnRandomBlock(eligibleBlocks);
         }
+    }
+
+    private bool CanPlaceKey()
+    {
+        return _key != null && _isPlacedKey == false;
     }
 
     private bool CanPlaceLock()
@@ -86,11 +106,14 @@ public class ObjectsInstaller : MonoBehaviour
 
     private void PlaceLockOnWall(Wall wall)
     {
+        if (_lock == null) return;
+
         _lock.transform.position = wall.CenterFence.position;
         wall.Block();
 
         AdjustLockRotation(wall);
         _isPlacedLock = true;
+
     }
 
     private void AdjustLockRotation(Wall wall)
@@ -99,11 +122,6 @@ public class ObjectsInstaller : MonoBehaviour
         {
             _lock.SetAngle(_angleRotationHorizontal);
         }
-    }
-
-    private bool CanPlaceKey()
-    {
-        return _key != null && _isPlacedKey == false;
     }
 
     private List<Block> FindEligibleBlocksForKey(List<IColorable> colorables)
@@ -128,8 +146,18 @@ public class ObjectsInstaller : MonoBehaviour
 
     private void PlaceKeyOnRandomBlock(List<Block> eligibleBlocks)
     {
-        var selectedBlock = eligibleBlocks[Random.Range(0, eligibleBlocks.Count)];
-        _key.transform.position = selectedBlock.transform.position;
+        _key.transform.position = GetSelectedBlock(eligibleBlocks).transform.position;
+
         _isPlacedKey = true;
+    }
+
+    private Block GetSelectedBlock(List<Block> eligibleBlocks)
+    {
+        return eligibleBlocks[GetRandomIndex(eligibleBlocks.Count)];
+    }
+
+    private int GetRandomIndex(int quantity)
+    {
+        return Random.Range(0, quantity);
     }
 }

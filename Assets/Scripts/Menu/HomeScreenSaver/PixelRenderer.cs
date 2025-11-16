@@ -6,10 +6,10 @@ using UnityEngine.UI;
 [RequireComponent(typeof(ImageAnalyzer), typeof(Image), typeof(PixelSpawner))]
 public class PixelRenderer : MonoBehaviour
 {
-    private PixelSpawner _pixelSpawner;
-    private ImageAnalyzer _analyzer;
     private Image _image;
     private Vector2 _centerOffset;
+    private ImageAnalyzer _analyzer;
+    private PixelSpawner _pixelSpawner;
     private List<Fragment> _fragments;
 
     public List<Fragment> Fragments => _fragments;
@@ -48,8 +48,11 @@ public class PixelRenderer : MonoBehaviour
         }
 
         CalculateCenterOffset(_image.sprite);
+
         _pixelSpawner.CreatePixels(colorGroups, _centerOffset);
+
         _fragments = _pixelSpawner.Pixels;
+
         OnPixelsRendered?.Invoke();
     }
 

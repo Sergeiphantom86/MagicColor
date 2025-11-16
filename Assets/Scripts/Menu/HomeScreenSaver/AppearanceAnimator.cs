@@ -1,7 +1,7 @@
-using DG.Tweening;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Sorter))]
 public class AppearanceAnimator : MonoBehaviour, IAnimatable
@@ -12,7 +12,6 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
     private Vector3 _endScale;
     private Sorter _sorter;
     private Sequence _currentSequence;
-
     private List<Fragment> _fragments;
 
     public List<Fragment> Fragments => _fragments;
@@ -21,7 +20,7 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
 
     private void Awake()
     {
-        _startSizeMultiplier = 2;
+        _startSizeMultiplier = 50;
         _endScale = new Vector3(20, 20, 1f);
         _delayBetweenObjects = 0.01f;
         _animationDuration = 0.5f;
@@ -39,10 +38,25 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
         _sorter.HasSorted -= AnimateAppearance;
     }
 
+    public void PauseAnimations()
+    {
+        if (_currentSequence != null && _currentSequence.IsPlaying())
+        {
+            _currentSequence.Pause();
+        }
+    }
+
+    public void ResumeAnimations()
+    {
+        if (_currentSequence != null && _currentSequence.IsPlaying() == false)
+        {
+            _currentSequence.Play();
+        }
+    }
+
     private void AnimateAppearance()
     {
         ResetAnimation();
-
         _currentSequence = DOTween.Sequence();
 
         _fragments = _sorter.Fragments;
@@ -81,8 +95,7 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
     {
         _currentSequence.Insert(
               index * _delayBetweenObjects,
-              fragment.transform.DOScale(_endScale, _animationDuration).SetEase(Ease.OutBack)
-          );
+              fragment.transform.DOScale(_endScale, _animationDuration).SetEase(Ease.OutBack));
     }
 
     private void ResetAnimation()
@@ -93,21 +106,5 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
         }
 
         _currentSequence = null;
-    }
-
-    public void PauseAnimations()
-    {
-        if (_currentSequence != null && _currentSequence.IsPlaying())
-        {
-            _currentSequence.Pause();
-        }
-    }
-
-    public void ResumeAnimations()
-    {
-        if (_currentSequence != null && _currentSequence.IsPlaying() == false)
-        {
-            _currentSequence.Play();
-        }
     }
 }

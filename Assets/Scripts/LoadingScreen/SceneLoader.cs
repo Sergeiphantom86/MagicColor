@@ -1,5 +1,4 @@
 using DG.Tweening;
-using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -14,16 +13,14 @@ public class SceneLoader : MonoBehaviour
 
     [SerializeField] private float _fadeDuration;
     [SerializeField] private float _minLoadTime;
-    //[SerializeField] private LoadingRotator _loadingRotator;
 
+    private float _maxLoad;
+    private bool _isFirstLoad;
+    private PanelFader _panelFader;
     private CanvasGroup _canvasGroup;
     private Coroutine _loadingCoroutine;
-    private PanelFader _panelFader;
-    private bool _isFirstLoad = true;
-    private float _maxLoad = 0.9f;
 
     public static SceneLoader Instance { get; private set; }
-    public string ForestEmeraldGrove => nameof(ForestEmeraldGrove);
 
     private void Awake()
     {
@@ -36,14 +33,14 @@ public class SceneLoader : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        _maxLoad = 0.9f;
+        _isFirstLoad = true;
         _canvasGroup = GetComponent<CanvasGroup>();
         _panelFader = GetComponent<PanelFader>();
 
         _canvasGroup.alpha = _isFirstLoad ? 1f : 0f;
         _canvasGroup.interactable = false;
         _canvasGroup.blocksRaycasts = false;
-
-        //_loadingRotator.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -68,8 +65,6 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator LoadSceneProcess(string sceneName)
     {
-        //_loadingRotator.gameObject.SetActive(true);
-
         yield return _panelFader.Fade(1f, true).WaitForCompletion();
 
         float loadStartTime = Time.realtimeSinceStartup;
@@ -89,8 +84,6 @@ public class SceneLoader : MonoBehaviour
         }
 
         asyncLoad.allowSceneActivation = true;
-
-        //_loadingRotator.gameObject.SetActive(false);
 
         yield return null;
 

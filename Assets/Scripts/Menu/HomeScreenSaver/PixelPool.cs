@@ -4,8 +4,8 @@ using UnityEngine.Pool;
 public class PixelPool : MonoBehaviour
 {
     [SerializeField] private Fragment _pixelPrefab;
-    [SerializeField] private int _defaultPoolSize = 1000;
-    [SerializeField] private int _maxPoolSize = 5000;
+    [SerializeField] private int _defaultPoolSize;
+    [SerializeField] private int _maxPoolSize;
     [SerializeField] private bool _collectionCheck = true;
 
     private ObjectPool<Fragment> _pool;
@@ -16,6 +16,8 @@ public class PixelPool : MonoBehaviour
     private void Awake()
     {
         _poolParent = transform;
+        _defaultPoolSize = 1000;
+        _maxPoolSize = 5000;
         CreatePool();
     }
 

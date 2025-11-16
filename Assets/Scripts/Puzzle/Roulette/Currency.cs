@@ -25,6 +25,7 @@ public class Currency : MonoBehaviour
 
     private void Awake()
     {
+        _indexInRoulette = -1;
         _weightCalculator = new WeightCalculator();
         _textMeshPro = GetComponentInChildren<TextMeshProUGUI>();
         _image = GetComponentInChildren<Image>();
@@ -48,7 +49,6 @@ public class Currency : MonoBehaviour
             return;
         }
 
-        _indexInRoulette = -1;
         SetValue(GetCleanNumericString(_textMeshPro.text));
 
         _weight = _weightCalculator.GetWeight(_value);

@@ -5,7 +5,6 @@ using UnityEngine;
 public class QuestCollector : MonoBehaviour
 {
     private List<Quest> _allQuests;
-    public List<Quest> AllQuests => _allQuests;
 
     public event Action<List<Quest>> HasListCreated;
 
@@ -28,6 +27,7 @@ public class QuestCollector : MonoBehaviour
             if (transform.GetChild(i).TryGetComponent(out Quest quest))
             {
                 quest.SetIndex(i);
+
                 _allQuests.Add(quest);
             }
         }

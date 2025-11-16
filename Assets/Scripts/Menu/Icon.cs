@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using YG;
 
@@ -8,11 +9,24 @@ public class Icon : MonoBehaviour
 
     private void Awake()
     {
-        _textMeshProUGUI = GetComponent<TextMeshProUGUI>();
+        _textMeshProUGUI = GetComponentInChildren<TextMeshProUGUI>();
+
+        SetRank(SetLexel().ToString().NullIfEmpty());
     }
 
     public void SetRank(string rank)
     {
+        if (_textMeshProUGUI == null) return;
+       
         _textMeshProUGUI.text = rank;
+    }
+
+    private int SetLexel()
+    {
+        int value = 1;
+
+        value += YG2.saves.QuestIndex;
+
+        return value;
     }
 }

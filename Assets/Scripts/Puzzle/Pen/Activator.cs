@@ -102,7 +102,7 @@ public class Activator : MonoBehaviour
     {
         if (_remainingPixels <= 0)
         {
-            _voiceover.PlaySfx(_winn);
+            _voiceover.Play(_winn);
             OnPuzzleComplete?.Invoke();
         }
     }

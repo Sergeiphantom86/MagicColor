@@ -21,7 +21,7 @@ public class Voiceover : MonoBehaviour
         LoadVolumeSettings();
     }
 
-    public void PlaySfx(AudioClip clip)
+    public void Play(AudioClip clip)
     {
         if (clip != null && _sfxSource != null )
         {
@@ -40,8 +40,12 @@ public class Voiceover : MonoBehaviour
     {
         float clampedVolume = Mathf.Clamp(YG2.saves.SoundVolume, MinVolume, MaxVolume);
         float dbVolume = Mathf.Log10(clampedVolume) * DBMultiplier;
-       
-        _sfxGroup.audioMixer.SetFloat(SoundVolume, dbVolume);
+
+
+        if (_sfxGroup != null)
+        {
+            _sfxGroup.audioMixer.SetFloat(SoundVolume, dbVolume);
+        }
     }
 
     private void OnValidate()

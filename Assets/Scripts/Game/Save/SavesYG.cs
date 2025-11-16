@@ -5,17 +5,28 @@ namespace YG
     public partial class SavesYG
     {
         private Sprite _sprite;
-        private static long _currentCoin;
-        private static long _currentCrystal;
-        private static int _questIndex;
         private bool _complete;
         private bool _isSimilar;
+        private bool _isTutorial;
+        private int _indexUnblocking;
+        private bool _isTransparency;
+        private static int _questIndex;
+        private static long _currentCoin;
+        private static long _currentCrystal;
 
         public SavesYG()
         {
+            _indexUnblocking = 7;
+            _questIndex = 0;
+            _currentCoin = 0;
+            _currentCrystal = 0;
+            _isSimilar = false;
+            _complete = false;
+            _isTutorial = false;
+            CountStars = 0;
             MusicVolume = 0.8f;
             SoundVolume = 0.8f;
-            CountStars = 0;
+            MusicPlaybackTime = 0;
         }
 
         public float MusicVolume { get; private set; }
@@ -35,6 +46,11 @@ namespace YG
         public Sprite Sprite => _sprite;
 
         public bool Complete => _complete;
+
+        public bool IsTutorial => _isTutorial;
+
+        public bool IsTransparency => _isTransparency;
+
         public bool IsSimilar => _isSimilar;
 
         public void SetAssembledPuzzle(bool complete)
@@ -42,28 +58,27 @@ namespace YG
             _complete = complete;
         }
 
+        public void SetTutorial(int index)
+        {
+            if (index == _indexUnblocking)
+            {
+                _isTutorial = true;
+            }
+        }
+
+        public void MakeTransparent(bool isTransparency)
+        {
+            _isTransparency = isTransparency;
+        }
+
         public void SetSimilarity(bool isSimilar)
         {
             _isSimilar = isSimilar;
         }
 
-        public void SetCurrentCoin(long amount)
-        {
-            if (amount < 0) return;
-
-            _currentCoin += amount;
-        }
-
         public void SetMusicPlaybackTime(float time)
         {
             MusicPlaybackTime = time;
-        }
-
-        public void SetCurrentCrystal(long amount)
-        {
-            if (amount < 0) return;
-
-            _currentCrystal += amount;
         }
 
         public void SetCurrency(Wallet wallet, long amount)
@@ -78,8 +93,6 @@ namespace YG
 
         public void SetQuestIndex(int questInex)
         {
-            if (questInex < 0) return;
-
             _questIndex = questInex;
         }
 

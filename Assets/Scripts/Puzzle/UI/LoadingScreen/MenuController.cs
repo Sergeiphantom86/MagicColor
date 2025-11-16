@@ -1,29 +1,35 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using YG;
-using static SceneLoader;
 
 [RequireComponent(typeof(PanelFader))]
 public class MenuController : MonoBehaviour
 {
     private const string AfterPuzzleRewardID = "after_puzzle_reward";
+    private const string Menu = nameof(Menu);
+    private const string Puzzle = nameof(Puzzle);
     private const string Roulette = nameof(Roulette);
+    private const string Tutorial = nameof(Tutorial);
 
     [SerializeField] private MenuButtons _menuButtons;
     [SerializeField] private AnimatorPuzzle _animation;
     [SerializeField] private ImageAnalyzer _imageAnalyzer;
     [SerializeField] private Timer _timer;
     [SerializeField] private PanelFader _panelFader;
-    [SerializeField] private Roulette _roulette;
     [SerializeField] private TutorialPuzzle _tutorialPuzzle;
 
     private GameSaveSystem _gameSaveSystem;
+    private MenuLoader _menuLoader;
 
     private bool _adInProgress;
 
     private void Awake()
     {
         _gameSaveSystem = FindObjectOfType<GameSaveSystem>();
+        _menuLoader = GetComponent<MenuLoader>();
+
         ValidateComponents();
+
         _menuButtons.Initialize(HandleStartButton, HandleResumeButton);
     }
 
@@ -63,7 +69,7 @@ public class MenuController : MonoBehaviour
             LoadScene(YG2.saves.Sprite);
             return;
         }
-
+        
         LoadScene(_tutorialPuzzle.Sprite);
     }
 
@@ -72,7 +78,11 @@ public class MenuController : MonoBehaviour
         _imageAnalyzer.AnalyzeTexture(sprite);
         _panelFader.FadeOut(() => 
         _menuButtons.HideStartButton());
-        _timer.StartTimer();
+
+        if (_timer != null)
+        {
+            _timer.StartTimer();
+        }
     }
 
     private void HandlePuzzleComplete()
@@ -117,8 +127,14 @@ public class MenuController : MonoBehaviour
     private void LoadMenuScene()
     {
         _adInProgress = false;
-        YG2.saves.ResetSprite();
-        Instance.LoadSceneWithSplash(Roulette);
+
+        if (SceneManager.GetActiveScene().name != Tutorial)
+        {
+            _menuLoader.TargetScene(Roulette);
+            return;
+        }
+
+        _menuLoader.TargetScene(Puzzle);
     }
 
     private void ValidateComponents()

@@ -10,8 +10,9 @@ Material:
   m_Name: MovingBlock
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 2100000, guid: f3a9c4c0f23dec641b003e18b39d1bc0, type: 2}
-  m_ModifiedSerializedProperties: 2
+  m_ModifiedSerializedProperties: 18
   m_ValidKeywords:
+  - _ALPHAPREMULTIPLY_ON
   - _EMISSION
   m_InvalidKeywords:
   - _
@@ -22,8 +23,9 @@ Material:
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -31,7 +33,11 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
+    - _DstBlend: 10
+    - _Glossiness: 1
     - _Metallic: 0
+    - _Mode: 3
+    - _ZWrite: 0
     m_Colors:
     - _Color: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 1}
   m_BuildTextureStacks: []

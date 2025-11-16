@@ -1,5 +1,4 @@
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,31 +21,13 @@ public abstract class MenuButtonBase : IMenuButton
         button.onClick.AddListener(() =>
           Press(button.name, handlerButtonWindowInteraction, buttonSound, audioClip));
 
-        SetButtonText(button);
-
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnButtonClicked);
-    }
-
-    private void SetButtonText(Button button)
-    {
-        string text = GetButtonText();
-
-        if (text == null) return;
-
-        TMP_Text buttonText = button.GetComponentInChildren<TMP_Text>();
-
-        if (buttonText != null)
-        {
-            buttonText.text = text;
-        }
     }
 
     public virtual void Press(string name,
        HandlerButtonWindowInteraction handlerButtonWindowInteraction,
        ButtonSoundHandler buttonSound, AudioClip audioClip){ }
-
-    private string GetButtonText() => null;
 
     private  void OnButtonClicked()
     {

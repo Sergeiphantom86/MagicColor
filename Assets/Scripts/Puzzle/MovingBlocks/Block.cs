@@ -36,23 +36,8 @@ public class Block : ColorableObject, IDestroyable
         _collider.enabled = false;
         LetGo();
         AssignOriginal();
-        _voiceover.PlaySfx(_audioClip);
+        _voiceover.Play(_audioClip);
         _pathMover.Move(waypoint, endPoint, ExecuteDestruction);
-    }
-
-    private void OnEnable()
-    {
-        _rotation.OnRotated += Gdcd;
-    }
-
-    private void OnDisable()
-    {
-        _rotation.OnRotated -= Gdcd;
-    }
-
-    private void Gdcd()
-    {
-        //_collider.enabled = true;
     }
 
     private void LetGo()
@@ -70,6 +55,7 @@ public class Block : ColorableObject, IDestroyable
         }
 
         _inkSpawner.ActivateInkDrops(GetColor());
+
        StartCoroutine(Wait());
     }
 

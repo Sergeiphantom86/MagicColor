@@ -88,7 +88,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a5ccd47ccacfee4b9f291d0b115412b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _button: {fileID: 6622032592137121577}
 --- !u!1 &2529695045733942068
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,7 +569,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a5ccd47ccacfee4b9f291d0b115412b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _button: {fileID: 8990692104667343994}
 --- !u!1 &4683304704759481704
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,7 +657,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a5ccd47ccacfee4b9f291d0b115412b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _button: {fileID: 4777368275016203521}
 --- !u!1 &5401425873628963089
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,11 +688,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3010447404521354919}
   - {fileID: 252802679303971326}
   - {fileID: 2117509177306144184}
   - {fileID: 2810447697869700308}
   - {fileID: 7245104441491583448}
+  - {fileID: 3010447404521354919}
   - {fileID: 4955677892045459354}
   - {fileID: 1844446380269618325}
   m_Father: {fileID: 0}
@@ -843,7 +840,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a5ccd47ccacfee4b9f291d0b115412b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _button: {fileID: 2853613312046892845}
 --- !u!1 &5738126890070266012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1412,13 +1408,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _questID: 0
-  _questName: 
-  _questDescription: 
-  _unlockPuzzleId: 
   _lockImage: {fileID: 1864485086504652857}
   _activeIndicator: {fileID: 7132708251646581143}
-  _questButton: {fileID: 6622032592137121577}
+  _isTutorial: 0
 --- !u!114 &2117509177306144187 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2082264635702603873, guid: cf40fdbdf06c8491aa33f7d6edc813fb, type: 3}
@@ -1791,13 +1783,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _questID: 0
-  _questName: 
-  _questDescription: 
-  _unlockPuzzleId: 
   _lockImage: {fileID: 6158264944026109621}
   _activeIndicator: {fileID: 5338621939256566014}
-  _questButton: {fileID: 2853613312046892845}
+  _isTutorial: 0
 --- !u!1001 &4315864532665699510
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2018,13 +2006,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _questID: 0
-  _questName: 
-  _questDescription: 
-  _unlockPuzzleId: 
   _lockImage: {fileID: 2053965834905274740}
   _activeIndicator: {fileID: 9143644875446706106}
-  _questButton: {fileID: 0}
+  _isTutorial: 0
 --- !u!114 &2810447697869700311 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2082264635702603873, guid: cf40fdbdf06c8491aa33f7d6edc813fb, type: 3}
@@ -2057,8 +2041,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1049085460888534502, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049085460888534502, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049085462108027017, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1049085462108027017, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
       propertyPath: m_Materials.Array.size
@@ -2207,8 +2199,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1049085460888534502, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049085460888534502, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049085462108027017, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1049085462108027017, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
       propertyPath: m_Materials.Array.size
@@ -2357,8 +2357,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1049085460888534502, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049085460888534502, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049085462108027017, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1049085462108027017, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
       propertyPath: m_Materials.Array.size
@@ -2507,8 +2515,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1049085460888534502, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049085460888534502, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049085462108027017, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1049085462108027017, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
       propertyPath: m_Materials.Array.size
@@ -2856,13 +2872,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _questID: 0
-  _questName: 
-  _questDescription: 
-  _unlockPuzzleId: 
   _lockImage: {fileID: 2934194865808164844}
   _activeIndicator: {fileID: 7637751316227790816}
-  _questButton: {fileID: 0}
+  _isTutorial: 0
 --- !u!114 &7245104441491583451 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2082264635702603873, guid: cf40fdbdf06c8491aa33f7d6edc813fb, type: 3}

@@ -85,7 +85,7 @@ public class FragmentQueueProcessor
             yield return _mover.MoveToPosition(_point.transform.position, _currentDuration);
 
             _fragmentAnimator.ActivateFragment(_point);
-            _voiceover.PlaySfx(_pixelActivation);
+            _voiceover.Play(_pixelActivation);
 
             OnFragmentActivated?.Invoke();
         }

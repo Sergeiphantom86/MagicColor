@@ -6,13 +6,15 @@ using System.Linq;
 [RequireComponent(typeof(Agitator), typeof(AppearanceAnimator))]
 public class PixelShine : MonoBehaviour, IAnimatable
 {
+    [SerializeField] private ParticleSystem _particleSystem;
+    
     private float _shineDuration;
     private float _pauseBetweenPasses;
     private float _delayBetweenPixels;
     private Sequence _shineSequence;
     private Agitator _pixelExplosion;
-    private AppearanceAnimator _appearanceAnimator;
     private List<Fragment> _validFragments;
+    private AppearanceAnimator _appearanceAnimator;
     private Dictionary<Fragment, Color> _originalColors;
 
     private void Awake()
@@ -34,7 +36,6 @@ public class PixelShine : MonoBehaviour, IAnimatable
     {
         _appearanceAnimator.OnAppearanceComplete -= StartShineAnimation;
         RestoreOriginalColors();
-        _shineSequence?.Kill();
     }
 
     public void PauseAnimations() =>
@@ -45,6 +46,9 @@ public class PixelShine : MonoBehaviour, IAnimatable
 
     private void StartShineAnimation()
     {
+        _particleSystem.gameObject.SetActive(true);
+        _particleSystem.Play();
+
         if (_appearanceAnimator.Fragments.Count == 0) return;
 
         _validFragments = _appearanceAnimator.Fragments

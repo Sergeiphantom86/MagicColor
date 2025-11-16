@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PixelPool))]
+[RequireComponent(typeof(PixelPool), typeof(Voiceover))]
 public class PixelSpawner : MonoBehaviour
 {
     private float _pixelSize;
@@ -28,6 +28,21 @@ public class PixelSpawner : MonoBehaviour
         {
             SpawnColorGroup(colorGroup.Key, colorGroup.Value, centerOffset);
         }
+    }
+
+    public void Clear()
+    {
+        if (_pixels == null || _pixelPool == null) return;
+
+        foreach (Fragment pixel in _pixels)
+        {
+            if (pixel != null)
+            {
+                _pixelPool.Pool.Release(pixel);
+            }
+        }
+
+        _pixels.Clear();
     }
 
     private void SpawnColorGroup(Color color, List<Vector3> positions, Vector2 centerOffset)
@@ -81,20 +96,5 @@ public class PixelSpawner : MonoBehaviour
     private float GetPositionOnCoordinate(float texturePosition, float centerOffset)
     {
         return (texturePosition - centerOffset) * _pixelSize;
-    }
-
-    public void Clear()
-    {
-        if (_pixels == null || _pixelPool == null) return;
-
-        foreach (Fragment pixel in _pixels)
-        {
-            if (pixel != null)
-            {
-                _pixelPool.Pool.Release(pixel);
-            }
-        }
-
-        _pixels.Clear();
     }
 }

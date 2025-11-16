@@ -1,10 +1,13 @@
 using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Viewer), typeof(PixelSpawner))]
 public class Agitator : MonoBehaviour, IAnimatable
 {
+    [SerializeField] private ParticleSystem _particleSystem;
+    
     private const float MinDirectionValue = -1f;
     private const float MaxDirectionValue = 1f;
     private const float AxisValueZ = 0f;
@@ -16,10 +19,10 @@ public class Agitator : MonoBehaviour, IAnimatable
     private float _scaleDownDuration;
     private float _delayBeforeDestroy;
     private float _interval;
-
     private Viewer _viewer;
     private PixelSpawner _pixelSpawner;
     private Sequence _explosionSequence;
+    private WaitForSeconds _delayAfterDestroy;
 
     private void Awake()
     {
@@ -31,6 +34,7 @@ public class Agitator : MonoBehaviour, IAnimatable
         _scaleDownDuration = 0.5f;
         _delayBeforeDestroy = 0.1f;
 
+        _delayAfterDestroy = new WaitForSeconds(_delay);
         _viewer = GetComponent<Viewer>();
         _pixelSpawner = GetComponent<PixelSpawner>();
     }
@@ -50,27 +54,7 @@ public class Agitator : MonoBehaviour, IAnimatable
 
     public void TriggerExplosion(List<Fragment> pixels)
     {
-        _explosionSequence?.Kill();
-        _explosionSequence = DOTween.Sequence();
-
-        _explosionSequence.AppendInterval(_interval);
-
-        foreach (Fragment pixel in pixels)
-        {
-            if (pixel == null || pixel.gameObject.activeInHierarchy == false) continue;
-
-            AddPixelToExplosionSequence(pixel);
-        }
-
-        _explosionSequence.OnComplete(() =>
-        {
-            _pixelSpawner.Clear();
-
-            DOVirtual.DelayedCall(_delay, () => 
-            _viewer.ShowNextSprite());
-        });
-
-        _explosionSequence.Play();
+        StartCoroutine(WaitExplosion(pixels));
     }
 
     private void AddPixelToExplosionSequence(Fragment pixel)
@@ -148,5 +132,34 @@ public class Agitator : MonoBehaviour, IAnimatable
     private void OnDestroy()
     {
         _explosionSequence?.Kill();
+    }
+
+    private IEnumerator WaitExplosion(List<Fragment> pixels)
+    {
+        yield return _delayAfterDestroy;
+
+        _explosionSequence?.Kill();
+        _explosionSequence = DOTween.Sequence();
+
+        _explosionSequence.AppendInterval(_interval);
+
+        foreach (Fragment pixel in pixels)
+        {
+            if (pixel == null || pixel.gameObject.activeInHierarchy == false) continue;
+
+            AddPixelToExplosionSequence(pixel);
+        }
+
+        _explosionSequence.OnComplete(() =>
+        {
+            _pixelSpawner.Clear();
+
+            DOVirtual.DelayedCall(_delay, () =>
+            _viewer.ShowNextSprite());
+        });
+
+        _explosionSequence.Play();
+        _particleSystem.Stop();
+        _particleSystem.gameObject.SetActive(false);
     }
 }

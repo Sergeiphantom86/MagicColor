@@ -21,7 +21,7 @@ public class Star : MonoBehaviour
 
         if (isOn)
         {
-            _voiceover.PlaySfx(_audioClip);
+            _voiceover.Play(_audioClip);
         }
     }
 }

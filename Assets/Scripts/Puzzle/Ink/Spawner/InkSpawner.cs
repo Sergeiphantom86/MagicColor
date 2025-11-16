@@ -37,7 +37,7 @@ public class InkSpawner : MonoBehaviour
         for (int i = 0; i < _quantity * _quantity; i++)
         {
             SpawnSingleInkDrop(GetRow(i), GetCol(i), color);
-            _voiceover.PlaySfx(_spawn);
+            _voiceover.Play(_spawn);
             yield return _waitForSeconds;
         }
 
@@ -51,7 +51,7 @@ public class InkSpawner : MonoBehaviour
             if (mover != null && mover.isActiveAndEnabled)
             {
                 mover.BeginMovement();
-                _voiceover.PlaySfx(_moving);
+                _voiceover.Play(_moving);
             }
 
             yield return _waitForSeconds;

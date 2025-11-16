@@ -20,7 +20,8 @@ public class SettingsClosure : MonoBehaviour
 
     private void OnEnable()
     {
-        _button.onClick.AddListener(() => CloseSettings(_audioClip));
+        _button.onClick.AddListener(() => 
+        CloseSettings(_audioClip));
     }
 
     private void CloseSettings(AudioClip audioClip)

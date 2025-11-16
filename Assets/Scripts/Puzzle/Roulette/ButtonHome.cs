@@ -1,11 +1,9 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using YG;
 
-[RequireComponent(typeof(Voiceover), typeof(Button))]
+[RequireComponent(typeof(Voiceover), typeof(Button), typeof(MenuLoader))]
 public class ButtonHome : MonoBehaviour
 {
     private const string Menu = nameof(Menu);
@@ -16,17 +14,38 @@ public class ButtonHome : MonoBehaviour
     [SerializeField] private AudioClip _errorSound;
     [SerializeField] private CrystalWallet _crystal;
     [SerializeField] private ButtonController _buttonController;
-    [SerializeField] private ErrorPanel _errorPanel;
-
+    
     private Voiceover _voiceover;
+    private MenuLoader _menuLoader;
     private Button _button;
     private int _extraTime;
 
     private void Awake()
     {
         _extraTime = 2;
-        _voiceover = GetComponent<Voiceover>();
         _button = GetComponent<Button>();
+        _voiceover = GetComponent<Voiceover>();
+        _menuLoader = GetComponent<MenuLoader>();
+
+        if (_button == null)
+        {
+            Debug.LogError("Button == null");
+            return;
+        }
+
+
+        if (_voiceover == null)
+        {
+            Debug.LogError("Voiceover == null");
+            return;
+        }
+
+
+        if (_menuLoader == null)
+        {
+            Debug.LogError("MenuLoader == null");
+            return;
+        }
     }
 
     private void Start()
@@ -36,54 +55,29 @@ public class ButtonHome : MonoBehaviour
 
     private void Play()
     {
-        if (_buttonController.IsSpin == false)
-        {
-            _warner.TurnOn();
-            _errorPanel.TurnOn();
-            _button.interactable = false;
-            StartCoroutine(WaitForWindowClose(_errorSound, true, _extraTime, () =>
-                _warner.TurnOff()));
-
-            return;
-        }
-
         _button.interactable = false;
-        StartCoroutine(WaitForWindowClose(_audioClip, true,0, () =>
-        LoadTargetScene()));
-    }
 
-    private void LoadTargetScene()
-    {
-        YG2.saves.SetAssembledPuzzle(false);
-
-        if (SceneLoader.Instance == null)
+        if (_buttonController != null)
         {
-            Debug.LogError("SceneLoader instance not found! Using default load.");
-            SceneManager.LoadScene("Menu");
-            return;
+            if (_buttonController.IsSpin == false)
+            {
+                _warner.TurnOn();
+
+                StartCoroutine(WaitForWindowClose(_errorSound, true, _extraTime, () =>
+                    _warner.TurnOff()));
+
+                return;
+            }
         }
 
-        if (_coin != null && _crystal != null)
-        {
-            SaveProgress();
-        }
-
-        SceneLoader.Instance.LoadSceneWithSplash(Menu);
-    }
-
-    private void SaveProgress()
-    {
-        YG2.saves.SetCurrency(_coin, _coin.Balance);
-        YG2.saves.SetCurrency(_crystal, _crystal.Balance);
-        YG2.saves.SetAssembledPuzzle(true);
-        YG2.saves.ResetSprite();
-        YG2.SaveProgress();
+        StartCoroutine(WaitForWindowClose(_audioClip, true,0, () => 
+        _menuLoader.TargetScene(Menu)));
     }
 
     private IEnumerator WaitForWindowClose(AudioClip clip, bool isOn, int duration, Action callback)
     {
-        _voiceover.PlaySfx(clip);
-       
+        _voiceover.Play(clip);
+
         yield return new WaitForSeconds(clip.length + duration);
 
         _button.interactable = isOn;

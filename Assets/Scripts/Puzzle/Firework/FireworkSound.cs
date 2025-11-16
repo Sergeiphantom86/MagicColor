@@ -22,7 +22,7 @@ public class FireworkSound : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
 
-            _voiceover.PlaySfx(_audioClip);
+            _voiceover.Play(_audioClip);
         }
     }
 }

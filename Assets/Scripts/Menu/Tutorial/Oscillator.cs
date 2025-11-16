@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Oscillator : MonoBehaviour
 {
+    [SerializeField] private Rotator _rotation;
+    
     private float _duration;
     private float _amplitude;
     private int _quantityCycles;
@@ -16,10 +18,18 @@ public class Oscillator : MonoBehaviour
         _quantityCycles = 4;
     }
 
+    private void OnEnable()
+    {
+        _rotation.OnRotated += SetStartPosition;
+    }
+
+    private void OnDisable()
+    {
+        _rotation.OnRotated -= SetStartPosition;
+    }
+
     public void Play()
     {
-        _initialRotation = transform.eulerAngles;
-
         if (_sequence != null && _sequence.IsPlaying())
             return;
 
@@ -31,9 +41,12 @@ public class Oscillator : MonoBehaviour
         if (_sequence != null)
         {
             _sequence.Kill();
-
-            transform.eulerAngles = _initialRotation;
         }
+    }
+
+    private void SetStartPosition()
+    {
+        _initialRotation = transform.eulerAngles;
     }
 
     private void Rotate()

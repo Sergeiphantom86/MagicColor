@@ -1,0 +1,29 @@
+using DG.Tweening;
+using UnityEngine;
+
+public class Scaler : MonoBehaviour
+{
+    private Tweener _currentTween;
+
+    public Tweener TurnOn(Vector3 scale, float duration, float delay, float overshoot)
+    {
+        _currentTween?.Kill();
+
+        return _currentTween = transform.DOScale(scale, duration)
+            .SetDelay(delay)
+            .SetEase(Ease.OutBack, overshoot: overshoot);
+    }
+
+    public void SetInactive(float minScale)
+    {
+        _currentTween?.Kill();
+        gameObject.SetActive(false);
+        transform.localScale = Vector3.one * minScale;
+    }
+
+    public void Stopped(float minScale)
+    {
+        _currentTween?.Kill();
+        transform.localScale = Vector3.one * minScale;
+    }
+}
