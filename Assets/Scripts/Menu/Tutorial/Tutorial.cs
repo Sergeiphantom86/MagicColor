@@ -41,12 +41,12 @@ public class Tutorial : MonoBehaviour
 
     private void Start()
     {
-        StartTutorial();
+        Play();
     }
 
-    public void StartTutorial()
+    public void Play()
     {
-        _particleSystem?.Play();
+        _particleSystem.Play();
 
         IsSwipeAllowed = true;
         IsClickAllowed = false;
@@ -55,7 +55,7 @@ public class Tutorial : MonoBehaviour
     public void CompleteSwapStep()
     {
         _animator.SetBool(IsSwipe, true);
-        _particleSystem?.Stop();
+        _particleSystem.Stop();
 
         IsSwipeAllowed = false;
         IsClickAllowed = true;
@@ -63,10 +63,10 @@ public class Tutorial : MonoBehaviour
 
     public void CompleteClickStep()
     {
-        FinishTutorial();
+        Finish();
     }
 
-    private void FinishTutorial()
+    private void Finish()
     {
         _particleSystem.Stop();
         gameObject.SetActive(false);

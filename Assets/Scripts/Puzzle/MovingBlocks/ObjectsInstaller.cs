@@ -33,7 +33,7 @@ public class ObjectsInstaller : MonoBehaviour
         {
             _key.gameObject.SetActive(false);
             _lock.gameObject.SetActive(false);
-            Debug.Log("ofkvof");
+
             _key = null;
             _lock = null;
         }

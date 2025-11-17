@@ -7,25 +7,17 @@ public class QuestSystem : MonoBehaviour
     private int _currentQuestIndex;
     private Quest _active;
     private IReadOnlyList<Quest> _quests;
-    private QuestCollector _questCollector;
     private TransitionChooser _transitionChooser;
     private List<Quest> _subscribedQuests;
 
     private void Awake()
     {
-        _questCollector = GetComponent<QuestCollector>();
         _transitionChooser = GetComponent<TransitionChooser>();
         _subscribedQuests = new List<Quest>();
 
         if (_transitionChooser == null)
         {
             Debug.LogError("TransitionChooser not found!");
-            return;
-        }
-
-        if (_questCollector == null)
-        {
-            Debug.LogError("QuestCollector not found!");
             return;
         }
 
@@ -40,17 +32,7 @@ public class QuestSystem : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnEnable()
-    {
-        _questCollector.HasListCreated += Initialize; ;
-    }
-
-    private void OnDisable()
-    {
-        _questCollector.HasListCreated -= Initialize;
-    }
-
-    private void Initialize(IReadOnlyList<Quest> quests)
+    public void Initialize(IReadOnlyList<Quest> quests)
     {
         if (quests == null || quests.Count == 0) return;
 
@@ -63,7 +45,7 @@ public class QuestSystem : MonoBehaviour
 
     private void SetNextIndex()
     {
-        if (YG2.saves.Complete && YG2.saves.IsSimilar)
+        if (YG2.saves.IsSimilar)
         {
             _currentQuestIndex++;
 

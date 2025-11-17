@@ -18,14 +18,12 @@ public class MenuController : MonoBehaviour
     [SerializeField] private PanelFader _panelFader;
     [SerializeField] private TutorialPuzzle _tutorialPuzzle;
 
-    private GameSaveSystem _gameSaveSystem;
     private MenuLoader _menuLoader;
 
     private bool _adInProgress;
 
     private void Awake()
     {
-        _gameSaveSystem = FindObjectOfType<GameSaveSystem>();
         _menuLoader = GetComponent<MenuLoader>();
 
         ValidateComponents();
@@ -147,8 +145,5 @@ public class MenuController : MonoBehaviour
 
         if (_panelFader == null)
             Debug.LogWarning("PanelFader не назначен", this); 
-
-        if (_gameSaveSystem == null)
-            Debug.LogWarning("GameSaveSystem не назначен", this);
     }
 }

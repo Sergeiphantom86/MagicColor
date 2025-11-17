@@ -5,11 +5,13 @@ namespace YG
     public partial class SavesYG
     {
         private Sprite _sprite;
-        private bool _complete;
         private bool _isSimilar;
         private bool _isTutorial;
         private int _indexUnblocking;
+        private int _currentValue;
         private bool _isTransparency;
+        private static bool _isFirstTutorial;
+        private static bool _isSecondTutorial;
         private static int _questIndex;
         private static long _currentCoin;
         private static long _currentCrystal;
@@ -20,8 +22,9 @@ namespace YG
             _questIndex = 0;
             _currentCoin = 0;
             _currentCrystal = 0;
+            _isFirstTutorial = true;
+            _isSecondTutorial = true;
             _isSimilar = false;
-            _complete = false;
             _isTutorial = false;
             CountStars = 0;
             MusicVolume = 0.8f;
@@ -37,7 +40,7 @@ namespace YG
 
         public int QuestIndex => _questIndex;
 
-        public float MusicPlaybackTime {  get; private set; }
+        public float MusicPlaybackTime { get; private set; }
 
         public long CurrentCoin => _currentCoin;
 
@@ -45,18 +48,17 @@ namespace YG
 
         public Sprite Sprite => _sprite;
 
-        public bool Complete => _complete;
-
         public bool IsTutorial => _isTutorial;
+        public bool IsFirstTutorial => _isFirstTutorial;
+        public bool IsSecondTutorial => _isSecondTutorial;
 
         public bool IsTransparency => _isTransparency;
 
         public bool IsSimilar => _isSimilar;
 
-        public void SetAssembledPuzzle(bool complete)
-        {
-            _complete = complete;
-        }
+        public int CurrentValue => _currentValue;
+
+        public int IndexUnblocking => _indexUnblocking;
 
         public void SetTutorial(int index)
         {
@@ -64,6 +66,22 @@ namespace YG
             {
                 _isTutorial = true;
             }
+        }
+
+        public void SetTutorial(bool isTutorial)
+        {
+            if (_isFirstTutorial)
+            {
+                _isFirstTutorial = isTutorial;
+                return;
+            }
+
+            _isSecondTutorial = isTutorial;
+        }
+
+        public void SetCurrentValue(int value)
+        {
+            _currentValue = value;
         }
 
         public void MakeTransparent(bool isTransparency)
@@ -87,7 +105,7 @@ namespace YG
 
             if (wallet is CoinWallet)
                 _currentCoin += amount;
-            else if(wallet is CrystalWallet)
+            else if (wallet is CrystalWallet)
                 _currentCrystal += amount;
         }
 

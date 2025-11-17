@@ -24,11 +24,11 @@ AudioImporter:
       preloadAudioData: 1
     13:
       serializedVersion: 2
-      loadType: 2
+      loadType: 0
       sampleRateSetting: 2
       sampleRateOverride: 44100
       compressionFormat: 7
-      quality: 0.57
+      quality: 0.01
       conversionMode: 0
       preloadAudioData: 1
   forceToMono: 0

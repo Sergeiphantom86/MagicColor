@@ -41,7 +41,11 @@ public class TransitionChooser : MonoBehaviour
         if (quest.IsTutorial)
         {
             YG2.saves.SetSprite(_quest.Sprite);
+            YG2.saves.SetTutorial(false);
+            quest.SetTutorial(false);
+
             _offerPanel.gameObject.SetActive(true);
+
             return;
         }
 

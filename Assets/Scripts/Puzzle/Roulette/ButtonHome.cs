@@ -9,10 +9,8 @@ public class ButtonHome : MonoBehaviour
     private const string Menu = nameof(Menu);
 
     [SerializeField] private Warner _warner;
-    [SerializeField] private CoinWallet _coin;
     [SerializeField] private AudioClip _audioClip;
     [SerializeField] private AudioClip _errorSound;
-    [SerializeField] private CrystalWallet _crystal;
     [SerializeField] private ButtonController _buttonController;
     
     private Voiceover _voiceover;
@@ -61,12 +59,15 @@ public class ButtonHome : MonoBehaviour
         {
             if (_buttonController.IsSpin == false)
             {
-                _warner.TurnOn();
+                if (_warner != null)
+                {
+                    _warner.TurnOn();
 
-                StartCoroutine(WaitForWindowClose(_errorSound, true, _extraTime, () =>
-                    _warner.TurnOff()));
+                    StartCoroutine(WaitForWindowClose(_errorSound, true, _extraTime, () =>
+                        _warner.TurnOff()));
 
-                return;
+                    return;
+                }
             }
         }
 

@@ -2,6 +2,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 public class Currency : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class Currency : MonoBehaviour
     [SerializeField] private Image _image;
 
     private WeightCalculator _weightCalculator;
-    private GameSaveSystem  _saveSystem;
     private int _value;
     private int _weight;
     private int _indexInRoulette;
@@ -21,7 +21,7 @@ public class Currency : MonoBehaviour
 
     public Image Icon => _image;
 
-    public int Winn => _saveSystem.CurrentValue;
+    public int Winn => YG2.saves.CurrentValue;
 
     private void Awake()
     {
@@ -29,7 +29,6 @@ public class Currency : MonoBehaviour
         _weightCalculator = new WeightCalculator();
         _textMeshPro = GetComponentInChildren<TextMeshProUGUI>();
         _image = GetComponentInChildren<Image>();
-        _saveSystem = FindObjectOfType<GameSaveSystem>();
 
         if (_textMeshPro == null)
         {
@@ -40,12 +39,6 @@ public class Currency : MonoBehaviour
         if (_image == null)
         {
             Debug.LogWarning($"Image component not found for {name}", this);
-            return;
-        }
-
-        if (_saveSystem == null)
-        {
-            Debug.LogWarning($"GameSaveSystem component not found for {name}", this);
             return;
         }
 
