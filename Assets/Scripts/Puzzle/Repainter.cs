@@ -26,11 +26,6 @@ public class Repainter : MonoBehaviour
         _iBlocksContainer = _blocksContainer;
     }
 
-    private void Start()
-    {
-        InitializeColorables();
-    }
-
     private void OnEnable()
     {
         _imageAnalyzer.CanPaint += UpdateSystem;
@@ -41,19 +36,13 @@ public class Repainter : MonoBehaviour
         _imageAnalyzer.CanPaint -= UpdateSystem;
     }
 
-    private void InitializeColorables()
-    {
-        _walls = GetColorablesFromContainer(_wallsContainer.transform);
-        _blocks = GetColorablesFromContainer(_iBlocksContainer.Transform);
-    }
-
     private List<IColorable> GetColorablesFromContainer(Transform container)
     {
         var list = new List<IColorable>();
 
         if (container == null)
         {
-            Debug.LogWarning($"Контейнер {container?.name} пропал!", this);
+            Debug.LogWarning($"Контейнер {container.name} пропал!", this);
             return list;
         }
 
@@ -75,6 +64,9 @@ public class Repainter : MonoBehaviour
 
     private void UpdateSystem(List<Color> colors)
     {
+        _walls = GetColorablesFromContainer(_wallsContainer.transform);
+        _blocks = GetColorablesFromContainer(_iBlocksContainer.Transform);
+
         if (_walls.Count < 0)
         {
             Debug.LogError($"Количество Walls = {_walls.Count} {this}");
@@ -86,7 +78,7 @@ public class Repainter : MonoBehaviour
             Debug.LogError($"Количество Blocks = {_blocks.Count} {this}");
             return;
         }
-
+       
         UpdateColors(colors);
 
         ReplaceColors(_walls);
