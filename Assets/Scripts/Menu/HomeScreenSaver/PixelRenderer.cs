@@ -49,9 +49,7 @@ public class PixelRenderer : MonoBehaviour
 
         CalculateCenterOffset(_image.sprite);
 
-        _pixelSpawner.CreatePixels(colorGroups, _centerOffset);
-
-        _fragments = _pixelSpawner.Pixels;
+        _fragments =_pixelSpawner.CreatePixels(colorGroups, _centerOffset);
 
         OnPixelsRendered?.Invoke();
     }

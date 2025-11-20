@@ -9,9 +9,10 @@ public class TutorialHandler : MonoBehaviour
     [SerializeField] private Key _key;
     [SerializeField] private Lock _lock;
     [SerializeField] private Rotator _rotator;
-    [SerializeField] private BlocksContainer _container;
+    [SerializeField] private BlockSpawner _container;
     [SerializeField] private MenuLoader _menuLoader;
 
+    private int _index;
     private float _delay;
     private bool _isAnimationChange;
     private Block _block;
@@ -24,6 +25,7 @@ public class TutorialHandler : MonoBehaviour
 
     private void Awake()
     {
+        _index = 4;
         _delay = 1;
         _mirage = GetComponentInChildren<Mirage>(true);
         _handMover = GetComponentInChildren<HandMover>(true);
@@ -97,7 +99,11 @@ public class TutorialHandler : MonoBehaviour
             return;
         }
 
-        _block = GetBlock();
+        if (_block == null)
+        {
+            SetBlock(_index);
+        }
+        
         _touchDragInput = _block.GetComponent<TouchDragInput>();
 
         SetPosition(_block.transform.position);
@@ -111,9 +117,14 @@ public class TutorialHandler : MonoBehaviour
         _touchDragInput.OnTouchClick += Click;
     }
 
-    private Block GetBlock()
+    private void SetBlock(int index)
     {
-        return _container.Blocks[0];
+        if (_container.SpawnedBlocks == null || index < 0 || index >= _container.SpawnedBlocks.Count)
+        {
+            Debug.LogError($"Invalid index: {index}, list count: {_container.SpawnedBlocks?.Count}");
+        }
+
+        _block = _container.SpawnedBlocks[index];
     }
 
     private void SetPosition(Vector3 position)
@@ -130,7 +141,7 @@ public class TutorialHandler : MonoBehaviour
             _handMover.Stop();
 
             TurnOffComponets();
-
+            _block.gameObject.SetActive(false);
             MoveZ();
         }
     }
@@ -184,11 +195,18 @@ public class TutorialHandler : MonoBehaviour
     {
         _hints.TurnOn(true);
 
-        yield return _waitForSeconds;
+        yield return IncreaseWaitTime();
 
         TurnOffHints();
 
         MoveX();
+    }
+
+    private IEnumerator IncreaseWaitTime()
+    {
+        yield return _waitForSeconds;
+        yield return _waitForSeconds;
+        yield return _waitForSeconds;
     }
 
     private void TurnOffVisualDisplay()

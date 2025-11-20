@@ -4,23 +4,24 @@ using UnityEngine.Pool;
 public class BlockPool : MonoBehaviour
 {
     [SerializeField] private Block _blockPrefab;
-    [SerializeField] private int _defaultPoolSize = 10;
-    [SerializeField] private int _maxPoolSize = 50;
-    [SerializeField] private bool _collectionCheck = true;
+    [SerializeField] private bool _collectionCheck;
 
+    private int _maxPoolSize;
+    private int _defaultPoolSize;
     private ObjectPool<Block> _pool;
-    private Transform _poolParent;
 
     public ObjectPool<Block> Pool => _pool;
 
     private void Awake()
     {
-        _poolParent = transform;
         CreatePool();
     }
 
     private void CreatePool()
     {
+        _maxPoolSize = 50;
+        _defaultPoolSize = 10;
+
         _pool = new ObjectPool<Block>(
             createFunc: CreatePooledItem,
             actionOnGet: OnTakeFromPool,
@@ -34,35 +35,24 @@ public class BlockPool : MonoBehaviour
 
     private Block CreatePooledItem()
     {
-        Block block = Instantiate(_blockPrefab, _poolParent);
-        block.gameObject.SetActive(false);
+        Block block = Instantiate(_blockPrefab, transform);
+
         return block;
     }
 
     private void OnTakeFromPool(Block block)
     {
-        block.gameObject.SetActive(true);
-
-        // Reset block components
-        var renderer = block.GetComponent<Renderer>();
-        if (renderer != null)
-            renderer.enabled = true;
-
-        var collider = block.GetComponent<Collider>();
-        if (collider != null)
-            collider.enabled = true;
+        if (block != null)
+        {
+            block.gameObject.SetActive(true);
+        }
     }
 
     private void OnReturnedToPool(Block block)
     {
-        if (block != null && block.gameObject != null)
+        if (block != null)
         {
             block.gameObject.SetActive(false);
-
-            // Reset transform
-            block.transform.SetParent(_poolParent);
-            block.transform.localPosition = Vector3.zero;
-            block.transform.localRotation = Quaternion.identity;
         }
     }
 
@@ -76,9 +66,6 @@ public class BlockPool : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_pool != null)
-        {
-            _pool.Clear();
-        }
+        _pool?.Clear();
     }
 }

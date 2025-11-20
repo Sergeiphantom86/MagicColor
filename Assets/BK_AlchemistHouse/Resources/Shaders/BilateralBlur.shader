@@ -369,7 +369,7 @@ Shader "Hidden/BilateralBlur"
 			CGPROGRAM
 			#pragma vertex vertHalfDepth
 			#pragma fragment frag
-            #pragma target gl4.1
+            #pragma target 4.6
 
 			v2fDownsample vertHalfDepth(appdata v)
 			{
@@ -412,7 +412,7 @@ Shader "Hidden/BilateralBlur"
 			CGPROGRAM
             #pragma vertex vertQuarterDepth
             #pragma fragment frag
-            #pragma target gl4.1
+            #pragma target 4.6
 
 			v2fDownsample vertQuarterDepth(appdata v)
 			{

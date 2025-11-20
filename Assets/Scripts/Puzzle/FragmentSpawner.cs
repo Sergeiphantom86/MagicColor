@@ -1,25 +1,27 @@
-using UnityEngine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
+using UnityEngine;
 
 [RequireComponent(typeof(ImageAnalyzer))]
 public class FragmentSpawner : MonoBehaviour
 {
+    [SerializeField] private float _spacingFactor;
+    [SerializeField] private float _screenCoverage;
+    [SerializeField] private float _maxPuzzleSize;
     [SerializeField] private Fragment _prefab;
-    [SerializeField] private float _scale;
     [SerializeField] private Transform _transformParent;
     [SerializeField] private AnimatorPuzzle _animator;
-    [SerializeField] private Canvas _canvas;
 
     private int _totalCount;
+    private float _pixelSize;
     private Vector3 _canvasUp;
     private Vector3 _canvasRight;
-    private Camera _targetCamera;
     private Vector3 _canvasNormal;
-    private Vector3 _offsetFromCenter;
-    private ImageAnalyzer _imageAnalyzer;
+    private Camera _targetCamera;
     private Dictionary<Color, Queue<Fragment>> _fragments;
+    private PuzzleSizeCalculator _sizeCalculator;
+    private ImageAnalyzer _imageAnalyzer;
 
     public int TotalCount => _totalCount;
     public Dictionary<Color, Queue<Fragment>> Fragments => _fragments;
@@ -31,7 +33,9 @@ public class FragmentSpawner : MonoBehaviour
         _targetCamera = Camera.main;
         _fragments = new Dictionary<Color, Queue<Fragment>>();
         _imageAnalyzer = GetComponent<ImageAnalyzer>();
-        _scale = 4.4f;
+
+        InitializeCanvasOrientation();
+        InitializeSizeCalculator();
     }
 
     private void OnEnable()
@@ -51,6 +55,11 @@ public class FragmentSpawner : MonoBehaviour
             : new Queue<Fragment>();
     }
 
+    private void InitializeSizeCalculator()
+    {
+        _sizeCalculator = new PuzzleSizeCalculator(_targetCamera, _screenCoverage, _maxPuzzleSize);
+    }
+
     private void InitializeCanvasOrientation()
     {
         _canvasNormal = _targetCamera.transform.forward;
@@ -58,9 +67,15 @@ public class FragmentSpawner : MonoBehaviour
         _canvasUp = _targetCamera.transform.up;
     }
 
+    private void CalculatePixelSize()
+    {
+        var sizeData = _sizeCalculator.CalculatePuzzleSize(_imageAnalyzer.TextureWidth, _imageAnalyzer.TextureHeight);
+        _pixelSize = sizeData.PixelSize;
+    }
+
     private void SpawnAllFragments(Dictionary<Color, List<Vector3>> colorGroups)
     {
-        InitializeCanvasOrientation();
+        CalculatePixelSize();
 
         if (_imageAnalyzer == null)
             throw new ArgumentNullException(nameof(_imageAnalyzer), "ImageAnalyzer не назначен!");
@@ -86,20 +101,20 @@ public class FragmentSpawner : MonoBehaviour
 
     private Fragment GetFragment(Vector3 pixelPosition, Color pixelColor)
     {
-        _prefab = Instantiate(_prefab);
+        Fragment fragment = Instantiate(_prefab);
+        fragment.transform.SetParent(_transformParent);
 
-        _prefab.transform.SetParent(_transformParent);
+        fragment.SetPosition(ConvertPixelToWorldPosition(pixelPosition));
+        fragment.SetRotation(Quaternion.LookRotation(_canvasNormal));
 
-        _prefab.SetPosition(ConvertPixelToWorldPosition(pixelPosition));
-        _prefab.SetRotation(Quaternion.LookRotation(_canvasNormal));
-        _prefab.SetLocalScale(_scale);
+        fragment.SetLocalScale(_pixelSize * _spacingFactor);
 
-        _prefab.SetColor(pixelColor);
-        _prefab.TurnOnTransparency();
+        fragment.SetColor(pixelColor);
+        fragment.TurnOnTransparency();
 
         _totalCount++;
 
-        return _prefab;
+        return fragment;
     }
 
     private Vector3 ConvertPixelToWorldPosition(Vector3 pixelPosition)
@@ -109,20 +124,14 @@ public class FragmentSpawner : MonoBehaviour
 
     private Vector3 GetPosition(Vector3 pixelPosition)
     {
-        return _transformParent.position + GetOffsetPreviousPixel(pixelPosition);
-    }
-
-    private Vector3 GetOffsetPreviousPixel(Vector3 pixelPosition)
-    {
-        return _canvasRight * GetOffsetFromCenter(pixelPosition).x + _canvasUp * GetOffsetFromCenter(pixelPosition).y;
+        return _transformParent.position + GetOffsetFromCenter(pixelPosition);
     }
 
     private Vector3 GetOffsetFromCenter(Vector3 pixelPosition)
     {
-        _offsetFromCenter = pixelPosition - _imageAnalyzer.Pivot;
+        Vector2 offsetFromCenter = (Vector2)(pixelPosition - _imageAnalyzer.Pivot);
+        offsetFromCenter *= _pixelSize;
 
-        _offsetFromCenter *= 0.14f;
-
-        return _offsetFromCenter;
+        return _canvasRight * offsetFromCenter.x + _canvasUp * offsetFromCenter.y;
     }
 }

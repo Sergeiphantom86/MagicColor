@@ -31,11 +31,6 @@ public class Voiceover : MonoBehaviour
         }
     }
 
-    public void Stop()
-    {
-        _sfxSource?.Stop();
-    }
-
     private void LoadVolumeSettings()
     {
         float clampedVolume = Mathf.Clamp(YG2.saves.SoundVolume, MinVolume, MaxVolume);

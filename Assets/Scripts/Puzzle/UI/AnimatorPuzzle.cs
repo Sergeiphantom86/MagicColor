@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class AnimatorPuzzle : MonoBehaviour
@@ -12,8 +13,8 @@ public class AnimatorPuzzle : MonoBehaviour
     private Activator _activator;
     private FinalPicture _finalPicture;
     private VictoryPlaque _victoryPlaque;
-    private Canvas _canvas;
     private RectTransform _rectTransform;
+    private Canvas _canvas;
 
     public event Action PuzzleIsComplete;
     public event Action OnAnimationComplete;
@@ -63,9 +64,7 @@ public class AnimatorPuzzle : MonoBehaviour
     {
         _puzzle.Return();
         _pen.Return(_rectTransform);
-        _finalPicture.Move(_rectTransform);
-        _finalPicture.SetPositionZ();
-        _finalPicture.Increase();
+        _finalPicture.Demonstrate(_rectTransform);
         _victoryPlaque.Move(_rectTransform).OnComplete(() => 
         OnAnimationComplete?.Invoke());
 

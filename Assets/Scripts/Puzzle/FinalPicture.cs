@@ -1,32 +1,39 @@
 using DG.Tweening;
 using UnityEngine;
 
-[RequireComponent(typeof(IUIAnimator))]
 public class FinalPicture : MonoBehaviour
 {
-    private IUIAnimator _animator;
-    private float _positionZ;
+    [SerializeField] private float _moveYDuration;
+    [SerializeField] private float _targetYPosition;
+    [SerializeField] private float _scaleDuration;
+
+    private Vector3 _targetScale;
 
     private void Awake()
     {
-        _positionZ = -50;
-        _animator = GetComponent<IUIAnimator>();
+        _targetScale = Vector3.one * 2;
+}
+
+    public void Demonstrate(RectTransform canvasRect)
+    {
+        MoveY();
+        Increase();
     }
 
-    public void SetPositionZ()
+    private void MoveY()
     {
-        Vector3 position = transform.position;
-        position.z = _positionZ;
-        transform.localPosition = position;
+        transform.DOLocalMoveY(_targetYPosition, _moveYDuration)
+                .SetEase(Ease.OutBack);
     }
 
-    public Sequence Move(RectTransform canvasRect)
+    private void Increase()
     {
-        return _animator.Move(canvasRect);
+        transform.DOScale(_targetScale, _scaleDuration)
+                .SetEase(Ease.OutBack);
     }
 
-    public void Increase()
+    private void OnDestroy()
     {
-        _animator.Increase();
+        transform.DOKill();
     }
 }

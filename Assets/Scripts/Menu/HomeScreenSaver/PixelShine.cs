@@ -7,7 +7,7 @@ using System.Linq;
 public class PixelShine : MonoBehaviour, IAnimatable
 {
     [SerializeField] private ParticleSystem _particleSystem;
-    
+
     private float _shineDuration;
     private float _pauseBetweenPasses;
     private float _delayBetweenPixels;
@@ -39,10 +39,10 @@ public class PixelShine : MonoBehaviour, IAnimatable
     }
 
     public void PauseAnimations() =>
-        _shineSequence?.Pause();
+        DOTweenExtensions.SafePause(_shineSequence);
 
-    public void ResumeAnimations() =>
-        _shineSequence?.Play();
+    public void ResumeAnimations() => 
+        DOTweenExtensions.SafePlay(_shineSequence);
 
     private void StartShineAnimation()
     {
@@ -83,7 +83,7 @@ public class PixelShine : MonoBehaviour, IAnimatable
     {
         foreach (var pair in _originalColors)
         {
-            if (pair.Key?.Renderer != null)
+            if (pair.Key.Renderer != null)
                 pair.Key.Renderer.color = pair.Value;
         }
 
@@ -92,7 +92,7 @@ public class PixelShine : MonoBehaviour, IAnimatable
 
     private void CreateShineSequence()
     {
-        _shineSequence?.Kill();
+        DOTweenExtensions.SafeKill(_shineSequence);
         _shineSequence = DOTween.Sequence();
 
         for (int i = 0; i < _validFragments.Count; i++)
@@ -114,7 +114,7 @@ public class PixelShine : MonoBehaviour, IAnimatable
 
     private void OnDestroy()
     {
-        _shineSequence?.Kill();
+        DOTweenExtensions.SafeKill(_shineSequence);
         RestoreOriginalColors();
     }
 }

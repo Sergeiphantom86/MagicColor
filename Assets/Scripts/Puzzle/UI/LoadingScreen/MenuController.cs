@@ -6,7 +6,6 @@ using YG;
 public class MenuController : MonoBehaviour
 {
     private const string AfterPuzzleRewardID = "after_puzzle_reward";
-    private const string Menu = nameof(Menu);
     private const string Puzzle = nameof(Puzzle);
     private const string Roulette = nameof(Roulette);
     private const string Tutorial = nameof(Tutorial);

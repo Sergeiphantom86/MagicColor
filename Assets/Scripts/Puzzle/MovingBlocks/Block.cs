@@ -2,32 +2,43 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(PathMover), typeof(TouchColorTransparency), typeof(Renderer))]
+[RequireComponent(typeof(PathMover), typeof(TouchDragInput), typeof(Renderer))]
+[RequireComponent(typeof(Collider), typeof(Voiceover))]
 public class Block : ColorableObject, IDestroyable
 {
     [SerializeField] private Rotator _rotation;
 
+    private float _delay;
     private Vector2Int _gridPosition;
-    private PathMover _pathMover;
-    private InkSpawner _inkSpawner;
     private Renderer _renderer;
-    private TouchDragInput _touchDragInput;
     private Collider _collider;
     private Voiceover _voiceover;
     private AudioClip _audioClip;
+    private PathMover _pathMover;
+    private InkSpawner _inkSpawner;
+    private TouchDragInput _touchDragInput;
+    private WaitForSeconds _waitForSeconds;
 
     public event Action<Block> OnDestroyed;
 
-    public void  Initialize(AudioClip audioClip)
+    private void Awake()
     {
+        _delay = 1.3f;
+        _waitForSeconds = new WaitForSeconds(_delay);
+        _renderer = GetComponent<Renderer>();
+        _collider = GetComponent<Collider>();
+        _voiceover = GetComponent<Voiceover>();
         _pathMover = GetComponent<PathMover>();
         _touchDragInput = GetComponent<TouchDragInput>();
         _inkSpawner = GetComponentInChildren<InkSpawner>();
-        _renderer = GetComponent<Renderer>();
-        _voiceover = GetComponent<Voiceover>();
-        _collider = GetComponent<Collider>();
-        _audioClip = audioClip;
+
         _collider.enabled = true;
+    }
+
+    public void  Initialize(AudioClip audioClip)
+    {
+        _audioClip = audioClip;
+
         InitializeComponents();
     }
 
@@ -56,7 +67,7 @@ public class Block : ColorableObject, IDestroyable
 
         _inkSpawner.ActivateInkDrops(GetColor());
 
-       StartCoroutine(Wait());
+       StartCoroutine(WaitBeforeDisablingVisualization());
     }
 
     public void SetGridPosition(Vector2Int gridPosition)
@@ -64,9 +75,9 @@ public class Block : ColorableObject, IDestroyable
         _gridPosition = gridPosition;
     }
 
-    private IEnumerator Wait()
+    private IEnumerator WaitBeforeDisablingVisualization()
     {
-        yield return new WaitForSeconds(1.3f);
+        yield return _waitForSeconds;
 
         _renderer.enabled = false;
     }

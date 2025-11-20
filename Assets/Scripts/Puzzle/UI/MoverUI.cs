@@ -11,9 +11,9 @@ public class MoverUI
             return CreateEmptySequence();
 
         CreateSequence();
-
+        
         Vector2 targetPosition = GetTargetPosition(canvasRect, normalizedX, normalizedY);
-        _sequence.Join(elementRect.DOAnchorPos(targetPosition, duration));
+        _sequence.Join(elementRect.DOAnchorPos(targetPosition, duration).SetEase(Ease.OutBack));
 
         Play();
         return _sequence;

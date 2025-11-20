@@ -13,7 +13,10 @@ public class ImageAnalyzer : MonoBehaviour
     private Dictionary<Color, List<Vector3>> _colorGroups;
 
     public Vector3 Pivot => _sprite.pivot;
+    public float TextureWidth => _texture.width;
+    public float TextureHeight => _texture.height;
 
+    public event Action<int> Spawn;
     public event Action<List<Color>> CanPaint;
     public event Action<Dictionary<Color, List<Vector3>>> CanRender;
 
@@ -32,13 +35,9 @@ public class ImageAnalyzer : MonoBehaviour
         _sprite = sprite;
         _colorGroups = GetDictionaryColorsAndPositions(_texture);
 
+        Spawn?.Invoke(_colorGroups.Count);
         CanPaint?.Invoke(_colorGroups.Keys.ToList());
         CanRender?.Invoke(_colorGroups);
-    }
-
-    public string GetNameSprite()
-    {
-        return _sprite.name;
     }
 
     private Dictionary<Color, List<Vector3>> GetDictionaryColorsAndPositions(Texture2D texture)

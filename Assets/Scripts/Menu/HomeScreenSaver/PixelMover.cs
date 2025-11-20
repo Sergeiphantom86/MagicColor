@@ -32,21 +32,11 @@ public class PixelMover : MonoBehaviour, IAnimatable
         _sorter.HasSorted -= Animate;
     }
 
-    public void PauseAnimations()
-    {
-        if (_currentSequence != null && _currentSequence.IsPlaying())
-        {
-            _currentSequence.Pause();
-        }
-    }
+    public void PauseAnimations() => 
+        DOTweenExtensions.SafePause(_currentSequence);
 
-    public void ResumeAnimations()
-    {
-        if (_currentSequence != null && _currentSequence.IsPlaying() == false && _currentSequence.IsActive())
-        {
-            _currentSequence.Play();
-        }
-    }
+    public void ResumeAnimations() => 
+        DOTweenExtensions.SafePlay(_currentSequence);
 
     private void Animate()
     {

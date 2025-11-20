@@ -7,7 +7,8 @@ public class HandMover : MonoBehaviour
     private Vector3 _startScale;
     private Vector3 _targetScale;
     private Sequence _sequence;
-    private int _distance;
+    private int _distanceZ;
+    private int _distanceX;
     private float _duration;
     private float _overshoot;
     private int _scaleMultiplier;
@@ -16,7 +17,8 @@ public class HandMover : MonoBehaviour
 
     private void Awake()
     {
-        _distance = 3;
+        _distanceZ = 2;
+        _distanceX = 3;
         _overshoot = 5;
         _duration = 0.7f;
         _scaleMultiplier = 20;
@@ -43,21 +45,21 @@ public class HandMover : MonoBehaviour
 
     public void EnableMoveAnimationZ()
     {
-        GetAnimationSequence(0, _distance)
+        GetAnimationSequence(0, _distanceZ)
             .OnComplete(() =>
             OnDiscontinued?.Invoke()); ;
     }
 
     public void EnableMoveAnimationX()
     {
-        GetAnimationSequence(-_distance)
+        GetAnimationSequence(-_distanceX)
             .OnComplete(() => 
             OnDiscontinued?.Invoke());
     }
 
     public void EnableLoopingAnimationZ()
     {
-        GetAnimationSequence(0, _distance)
+        GetAnimationSequence(0, _distanceZ)
             .SetLoops(-1, LoopType.Restart);
     }
 

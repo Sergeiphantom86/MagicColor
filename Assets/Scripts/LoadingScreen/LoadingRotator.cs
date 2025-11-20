@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class LoadingRotator : MonoBehaviour
@@ -9,6 +10,9 @@ public class LoadingRotator : MonoBehaviour
     {
         _rotationSpeed = 90f;
         _clockwise = true;
+
+        DOTween.Init(recycleAllByDefault: false, useSafeMode: true, LogBehaviour.Default);
+        DOTween.SetTweensCapacity(4000, 1250);
     }
 
     private void Update()

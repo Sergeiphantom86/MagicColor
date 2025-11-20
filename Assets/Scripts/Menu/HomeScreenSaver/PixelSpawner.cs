@@ -8,8 +8,6 @@ public class PixelSpawner : MonoBehaviour
     private PixelPool _pixelPool;
     private List<Fragment> _pixels;
 
-    public List<Fragment> Pixels => _pixels;
-
     private void Awake()
     {
         _pixelSize = 2;
@@ -22,12 +20,14 @@ public class PixelSpawner : MonoBehaviour
         }
     }
 
-    public void CreatePixels(Dictionary<Color, List<Vector3>> colorGroups, Vector2 centerOffset)
+    public List<Fragment> CreatePixels(Dictionary<Color, List<Vector3>> colorGroups, Vector2 centerOffset)
     {
         foreach (var colorGroup in colorGroups)
         {
             SpawnColorGroup(colorGroup.Key, colorGroup.Value, centerOffset);
         }
+
+        return _pixels;
     }
 
     public void Clear()

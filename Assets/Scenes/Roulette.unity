@@ -479,6 +479,7 @@ GameObject:
   - component: {fileID: 333972888}
   - component: {fileID: 333972887}
   - component: {fileID: 333972886}
+  - component: {fileID: 333972890}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -573,6 +574,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &333972890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333972885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed90dafdc5f27f54baf97ea8f58ae293, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &361311507 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 543311588691255839, guid: 54af013203436e143b2cd5ae6d1f88a3, type: 3}
@@ -2731,10 +2744,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _warner: {fileID: 283080502}
-  _coin: {fileID: 2076118305}
   _audioClip: {fileID: 8300000, guid: f42fc3b330db22e40b16f2047df60a7e, type: 3}
   _errorSound: {fileID: 8300000, guid: 1ed8fb76fc64e4e46847348138782234, type: 3}
-  _crystal: {fileID: 1223904300}
   _buttonController: {fileID: 2066598843}
 --- !u!114 &2092913066
 MonoBehaviour:

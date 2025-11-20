@@ -8,10 +8,12 @@ public class QuestCollector : MonoBehaviour
     [SerializeField] private Viewer _viewer;
 
     private List<Quest> _allQuests;
+    private List<Sprite> _sprits;
 
     private void Awake()
     {
         _allQuests = new List<Quest>();
+        _sprits = new List<Sprite>();
     }
 
     private void Start()
@@ -28,10 +30,12 @@ public class QuestCollector : MonoBehaviour
             if (_questSystem.transform.GetChild(i).TryGetComponent(out Quest quest))
             {
                 _allQuests.Add(GetCustomized(quest, i));
+                _sprits.Add(quest.Sprite);
             }
         }
 
         _questSystem.Initialize(_allQuests);
+        _viewer.AddSprite(_sprits);
     }
 
     private Quest GetCustomized(Quest quest, int index)

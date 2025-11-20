@@ -9,6 +9,4 @@ public interface IBlocksContainer
     public int ActiveBlocksCount { get; }
 
     public Transform Transform  { get; }
-
-    public List<Block> Blocks {  get; }
 }

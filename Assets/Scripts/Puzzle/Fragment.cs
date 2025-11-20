@@ -7,15 +7,23 @@ public class Fragment : MonoBehaviour
     private float _startAlpha;
     private int _finalAlpha;
     private Color _newColor;
+    private Transform _transform;
+    private Color _originalColor;
 
     public SpriteRenderer Renderer => _renderer;
 
     private void Awake()
     {
+        _transform = transform;
         _renderer = GetComponent<SpriteRenderer>();
         _startAlpha = 0.3f;
         _finalAlpha = 1;
         _renderer.sortingOrder = 1;
+
+        if (_renderer != null)
+        {
+            _originalColor = _renderer.color;
+        }
     }
 
     public void SetColor(Color color)
@@ -41,21 +49,41 @@ public class Fragment : MonoBehaviour
 
     public void SetParent(Transform transform)
     {
-        transform.SetParent(transform);
+        _transform.SetParent(transform);
     }
 
     public void SetPosition(Vector3 position)
     {
-        transform.position = position;
+        _transform.position = position;
     }
 
     public void SetLocalScale(float scale)
     {
-        transform.localScale = Vector3.one * scale;
+        _transform.localScale = Vector3.one * scale;
     }
     public void SetRotation(Quaternion quaternion)
     {
-        transform.rotation = quaternion;
+        _transform.rotation = quaternion;
+    }
+
+    public Color GetColor()
+    {
+        return _renderer != null ? _renderer.color : Color.white;
+    }
+
+    public void ResetToOriginal()
+    {
+        SetColor(_originalColor);
+    }
+
+    public void SetScale(Vector3 scale)
+    {
+        _transform.localScale = scale;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return _transform.position;
     }
 
     private void CustomizeColor(float alpha)

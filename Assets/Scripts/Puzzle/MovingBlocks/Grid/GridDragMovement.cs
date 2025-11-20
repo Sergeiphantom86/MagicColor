@@ -1,10 +1,9 @@
 using DG.Tweening;
-using System;
 using UnityEngine;
 
 public class GridDragMovement : MonoBehaviour
 {
-    [SerializeField] private BlocksContainer _blocksContainer;
+    [SerializeField] private BlockSpawner _blockSpawner;
     [SerializeField] private GridSystem _gridSystem;
 
     private float _moveDuration;
@@ -14,7 +13,6 @@ public class GridDragMovement : MonoBehaviour
     private Vector3 _accumulatedWorldDisplacement;
     private Vector2Int _currentGridPosition;
     private Tween _currentTween;
-    private bool _hasMoved = false;
 
     private void Awake()
     {
@@ -33,7 +31,6 @@ public class GridDragMovement : MonoBehaviour
         _currentGridPosition = _gridSystem.WorldToGridPosition(originalPosition);
         _lastTouchWorldPosition = CalculateTouchWorldPosition(touchPosition, originalPosition);
         _accumulatedWorldDisplacement = Vector3.zero;
-        _hasMoved = false;
     }
 
     public void ProcessInput(Vector3 touchPosition, Vector3 originalPosition, Voiceover voiceover, AudioClip audioClip)
@@ -47,32 +44,14 @@ public class GridDragMovement : MonoBehaviour
 
         if (_accumulatedWorldDisplacement.sqrMagnitude > cellSize)
         {
-            _hasMoved = true;
             AttemptShift(_accumulatedWorldDisplacement);
             voiceover.Play(audioClip);
         }
     }
 
-    public void EndInteraction(Vector3 position)
-    {
-        if (_hasMoved == false)
-        {
-            PositionAtCell(_currentGridPosition);
-        }
-        else if (_gridSystem.WorldToGridPosition(position) != _currentGridPosition)
-        {
-            PositionAtCell(_gridSystem.WorldToGridPosition(position));
-        }
-
-        _accumulatedWorldDisplacement = Vector3.zero;
-    }
-
     private void AttemptShift(Vector3 accumulatedWorldDisplacement)
     {
-        float absDx = Mathf.Abs(accumulatedWorldDisplacement.x);
-        float absDz = Mathf.Abs(accumulatedWorldDisplacement.z);
-
-        Vector2Int shiftDirection = GetShiftDirection(absDx, absDz);
+        Vector2Int shiftDirection = GetShiftDirection(accumulatedWorldDisplacement);
         Vector2Int newGridPos = CalculateNewGridPosition(shiftDirection);
 
         if (CanShiftToPosition(newGridPos) == false) return;
@@ -81,9 +60,9 @@ public class GridDragMovement : MonoBehaviour
         ExecuteShift(newGridPos);
     }
 
-    private Vector2Int GetShiftDirection(float absDx, float absDz)
+    private Vector2Int GetShiftDirection(Vector3 accumulatedWorldDisplacement)
     {
-        return absDx >= absDz ?
+        return Mathf.Abs(accumulatedWorldDisplacement.x) >= Mathf.Abs(accumulatedWorldDisplacement.z) ?
             new Vector2Int(_accumulatedWorldDisplacement.x > 0 ? 1 : -1, 0) :
             new Vector2Int(0, _accumulatedWorldDisplacement.z > 0 ? 1 : -1);
     }
@@ -102,9 +81,9 @@ public class GridDragMovement : MonoBehaviour
 
     private void PositionAllBlocks()
     {
-        if (_blocksContainer != null)
+        if (_blockSpawner != null)
         {
-            foreach (var block in _blocksContainer.Blocks)
+            foreach (var block in _blockSpawner.SpawnedBlocks)
             {
                 Vector2Int gridPosition = ClampToGridBounds(_gridSystem.WorldToGridPosition(block.transform.position));
                 block.transform.position = _gridSystem.GridToWorldPosition(gridPosition);

@@ -9,11 +9,11 @@ public class InkSpawner : MonoBehaviour
     [SerializeField] private AudioClip _spawn;
     [SerializeField] private AudioClip _moving;
 
-    private List<SmoothMoveToTarget> _smoothMovers;
-    private Voiceover _voiceover;
     private int _quantity;
-    private float _gridSpacing;
     private float _spawnDelay;
+    private float _gridSpacing;
+    private Voiceover _voiceover;
+    private List<SmoothMoveToTarget> _smoothMovers;
     
     private WaitForSeconds _waitForSeconds;
 
@@ -36,8 +36,8 @@ public class InkSpawner : MonoBehaviour
     {
         for (int i = 0; i < _quantity * _quantity; i++)
         {
-            SpawnSingleInkDrop(GetRow(i), GetCol(i), color);
             _voiceover.Play(_spawn);
+            SpawnSingleInkDrop(GetRow(i), GetCol(i), color);
             yield return _waitForSeconds;
         }
 

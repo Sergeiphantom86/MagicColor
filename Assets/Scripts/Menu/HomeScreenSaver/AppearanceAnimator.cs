@@ -38,25 +38,16 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
         _sorter.HasSorted -= AnimateAppearance;
     }
 
-    public void PauseAnimations()
-    {
-        if (_currentSequence != null && _currentSequence.IsPlaying())
-        {
-            _currentSequence.Pause();
-        }
-    }
+    public void PauseAnimations() => 
+        DOTweenExtensions.SafePause(_currentSequence);
 
-    public void ResumeAnimations()
-    {
-        if (_currentSequence != null && _currentSequence.IsPlaying() == false)
-        {
-            _currentSequence.Play();
-        }
-    }
+    public void ResumeAnimations() => 
+        DOTweenExtensions.SafePlay(_currentSequence);
 
     private void AnimateAppearance()
     {
         ResetAnimation();
+
         _currentSequence = DOTween.Sequence();
 
         _fragments = _sorter.Fragments;
@@ -88,7 +79,7 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
 
     private Vector3 GetStartScale()
     {
-         return Vector3.one / _startSizeMultiplier;
+        return Vector3.one / _startSizeMultiplier;
     }
 
     private void AddAnimation(int index, Fragment fragment)
@@ -100,10 +91,7 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
 
     private void ResetAnimation()
     {
-        if (_currentSequence != null && _currentSequence.IsActive())
-        {
-            _currentSequence.Kill();
-        }
+        DOTweenExtensions.SafeKill(_currentSequence);
 
         _currentSequence = null;
     }

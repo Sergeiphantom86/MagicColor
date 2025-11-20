@@ -4,17 +4,19 @@ using YG;
 
 public class MenuLoader : MonoBehaviour
 {
+    private const string Menu = nameof(Menu);
+    private const string Tutorial = nameof(Tutorial);
+
     [SerializeField] private CoinWallet _coinWallet;
     [SerializeField] private CrystalWallet _crystalWallet;
 
     public void TargetScene(string scenName)
     {
-        //YG2.saves.SetAssembledPuzzle(false);
 
         if (SceneLoader.Instance == null)
         {
             Debug.LogError("SceneLoader instance not found! Using default load.");
-            SceneManager.LoadScene("Menu");
+            SceneManager.LoadScene(Menu);
             return;
         }
 
@@ -22,7 +24,6 @@ public class MenuLoader : MonoBehaviour
 
         TryResetSprite();
 
-        //YG2.saves.SetAssembledPuzzle(true);
         YG2.SaveProgress();
 
         SceneLoader.Instance.LoadSceneWithSplash(scenName);
@@ -39,7 +40,7 @@ public class MenuLoader : MonoBehaviour
 
     private void TryResetSprite()
     {
-        if (SceneManager.GetActiveScene().name != "Tutorial")
+        if (SceneManager.GetActiveScene().name != Tutorial)
         {
             YG2.saves.ResetSprite();
 
