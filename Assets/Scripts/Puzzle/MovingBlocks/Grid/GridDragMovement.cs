@@ -1,10 +1,12 @@
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 public class GridDragMovement : MonoBehaviour
 {
     [SerializeField] private BlockSpawner _blockSpawner;
     [SerializeField] private GridSystem _gridSystem;
+    [SerializeField] private ParticleSystemPool _particleSystemPool;
 
     private float _moveDuration;
     private Transform _transform;
@@ -37,6 +39,7 @@ public class GridDragMovement : MonoBehaviour
     {
         Vector3 worldTouchPoint = CalculateTouchWorldPosition(touchPosition, originalPosition);
         Vector3 delta = worldTouchPoint - _lastTouchWorldPosition;
+
         _lastTouchWorldPosition = worldTouchPoint;
         _accumulatedWorldDisplacement += delta;
 
@@ -44,12 +47,17 @@ public class GridDragMovement : MonoBehaviour
 
         if (_accumulatedWorldDisplacement.sqrMagnitude > cellSize)
         {
-            AttemptShift(_accumulatedWorldDisplacement);
-            voiceover.Play(audioClip);
+            AttemptShift(_accumulatedWorldDisplacement, voiceover, audioClip);
         }
     }
 
-    private void AttemptShift(Vector3 accumulatedWorldDisplacement)
+    private IEnumerator ReturnToPoolAfterDelay(ParticleSystem effect, ParticleSystemPool pool, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        pool.Pool.Release(effect);
+    }
+
+    private void AttemptShift(Vector3 accumulatedWorldDisplacement, Voiceover voiceover, AudioClip audioClip)
     {
         Vector2Int shiftDirection = GetShiftDirection(accumulatedWorldDisplacement);
         Vector2Int newGridPos = CalculateNewGridPosition(shiftDirection);
@@ -57,7 +65,23 @@ public class GridDragMovement : MonoBehaviour
         if (CanShiftToPosition(newGridPos) == false) return;
 
         _gridSystem.ClearCell(_currentGridPosition);
+
+        voiceover.Play(audioClip);
+
+        ParticleSystem particleSystem = _particleSystemPool.Pool.Get();
+        CraeteEffect(particleSystem);
+
+        StartCoroutine(ReturnToPoolAfterDelay(particleSystem, _particleSystemPool, particleSystem.main.duration));
+
         ExecuteShift(newGridPos);
+    }
+
+    private void CraeteEffect(ParticleSystem particleSystem)
+    {
+        particleSystem.transform.position = transform.position;
+        particleSystem.transform.localScale = Vector3.one * 20;
+        particleSystem.transform.rotation = Quaternion.identity;
+        particleSystem.Play();
     }
 
     private Vector2Int GetShiftDirection(Vector3 accumulatedWorldDisplacement)

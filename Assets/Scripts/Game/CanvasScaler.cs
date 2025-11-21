@@ -16,14 +16,14 @@ public class CanvasScaler : MonoBehaviour
 
     private void Start()
     {
-        AdjustScreenSize();
+        //AdjustScreenSize();
     }
 
-    private void AdjustScreenSize()
-    {
-        _screenSizeMultiplier = _camera.scaledPixelWidth;
-        _screenSizeMultiplier /= _sizeDivider;
+    //private void AdjustScreenSize()
+    //{
+    //    _screenSizeMultiplier = _camera.scaledPixelWidth;
+    //    _screenSizeMultiplier /= _sizeDivider;
 
-        _canvas.scaleFactor *= _screenSizeMultiplier;
-    }
+    //    _camera.scaleFactor *= _screenSizeMultiplier;
+    //}
 }

@@ -19,6 +19,9 @@ public class Viewer : MonoBehaviour
         _spriteSequence = new List<Sprite>();
         _isTransitioning = false;
         _delay = 0.1f;
+
+        DOTween.Init(recycleAllByDefault: false, useSafeMode: true, LogBehaviour.Default);
+        DOTween.SetTweensCapacity(4000, 1250);
     }
 
     private void Start()

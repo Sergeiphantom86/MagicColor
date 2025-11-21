@@ -141,7 +141,7 @@ public class TutorialHandler : MonoBehaviour
             _handMover.Stop();
 
             TurnOffComponets();
-            _block.gameObject.SetActive(false);
+
             MoveZ();
         }
     }

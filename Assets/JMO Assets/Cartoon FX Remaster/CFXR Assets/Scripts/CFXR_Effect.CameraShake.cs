@@ -178,7 +178,7 @@ namespace CartoonFX
 				}
 			}
 
-			public void fetchCameras()
+			public void FetchCameras()
 			{
 #if UNITY_EDITOR
 				if (!EditorApplication.isPlayingOrWillChangePlaymode)
@@ -230,7 +230,7 @@ namespace CartoonFX
 				UnregisterStaticCallback(this);
 			}
 
-			public void animate(float time)
+			public void Animate(float time)
 			{
 #if UNITY_EDITOR
 				if (!editorPreview && !EditorApplication.isPlaying)

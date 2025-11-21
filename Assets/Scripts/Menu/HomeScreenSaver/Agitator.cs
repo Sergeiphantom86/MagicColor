@@ -1,4 +1,6 @@
+using CartoonFX;
 using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +8,7 @@ using UnityEngine;
 public class Agitator : MonoBehaviour, IAnimatable
 {
     [SerializeField] private ParticleSystem _particleSystem;
+    [SerializeField] private ParticleSystemPool _destructionPool;
 
     private const float MinDirectionValue = -1f;
     private const float MaxDirectionValue = 1f;
@@ -22,6 +25,7 @@ public class Agitator : MonoBehaviour, IAnimatable
     private PixelSpawner _pixelSpawner;
     private Sequence _explosionSequence;
     private Sequence _sequence;
+    private CFXR_Effect _cFXR_Effect;
 
     private void Awake()
     {
@@ -62,9 +66,42 @@ public class Agitator : MonoBehaviour, IAnimatable
 
         CompleteSequence();
 
-        _explosionSequence.Play();
+        ParticleSystem particleSystem = _destructionPool.Pool.Get();
+
+        CraeteEffect(particleSystem);
+
+        StartCoroutine(ReturnToPoolAfterDelay(particleSystem, _destructionPool, particleSystem.main.duration));
 
         TurnOffParticleSystem();
+    }
+
+    private void CraeteEffect(ParticleSystem particleSystem)
+    {
+        GetEffect(particleSystem);
+
+        _cFXR_Effect = particleSystem.GetComponent<CFXR_Effect>();
+
+        if (_cFXR_Effect != null)
+        {
+            _cFXR_Effect.ResetState();
+            if (_cFXR_Effect.cameraShake != null)
+            {
+                _cFXR_Effect.cameraShake.FetchCameras();
+                _cFXR_Effect.cameraShake.StartShake();
+            }
+        }
+
+        _explosionSequence.Play();
+    }
+
+    private ParticleSystem GetEffect(ParticleSystem particleSystem)
+    {
+        particleSystem.transform.position = _particleSystem.transform.position;
+        particleSystem.transform.localScale = Vector3.one * 15;
+        particleSystem.gameObject.SetActive(true);
+        particleSystem.Play();
+
+        return particleSystem;
     }
 
     private void AddPixelToExplosionSequence(List<Fragment> pixels)
@@ -169,5 +206,11 @@ public class Agitator : MonoBehaviour, IAnimatable
     private void OnDestroy()
     {
         DOTweenExtensions.SafeKill(_explosionSequence);
+    }
+
+    private IEnumerator ReturnToPoolAfterDelay(ParticleSystem effect, ParticleSystemPool pool, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        pool.Pool.Release(effect);
     }
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ParticleSystemController : MonoBehaviour
+public class RewardAnimator : MonoBehaviour
 {
     [SerializeField] private GameObject _spritePrefab;
     [SerializeField] private Transform _targetTransform;

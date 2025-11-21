@@ -10,7 +10,7 @@ public class RouletteSystem : MonoBehaviour
     [SerializeField] private ItemCollector _itemCollector;
     [SerializeField] private Counter _counter;
     [SerializeField] private Arrow _arrow;
-    [SerializeField] private ParticleSystemController _explosionImplosion;
+    [SerializeField] private RewardAnimator _rewardAnimator;
 
     private List<Currency> _items;
     private bool _isSpinning;
@@ -67,7 +67,7 @@ public class RouletteSystem : MonoBehaviour
         {
             _isSpinning = false;
             _spinButtonController.SetLocalBlock(false);
-            _explosionImplosion.ActivateAtPosition(result);
+            _rewardAnimator.ActivateAtPosition(result);
         });
     }
 

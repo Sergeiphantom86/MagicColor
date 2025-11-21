@@ -1561,6 +1561,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2066598842}
     - target: {fileID: 860718518634635482, guid: 54af013203436e143b2cd5ae6d1f88a3, type: 3}
+      propertyPath: _rewardAnimator
+      value: 
+      objectReference: {fileID: 264611268}
+    - target: {fileID: 860718518634635482, guid: 54af013203436e143b2cd5ae6d1f88a3, type: 3}
       propertyPath: _explosionImplosion
       value: 
       objectReference: {fileID: 264611268}

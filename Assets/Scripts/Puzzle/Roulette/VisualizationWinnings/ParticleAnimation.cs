@@ -8,9 +8,9 @@ public class ParticleAnimation : MonoBehaviour
     private Vector3 _targetPosition;
     private Settings _settings;
 
-    private event Action _onCompleteCallback;
+    private event Action OnCompleteCallback;
 
-    public struct Settings
+    public readonly struct Settings
     {
         public readonly float MinScale;
         public readonly float MaxScale;
@@ -35,7 +35,7 @@ public class ParticleAnimation : MonoBehaviour
         _randomPosition = randomPosition;
         _targetPosition = targetPosition;
         _settings = settings;
-        _onCompleteCallback = onComplete;
+        OnCompleteCallback = onComplete;
 
         RunAnimation();
     }
@@ -64,7 +64,7 @@ public class ParticleAnimation : MonoBehaviour
 
         sequence.OnComplete(() =>
         {
-            _onCompleteCallback?.Invoke();
+            OnCompleteCallback?.Invoke();
 
             Destroy(gameObject);
         });

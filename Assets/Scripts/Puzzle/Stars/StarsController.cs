@@ -14,7 +14,6 @@ public class StarsController : MonoBehaviour
         _initialDelay = 0.5f;
         _delayBetweenStars = 0.3f;
         _stars = GetComponentsInChildren<StarIndicator>();
-
         SetActive(false);
     }
 
@@ -42,16 +41,6 @@ public class StarsController : MonoBehaviour
         }
 
         YG2.saves.SetCountStars(activeCount);
-    }
-
-    public void ShowWithOutAnimation(int activeCount)
-    {
-        activeCount = Mathf.Clamp(activeCount, 0, _stars.Length);
-
-        for (int i = 0; i < activeCount; i++)
-        {
-            _stars[i].TurnOn();
-        }
     }
 
     public void SetActive(bool isOn)

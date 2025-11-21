@@ -10,7 +10,7 @@ public class PenTiltController : MonoBehaviour
 
     private void Awake()
     {
-        _maxTiltAngle = 50;
+        _maxTiltAngle = 30;
         _tiltDuration = 0.2f;
 
         _currentAngle = transform.localEulerAngles.z;

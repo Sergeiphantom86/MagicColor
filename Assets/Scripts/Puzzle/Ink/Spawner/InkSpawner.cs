@@ -27,21 +27,23 @@ public class InkSpawner : MonoBehaviour
         _voiceover = GetComponent<Voiceover>();
     }
 
-    public void ActivateInkDrops(Color color)
+    public void ActivateInkDrops(Color color, ParticleSystem particleSystem)
     {
-        StartCoroutine(SpawnAndActivateRoutine(color));
+        StartCoroutine(SpawnAndActivateRoutine(color, particleSystem));
     }
 
-    private IEnumerator SpawnAndActivateRoutine(Color color)
+    private IEnumerator SpawnAndActivateRoutine(Color color, ParticleSystem particleSystem)
     {
         for (int i = 0; i < _quantity * _quantity; i++)
         {
             _voiceover.Play(_spawn);
-            SpawnSingleInkDrop(GetRow(i), GetCol(i), color);
+            SpawnSingleInkDrop(GetRow(i), GetCol(i), color, particleSystem);
             yield return _waitForSeconds;
         }
 
         yield return StartCoroutine(ActivateDropsRoutine());
+
+        particleSystem.gameObject.SetActive(false);
     }
 
     private IEnumerator ActivateDropsRoutine()
@@ -58,13 +60,13 @@ public class InkSpawner : MonoBehaviour
         }
     }
 
-    private void SpawnSingleInkDrop(int row, int col, Color color)
+    private void SpawnSingleInkDrop(int row, int col, Color color, ParticleSystem particleSystem)
     {
         Vector3 spawnPosition = CalculateSpawnPosition(row, col);
 
         Drop inkDrop = Instantiate(_inkDropPrefab, spawnPosition, Quaternion.identity, _ink.transform);
         inkDrop.SetActive(true);
-
+        particleSystem.gameObject.SetActive(true);
         TrySetColor(inkDrop, color);
         TryAddMover(inkDrop);
     }

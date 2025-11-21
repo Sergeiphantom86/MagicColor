@@ -45,13 +45,6 @@ public class PanelFader : MonoBehaviour
          return _currentTween;
     }
 
-    public void RestoreValues(float blackout, bool isOn)
-    {
-        _canvasGroup.alpha = blackout;
-        _canvasGroup.interactable = isOn;
-        _canvasGroup.blocksRaycasts = isOn;
-    }
-
     private void OnDestroy()
     {
         _currentTween?.Kill();
