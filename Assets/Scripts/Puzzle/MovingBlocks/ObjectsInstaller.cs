@@ -8,6 +8,7 @@ public class ObjectsInstaller : MonoBehaviour
 {
     [SerializeField] private Key _key;
     [SerializeField] private Lock _lock;
+    [SerializeField] private Bag _bag;
     [SerializeField] private Rotator _rotation;
     [SerializeField] private Canvas _transformParent;
 
@@ -33,6 +34,7 @@ public class ObjectsInstaller : MonoBehaviour
         {
             _key.gameObject.SetActive(false);
             _lock.gameObject.SetActive(false);
+            _bag.gameObject.SetActive(false);
 
             _key = null;
             _lock = null;

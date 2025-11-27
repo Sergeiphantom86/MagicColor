@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(ButtonCarouselController))]
 public class ButtonSoundHandler : MonoBehaviour
 {
     [SerializeField] private MenuSound _menuSoundManager;

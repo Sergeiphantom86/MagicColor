@@ -19,7 +19,6 @@ public class Block : ColorableObject, IDestroyable
     private AudioClip _audioClip;
     private PathMover _pathMover;
     private InkSpawner _inkSpawner;
-    private CFXR_Effect _cFXR_Effect;
     private TouchDragInput _touchDragInput;
     private WaitForSeconds _waitForSeconds;
     public event Action<Block> OnDestroyed;
@@ -48,10 +47,8 @@ public class Block : ColorableObject, IDestroyable
     public void Destroy(Transform waypoint, Transform endPoint)
     {
         ParticleSystem impactEffect = GetEffect(_impactPool.Pool.Get());
-
-        ApplyEffect(impactEffect);
-
-        StartCoroutine(ReturnToPoolAfterDelay(impactEffect, _impactPool, impactEffect.main.duration));
+        _impactPool.CreateEffect(impactEffect);
+        _impactPool.Return(impactEffect);
 
         _collider.enabled = false;
 
@@ -62,23 +59,6 @@ public class Block : ColorableObject, IDestroyable
         _voiceover.Play(_audioClip);
         _pathMover.Move(waypoint, endPoint, ExecuteDestruction);
     }
-
-    private void ApplyEffect(ParticleSystem impactEffect)
-    {
-        _cFXR_Effect = impactEffect.GetComponent<CFXR_Effect>();
-
-        if (_cFXR_Effect != null)
-        {
-            _cFXR_Effect.ResetState();
-
-            if (_cFXR_Effect.cameraShake != null)
-            {
-                _cFXR_Effect.cameraShake.FetchCameras();
-                _cFXR_Effect.cameraShake.StartShake();
-            }
-        }
-    }
-
 
     private void LetGo()
     {
@@ -96,9 +76,14 @@ public class Block : ColorableObject, IDestroyable
 
         ParticleSystem destructionEffect = GetEffect(_destructionPool.Pool.Get());
 
-        _inkSpawner.ActivateInkDrops(GetColor(), destructionEffect);
+        if (_inkSpawner == null)
+        {
+            Debug.LogError("InkSpawner == null");
+            return;
+        }
 
-        StartCoroutine(ReturnToPoolAfterDelay(destructionEffect, _destructionPool, destructionEffect.main.duration));
+        _inkSpawner.ActivateInkDrops(GetColor(), destructionEffect);
+        _destructionPool.Return(destructionEffect);
 
         StartCoroutine(WaitBeforeDisablingVisualization());
     }
@@ -107,7 +92,6 @@ public class Block : ColorableObject, IDestroyable
     {
         particleSystem.transform.position = transform.position;
         particleSystem.gameObject.SetActive(true);
-        particleSystem.Play();
 
         return particleSystem;
     }
@@ -122,11 +106,5 @@ public class Block : ColorableObject, IDestroyable
         yield return _waitForSeconds;
 
         _renderer.enabled = false;
-    }
-
-    private IEnumerator ReturnToPoolAfterDelay(ParticleSystem effect, ParticleSystemPool pool, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        pool.Pool.Release(effect);
     }
 }

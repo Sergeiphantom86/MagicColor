@@ -57,6 +57,9 @@ public class StarIndicator : MonoBehaviour
     public void SetInactive()
     {
         _currentTween?.Kill();
+
+        if(_inactivePart == null) return;
+
         _inactivePart.enabled = true;
 
         if (_star != null)

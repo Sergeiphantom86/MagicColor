@@ -7,9 +7,8 @@ public class StateTutorial : MonoBehaviour
     private Lock _lock;
     private HandMover _handMover;
     private TouchVisualizer  _visualizer;
-    private Vector3 _startPosition;
+    private bool _isClick;
 
-    public event Action<Vector3> OnInstalled;
     public event Action OnCompleted;
 
     private void OnDisable()
@@ -28,10 +27,8 @@ public class StateTutorial : MonoBehaviour
         _lock = @lock;
         _handMover = handMover;
         _visualizer = touchVisualizer;
-
+        
         SubscribeEvents();
-
-        _startPosition = _handMover.transform.position;
 
         Begin();
     }
@@ -50,18 +47,22 @@ public class StateTutorial : MonoBehaviour
 
     private void MovePointer—lick()
     {
-        OnInstalled?.Invoke(_lock.transform.position);
+        SetPositionsEquipment(_lock.transform.position);
     }
 
     private void MovePointer()
     {
-        _handMover.transform.position = _startPosition;
+        if (_isClick == false)
+        {
+            _isClick = true;
 
-        OnInstalled?.Invoke(_key.transform.position);
-        _visualizer.gameObject.SetActive(true);
+            SetPositionsEquipment(_key.transform.position);
 
-        _handMover.Stop();
-        _handMover.EnableScaleAnimation();
+            _visualizer.gameObject.SetActive(true);
+
+            _handMover.Stop();
+            _handMover.EnableScaleAnimation();
+        }
     }
 
     private void Complete()
@@ -70,5 +71,11 @@ public class StateTutorial : MonoBehaviour
         _handMover.gameObject.SetActive(false);
 
         OnCompleted?.Invoke();
+    }
+
+    private void SetPositionsEquipment(Vector3 position)
+    {
+        _handMover.SetPosition(position);
+        _visualizer.SetPosition(position);
     }
 }

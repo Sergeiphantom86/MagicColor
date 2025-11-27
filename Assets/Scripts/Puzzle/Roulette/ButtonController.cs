@@ -27,12 +27,14 @@ public class ButtonController : MonoBehaviour
     {
         GlobalInteractableCondition = globalInteractableCondition;
         OnTurned = onClickAction;
+
         UpdateState();
     }
 
     public void SetLocalBlock(bool block)
     {
         _localBlock = block;
+
         UpdateState();
     }
 

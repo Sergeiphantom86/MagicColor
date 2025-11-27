@@ -16,9 +16,9 @@ namespace CartoonFX
         [InitializeOnLoadMethod]
         private static void InitGlobalOptions()
         {
-            AnimatedLight.editorPreview = EditorPrefs.GetBool("CFXR Light EditorPreview", true);
+            AnimatedLight.EditorPreview = EditorPrefs.GetBool("CFXR Light EditorPreview", true);
 #if !DISABLE_CAMERA_SHAKE
-            CameraShake.editorPreview = EditorPrefs.GetBool("CFXR CameraShake EditorPreview", true);
+            CameraShake.EditorPreview = EditorPrefs.GetBool("CFXR CameraShake EditorPreview", true);
 #endif
         }
 #endif
@@ -33,43 +33,44 @@ namespace CartoonFX
         [System.Serializable]
         public class AnimatedLight
         {
-            public static bool editorPreview = true;
+            public static bool EditorPreview = true;
 
             public Light light;
 
             public bool loop;
 
-            public bool animateIntensity;
-            public float intensityStart = 8f;
-            public float intensityEnd = 0f;
-            public float intensityDuration = 0.5f;
-            public AnimationCurve intensityCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
-            public bool perlinIntensity;
-            public float perlinIntensitySpeed = 1f;
-            public bool fadeIn;
-            public float fadeInDuration = 0.5f;
-            public bool fadeOut;
-            public float fadeOutDuration = 0.5f;
+            private bool animateIntensity;
+            public float IntensityStart = 8f;
+            private float intensityDuration = 0.5f;
+            private AnimationCurve intensityCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+            private bool perlinIntensity;
+            private float perlinIntensitySpeed = 1f;
+            private bool fadeIn;
+            private float fadeInDuration = 0.5f;
+            private bool fadeOut;
+            private float fadeOutDuration = 0.5f;
 
-            public bool animateRange;
-            public float rangeStart = 8f;
-            public float rangeEnd = 0f;
-            public float rangeDuration = 0.5f;
-            public AnimationCurve rangeCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
-            public bool perlinRange;
-            public float perlinRangeSpeed = 1f;
+            private bool animateRange;
+            private float rangeStart = 8f;
+            private float rangeEnd = 0f;
+            private float rangeDuration = 0.5f;
+            private AnimationCurve rangeCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+            private bool perlinRange;
+            private float perlinRangeSpeed = 1f;
 
-            public bool animateColor;
-            public Gradient colorGradient;
-            public float colorDuration = 0.5f;
-            public AnimationCurve colorCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
-            public bool perlinColor;
-            public float perlinColorSpeed = 1f;
+            private bool animateColor;
+            private Gradient colorGradient;
+            private float colorDuration = 0.5f;
+            private AnimationCurve colorCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
+            private bool perlinColor;
+            private float perlinColorSpeed = 1f;
+
+            public float IntensityEnd { get;  set; }
 
             public void Animate(float time)
             {
 #if UNITY_EDITOR
-                if (!editorPreview && !EditorApplication.isPlaying)
+                if (!EditorPreview && !EditorApplication.isPlaying)
                 {
                     return;
                 }
@@ -81,7 +82,7 @@ namespace CartoonFX
                     {
                         float delta = loop ? Mathf.Clamp01((time % intensityDuration) / intensityDuration) : Mathf.Clamp01(time / intensityDuration);
                         delta = perlinIntensity ? Mathf.PerlinNoise(Time.time * perlinIntensitySpeed, 0f) : intensityCurve.Evaluate(delta);
-                        light.intensity = Mathf.LerpUnclamped(intensityEnd, intensityStart, delta);
+                        light.intensity = Mathf.LerpUnclamped(IntensityEnd, IntensityStart, delta);
 
                         if (fadeIn && time < fadeInDuration)
                         {
@@ -119,7 +120,7 @@ namespace CartoonFX
                 {
                     if (animateIntensity)
                     {
-                        light.intensity = (fadeIn || fadeOut) ? 0 : intensityEnd;
+                        light.intensity = (fadeIn || fadeOut) ? 0 : IntensityEnd;
                     }
 
                     if (animateRange)
@@ -433,7 +434,7 @@ namespace CartoonFX
 #endif
 
 #if !DISABLE_CAMERA_SHAKE
-            if (cameraShake != null && cameraShake.enabled)
+            if (cameraShake != null && cameraShake.Enabled)
             {
                 cameraShake.StopShake();
             }
@@ -444,7 +445,7 @@ namespace CartoonFX
         private void Awake()
         {
 #if !DISABLE_CAMERA_SHAKE
-            if (cameraShake != null && cameraShake.enabled)
+            if (cameraShake != null && cameraShake.Enabled)
             {
                 cameraShake.FetchCameras();
             }
@@ -463,8 +464,8 @@ namespace CartoonFX
             {
                 foreach (var animLight in animatedLights)
                 {
-                    animLight.intensityStart = Mathf.LinearToGammaSpace(animLight.intensityStart);
-                    animLight.intensityEnd = Mathf.LinearToGammaSpace(animLight.intensityEnd);
+                    animLight.IntensityStart = Mathf.LinearToGammaSpace(animLight.IntensityStart);
+                    animLight.IntensityEnd = Mathf.LinearToGammaSpace(animLight.IntensityEnd);
                 }
             }
 #endif
@@ -555,10 +556,10 @@ namespace CartoonFX
 #endif
 
 #if !DISABLE_CAMERA_SHAKE
-            if (cameraShake != null && cameraShake.enabled && !GlobalDisableCameraShake)
+            if (cameraShake != null && cameraShake.Enabled && !GlobalDisableCameraShake)
             {
 #if UNITY_EDITOR
-                if (!cameraShake.isShaking)
+                if (!cameraShake.IsShaking)
                 {
                     cameraShake.FetchCameras();
                 }
@@ -688,7 +689,7 @@ namespace CartoonFX
             if (particleTime != ParentParticle.time)
             {
 #if !DISABLE_CAMERA_SHAKE
-                if (cameraShake != null && cameraShake.enabled && ParentParticle.time < particleTime && ParentParticle.time < 0.05f)
+                if (cameraShake != null && cameraShake.Enabled && ParentParticle.time < particleTime && ParentParticle.time < 0.05f)
                 {
                     cameraShake.StartShake();
                 }
@@ -767,7 +768,7 @@ namespace CartoonFX
                 {
                     lightEditorPreview = lightPreview;
                     EditorPrefs.SetBool("CFXR Light EditorPreview", lightPreview);
-                    CFXR_Effect.AnimatedLight.editorPreview = lightPreview;
+                    CFXR_Effect.AnimatedLight.EditorPreview = lightPreview;
                 }
 
 #if !DISABLE_CAMERA_SHAKE
@@ -780,7 +781,7 @@ namespace CartoonFX
                 {
                     shakeEditorPreview = shakePreview;
                     EditorPrefs.SetBool("CFXR CameraShake EditorPreview", shakePreview);
-                    CFXR_Effect.CameraShake.editorPreview = shakePreview;
+                    CFXR_Effect.CameraShake.EditorPreview = shakePreview;
                 }
 #endif
             }

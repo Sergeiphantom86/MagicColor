@@ -3,27 +3,23 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Fragment : MonoBehaviour
 {
-    private SpriteRenderer _renderer;
-    private float _startAlpha;
-    private int _finalAlpha;
     private Color _newColor;
+    private int _finalAlpha;
+    private float _startAlpha;
     private Transform _transform;
-    private Color _originalColor;
+    private SpriteRenderer _renderer;
 
     public SpriteRenderer Renderer => _renderer;
 
     private void Awake()
     {
-        _transform = transform;
         _renderer = GetComponent<SpriteRenderer>();
-        _startAlpha = 0.3f;
+
         _finalAlpha = 1;
+        _startAlpha = 0.3f;
         _renderer.sortingOrder = 1;
 
-        if (_renderer != null)
-        {
-            _originalColor = _renderer.color;
-        }
+        _transform = transform;
     }
 
     public void SetColor(Color color)
@@ -66,24 +62,14 @@ public class Fragment : MonoBehaviour
         _transform.rotation = quaternion;
     }
 
-    public Color GetColor()
+    public void TurnOff()
     {
-        return _renderer != null ? _renderer.color : Color.white;
+        gameObject.SetActive(false);
     }
 
-    public void ResetToOriginal()
+    public void TurnOn()
     {
-        SetColor(_originalColor);
-    }
-
-    public void SetScale(Vector3 scale)
-    {
-        _transform.localScale = scale;
-    }
-
-    public Vector3 GetPosition()
-    {
-        return _transform.position;
+        gameObject.SetActive(true);
     }
 
     private void CustomizeColor(float alpha)

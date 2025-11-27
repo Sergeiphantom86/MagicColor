@@ -17,7 +17,7 @@ public class UIAnimator : MonoBehaviour, IUIAnimator
 
     private void Awake()
     {
-        _scale = 2;
+        _scale = 0.1f;
         _duration = 1;
         _moverUI = new MoverUI();
         _sequence = DOTween.Sequence();
@@ -27,7 +27,7 @@ public class UIAnimator : MonoBehaviour, IUIAnimator
 
     public Sequence Move(RectTransform canvasRect)
     {
-        return GetSequence(canvasRect, _positionX, _positionY, 0);
+        return GetSequence(canvasRect, 0, _positionY, 0);
     }
 
     public void Return(RectTransform canvasRect)
@@ -37,26 +37,12 @@ public class UIAnimator : MonoBehaviour, IUIAnimator
 
     public void Increase()
     {
-        CreateOrRestartSequence();
-
         _moverUI.EnableAnimationResizing(_rectTransform, _duration, _scale, _scale);
     }
 
     private Sequence GetSequence(RectTransform canvasRect, float positionX, float positionY, float positionZ)
     {
-        CreateOrRestartSequence();
-
         return _moverUI.EnableMotionAnimation(_rectTransform, _duration, canvasRect, positionX, positionY, positionZ);
-    }
-
-    private void CreateOrRestartSequence()
-    {
-        if (_sequence != null && _sequence.IsActive())
-        {
-            _sequence.Kill();
-        }
-
-        _sequence = DOTween.Sequence();
     }
 
     private void OnDestroy()

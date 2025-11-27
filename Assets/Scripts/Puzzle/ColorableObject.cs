@@ -8,11 +8,13 @@ public class ColorableObject : MonoBehaviour, IColorable
     private Indicator _indicator;
     private Color _originalColor;
     private bool _isRepainted;
+    private float _valueTransparency;
 
     public bool IsRepainted => _isRepainted;
 
     public void InitializeComponents()
     {
+        _valueTransparency = 0.5f;
         _curentRenderer = GetComponent<Renderer>();
 
         ValidateRenderer();
@@ -30,7 +32,7 @@ public class ColorableObject : MonoBehaviour, IColorable
         }
 
         SettingRenderingMode(_curentRenderer.material);
-        SetAlpha(_curentRenderer.material.color, 0.5f);
+        SetAlpha(_curentRenderer.material.color, _valueTransparency);
     }
 
     public void InstallRepainted()
@@ -118,6 +120,7 @@ public class ColorableObject : MonoBehaviour, IColorable
         material.DisableKeyword("_ALPHATEST_ON");
         material.EnableKeyword("_ALPHABLEND_ON");
         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+        material.renderQueue = 3000;
+        material.SetFloat("_Alpha", _valueTransparency);
     }
 }

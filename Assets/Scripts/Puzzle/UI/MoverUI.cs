@@ -41,15 +41,6 @@ public class MoverUI
         }
     }
 
-    public void Kill()
-    {
-        if (_sequence != null && _sequence.IsActive())
-        {
-            _sequence.Kill();
-            _sequence = null;
-        }
-    }
-
     public bool IsActive()
     {
         return _sequence != null && _sequence.IsActive();

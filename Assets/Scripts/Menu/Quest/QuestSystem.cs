@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using YG;
 
+[RequireComponent(typeof(TransitionChooser))]
 public class QuestSystem : MonoBehaviour
 {
     private int _currentQuestIndex;
     private Quest _active;
     private IReadOnlyList<Quest> _quests;
-    private TransitionChooser _transitionChooser;
     private List<Quest> _subscribedQuests;
+    private TransitionChooser _transitionChooser;
 
     private void Awake()
     {

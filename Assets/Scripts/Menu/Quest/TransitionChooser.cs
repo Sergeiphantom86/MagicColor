@@ -31,6 +31,7 @@ public class TransitionChooser : MonoBehaviour
     public void ChoosePuzzle(Quest quest)
     {
         SetQuest(quest);
+
         YG2.saves.SetTutorial(quest.Index);
 
         if (quest.Index == _indexTransparent)

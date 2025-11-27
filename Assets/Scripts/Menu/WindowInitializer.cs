@@ -19,7 +19,9 @@ public class WindowInitializer : MonoBehaviour
         if (_isInitialized) return;
 
         _windowActions = new Dictionary<string, Action>();
+
         RegisterActions();
+
         _isInitialized = true;
     }
 

@@ -73,14 +73,6 @@ public class Quest : MonoBehaviour
         UpdateVisualState();
     }
 
-    public void Complete()
-    {
-        if (_isUnlocked == false || _isCompleted) return;
-
-        _isCompleted = true;
-        UpdateVisualState();
-    }
-
     public void SetActiveIndicator(bool active)
     {
         if (_activeIndicator != null)
@@ -98,7 +90,6 @@ public class Quest : MonoBehaviour
     {
         if (_isUnlocked == false || _isCompleted) return;
 
-        //_gameSaveSystem.CurrentValue = _reward;
         YG2.saves.SetCurrentValue(_reward);
         OnCompleted?.Invoke(this);
     }

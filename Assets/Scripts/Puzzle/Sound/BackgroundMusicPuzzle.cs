@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using YG;
 
+[RequireComponent(typeof(AudioSource))]
 public class BackgroundMusicPuzzle : MonoBehaviour
 {
     private const string MusicVolume = nameof(MusicVolume);

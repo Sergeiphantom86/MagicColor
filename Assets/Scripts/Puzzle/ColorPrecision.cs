@@ -7,7 +7,6 @@ public class ColorPrecision : IColorPrecision
 
     public Color Reduce(Color color)
     {
-
         return new Color(RoundComponent(color.r), RoundComponent(color.g), RoundComponent(color.b));
     }
 

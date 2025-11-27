@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(FragmentCollector))]
 public class Sorter : MonoBehaviour
 {
-    private PixelRenderer _renderer;
+    private FragmentCollector _fragmentCollector;
     private List<Fragment> _fragments;
 
     public List<Fragment> Fragments => _fragments;
@@ -13,28 +14,28 @@ public class Sorter : MonoBehaviour
 
     private void Awake()
     {
-        _renderer = GetComponent<PixelRenderer>();
+        _fragmentCollector = GetComponent<FragmentCollector>();
         _fragments = new List<Fragment>();
     }
 
     private void OnEnable()
     {
-        _renderer.OnPixelsRendered += SortFragments;
+        _fragmentCollector.OnPixelsRendered += SortFragments;
     }
 
     private void OnDisable()
     {
-        _renderer.OnPixelsRendered -= SortFragments;
+        _fragmentCollector.OnPixelsRendered -= SortFragments;
     }
 
-    private void SortFragments()
+    private void SortFragments(List<Fragment> fragments)
     {
-        if (_renderer.Fragments == null || _renderer.Fragments.Count == 0)
+        if (fragments == null || fragments.Count == 0)
             return;
 
-        _renderer.Fragments.Sort(CompareFragments);
+        fragments.Sort(CompareFragments);
 
-        _fragments = _renderer.Fragments;
+        _fragments = fragments;
         HasSorted?.Invoke();
     }
 

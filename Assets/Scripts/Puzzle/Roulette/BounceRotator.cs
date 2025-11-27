@@ -1,6 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
+[RequireComponent(typeof(Voiceover))]
 public class BounceRotator : MonoBehaviour
 {
     [Header("Rotation Settings")]

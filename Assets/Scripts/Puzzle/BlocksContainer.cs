@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BlocksContainer : MonoBehaviour, IBlocksContainer
 {
-    [SerializeField] private ImageAnalyzer _imageAnalyzer;
+    [SerializeField] private TextureInitializer _textureInitializer;
     [SerializeField] private AudioClip _dragg;
     [SerializeField] private AudioClip _taking;
     [SerializeField] private AudioClip _throwOff;
@@ -35,10 +35,10 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     }
 
     private void OnEnable() =>
-       _imageAnalyzer.Spawn += Initialize;
+       _textureInitializer.OnInitialize += Initialize;
 
     private void OnDisable() =>
-        _imageAnalyzer.Spawn -= Initialize;
+        _textureInitializer.OnInitialize -= Initialize;
 
     private void Initialize(int colorsCount)
     {

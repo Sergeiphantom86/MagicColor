@@ -11,18 +11,18 @@ public class Key : Currency
     [SerializeField] private AudioClip _hiding;
     [SerializeField] private AudioClip _appearance;
 
-    private string _quantity;
     private float _zoomIn;
     private float _zoomOut;
     private bool _isDragging;
+    private string _quantity;
     private float _movementDuration;
     private float _delayBetweenMovements;
-    private Vector3 _rotationAngles;
+    private Voiceover _voiceover;
     private ParticleSystem _shine;
+    private Vector3 _rotationAngles;
     private Sequence _movementSequence;
     private InputHandler _inputHandler;
     private CollisionHandler _collisionHandler;
-    private Voiceover _voiceover;
 
     public event Action OnShift;
     public event Action OnSelected;
@@ -92,6 +92,7 @@ public class Key : Currency
 
         _movementSequence.Play();
         _voiceover.Play(_flight);
+
         OnSelected?.Invoke();
 
     }
@@ -101,6 +102,7 @@ public class Key : Currency
         if (collider.TryGetComponent(out Block _) == false) return;
 
         Icon.enabled = false;
+
         _voiceover.Play(_hiding);
         _shine.Stop();
 
@@ -111,11 +113,11 @@ public class Key : Currency
         if (collider.TryGetComponent(out Block _) == false) return;
 
         _isDragging = false;
-
         Icon.enabled = true;
 
         _shine.Play();
         _voiceover.Play(_appearance);
+
         OnShift?.Invoke();
 
     }

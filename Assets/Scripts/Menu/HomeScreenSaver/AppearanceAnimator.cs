@@ -20,8 +20,8 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
 
     private void Awake()
     {
-        _startSizeMultiplier = 50;
-        _endScale = new Vector3(20, 20, 1f);
+        _startSizeMultiplier = 100;
+        _endScale = new Vector3(1, 1, 1f);
         _delayBetweenObjects = 0.01f;
         _animationDuration = 0.5f;
         _sorter = GetComponent<Sorter>();

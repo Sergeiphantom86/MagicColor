@@ -6,15 +6,27 @@ public class FinalPicture : MonoBehaviour
     [SerializeField] private float _moveYDuration;
     [SerializeField] private float _targetYPosition;
     [SerializeField] private float _scaleDuration;
+    [SerializeField] private Activator _activator;
 
     private Vector3 _targetScale;
 
     private void Awake()
     {
-        _targetScale = Vector3.one * 2;
-}
+        _targetScale = Vector3.one * 10;
+    }
 
-    public void Demonstrate(RectTransform canvasRect)
+    private void OnEnable()
+    {
+        _activator.OnPuzzleComplete += Demonstrate;
+    }
+
+    private void OnDisable()
+    {
+        _activator.OnPuzzleComplete -= Demonstrate;
+        transform.DOKill();
+    }
+
+    public void Demonstrate()
     {
         MoveY();
         Increase();

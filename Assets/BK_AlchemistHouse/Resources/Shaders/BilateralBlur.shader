@@ -172,25 +172,17 @@ Shader "Hidden/BilateralBlur"
 			}
             
 			// find nearest sample
+			float2 uvSamples[4] = {input.uv00, input.uv10, input.uv01, input.uv11};
 			float minDepthDiff = depthDiff[0];
-			float2 nearestUv = input.uv00;
+			float2 nearestUv = uvSamples[0];
 
-			if (depthDiff[1] < minDepthDiff)
+			for (int i = 1; i < 4; i++)
 			{
-				nearestUv = input.uv10;
-				minDepthDiff = depthDiff[1];
-			}
-
-			if (depthDiff[2] < minDepthDiff)
-			{
-				nearestUv = input.uv01;
-				minDepthDiff = depthDiff[2];
-			}
-
-			if (depthDiff[3] < minDepthDiff)
-			{
-				nearestUv = input.uv11;
-				minDepthDiff = depthDiff[3];
+				if (depthDiff[i] < minDepthDiff)
+				{
+					minDepthDiff = depthDiff[i];
+					nearestUv = uvSamples[i];
+				}
 			}
 
             return loColor.Sample(pointSampler, nearestUv);

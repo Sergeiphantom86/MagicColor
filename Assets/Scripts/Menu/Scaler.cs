@@ -20,10 +20,4 @@ public class Scaler : MonoBehaviour
         gameObject.SetActive(false);
         transform.localScale = Vector3.one * minScale;
     }
-
-    public void Stopped(float minScale)
-    {
-        _currentTween?.Kill();
-        transform.localScale = Vector3.one * minScale;
-    }
 }

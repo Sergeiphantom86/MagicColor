@@ -12,8 +12,8 @@ public class FragmentQueueProcessor
     private readonly IBlocksContainer _blocksContainer;
     private readonly IFragmentAnimator _fragmentAnimator;
 
-    Fragment _point;
-    Vector3 _startPosition;
+    private Fragment _point;
+    private Vector3 _startPosition;
     private bool _isProcessing;
     private bool _needSpeedBoost;
     private float _currentDuration;
@@ -28,7 +28,7 @@ public class FragmentQueueProcessor
         _voiceover = voiceover;
         _pixelActivation = audioClip;
         _blocksContainer = blocksContainer;
-        _fragmentAnimator = fragmentAnimator;
+        _fragmentAnimator = fragmentAnimator; 
 
         if (_blocksContainer == null) return;
 

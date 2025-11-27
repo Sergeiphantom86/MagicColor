@@ -2,22 +2,23 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer), typeof(Indicator))]
+[RequireComponent(typeof(Renderer), typeof(Indicator), typeof(IColorable))]
+[RequireComponent(typeof(Wall))]
 public class ColorCollisionHandler : MonoBehaviour
 {
     [SerializeField] private EffectsHandler effectsHandler;
 
     private float _delay;
+    private Wall _wall;
+    private Lock  _lock;
+    private Point _point;
     private Renderer _renderer;
+    private Indicator _indicator;
     private Activator _activator;
     private Coroutine _coroutine;
-    private WaitForSeconds _waitForSeconds;
-    private IColorPrecision _colorPrecision;
     private IColorable _colorable;
-    private Point _point;
-    private Indicator _indicator;
-    private Lock  _lock;
-    private Wall _wall;
+    private IColorPrecision _colorPrecision;
+    private WaitForSeconds _waitForSeconds;
 
     public event Action<Block> IsTouch;
     public event Action<Collider> TouchEnded;
@@ -25,11 +26,11 @@ public class ColorCollisionHandler : MonoBehaviour
     private void Awake()
     {
         _delay = 0.1f;
+        _wall = GetComponent<Wall>();
         _renderer = GetComponent<Renderer>();
         _colorable = GetComponent<IColorable>();
         _indicator = GetComponent<Indicator>();
         _point = GetComponentInChildren<Point>();
-        _wall = GetComponent<Wall>();
         _waitForSeconds = new WaitForSeconds(_delay);
 
 
@@ -103,11 +104,13 @@ public class ColorCollisionHandler : MonoBehaviour
         if (colorableObject is Block block && _wall.IsBlocked == false)
         {
             _coroutine = StartCoroutine(WaitForComparison(block, otherColor));
+
             IsTouch?.Invoke(block);
         }
         else if(_lock != null)
         {
             _lock.ShakeUp();
+
             IsTouch?.Invoke(null);
         }
     }
@@ -122,6 +125,7 @@ public class ColorCollisionHandler : MonoBehaviour
         if (other.TryGetComponent(out ColorableObject _) == false) return;
 
         TouchEnded?.Invoke(other);
+
         _colorable.Disable();
 
         if (_coroutine != null)

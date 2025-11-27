@@ -31,6 +31,13 @@ public class TouchVisualizer : MonoBehaviour
         _sequence?.Kill();
     }
 
+    public void SetPosition(Vector3 position)
+    {
+        position.y += 0.5f;
+        
+        transform.position = position;
+    }
+
     private void Start()
     {
         Play();

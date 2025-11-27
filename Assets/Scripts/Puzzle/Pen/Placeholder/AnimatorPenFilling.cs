@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(DustSizeCalculator))]
 public class AnimatorPenFilling : MonoBehaviour
 {
-    [SerializeField] private FragmentSpawner _fragmentSpawner;
+    [SerializeField] private TextureInitializer _fragmentCollector;
 
     private DustSizeCalculator _dustSizeCalculator;
     private float _duration;
@@ -22,7 +22,13 @@ public class AnimatorPenFilling : MonoBehaviour
         _currentOccupancy = 0f;
     }
 
-    public void UpdatePenSize(int quantity, Placeholder placeholder)
+    public void FillPen(Color color, Placeholder placeholder)
+    {
+        int fragmentCount = GetFragmentCount(color);
+        UpdatePenSize(fragmentCount, placeholder);
+    }
+
+    private void UpdatePenSize(int quantity, Placeholder placeholder)
     {
         if (placeholder == null || quantity < 0) return;
 
@@ -33,21 +39,15 @@ public class AnimatorPenFilling : MonoBehaviour
         ChangePosition(placeholder, _currentOccupancy);
     }
 
-    public void FillPen(Color color, Placeholder placeholder)
-    {
-        int fragmentCount = GetFragmentCount(color);
-        UpdatePenSize(fragmentCount, placeholder);
-    }
-
     private int GetFragmentCount(Color color)
     {
-        if (_fragmentSpawner == null || _fragmentSpawner.Fragments == null)
+        if (_fragmentCollector == null || _fragmentCollector.Fragments == null)
         {
             Debug.LogError("FragmentSpawner or Fragments dictionary is null!", this);
             return 0;
         }
 
-        if (_fragmentSpawner.Fragments.TryGetValue(color, out Queue<Fragment> fragments))
+        if (_fragmentCollector.Fragments.TryGetValue(color, out Queue<Fragment> fragments))
         {
             return fragments?.Count ?? 0;
         }
@@ -103,7 +103,7 @@ public class AnimatorPenFilling : MonoBehaviour
             return 0f;
         }
 
-        if (_fragmentSpawner == null)
+        if (_fragmentCollector == null)
         {
             Debug.LogError("FragmentSpawner is null!");
             return 0f;
@@ -115,6 +115,6 @@ public class AnimatorPenFilling : MonoBehaviour
             return 0f;
         }
 
-        return _dustSizeCalculator.CalculateSize(quantity, _fragmentSpawner.TotalCount);
+        return _dustSizeCalculator.CalculateSize(quantity, _fragmentCollector.TotalCount);
     }
 }

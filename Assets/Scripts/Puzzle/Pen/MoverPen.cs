@@ -6,7 +6,6 @@ using UnityEngine;
 public class MoverPen : MonoBehaviour, IMover
 {
     private PenScaleController _scaleController;
-
     private void Awake()
     {
         _scaleController = GetComponent<PenScaleController>();

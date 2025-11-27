@@ -18,6 +18,7 @@ public class Voiceover : MonoBehaviour
     {
         _sfxSource = GetComponent<AudioSource>();
         _sfxSource.outputAudioMixerGroup = _sfxGroup;
+
         LoadVolumeSettings();
     }
 

@@ -3,6 +3,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 
+[RequireComponent(typeof(Sorter))]
 public class PixelMover : MonoBehaviour, IAnimatable
 {
     [Header("Settings")]

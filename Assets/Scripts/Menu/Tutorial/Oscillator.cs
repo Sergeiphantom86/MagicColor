@@ -36,14 +36,6 @@ public class Oscillator : MonoBehaviour
         Rotate();
     }
 
-    public void Stop()
-    {
-        if (_sequence != null)
-        {
-            _sequence.Kill();
-        }
-    }
-
     private void SetStartPosition()
     {
         _initialRotation = transform.eulerAngles;
@@ -72,7 +64,6 @@ public class Oscillator : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_sequence != null)
-            _sequence.Kill();
+        _sequence?.Kill();
     }
 }

@@ -12,6 +12,7 @@ public class Wall : ColorableObject
     private void Awake()
     {
         InitializeComponents();
+
         _point = GetComponentInChildren<Point>();
     }
 

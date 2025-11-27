@@ -8,6 +8,7 @@ public class MenuSoundManager : MonoBehaviour
 {
     private const float MinDecibels = -80f;
     private const float DBLinearRatio = 20f;
+    private const float MinVolume = 0.0001f;
 
     [SerializeField] private AudioClip _backgroundMusic;
     [SerializeField] private AudioMixerGroup _soundMixerGroup;
@@ -16,7 +17,6 @@ public class MenuSoundManager : MonoBehaviour
     [SerializeField] private VolumeChanger _sounVolumeChanger;
     [SerializeField] private AudioMixer _mixer;
 
-    private const float MinVolume = 0.0001f;
     private AudioSource _soundSource;
     private AudioSource _musicSource;
     private float _currentMusicVolume = 1f;

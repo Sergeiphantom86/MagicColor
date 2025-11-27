@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Pool;
+using System.Collections.Generic;
 
 public class PixelPool : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PixelPool : MonoBehaviour
 
     private ObjectPool<Fragment> _pool;
     private Transform _poolParent;
+    private int _scaleDefault;
 
     public ObjectPool<Fragment> Pool => _pool;
 
@@ -18,6 +20,8 @@ public class PixelPool : MonoBehaviour
         _poolParent = transform;
         _defaultPoolSize = 1000;
         _maxPoolSize = 5000;
+        _scaleDefault = 1;
+
         CreatePool();
     }
 
@@ -37,20 +41,23 @@ public class PixelPool : MonoBehaviour
     private Fragment CreatePooledItem()
     {
         Fragment pixel = Instantiate(_pixelPrefab, _poolParent);
-        pixel.gameObject.SetActive(false);
+        pixel.TurnOff();
         return pixel;
     }
 
     private void OnTakeFromPool(Fragment pixel)
     {
-        pixel.gameObject.SetActive(true);
+        pixel.TurnOn();
     }
 
-    private void OnReturnedToPool(Fragment pixel)
+    public void OnReturnedToPool(Fragment pixel)
     {
         if (pixel != null && pixel.gameObject != null)
         {
-            pixel.gameObject.SetActive(false);
+            pixel.TurnOff();
+            pixel.SetParent(_poolParent);
+            pixel.SetLocalScale(_scaleDefault);
+            pixel.SetRotation(Quaternion.identity);
         }
     }
 
@@ -59,6 +66,19 @@ public class PixelPool : MonoBehaviour
         if (pixel != null && pixel.gameObject != null)
         {
             Destroy(pixel.gameObject);
+        }
+    }
+
+    public void ReturnAllFragments(List<Fragment> fragments)
+    {
+        if (fragments == null) return;
+
+        foreach (Fragment fragment in fragments)
+        {
+            if (fragment != null)
+            {
+                _pool.Release(fragment);
+            }
         }
     }
 

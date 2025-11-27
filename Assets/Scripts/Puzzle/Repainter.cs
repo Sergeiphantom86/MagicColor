@@ -12,7 +12,7 @@ public class Repainter : MonoBehaviour
     private List<IColorable> _walls;
     private List<IColorable> _blocks;
     private IBlocksContainer _iBlocksContainer;
-    private ImageAnalyzer _imageAnalyzer;
+    private TextureInitializer _textureInitializer;
 
     public event Action<List<IColorable>> OnRecoloredWalls;
     public event Action<List<IColorable>> OnRecoloredBlock;
@@ -22,18 +22,18 @@ public class Repainter : MonoBehaviour
         _colors = new List<Color>();
         _walls = new List<IColorable>();
         _blocks = new List<IColorable>();
-        _imageAnalyzer = GetComponent<ImageAnalyzer>();
         _iBlocksContainer = _blocksContainer;
+        _textureInitializer = GetComponent<TextureInitializer>();
     }
 
     private void OnEnable()
     {
-        _imageAnalyzer.CanPaint += UpdateSystem;
+        _textureInitializer.CanPaint += UpdateSystem;
     }
 
     private void OnDisable()
     {
-        _imageAnalyzer.CanPaint -= UpdateSystem;
+        _textureInitializer.CanPaint -= UpdateSystem;
     }
 
     private List<IColorable> GetColorablesFromContainer(Transform container)
@@ -78,7 +78,7 @@ public class Repainter : MonoBehaviour
             Debug.LogError($"Количество Blocks = {_blocks.Count} {this}");
             return;
         }
-       
+
         UpdateColors(colors);
 
         ReplaceColors(_walls);

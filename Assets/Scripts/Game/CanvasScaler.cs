@@ -1,29 +1,21 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Canvas))]
 public class CanvasScaler : MonoBehaviour
 {
     private Canvas _canvas;
     private Camera _camera;
-    private float _sizeDivider;
-    private float _screenSizeMultiplier;
+    private ZoomChanger _zoomChanger;
 
     private void Awake()
     {
-        _sizeDivider = 1000;
         _camera = Camera.main;
         _canvas = GetComponent<Canvas>();
+        _zoomChanger = new ZoomChanger();
     }
 
     private void Start()
     {
-        //AdjustScreenSize();
+        _canvas.scaleFactor *= _zoomChanger.GetScreenSize(_camera);
     }
-
-    //private void AdjustScreenSize()
-    //{
-    //    _screenSizeMultiplier = _camera.scaledPixelWidth;
-    //    _screenSizeMultiplier /= _sizeDivider;
-
-    //    _camera.scaleFactor *= _screenSizeMultiplier;
-    //}
 }

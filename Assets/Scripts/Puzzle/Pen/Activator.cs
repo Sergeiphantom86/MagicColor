@@ -5,10 +5,11 @@ using UnityEngine;
 public class Activator : MonoBehaviour
 {
     [SerializeField] private AudioClip _winn;
-    [SerializeField] private FragmentSpawner _spawner;
     [SerializeField] private AudioClip _pixelActivation;
+    [SerializeField] private Transform _transformPenHolder;
     [SerializeField] private BlocksContainer _blocksContainer;
     [SerializeField] private SequentialSpawner _sequentialSpawner;
+    [SerializeField] private TextureInitializer _textureInitializer;
 
     private float _delay;
     private float _duration;
@@ -55,23 +56,20 @@ public class Activator : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_queueProcessor != null)
-        {
-            _queueProcessor.Cleanup();
-        }
+        _queueProcessor?.Cleanup();
     }
 
     public void EnqueueFragments(Color color)
     {
-        if (_spawner == null) return;
+        if (_textureInitializer == null) return;
 
         if (_totalCountPixel == 0)
         {
-            _totalCountPixel = _spawner.TotalCount;
+            _totalCountPixel = _textureInitializer.TotalCount;
             _remainingPixels = _totalCountPixel;
         }
 
-        var fragments = _spawner.GetFragmentsByColor(_colorPrecision.Reduce(color));
+        var fragments = _textureInitializer.GetFragmentsByColor(_colorPrecision.Reduce(color));
 
         _queueProcessor.EnqueueFragments(fragments);
         _sequentialSpawner.SpawnObject(color);
@@ -86,7 +84,7 @@ public class Activator : MonoBehaviour
     {
         _isProcessing = true;
        
-        yield return _queueProcessor.ProcessQueueRoutine(transform.position, _duration, _transitionReducing);
+        yield return _queueProcessor.ProcessQueueRoutine(_transformPenHolder.position, _duration, _transitionReducing);
 
         _isProcessing = false;
     }
@@ -120,6 +118,7 @@ public class Activator : MonoBehaviour
     private IEnumerator Wait()
     {
         yield return _forSeconds;
+
         _queueProcessor.SpeedUpMovement();
     }
 }

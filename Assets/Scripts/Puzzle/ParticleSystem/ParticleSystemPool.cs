@@ -1,4 +1,5 @@
 using CartoonFX;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -11,6 +12,7 @@ public class ParticleSystemPool : MonoBehaviour
     private int _defaultPoolSize;
     private ParticleSystem _particleSystem;
     private ObjectPool<ParticleSystem> _pool;
+    private CFXR_Effect _cFXR_Effect;
 
     public ObjectPool<ParticleSystem> Pool => _pool;
 
@@ -18,7 +20,7 @@ public class ParticleSystemPool : MonoBehaviour
     {
         _maxPoolSize = 50;
         _defaultPoolSize = 10;
-
+        _cFXR_Effect = GetComponent<CFXR_Effect>();
         InitializePools();
     }
 
@@ -33,6 +35,25 @@ public class ParticleSystemPool : MonoBehaviour
             defaultCapacity: _defaultPoolSize,
             maxSize: _maxPoolSize
         );
+    }
+
+    public void Return(ParticleSystem particleSystem)
+    {
+        StartCoroutine(ReturnAfterDelay(particleSystem));
+    }
+
+    public void CreateEffect(ParticleSystem particleSystem)
+    {
+
+        if (_cFXR_Effect != null)
+        {
+            _cFXR_Effect.ResetState();
+            if (_cFXR_Effect.cameraShake != null)
+            {
+                _cFXR_Effect.cameraShake.FetchCameras();
+                _cFXR_Effect.cameraShake.StartShake();
+            }
+        }
     }
 
     private ParticleSystem CreatePooledItem()
@@ -63,11 +84,9 @@ public class ParticleSystemPool : MonoBehaviour
             particleSystem.Play();
         }
 
-        CFXR_Effect cfxrEffect = particleSystem.GetComponent<CFXR_Effect>();
-
-        if (cfxrEffect != null)
+        if (_cFXR_Effect != null)
         {
-            cfxrEffect.ResetState();
+            _cFXR_Effect.ResetState();
         }
     }
 
@@ -92,5 +111,11 @@ public class ParticleSystemPool : MonoBehaviour
     private void OnDestroy()
     {
         _pool.Clear();
+    }
+
+    private IEnumerator ReturnAfterDelay(ParticleSystem effect)
+    {
+        yield return new WaitForSeconds(effect.main.duration);
+        _pool.Release(effect);
     }
 }

@@ -1,31 +1,28 @@
-using CartoonFX;
 using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Viewer), typeof(PixelSpawner))]
+[RequireComponent(typeof(Viewer), typeof(TextureInitializer))]
 public class Agitator : MonoBehaviour, IAnimatable
 {
     [SerializeField] private ParticleSystem _particleSystem;
-    [SerializeField] private ParticleSystemPool _destructionPool;
+    [SerializeField] private ParticleSystemPool _destruction;
 
     private const float MinDirectionValue = -1f;
     private const float MaxDirectionValue = 1f;
     private const float AxisValueZ = 0f;
 
     private float _delay;
+    private float _interval;
     private float _explosionForce;
     private float _explosionDuration;
     private float _rotationIntensity;
     private float _scaleDownDuration;
     private float _delayBeforeDestroy;
-    private float _interval;
     private Viewer _viewer;
-    private PixelSpawner _pixelSpawner;
-    private Sequence _explosionSequence;
     private Sequence _sequence;
-    private CFXR_Effect _cFXR_Effect;
+    private Sequence _explosionSequence;
+    private TextureInitializer _textureInitializer;
 
     private void Awake()
     {
@@ -38,7 +35,7 @@ public class Agitator : MonoBehaviour, IAnimatable
         _delayBeforeDestroy = 0.1f;
 
         _viewer = GetComponent<Viewer>();
-        _pixelSpawner = GetComponent<PixelSpawner>();
+        _textureInitializer = GetComponent<TextureInitializer>();
     }
 
     public void PauseAnimations() =>
@@ -49,6 +46,8 @@ public class Agitator : MonoBehaviour, IAnimatable
 
     public void TriggerExplosion(List<Fragment> pixels)
     {
+        if (pixels == null || pixels.Count == 0) return;
+
         this.SafeDelayedCall(_delay, () => SafeWaitExplosion(pixels));
     }
 
@@ -64,44 +63,35 @@ public class Agitator : MonoBehaviour, IAnimatable
 
         AddPixelToExplosionSequence(pixels);
 
-        CompleteSequence();
+        CompleteSequence(pixels);
 
-        ParticleSystem particleSystem = _destructionPool.Pool.Get();
-
-        CraeteEffect(particleSystem);
-
-        StartCoroutine(ReturnToPoolAfterDelay(particleSystem, _destructionPool, particleSystem.main.duration));
+        if (_destruction != null)
+        {
+            ParticleSystem particleSystem = _destruction.Pool.Get();
+            _destruction.CreateEffect(GetEffect(particleSystem));
+            _destruction.Return(particleSystem);
+            _explosionSequence.Play();
+        }
 
         TurnOffParticleSystem();
     }
 
-    private void CraeteEffect(ParticleSystem particleSystem)
+    private void CompleteSequence(List<Fragment> pixels)
     {
-        GetEffect(particleSystem);
-
-        _cFXR_Effect = particleSystem.GetComponent<CFXR_Effect>();
-
-        if (_cFXR_Effect != null)
+        _explosionSequence.OnComplete(() =>
         {
-            _cFXR_Effect.ResetState();
-            if (_cFXR_Effect.cameraShake != null)
-            {
-                _cFXR_Effect.cameraShake.FetchCameras();
-                _cFXR_Effect.cameraShake.StartShake();
-            }
-        }
+ 
+            _textureInitializer.ClearAllFragments();
+
+            this.SafeDelayedCall(_delay, () => {
+                if (_viewer != null && isActiveAndEnabled)
+                {
+                    _viewer.ShowNextSprite();
+                }
+            });
+        });
 
         _explosionSequence.Play();
-    }
-
-    private ParticleSystem GetEffect(ParticleSystem particleSystem)
-    {
-        particleSystem.transform.position = _particleSystem.transform.position;
-        particleSystem.transform.localScale = Vector3.one * 15;
-        particleSystem.gameObject.SetActive(true);
-        particleSystem.Play();
-
-        return particleSystem;
     }
 
     private void AddPixelToExplosionSequence(List<Fragment> pixels)
@@ -111,25 +101,6 @@ public class Agitator : MonoBehaviour, IAnimatable
             if (pixel == null || pixel.gameObject.activeInHierarchy == false) continue;
 
             _explosionSequence.Join(CreatePixelExplosionSequence(pixel));
-        }
-    }
-
-    private void CompleteSequence()
-    {
-        _explosionSequence.OnComplete(() =>
-        {
-            _pixelSpawner.Clear();
-
-            this.SafeDelayedCall(_delay, () => _viewer.ShowNextSprite());
-        });
-    }
-
-    private void TurnOffParticleSystem()
-    {
-        if (_particleSystem != null)
-        {
-            _particleSystem.Stop();
-            _particleSystem.gameObject.SetActive(false);
         }
     }
 
@@ -143,9 +114,18 @@ public class Agitator : MonoBehaviour, IAnimatable
 
         _sequence.AppendInterval(_delayBeforeDestroy);
 
-        _sequence.OnComplete(() => DeactivatePixel(pixel));
+        _sequence.OnComplete(() => ResetFragmentState(pixel));
 
         return _sequence;
+    }
+
+    private void ResetFragmentState(Fragment pixel)
+    {
+        if (pixel != null)
+        {
+            pixel.transform.localScale = Vector3.one;
+            pixel.transform.rotation = Quaternion.identity;
+        }
     }
 
     private void AddMovementAnimation(Sequence sequence, Fragment pixel)
@@ -172,14 +152,6 @@ public class Agitator : MonoBehaviour, IAnimatable
             .SetEase(Ease.InBack));
     }
 
-    private void DeactivatePixel(Fragment pixel)
-    {
-        if (pixel != null && pixel.gameObject != null)
-        {
-            pixel.gameObject.SetActive(false);
-        }
-    }
-
     private Vector3 GetTargetPosition(Vector3 originalPosition)
     {
         return originalPosition + GetRandomExplosionDirection() * _explosionForce;
@@ -203,14 +175,26 @@ public class Agitator : MonoBehaviour, IAnimatable
         return new Vector3(0, 0, rotationZ + Random.Range(-_rotationIntensity, _rotationIntensity));
     }
 
+    private ParticleSystem GetEffect(ParticleSystem particleSystem)
+    {
+        particleSystem.transform.position = _particleSystem.transform.position;
+        particleSystem.transform.localScale = gameObject.transform.localScale;
+        particleSystem.gameObject.SetActive(true);
+
+        return particleSystem;
+    }
+
+    private void TurnOffParticleSystem()
+    {
+        if (_particleSystem != null)
+        {
+            _particleSystem.Stop();
+            _particleSystem.gameObject.SetActive(false);
+        }
+    }
+
     private void OnDestroy()
     {
         DOTweenExtensions.SafeKill(_explosionSequence);
-    }
-
-    private IEnumerator ReturnToPoolAfterDelay(ParticleSystem effect, ParticleSystemPool pool, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        pool.Pool.Release(effect);
     }
 }

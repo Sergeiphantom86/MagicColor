@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Image))]
 public class Warner : MonoBehaviour
 {
     [SerializeField] private ErrorPanel _errorPanel;

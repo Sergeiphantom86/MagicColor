@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using YG;
 
+[RequireComponent(typeof(Image))]
 public class LanguageMenu : MonoBehaviour
 {
     [SerializeField] private LanguageBar _languageBar;

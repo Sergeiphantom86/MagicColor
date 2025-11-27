@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class HandMover : MonoBehaviour
 {
+    [SerializeField] private Pivot _pivot;
+
     private Vector3 _startScale;
     private Vector3 _targetScale;
     private Sequence _sequence;
-    private int _distanceZ;
-    private int _distanceX;
+    private float _distanceZ;
+    private float _distanceX;
     private float _duration;
     private float _overshoot;
     private int _scaleMultiplier;
+
+    public Pivot Pivot => _pivot;
 
     public event Action OnDiscontinued;
 
     private void Awake()
     {
-        _distanceZ = 2;
+        _distanceZ = 2; 
         _distanceX = 3;
         _overshoot = 5;
         _duration = 0.7f;
@@ -27,9 +31,23 @@ public class HandMover : MonoBehaviour
         _startScale = transform.localScale;
     }
 
+    private void Start()
+    {
+        SetPosition(transform.position);
+    }
+
     private void OnDisable()
     {
         Stop();
+    }
+
+    public void SetPosition(Vector3 position)
+    {
+        //position.x -= 0.1f;
+        position.y += 0.5f;
+        //position.z += 0f;
+
+        transform.position = position;
     }
 
     public void EnableScaleAnimation()

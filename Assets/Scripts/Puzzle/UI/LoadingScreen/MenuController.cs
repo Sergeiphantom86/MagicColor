@@ -12,10 +12,11 @@ public class MenuController : MonoBehaviour
 
     [SerializeField] private MenuButtons _menuButtons;
     [SerializeField] private AnimatorPuzzle _animation;
-    [SerializeField] private ImageAnalyzer _imageAnalyzer;
     [SerializeField] private Timer _timer;
     [SerializeField] private PanelFader _panelFader;
     [SerializeField] private TutorialPuzzle _tutorialPuzzle;
+    [SerializeField] private ButtonHome _buttonHome;
+    [SerializeField] private TextureInitializer _textureInitializer;
 
     private MenuLoader _menuLoader;
 
@@ -72,7 +73,7 @@ public class MenuController : MonoBehaviour
 
     private void LoadScene(Sprite sprite)
     {
-        _imageAnalyzer.AnalyzeTexture(sprite);
+        _textureInitializer.SpawnPixelsFromTexture(sprite.texture);
         _panelFader.FadeOut(() => 
         _menuButtons.HideStartButton());
 
@@ -84,22 +85,23 @@ public class MenuController : MonoBehaviour
 
     private void HandlePuzzleComplete()
     {
-        _panelFader.FadeIn(() => 
-        {
-            _menuButtons.ShowResumeButton();
-        });
+        _menuButtons.ShowResumeButton();
+        _buttonHome.gameObject.SetActive(false);
     }
 
     private void HandleResumeButton()
     {
-        if (TryShowAd())
+        _panelFader.FadeIn(() =>
         {
-            _adInProgress = true;
-        }
-        else
-        {
-            OnAdClosed();
-        }
+            if (TryShowAd())
+            {
+                _adInProgress = true;
+            }
+            else
+            {
+                OnAdClosed();
+            }
+        });
     }
 
     private bool TryShowAd()
@@ -136,8 +138,8 @@ public class MenuController : MonoBehaviour
 
     private void ValidateComponents()
     {
-        if (_imageAnalyzer == null)
-            Debug.LogWarning("ImageAnalyzer не назначен", this);
+        if (_textureInitializer == null)
+            Debug.LogWarning("TextureInitializer не назначен", this);
 
         if (_animation == null)
             Debug.LogWarning("AnimatorPuzzle не назначен", this);

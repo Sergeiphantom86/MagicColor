@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(ButtonCarouselController))]
+[RequireComponent(typeof(ButtonCarouselController), typeof(ButtonSoundHandler))]
 public class UnifiedSwipeController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [Header("Swipe Settings")]

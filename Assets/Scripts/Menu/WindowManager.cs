@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-[RequireComponent(typeof(ButtonKeeper))]
+[RequireComponent(typeof(ButtonKeeper), typeof(ButtonSoundHandler), typeof(WindowInitializer))]
 public class HandlerButtonWindowInteraction : MonoBehaviour
 {
     [SerializeField] private Tutorial _tutorial;
@@ -34,7 +34,7 @@ public class HandlerButtonWindowInteraction : MonoBehaviour
         if (_tutorial != null && _tutorial.IsTutorialActive && !_tutorial.IsClickAllowed)
             return;
 
-        _tutorial?.CompleteClickStep();
+        _tutorial.CompleteClickStep();
 
         if (_windowInitializer.WindowActions.TryGetValue(windowName, out Action action) == false)
         {

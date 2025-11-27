@@ -24,6 +24,7 @@ namespace YG
             _currentCrystal = 0;
             _isFirstTutorial = true;
             _isSecondTutorial = true;
+            _isTransparency = false;
             _isSimilar = false;
             _isTutorial = false;
             CountStars = 0;
@@ -49,7 +50,9 @@ namespace YG
         public Sprite Sprite => _sprite;
 
         public bool IsTutorial => _isTutorial;
+
         public bool IsFirstTutorial => _isFirstTutorial;
+
         public bool IsSecondTutorial => _isSecondTutorial;
 
         public bool IsTransparency => _isTransparency;

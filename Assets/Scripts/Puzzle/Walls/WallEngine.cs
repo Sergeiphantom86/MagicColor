@@ -1,26 +1,26 @@
 using UnityEngine;
 using DG.Tweening;
 
-[RequireComponent(typeof(ColorCollisionHandler))]
+[RequireComponent(typeof(ColorCollisionHandler), typeof(InputHandler), typeof(Wall))]
 public class WallEngine : MonoBehaviour
 {
     private bool _isMoving;
     private float _moveDuration;
     private float _pushDistance;
     private float _distanceBlock;
+    private Wall _wall;
+    private Bag _bag;
     private Vector3 _startPosition;
     private InputHandler _handler;
     private ColorCollisionHandler _colorCollisionHandler;
-    private Wall _wall;
-    private Bag _bag;
 
     private void Awake()
     {
         _moveDuration = 0.3f;
         _pushDistance = 1f;
         _distanceBlock = 0.3f;
-        _handler = GetComponent<InputHandler>();
         _wall = GetComponent<Wall>();
+        _handler = GetComponent<InputHandler>();
         _colorCollisionHandler = GetComponent<ColorCollisionHandler>();
     }
 
@@ -29,6 +29,7 @@ public class WallEngine : MonoBehaviour
         if (_handler == null && _colorCollisionHandler == null) return;
 
         _colorCollisionHandler.IsTouch += OnBlockTouch;
+
         _handler.OnSelected += TryRemoveLock;
     }
 
@@ -37,6 +38,7 @@ public class WallEngine : MonoBehaviour
         if (_handler == null && _colorCollisionHandler == null) return;
 
         _colorCollisionHandler.IsTouch -= OnBlockTouch;
+
         _handler.OnSelected -= TryRemoveLock;
     }
 
