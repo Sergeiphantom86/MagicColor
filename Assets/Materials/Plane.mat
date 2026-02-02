@@ -8,38 +8,123 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Plane
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 2100000, guid: 0552da45826d4cc498f5db18c3057a16, type: 2}
+  m_Shader: {fileID: 4800000, guid: dbe7f24fc86242740989e39c648627c5, type: 3}
+  m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _ALPHAPREMULTIPLY_ON
   - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: 2501
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _MainTex:
+    - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 5, y: 5}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 1}
     - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _GlossMapScale: 1
+    - _ActiveAlpha: 1
+    - _BumpScale: 1
+    - _CellSize: 64
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 10
+    - _EmissionSpeed: 1
+    - _EmissionStrength: 1.1
+    - _FillAlpha: 0.4
+    - _GlossMapScale: 0
     - _Glossiness: 1
-    - _Metallic: 1
-    m_Colors: []
+    - _GlossyReflections: 1
+    - _MaxSpotDistance: 0.3
+    - _Metallic: 0
+    - _Mode: 3
+    - _OcclusionStrength: 1
+    - _Outline: 0.1
+    - _OutlineAlpha: 0
+    - _Parallax: 0.02
+    - _PulseMax: 1.09
+    - _PulseMin: 0.51
+    - _PulseSpeed: 1
+    - _QueueControl: -1
+    - _QueueOffset: 0
+    - _Radius: 0.05
+    - _SmoothnessTextureChannel: 1
+    - _SpecularHighlights: 1
+    - _SpotDensity: 0.34
+    - _SpotIntensity: 0.21
+    - _SpotScale: 10
+    - _SpotSpeed: 0.5
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _ZWrite: 0
+    m_Colors:
+    - _ActiveCell: {r: 0, g: 0, b: 0, a: 0}
+    - _ActiveColor: {r: 0, g: 0.2, b: 0.95, a: 0.5019608}
+    - _BaseColor: {r: 0, g: 0.2, b: 0.95, a: 0.5019608}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 1, g: 0.051886797, b: 0.051886797, a: 1}
+    - _GridSize: {r: 1, g: 1, b: 0, a: 0}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 0.5019608}
+    - _Resolution: {r: 512, g: 512, b: 0, a: 0}
+    - _SpotData1: {r: 0, g: 0, b: 0, a: 0}
+    - _SpotData2: {r: 0, g: 0, b: 0, a: 0}
+    - _SpotData3: {r: 0, g: 0, b: 0, a: 0}
+    - _SpotData4: {r: 0, g: 0, b: 0, a: 0}
+    - _SpotData5: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -7,11 +8,23 @@ public class Timer : MonoBehaviour
     [SerializeField] private TMP_Text _timerText;
     [SerializeField] private string _timeFormat = "mm':'ss";
     [SerializeField] private BlocksContainer _blocksContainer;
-    [SerializeField] private StarCounter _starCounter;
+    [SerializeField] private StarsController _starCounter;
 
     private float _value;
     private bool _isRunning;
     private TimeSpan _span;
+    private float _delayCompensation;
+
+    public bool IsRunning => _isRunning;
+
+    public TMP_Text TimerText => _timerText;
+
+    public event Action HasBegun;
+
+    private void Awake()
+    {
+        _delayCompensation = 0.1f;
+    }
 
     private void Update()
     {
@@ -22,6 +35,17 @@ public class Timer : MonoBehaviour
             _span = TimeSpan.FromSeconds(_value);
             _timerText.text = _span.ToString(_timeFormat);
         }
+    }
+
+    private IEnumerator Start()
+    {
+        yield return new WaitForSeconds(_delayCompensation);
+
+        yield return new WaitForSeconds(_blocksContainer.DelayTime - _delayCompensation);
+
+        StartTimer();
+
+        HasBegun?.Invoke();
     }
 
     private void OnEnable()

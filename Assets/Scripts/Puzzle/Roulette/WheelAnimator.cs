@@ -142,8 +142,6 @@ public class WheelAnimator : MonoBehaviour
         return angleDifference;
     }
 
-    public bool IsSpinning => _isSpinning;
-
     void OnDestroy()
     {
         _spinSequence?.Kill();

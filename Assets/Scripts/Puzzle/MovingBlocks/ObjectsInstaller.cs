@@ -16,13 +16,11 @@ public class ObjectsInstaller : MonoBehaviour
     private bool _isPlacedLock;
     private int _desiredBlockCount;
     private Repainter _repainter;
-    private Vector3 _angleRotationHorizontal;
 
     private void Awake()
     {
         _desiredBlockCount = 3;
         _repainter = GetComponent<Repainter>();
-        _angleRotationHorizontal = new Vector3(60, 0, 0);
 
         if (_repainter == null)
         {
@@ -45,23 +43,12 @@ public class ObjectsInstaller : MonoBehaviour
     {
         _repainter.OnRecoloredWalls += PlaceLockOnRepaintedWalls;
         _repainter.OnRecoloredBlock += PlaceKeyOnUnrepaintedBlock;
-        _rotation.OnRotated += SetParent;
     }
 
     private void OnDisable()
     {
         _repainter.OnRecoloredWalls -= PlaceLockOnRepaintedWalls;
         _repainter.OnRecoloredBlock -= PlaceKeyOnUnrepaintedBlock;
-        _rotation.OnRotated -= SetParent;
-    }
-
-    private void SetParent()
-    {
-        if (_lock == null) return;
-        if (_key == null) return;
-
-        _lock.transform.SetParent(_transformParent.transform);
-        _key.transform.SetParent(_transformParent.transform);
     }
 
     private void PlaceLockOnRepaintedWalls(List<IColorable> colorables)
@@ -101,29 +88,34 @@ public class ObjectsInstaller : MonoBehaviour
 
     private bool IsEligibleWallForLock(IColorable colorable)
     {
-        return colorable is Wall wall &&
-               colorable.IsRepainted &&
-               wall.CenterFence != null;
+        return colorable is Wall wall && colorable.IsRepainted && wall.CenterFence != null;
     }
 
     private void PlaceLockOnWall(Wall wall)
     {
-        if (_lock == null) return;
+        if (_lock == null && _lock.IsUsed == false) return;
 
         _lock.transform.position = wall.CenterFence.position;
-        wall.Block();
 
         AdjustLockRotation(wall);
+
+        wall.Block();
+
         _isPlacedLock = true;
+
+        _lock.SetUsed(_isPlacedLock);
 
     }
 
     private void AdjustLockRotation(Wall wall)
     {
-        if (wall.GetAngleY() == 0)
-        {
-            _lock.SetAngle(_angleRotationHorizontal);
-        }
+        Quaternion wallRotation = Quaternion.Euler(0f, wall.GetAngleY(), 0f);
+
+        Quaternion perpendicularRotation = wallRotation * Quaternion.Euler(0, 90f, 90);
+
+        Vector3 lockRotation = perpendicularRotation.eulerAngles;
+
+        _lock.SetAngle(lockRotation);
     }
 
     private List<Block> FindEligibleBlocksForKey(List<IColorable> colorables)

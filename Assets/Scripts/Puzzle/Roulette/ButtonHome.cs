@@ -2,25 +2,26 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 [RequireComponent(typeof(Voiceover), typeof(Button), typeof(MenuLoader))]
 public class ButtonHome : MonoBehaviour
 {
     private const string Menu = nameof(Menu);
 
-    [SerializeField] private Warner _warner;
+    [SerializeField] private Coin _coin;
+    [SerializeField] private Ticket _ticket;
     [SerializeField] private AudioClip _audioClip;
-    [SerializeField] private AudioClip _errorSound;
     [SerializeField] private ButtonController _buttonController;
-    
+
     private Voiceover _voiceover;
     private MenuLoader _menuLoader;
     private Button _button;
-    private int _extraTime;
+
+    public Button Button => _button;
 
     private void Awake()
     {
-        _extraTime = 2;
         _button = GetComponent<Button>();
         _voiceover = GetComponent<Voiceover>();
         _menuLoader = GetComponent<MenuLoader>();
@@ -48,10 +49,10 @@ public class ButtonHome : MonoBehaviour
 
     private void Start()
     {
-        _button.onClick.AddListener(Play);
+        _button.onClick.AddListener(GoMenu);
     }
 
-    private void Play()
+    public void GoMenu()
     {
         _button.interactable = false;
 
@@ -59,19 +60,11 @@ public class ButtonHome : MonoBehaviour
         {
             if (_buttonController.IsSpin == false)
             {
-                if (_warner != null)
-                {
-                    _warner.TurnOn();
-
-                    StartCoroutine(WaitForWindowClose(_errorSound, true, _extraTime, () =>
-                        _warner.TurnOff()));
-
-                    return;
-                }
+                YG2.saves.SetCurrency(_coin, _ticket.FullReward);
             }
         }
 
-        StartCoroutine(WaitForWindowClose(_audioClip, true,0, () => 
+        StartCoroutine(WaitForWindowClose(_audioClip, true, 0, () =>
         _menuLoader.TargetScene(Menu)));
     }
 

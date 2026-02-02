@@ -16,13 +16,13 @@ public class PathMover : MonoBehaviour
         durationToEnd = 0.2f;
     }
 
-    public void Move(Transform waypoint, Transform endPoint, Action onComplete = null)
+    public void Move(Vector3 waypoint, Vector3 endPoint, Action onComplete = null)
     {
         _pathSequence = DOTween.Sequence();
 
-        AddMovePoint(_pathSequence, waypoint.position, durationToWaypoint);
+        AddMovePoint(_pathSequence, waypoint, durationToWaypoint);
 
-        AddMovePoint(_pathSequence, endPoint.position, durationToEnd);
+        AddMovePoint(_pathSequence, endPoint, durationToEnd);
 
         _pathSequence.OnComplete(() =>
         {

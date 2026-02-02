@@ -9,7 +9,6 @@ public class Quest : MonoBehaviour
     private ActiveIndicator _activeIndicator;
     private bool _isTutorial;
     private int _reward;
-    private string _name;
     private bool _isUnlocked;
     private bool _isCompleted;
     private Button _questButton;
@@ -20,11 +19,11 @@ public class Quest : MonoBehaviour
     public bool IsTutorial => _isTutorial;
     public Sprite Sprite => _selector.Sprite;
 
-    public event Action<Quest> OnCompleted;
+    public event Action<Quest> OnSelect;
 
     private void Awake()
     {
-        _reward = 100;
+        _reward = 20;
         _questButton = GetComponent<Button>();
 
         _lockImage = GetComponentInChildren<LockImage>();
@@ -34,14 +33,6 @@ public class Quest : MonoBehaviour
         _questButton.onClick.AddListener(OnClicked);
 
         ResetState();
-    }
-
-    private void Start()
-    {
-        if (_selector != null)
-        {
-            _name = _selector.Name;
-        }
     }
 
     public void SetIndex(int index)
@@ -86,11 +77,11 @@ public class Quest : MonoBehaviour
         _questButton.interactable = _isUnlocked && _isCompleted == false;
     }
 
-    private void OnClicked()
+    public void OnClicked()
     {
         if (_isUnlocked == false || _isCompleted) return;
 
-        YG2.saves.SetCurrentValue(_reward);
-        OnCompleted?.Invoke(this);
+        YG2.saves.SetReward(_reward);
+        OnSelect?.Invoke(this);
     }
 }

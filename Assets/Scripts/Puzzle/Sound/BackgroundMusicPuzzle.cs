@@ -6,36 +6,61 @@ using YG;
 public class BackgroundMusicPuzzle : MonoBehaviour
 {
     private const string MusicVolume = nameof(MusicVolume);
+    private const float MinDecibels = -80f;
+    private const float DBLinearRatio = 20f;
+    private const float MinVolume = 0.0001f;
 
     [SerializeField] private AudioMixerGroup _musicGroup;
+    [SerializeField] private AudioClip _backgroundMusic;
 
     private AudioSource _musicSource;
+    private float _volumeDB;
 
     private void Awake()
     {
         _musicSource = GetComponent<AudioSource>();
+
+        if (_musicSource == null)
+        {
+            Debug.LogError("AudioSource == null");
+        }
+
+        _musicSource.outputAudioMixerGroup = _musicGroup;
     }
 
     private void Start()
     {
-        SetMixerVolume(MusicVolume, YG2.saves.MusicVolume);
+        UpdateMixerVolume(MusicVolume, YG2.saves.MusicVolume);
 
-        PlayBackgroundMusic();
+        PlayBackgroundMusic(YG2.saves.MusicTime);
     }
 
-    private void PlayBackgroundMusic()
+    private void OnDisable()
     {
-        if (_musicSource == null) return;
-
-        if (_musicSource.isPlaying == false)
-            _musicSource.Play();
+        YG2.saves.SetMusicTime(_musicSource.time);
     }
 
-    private void SetMixerVolume(string parameter, float volume)
+    private void OnDestroy()
     {
-        float dbVolume = Mathf.Log10(Mathf.Clamp(volume, 0.0001f, 1)) * 20;
+        YG2.SaveProgress();
+    }
 
-        _musicGroup.audioMixer.SetFloat(parameter, dbVolume);;
+    private void PlayBackgroundMusic(float time)
+    {
+        if (_backgroundMusic == null || _musicSource.isPlaying) return;
+
+        _musicSource.clip = _backgroundMusic;
+        _musicSource.time = time;
+        _musicSource.Play();
+    }
+
+    private void UpdateMixerVolume(string nameSlider, float volume)
+    {
+        _volumeDB = volume > MinVolume
+            ? Mathf.Log10(volume) * DBLinearRatio
+            : MinDecibels;
+
+        _musicGroup.audioMixer.SetFloat(nameSlider, _volumeDB);
     }
 
     private void OnValidate()

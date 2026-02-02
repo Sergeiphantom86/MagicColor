@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 
+[RequireComponent(typeof(SmoothMoveToTarget))]
 public class SmoothAppearance : MonoBehaviour
 {
     private float _duration;
@@ -15,16 +16,14 @@ public class SmoothAppearance : MonoBehaviour
     private void Awake()
     {
         _duration = 0.8f;
-        _durationDeletion = 0.13f;
+        _durationDeletion = 0.4f;
         _useScale = true;
         _disableOnStart = true;
         _originalScale = new Vector3(0.2f, 0.2f, 0.2f);
         _smoothMoveToTarget = GetComponent<SmoothMoveToTarget>();
 
-        if (_disableOnStart)
-        {
-            if (_useScale) transform.localScale = Vector3.zero;
-        }
+        if (_disableOnStart && _useScale)
+            transform.localScale = Vector3.zero;
     }
 
     private void OnEnable()
@@ -32,28 +31,36 @@ public class SmoothAppearance : MonoBehaviour
         Show();
     }
 
-    public void Show()
+    public void Hide()
+    {
+        CreateSizeChangeSequence(
+            Vector3.zero,
+            _durationDeletion,
+            () => gameObject.SetActive(false)
+        );
+    }
+
+    private void Show()
     {
         gameObject.SetActive(true);
 
-        CreateSizeChangeSequence(_originalScale, _duration, () => 
-        _smoothMoveToTarget.BeginMovement());
-    }
-
-    public void Hide()
-    {
-        CreateSizeChangeSequence(Vector3.zero, _durationDeletion, () => 
-        gameObject.SetActive(false));
+        CreateSizeChangeSequence(
+            _originalScale,
+            _duration,
+            () => _smoothMoveToTarget.BeginMovement()
+        );
     }
 
     private void CreateSizeChangeSequence(Vector3 scale, float duration, Action action = null)
     {
-        if (_useScale)
-        {
-            _sequence = DOTween.Sequence();
+        if (_useScale == false) return;
 
-            _sequence.Join(transform.DOScale(scale, duration).Play().SetEase(Ease.InElastic)).
-                OnComplete(() => action?.Invoke());
-        }
+        _sequence?.Kill();
+
+        _sequence = DOTween.Sequence();
+        _sequence.Join(
+            transform.DOScale(scale, duration)
+                     .SetEase(Ease.InOutBack)
+        ).OnComplete(() => action?.Invoke());
     }
 }

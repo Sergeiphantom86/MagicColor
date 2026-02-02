@@ -1,42 +1,51 @@
-using YG;
 using UnityEngine;
+using YG;
 
 [RequireComponent(typeof(Wallet))]
 public class LeaderboardWallet : MonoBehaviour
 {
+    private const string Suffix = "Wallet";
+
     private Wallet _wallet;
     private string _leaderboardName;
 
     private void Awake()
     {
         _wallet = GetComponent<Wallet>();
+        _leaderboardName = ConvertName(_wallet.Name);
     }
 
-    private void OnEnable() 
+    private void OnEnable()
     {
         _wallet.OnBalanceChanged += SavePlayerBalance;
-    } 
+    }
+
     private void OnDisable()
     {
         _wallet.OnBalanceChanged -= SavePlayerBalance;
     }
 
-    private void Start()
+    private void SavePlayerBalance(long balance, string walletName)
     {
-        LoadLeaderboard();
-    }
+        _leaderboardName = ConvertName(walletName);
 
-    private void SavePlayerBalance(long balance, string name)
-    {
-        if (balance > 0 && string.IsNullOrEmpty(name))
+        if (string.IsNullOrEmpty(_leaderboardName))
         {
-            _leaderboardName = name;
-
-            YG2.SetLeaderboard(_leaderboardName, (int)balance);
-            LoadLeaderboard();
+            Debug.LogError($"Ќе удалось преобразовать им€ кошелька: {walletName}");
+            return;
         }
+
+        YG2.SetLeaderboard(_leaderboardName, (int)balance);
     }
 
-    private void LoadLeaderboard() => 
-        YG2.GetLeaderboard(_leaderboardName);
+    private string ConvertName(string original)
+    {
+        if (string.IsNullOrEmpty(original))
+            return "Default";
+
+        if (original.EndsWith(Suffix))
+            return original[..^Suffix.Length];
+
+        return original;
+    }
 }

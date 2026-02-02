@@ -11,7 +11,7 @@ public class PixelPool : MonoBehaviour
 
     private ObjectPool<Fragment> _pool;
     private Transform _poolParent;
-    private int _scaleDefault;
+    private float _scaleDefault;
 
     public ObjectPool<Fragment> Pool => _pool;
 
@@ -20,7 +20,7 @@ public class PixelPool : MonoBehaviour
         _poolParent = transform;
         _defaultPoolSize = 1000;
         _maxPoolSize = 5000;
-        _scaleDefault = 1;
+        _scaleDefault = 1f;
 
         CreatePool();
     }

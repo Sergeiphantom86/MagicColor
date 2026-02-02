@@ -8,19 +8,18 @@ public class UnifiedSwipeController : MonoBehaviour, IBeginDragHandler, IDragHan
     [SerializeField] private float _swipeThreshold = 50f;
     [SerializeField] private Tutorial _tutorial;
     [SerializeField] private AudioClip _swipeSound;
+    [SerializeField] private PageSlider _slider;
 
-    private ButtonCarouselController _carousel;
+    private ICarousel _carousel;
     private ButtonSoundHandler _buttonSound;
     private Vector2 _startDragPosition;
-    private float _screenWidth;
     private bool _isDragging;
     private bool _blockInputWhenTutorialActive;
 
     private void Awake()
     {
-        _carousel = GetComponent<ButtonCarouselController>();
+        _carousel = GetComponent<ICarousel>();
         _buttonSound = GetComponent<ButtonSoundHandler>();
-        _screenWidth = Screen.width;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -34,13 +33,6 @@ public class UnifiedSwipeController : MonoBehaviour, IBeginDragHandler, IDragHan
     public void OnDrag(PointerEventData eventData)
     {
         if (_isDragging == false || ShouldBlockInput()) return;
-
-        Vector2 delta = eventData.position - _startDragPosition;
-
-        _carousel.UpdateButtonPosition(
-            _carousel.CurrentButton,
-            _carousel.CurrentButtonOriginalPosition.x + Mathf.Clamp(delta.x / _screenWidth, -1f, 1f)
-        );
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -58,6 +50,15 @@ public class UnifiedSwipeController : MonoBehaviour, IBeginDragHandler, IDragHan
         {
             _tutorial.CompleteSwapStep();
         }
+
+        Vector2 delta = eventData.position - _startDragPosition;
+
+        if (Mathf.Abs(delta.x) < 80f) return;
+
+        if (delta.x < 0)
+            _slider.Next();
+        else
+            _slider.Prev();
     }
 
     private bool ShouldBlockInput()

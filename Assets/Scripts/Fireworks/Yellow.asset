@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef96035bb18b0b94eb58717cc6f87d37, type: 3}
+  m_Name: Yellow
+  m_EditorClassIdentifier: 
+  launchSound: {fileID: 8300000, guid: 4546303cc47ba4c33976745dc249e36c, type: 3}
+  explosionSound: {fileID: 8300000, guid: 7575f4814720b4b509b55764405171f1, type: 3}
+  sparkleSound: {fileID: 8300000, guid: 80dc052911d5446298f486cca695b6ad, type: 3}
+  glowSound: {fileID: 8300000, guid: 48cde60d3a3d9412caeaf949b6364160, type: 3}

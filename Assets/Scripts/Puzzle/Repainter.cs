@@ -2,10 +2,11 @@ using System;
 using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class Repainter : MonoBehaviour
 {
-    [SerializeField] private WallsContainer _wallsContainer;
+    [SerializeField] private PuzzlesIdentifier _puzzlesIdentifier;
     [SerializeField] private BlocksContainer _blocksContainer;
 
     private List<Color> _colors;
@@ -13,15 +14,19 @@ public class Repainter : MonoBehaviour
     private List<IColorable> _blocks;
     private IBlocksContainer _iBlocksContainer;
     private TextureInitializer _textureInitializer;
+    private WaitForSeconds _waitForSeconds;
+    private float _delay;
 
     public event Action<List<IColorable>> OnRecoloredWalls;
     public event Action<List<IColorable>> OnRecoloredBlock;
 
     private void Awake()
     {
+        _delay = 0.005f;
         _colors = new List<Color>();
         _walls = new List<IColorable>();
         _blocks = new List<IColorable>();
+        _waitForSeconds = new WaitForSeconds(_delay);
         _iBlocksContainer = _blocksContainer;
         _textureInitializer = GetComponent<TextureInitializer>();
     }
@@ -64,28 +69,7 @@ public class Repainter : MonoBehaviour
 
     private void UpdateSystem(List<Color> colors)
     {
-        _walls = GetColorablesFromContainer(_wallsContainer.transform);
-        _blocks = GetColorablesFromContainer(_iBlocksContainer.Transform);
-
-        if (_walls.Count < 0)
-        {
-            Debug.LogError($"Количество Walls = {_walls.Count} {this}");
-            return;
-        }
-
-        if (_blocks.Count < 0)
-        {
-            Debug.LogError($"Количество Blocks = {_blocks.Count} {this}");
-            return;
-        }
-
-        UpdateColors(colors);
-
-        ReplaceColors(_walls);
-        OnRecoloredWalls?.Invoke(_walls);
-
-        ReplaceColors(_blocks);
-        OnRecoloredBlock?.Invoke(_blocks);
+        StartCoroutine(Wait(colors));
     }
 
     private void UpdateColors(List<Color> colors)
@@ -138,6 +122,34 @@ public class Repainter : MonoBehaviour
         {
             colorables[i]?.InstallRepainted();
             colorables[i]?.SetColor(colors[i]);
+
+            if (colorables[i] is Block block)
+            {
+                block.Subscribe();
+            }
         }
+    }
+
+    private IEnumerator Wait(List<Color> colors)
+    {
+        yield return _waitForSeconds;
+
+        _walls = GetColorablesFromContainer(
+            _puzzlesIdentifier.CurrentContainer.transform);
+
+        _blocks = GetColorablesFromContainer(_iBlocksContainer.Transform);
+
+        if (_blocks.Count == 0)
+        {
+            Debug.Log("AssignOriginal");
+        }
+
+        UpdateColors(colors);
+
+        ReplaceColors(_walls);
+        OnRecoloredWalls?.Invoke(_walls);
+
+        ReplaceColors(_blocks);
+        OnRecoloredBlock?.Invoke(_blocks);
     }
 }

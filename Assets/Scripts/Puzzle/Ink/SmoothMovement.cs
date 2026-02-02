@@ -1,8 +1,10 @@
+﻿using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(SmoothAppearance), typeof(UIMaterialOrder))]
 public class SmoothMoveToTarget : MonoBehaviour
 {
-    [SerializeField] private Pen _target;
+    [SerializeField] private PenVisualer _target;
     [SerializeField] private Transform _waypoint;
 
     private SmoothAppearance _smoothAppearance;
@@ -14,6 +16,7 @@ public class SmoothMoveToTarget : MonoBehaviour
     private float _waypointXOffset;
     private float _randomXOffset;
     private Vector3 _modifiedWaypointPosition;
+    private UIMaterialOrder  _materialOrder;
 
     public bool IsMoving { get; private set; }
 
@@ -25,6 +28,7 @@ public class SmoothMoveToTarget : MonoBehaviour
         _minDistance = 0.1f;
         _isMoving = false;
         _smoothAppearance = GetComponent<SmoothAppearance>();
+        _materialOrder = GetComponent<UIMaterialOrder>();
         _reachedWaypoint = false;
         _randomXOffset = 0f;
         _modifiedWaypointPosition = Vector3.zero;
@@ -36,6 +40,8 @@ public class SmoothMoveToTarget : MonoBehaviour
 
         ProcessMovementDelay();
 
+        StartCoroutine(Wait());
+
         if (_isMoving == false || _target == null) return;
 
         UpdatePosition();
@@ -46,7 +52,7 @@ public class SmoothMoveToTarget : MonoBehaviour
     {
         IsMoving = true;
         _randomXOffset = Random.Range(-_waypointXOffset, _waypointXOffset);
-
+        
         if (_waypoint != null)
         {
             _modifiedWaypointPosition = _waypoint.position;
@@ -73,6 +79,7 @@ public class SmoothMoveToTarget : MonoBehaviour
         {
             _reachedWaypoint = true;
             _smoothAppearance.Hide();
+
             return true;
         }
 
@@ -102,5 +109,11 @@ public class SmoothMoveToTarget : MonoBehaviour
         {
             _isMoving = true;
         }
+    }
+
+    private IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(1f);
+        _materialOrder.SetOrder();
     }
 }

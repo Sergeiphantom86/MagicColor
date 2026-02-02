@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(GridDragMovement), typeof(Magnifier), typeof(InputHandler))]
 [RequireComponent(typeof(IColorable), typeof(Voiceover))]
-public class TouchDragInput : MonoBehaviour
+public class TouchDragInput : MonoBehaviour, ITouchDragInput
 {
     private bool _isSelected;
     private Magnifier _selectable;
@@ -11,9 +11,8 @@ public class TouchDragInput : MonoBehaviour
     private GridDragMovement _dragMovement;
     private InputHandler _inputHandler;
     private Voiceover _voiceover;
-    private AudioClip _taking;
-    private AudioClip _throwOff;
-    private AudioClip _dragging;
+
+    public bool IsSelected => _isSelected;
 
     public event Action<Vector2> OnTouchClick;
     public event Action<Vector2> OnTouchDrag;
@@ -61,21 +60,11 @@ public class TouchDragInput : MonoBehaviour
         _inputHandler.OnThrowed -= ThrowOff;
     }
 
-    public void SetAudioClip(AudioClip dragging, AudioClip taking, AudioClip throwOff)
-    {
-        _dragging = dragging;
-        _taking = taking;
-        _throwOff = throwOff;
-    }
-
     private void SelectBlock(Vector2 position)
     {
         _isSelected = true;
         _selectable.Select();
-        _dragMovement.BeginInteraction(position, transform.position);
         _colorable.AssignOriginal();
-        _voiceover.Play(_taking);
-
         OnTouchClick?.Invoke(position);
 
     }
@@ -84,7 +73,6 @@ public class TouchDragInput : MonoBehaviour
     {
         if (_isSelected)
         {
-            _dragMovement.ProcessInput(position, transform.position, _voiceover, _dragging);
             OnTouchDrag?.Invoke(position);
         }
     }
@@ -96,7 +84,6 @@ public class TouchDragInput : MonoBehaviour
             _isSelected = false;
             _selectable.Deselect();
             _colorable.Disable();
-            _voiceover.Play(_throwOff);
         }
     }
 }

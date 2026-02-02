@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class StateTutorial : MonoBehaviour
 {
+    [SerializeField] private TextSwitcher _textSwitcher;
+
     private Key _key;
     private Lock _lock;
     private HandMover _handMover;
@@ -71,6 +73,9 @@ public class StateTutorial : MonoBehaviour
         _handMover.gameObject.SetActive(false);
 
         OnCompleted?.Invoke();
+
+        _textSwitcher.gameObject.SetActive(true);
+        _textSwitcher.TurnOffDesiredOne(false);
     }
 
     private void SetPositionsEquipment(Vector3 position)

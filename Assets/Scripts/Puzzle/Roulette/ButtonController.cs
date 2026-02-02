@@ -5,6 +5,7 @@ using System;
 public class ButtonController : MonoBehaviour
 {
     [SerializeField] private Button _button;
+    [SerializeField] private Button _buttonDailySpin;
 
     private bool _localBlock;
     private bool _isSpin;
@@ -27,7 +28,7 @@ public class ButtonController : MonoBehaviour
     {
         GlobalInteractableCondition = globalInteractableCondition;
         OnTurned = onClickAction;
-
+        
         UpdateState();
     }
 

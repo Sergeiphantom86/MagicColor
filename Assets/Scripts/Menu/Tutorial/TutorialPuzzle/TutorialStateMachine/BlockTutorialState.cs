@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class BlockTutorialState : TutorialState
@@ -9,28 +10,14 @@ public class BlockTutorialState : TutorialState
 
     public override void Enter()
     {
-        SetBlock(BLOCK_INDEX);
-
-        Context.Visualizer.gameObject.SetActive(true);
-
-        Context.AdjustPositions(
-          handPosition: Context.CurrentBlock.transform.position,
-          visualizerPosition: Context.HandMover.transform.position,
-          yOffset: 0.5f
-      );
-
-        Context.HandMover.EnableScaleAnimation();
-
-        DisableUnnecessaryComponents();
-
-        Context.CurrentTouchInput.OnTouchClick += OnBlockClick;
+        StateMachine.StartCoroutine(ShowHintsAndContinue());
     }
 
     public override void Update() { }
 
     public override void Exit()
     {
-        Context.CurrentTouchInput.OnTouchClick -= OnBlockClick;
+        Context.CurrentTouchInput.OnTouchClick -= OnClick;
     }
 
     private void SetBlock(int index)
@@ -41,9 +28,20 @@ public class BlockTutorialState : TutorialState
             return;
         }
 
-        Context.CurrentBlock = Context.Container.SpawnedBlocks[index];
+        Block block = Context.Container.SpawnedBlocks[index];
 
-        Context.CurrentTouchInput = Context.CurrentBlock.GetComponent<TouchDragInput>();
+
+        Context.CurrentBlock = block;
+
+        if (block.TryGetComponent(out ITouchDragInput touchDragInput))
+        {
+            Context.CurrentTouchInput = touchDragInput;
+        }
+
+        if (block.TryGetComponent(out GridDragMovement gridDragMovement))
+        {
+            Context.GridDragMovement = gridDragMovement;
+        }
     }
 
     private void DisableUnnecessaryComponents()
@@ -52,12 +50,38 @@ public class BlockTutorialState : TutorialState
         Context.Key.gameObject.SetActive(false);
     }
 
-    private void OnBlockClick(Vector2 position)
+    private void OnClick(Vector2 position)
     {
+        
         if (Context.IsAnimationChange == false)
         {
             Context.IsAnimationChange = true;
             StateMachine.ChangeState(new MirageMovementState(StateMachine, Context));
         }
+    }
+
+    private IEnumerator ShowHintsAndContinue()
+    {
+        yield return Context.WaitForSeconds;
+        yield return Context.WaitForSeconds;
+        yield return Context.WaitForSeconds;
+        yield return Context.WaitForSeconds;
+
+
+        SetBlock(BLOCK_INDEX);
+
+        Context.Visualizer.gameObject.SetActive(true);
+
+        Context.AdjustPositions(
+          handPosition: Context.CurrentBlock.transform.position,
+          visualizerPosition: Context.CurrentBlock.transform.position,
+          yOffset: 0.5f
+      );
+
+        Context.HandMover.EnableScaleAnimation();
+
+        DisableUnnecessaryComponents();
+
+        Context.CurrentTouchInput.OnTouchClick += OnClick;
     }
 }

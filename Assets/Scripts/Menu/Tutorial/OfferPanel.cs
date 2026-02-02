@@ -5,32 +5,42 @@ using UnityEngine;
 public class OfferPanel : MonoBehaviour
 {
     [SerializeField] private MenuButtons _menuButtons;
-    [SerializeField] private float _duration = 0.5f;
-    [SerializeField] private float _minScale = 0.2f;
-    [SerializeField] private float _overshoot = 1.5f;
-    [SerializeField] private float _delay = 0.1f;
+    [SerializeField] private Rewards _rewards;
+    [SerializeField] private float _duration;
+    [SerializeField] private float _minScale;
+    [SerializeField] private float _scaleMultiplier;
+    [SerializeField] private float _overshoot;
+    [SerializeField] private float _delay;
     [SerializeField] private AudioClip _audioClip;
     [SerializeField] private AudioClip _click;
 
+    private Vector3 _scale;
     private Scaler _scaling;
     private Voiceover _voiceover;
 
-    public event Action OnTutorial;
+    public event Action OnConsent;
     public event Action OnCancelled;
-    
+
     private void Awake()
     {
+        _scale = Vector3.one * _scaleMultiplier;
+
         _scaling = GetComponent<Scaler>();
         _voiceover = GetComponent<Voiceover>();
-        _menuButtons.Initialize(LoadTutorial, DisablePanel);
-        gameObject.SetActive(false);
+
+        _menuButtons.Initialize(Confirm, Refuse);
+
+        TurnOff();
     }
 
     private void OnEnable()
     {
-        _voiceover.Play(_audioClip);
-        _scaling.TurnOn(Vector3.one, _duration, _delay, _overshoot);
+        TurnOnSound(_audioClip);
+
+        _scaling.ChangeSize(_scale, _duration, _delay, _overshoot);
+
         _menuButtons.ShowResumeButton();
+        _menuButtons.ShowStartButton();
     }
 
     private void OnDisable()
@@ -38,15 +48,44 @@ public class OfferPanel : MonoBehaviour
         _scaling.SetInactive(_minScale);
     }
 
-    private void LoadTutorial()
+    public void TurnOn()
     {
-        _voiceover.Play(_click);
-        OnTutorial?.Invoke();
+        gameObject.SetActive(true);
     }
 
-    private void DisablePanel()
+    private void Confirm()
     {
-        _voiceover.Play(_click);
+        if (_rewards != null)
+        {
+            _rewards.Save();
+        }
+
+        TurnOnSound(_click);
+
+        OnConsent?.Invoke();
+
+        TurnOff();
+    }
+
+    private void Refuse()
+    {
+        TurnOnSound(_click);
+
         OnCancelled?.Invoke();
+
+        TurnOff();
+    }
+
+    private void TurnOnSound(AudioClip audioClip)
+    {
+        if (audioClip != null)
+        {
+            _voiceover.Play(audioClip);
+        }
+    }
+
+    private void TurnOff()
+    {
+        gameObject.SetActive(false);
     }
 }

@@ -1,166 +1,102 @@
-using System;
-using System.Collections;
+п»їusing System;
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer), typeof(Indicator), typeof(IColorable))]
-[RequireComponent(typeof(Wall))]
+[RequireComponent(typeof(Wall), typeof(ColorMatchService), typeof(IBlockDestroySequence))]
+[RequireComponent(typeof(LockFeedbackService), typeof(IColorMatchService), typeof(ILockFeedbackService))]
 public class ColorCollisionHandler : MonoBehaviour
 {
-    [SerializeField] private EffectsHandler effectsHandler;
-
-    private float _delay;
     private Wall _wall;
-    private Lock  _lock;
-    private Point _point;
-    private Renderer _renderer;
-    private Indicator _indicator;
-    private Activator _activator;
-    private Coroutine _coroutine;
-    private IColorable _colorable;
-    private IColorPrecision _colorPrecision;
-    private WaitForSeconds _waitForSeconds;
+    private WallBlockProcessor _wallProcessor;
+    private LockInteractionHandler _lockHandler;
+    private BlockInteractionService _blockInteraction;
+    private ICollisionProcessor _collisionProcessor;
+    private IColorMatchService _colorMatch;
+    private IBlockDestroySequence _destroySequence;
+    private ILockFeedbackService _lockFeedback;
+    private ICollisionHandler _collisionHandler;
 
-    public event Action<Block> IsTouch;
-    public event Action<Collider> TouchEnded;
+    public event Action<Block> IsTouched;
 
     private void Awake()
     {
-        _delay = 0.1f;
         _wall = GetComponent<Wall>();
-        _renderer = GetComponent<Renderer>();
-        _colorable = GetComponent<IColorable>();
-        _indicator = GetComponent<Indicator>();
-        _point = GetComponentInChildren<Point>();
-        _waitForSeconds = new WaitForSeconds(_delay);
+        _wallProcessor = new WallBlockProcessor(_wall);
 
+        _colorMatch = GetComponent<ColorMatchService>();
+        _lockFeedback = GetComponent<LockFeedbackService>();
+        _collisionHandler = GetComponent<CollisionHandler>();
+        _destroySequence = GetComponent<BlockDestroySequence>();
 
-        if (_renderer == null || _renderer.material == null)
-        {
-            Debug.LogError("Renderer не назначен!", this);
-            return;
-        }
-
-        if (TryGetComponent(out IColorable colorable))
-        {
-            _colorable = colorable;
-        }
-
-        if (_indicator == null)
-        {
-            Debug.LogError("Indicator не назначен!", this);
-            return;
-        }
-
-        if (_point == null)
-        {
-            Debug.LogError("Point не назначен!", this);
-            return;
-        }
+        _blockInteraction = new BlockInteractionService(_wall, _destroySequence);
+        _lockHandler = new LockInteractionHandler();
     }
 
-    public void Initialize(IColorPrecision colorPrecision, Activator activator)
+    private void OnEnable()
     {
-        _colorPrecision = colorPrecision;
-        _activator = activator;
+        _collisionHandler.OnEnter += Enter;
+        _collisionHandler.OnExit += Exit;
+    }
 
-        if (_activator == null)
-            Debug.LogError("Activator не назначен!", this);
-        if (_colorPrecision == null)
-            Debug.LogError("ColorPrecision не назначен!", this);
+    private void OnDisable()
+    {
+        _collisionHandler.OnEnter -= Enter;
+        _collisionHandler.OnExit -= Exit;
+    }
+
+    public bool Initialize(IColorPrecision colorPrecision, HintKey hintKey, ErrorPanel errorPanel)
+    {
+        if (Validate(colorPrecision, hintKey, errorPanel) == false)
+            return false;
+
+        _lockHandler.SetHint(hintKey);
+        _blockInteraction.SetPanelError(errorPanel);
+        _colorMatch.Initialize(colorPrecision);
+
+        _collisionProcessor = new CollisionProcessor(
+            _colorMatch,
+            _blockInteraction
+        );
+
+        return true;
+    }
+
+    private bool Validate(IColorPrecision colorPrecision, HintKey hintKey, ErrorPanel errorPanel)
+    {
+        if (_colorMatch == null) return Log("ColorMatchService");
+        if (_lockFeedback == null) return Log("LockFeedbackService");
+        if (_collisionHandler == null) return Log("CollisionHandler");
+        if (_destroySequence == null) return Log("IBlockDestroySequence");
+        if (colorPrecision == null) return Log(nameof(colorPrecision));
+        if (hintKey == null) return Log(nameof(hintKey));
+        if (errorPanel == null) return Log(nameof(errorPanel));
+
+        return true;
+    }
+
+    private bool Log(string name)
+    {
+        Debug.LogError($"{nameof(ColorCollisionHandler)} missing dependency: {name}", this);
+        return false;
+    }
+
+    private void Enter(Collider other)
+    {
+        _collisionProcessor.ProcessEnter(other);
+    }
+
+    private void Exit(Collider other)
+    {
+        _collisionProcessor.ProcessExit(other);
     }
 
     public void UnblockWall()
     {
-        _lock.Unblock();
+        _wallProcessor.UnblockWall();
+        _lockHandler.Unblock();
     }
 
     public void TriggerContactEvent(Block block)
     {
-        IsTouch?.Invoke(block);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out Lock @lock))
-        {
-            _lock = @lock;
-        }
-
-        if (other.TryGetComponent(out ColorableObject colorableObject) == false) return;
-
-        _colorable.AssignOriginal();
-
-        Color otherColor = colorableObject.GetColor();
-
-        if (otherColor == Color.white) return;
-
-        if (_colorPrecision.Match(_renderer.material.color, otherColor) == false) return;
-
-        if (_coroutine != null)
-        {
-            StopCoroutine(_coroutine);
-        }
-        
-        if (colorableObject is Block block && _wall.IsBlocked == false)
-        {
-            _coroutine = StartCoroutine(WaitForComparison(block, otherColor));
-
-            IsTouch?.Invoke(block);
-        }
-        else if(_lock != null)
-        {
-            _lock.ShakeUp();
-
-            IsTouch?.Invoke(null);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.TryGetComponent(out Lock _))
-        {
-            _wall.Unblock();
-        }
-
-        if (other.TryGetComponent(out ColorableObject _) == false) return;
-
-        TouchEnded?.Invoke(other);
-
-        _colorable.Disable();
-
-        if (_coroutine != null)
-        {
-            StopCoroutine(_coroutine);
-            _coroutine = null;
-        }
-    }
-
-    private IEnumerator WaitForComparison(Block block, Color color)
-    {
-        yield return _waitForSeconds;
-
-        if (block != null)
-        {
-            if (effectsHandler != null)
-                effectsHandler.Stop();
-
-            _colorable.Disable();
-
-            block.Destroy(_indicator.transform, _point.transform);
-        }
-
-        StartCoroutine(WaitSpawn(color));
-
-        _coroutine = null;
-    }
-
-    private IEnumerator WaitSpawn(Color color)
-    {
-        yield return new WaitForSeconds(2);
-
-        if (_activator != null)
-        {
-            _activator.EnqueueFragments(color);
-        }
+        IsTouched?.Invoke(block);
     }
 }

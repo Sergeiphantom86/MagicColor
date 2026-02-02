@@ -1,161 +1,147 @@
 using DG.Tweening;
-using System.Collections;
+using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Block))]
 public class GridDragMovement : MonoBehaviour
 {
-    [SerializeField] private BlockSpawner _blockSpawner;
-    [SerializeField] private GridSystem _gridSystem;
-    [SerializeField] private ParticleSystemPool _particleSystemPool;
+    [SerializeField] private float _moveDuration;
 
-    private float _moveDuration;
+    private Camera _camera;
     private Transform _transform;
+    private GridSystem _grid;
+    private Block _block;
+    private Vector3 _lastWorldTouch;
+    private Vector3 _accumulatedDelta;
+    private Vector2Int _currentCenterCell;
+    private ITouchDragInput _touchDragInput;
+    private int _cellsSinceLastSound = 0;
 
-    private Vector3 _lastTouchWorldPosition;
-    private Vector3 _accumulatedWorldDisplacement;
-    private Vector2Int _currentGridPosition;
-    private Tween _currentTween;
+    private Tween _moveTween;
+
+    public event Action Moved;
 
     private void Awake()
     {
-        _moveDuration = 0.15f;
+        _camera = Camera.main;
         _transform = transform;
+        _grid = GridSystem.Instance;
+        _block = GetComponent<Block>();
+        _touchDragInput = GetComponent<ITouchDragInput>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        InitializeGridSystem();
-        PositionAllBlocks();
+        _touchDragInput.OnTouchClick += BeginInteraction;
+        _touchDragInput.OnTouchDrag += ProcessInput;
     }
 
-    public void BeginInteraction(Vector3 touchPosition, Vector3 originalPosition)
+    private void OnDisable()
     {
-        _currentGridPosition = _gridSystem.WorldToGridPosition(originalPosition);
-        _lastTouchWorldPosition = CalculateTouchWorldPosition(touchPosition, originalPosition);
-        _accumulatedWorldDisplacement = Vector3.zero;
+        _touchDragInput.OnTouchClick -= BeginInteraction;
+        _touchDragInput.OnTouchDrag -= ProcessInput;
     }
 
-    public void ProcessInput(Vector3 touchPosition, Vector3 originalPosition, Voiceover voiceover, AudioClip audioClip)
+    public void BeginInteraction(Vector2 screenTouchPos)
     {
-        Vector3 worldTouchPoint = CalculateTouchWorldPosition(touchPosition, originalPosition);
-        Vector3 delta = worldTouchPoint - _lastTouchWorldPosition;
+        _currentCenterCell = new Vector2Int(
+            _block.GridPosition.x + (_block.SizeInCells.x - 1) / 2,
+            _block.GridPosition.y + (_block.SizeInCells.y - 1) / 2
+        );
 
-        _lastTouchWorldPosition = worldTouchPoint;
-        _accumulatedWorldDisplacement += delta;
+        _lastWorldTouch = ScreenToWorld(screenTouchPos);
+        _accumulatedDelta = Vector3.zero;
+    }
 
-        float cellSize = _gridSystem.CellSize;
+    public void ProcessInput(Vector2 screenTouchPos)
+    {
+        Vector3 worldTouch = ScreenToWorld(screenTouchPos);
+        Vector3 delta = worldTouch - _lastWorldTouch;
 
-        if (_accumulatedWorldDisplacement.sqrMagnitude > cellSize)
+        _lastWorldTouch = worldTouch;
+        _accumulatedDelta += delta;
+ 
+        if (_accumulatedDelta.magnitude >= _grid.CellSize / 2f)
         {
-            AttemptShift(_accumulatedWorldDisplacement, voiceover, audioClip);
-        }
-    }
+            TryShift();
 
-    private IEnumerator ReturnToPoolAfterDelay(ParticleSystem effect, ParticleSystemPool pool, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        pool.Pool.Release(effect);
-    }
+            _cellsSinceLastSound++;
 
-    private void AttemptShift(Vector3 accumulatedWorldDisplacement, Voiceover voiceover, AudioClip audioClip)
-    {
-        Vector2Int shiftDirection = GetShiftDirection(accumulatedWorldDisplacement);
-        Vector2Int newGridPos = CalculateNewGridPosition(shiftDirection);
-
-        if (CanShiftToPosition(newGridPos) == false) return;
-
-        _gridSystem.ClearCell(_currentGridPosition);
-
-        voiceover.Play(audioClip);
-
-        ParticleSystem particleSystem = _particleSystemPool.Pool.Get();
-        CraeteEffect(particleSystem);
-
-        StartCoroutine(ReturnToPoolAfterDelay(particleSystem, _particleSystemPool, particleSystem.main.duration));
-
-        ExecuteShift(newGridPos);
-    }
-
-    private void CraeteEffect(ParticleSystem particleSystem)
-    {
-        particleSystem.transform.position = transform.position;
-        particleSystem.transform.localScale = Vector3.one * 20;
-        particleSystem.transform.rotation = Quaternion.identity;
-        particleSystem.Play();
-    }
-
-    private Vector2Int GetShiftDirection(Vector3 accumulatedWorldDisplacement)
-    {
-        return Mathf.Abs(accumulatedWorldDisplacement.x) >= Mathf.Abs(accumulatedWorldDisplacement.z) ?
-            new Vector2Int(_accumulatedWorldDisplacement.x > 0 ? 1 : -1, 0) :
-            new Vector2Int(0, _accumulatedWorldDisplacement.z > 0 ? 1 : -1);
-    }
-
-    private Vector2Int CalculateNewGridPosition(Vector2Int shiftDirection) =>
-        ClampToGridBounds(_currentGridPosition + shiftDirection);
-
-    private bool CanShiftToPosition(Vector2Int newGridPosition) =>
-        newGridPosition != _currentGridPosition && _gridSystem.IsCellEmpty(newGridPosition);
-
-    private void ExecuteShift(Vector2Int newGridPosition)
-    {
-        PositionAtCell(newGridPosition);
-        _accumulatedWorldDisplacement = Vector3.zero;
-    }
-
-    private void PositionAllBlocks()
-    {
-        if (_blockSpawner != null)
-        {
-            foreach (var block in _blockSpawner.SpawnedBlocks)
+            if (_cellsSinceLastSound >= 5)
             {
-                Vector2Int gridPosition = ClampToGridBounds(_gridSystem.WorldToGridPosition(block.transform.position));
-                block.transform.position = _gridSystem.GridToWorldPosition(gridPosition);
-                _gridSystem.UpdateCell(gridPosition, block.gameObject);
+                Moved?.Invoke();
+                _cellsSinceLastSound = 0;
             }
         }
     }
 
-    private void InitializeGridSystem()
+    private void TryShift()
     {
-        _gridSystem = GridSystem.Instance;
-        if (_gridSystem == null)
-            Debug.LogError("GridSystem not found! Add GridSystem component to an object.");
-    }
+        Vector2Int dir = GetShiftDirection(_accumulatedDelta);
+        Vector2Int targetCenter = _currentCenterCell + dir;
 
-    private void PositionAtCell(Vector2Int newGridPosition)
-    {
-        newGridPosition = ClampToGridBounds(newGridPosition);
-        if (_gridSystem.IsCellEmpty(newGridPosition) == false) return;
+        Vector2Int targetOrigin =
+            _grid.GetOriginFromCenter(targetCenter, _block.SizeInCells);
 
-        _gridSystem.ClearCell(_currentGridPosition);
-        _gridSystem.UpdateCell(newGridPosition, gameObject);
+        _grid.ClearBlock(_block);
 
-        if (_currentTween != null && _currentTween.IsActive())
+        if (_grid.CanPlaceBlock(targetOrigin, _block.SizeInCells) == false)
         {
-            _currentTween.Kill();
+            Vector2Int currentOrigin =
+                _grid.GetOriginFromCenter(_currentCenterCell, _block.SizeInCells);
+
+            _grid.PlaceBlock(currentOrigin, _block);
+            _accumulatedDelta = Vector3.zero;
+            return;
         }
 
-        _currentTween = _transform.DOMove(
-            _gridSystem.GridToWorldPosition(newGridPosition),
-            _moveDuration
-        ).SetEase(Ease.OutQuad);
-
-        _currentGridPosition = newGridPosition;
+        MoveTo(targetCenter);
+        _accumulatedDelta = Vector3.zero;
     }
 
-    private Vector3 CalculateTouchWorldPosition(Vector3 touchPosition, Vector3 originalPosition)
+
+    private void MoveTo(Vector2Int targetCenter)
     {
-        Ray ray = Camera.main.ScreenPointToRay(touchPosition);
-        return new Plane(Vector3.up, originalPosition).Raycast(ray, out float distance) ?
-            ray.GetPoint(distance) :
-            originalPosition;
+        _moveTween?.Kill();
+
+        Vector2Int origin =
+            _grid.GetOriginFromCenter(targetCenter, _block.SizeInCells);
+
+        _grid.PlaceBlock(origin, _block);
+
+        _moveTween = _transform.DOMove(GetWorldCenterFromOrigin(origin), _moveDuration).SetEase(Ease.OutQuad);
+
+        _currentCenterCell = targetCenter;
     }
 
-    private Vector2Int ClampToGridBounds(Vector2Int gridPosition)
+    private Vector3 GetWorldCenterFromOrigin(Vector2Int origin)
     {
-        gridPosition.x = Mathf.Clamp(gridPosition.x, 0, _gridSystem.GridSizeX - 1);
-        gridPosition.y = Mathf.Clamp(gridPosition.y, 0, _gridSystem.GridSizeY - 1);
-        return gridPosition;
+        Vector3 basePos = _grid.GridToWorldPosition(origin);
+        Vector2Int size = _block.SizeInCells;
+
+        Vector3 offset = _grid.GetComponent<Grid>().CellToWorld(
+            new Vector3Int(size.x - 1, size.y - 1, 0)
+        ) - _grid.GetComponent<Grid>().CellToWorld(Vector3Int.zero);
+
+        return basePos + offset * 0.5f;
+    }
+
+
+    private Vector2Int GetShiftDirection(Vector3 delta)
+    {
+        if (Mathf.Abs(delta.x) > Mathf.Abs(delta.z))
+            return delta.x > 0 ? Vector2Int.right : Vector2Int.left;
+
+        return delta.z > 0 ? Vector2Int.up : Vector2Int.down;
+    }
+
+    private Vector3 ScreenToWorld(Vector3 screenPos)
+    {
+        Ray ray = _camera.ScreenPointToRay(screenPos);
+        Plane plane = new Plane(Vector3.up, _transform.position);
+
+        return plane.Raycast(ray, out float dist)
+            ? ray.GetPoint(dist)
+            : _transform.position;
     }
 }

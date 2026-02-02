@@ -1,13 +1,14 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 [RequireComponent(typeof(Slider))]
 public class VolumeChanger: MonoBehaviour
 {
     private ToggleBase _toggleBase;
-    private float _temporaryVolume;
     private Slider _volumeSlider;
+    private float _temporaryVolume;
     private bool _isOn;
 
     public event Action<VolumeChanger, float> OnVolumeChange;
@@ -27,6 +28,15 @@ public class VolumeChanger: MonoBehaviour
         {
             Debug.LogError("Slider не назначен!");
             return;
+        }
+
+        if (this is MusicVolumeController)
+        {
+            _volumeSlider.value = YG2.saves.MusicVolume;
+        }
+        else
+        {
+            _volumeSlider.value = YG2.saves.SoundVolume;
         }
     }
 
@@ -50,6 +60,8 @@ public class VolumeChanger: MonoBehaviour
         }
         
         OnVolumeChange?.Invoke(this, volume);
+
+        YG2.saves.SetVolume(this, volume);
     }
 
     public void ToggleSoundsMute(bool isOn)

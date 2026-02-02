@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - CinemachineTarget
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -44,4 +45,13 @@ TagManager:
     locked: 0
   - name: Pen
     uniqueID: 2105806371
+    locked: 0
+  - name: Wall
+    uniqueID: 3701405503
+    locked: 0
+  - name: Block
+    uniqueID: 4230389133
+    locked: 0
+  - name: UI
+    uniqueID: 1716806787
     locked: 0

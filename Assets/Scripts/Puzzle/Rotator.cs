@@ -10,71 +10,80 @@ public class Rotator : MonoBehaviour
     [SerializeField] private RotateMode _rotateMode;
     [SerializeField] private Ease _easeType;
 
-    [Header("Movement Settings")]
-    [SerializeField] private float _targetY;
-    [SerializeField] private bool _useLocalMovement = true;
-
-    [Header("Loop Settings")]
-    [SerializeField] private int _loops;
-    [SerializeField] private LoopType _loopType;
-
     private Tween _rotationTween;
-    private float _returnAngle;
-    private float _startY;
+    private float _targetX;
+    private float _targetY;
+    private float _targetZ;
 
     public event Action OnRotated;
-
-    private void Awake()
-    {
-        _returnAngle = 90;
-        _startY = _useLocalMovement ? transform.localPosition.y : transform.position.y;
-    }
-
-    public void StartRotation()
-    {
-        SetTarget(_targetAngleX, _targetY);
-    }
-
-    public void Return()
-    {
-        SetTarget(_returnAngle, _startY);
-    }
-
-    private void SetTarget(float targetAngleX, float targetY)
-    {
-        _rotationTween?.Kill();
-
-        Sequence sequence = DOTween.Sequence();
-
-        sequence.Join(GetTweenRotation(targetAngleX));
-        sequence.Join(GetTweenMove(targetY));
-
-        sequence.SetLoops(_loops, _loopType);
-        sequence.OnComplete(() => OnRotated?.Invoke());
-
-        _rotationTween = sequence;
-    }
 
     private void OnDestroy()
     {
         _rotationTween?.Kill();
     }
 
-    private Tween GetTweenMove(float targetY)
+    public void StartRotation()
     {
-        Tween moveTween = _useLocalMovement ?
-           transform.DOLocalMoveY(targetY, _duration) :
-           transform.DOMoveY(targetY, _duration);
+        _rotationTween?.Kill();
 
-        return moveTween.SetEase(_easeType);
+        _rotationTween = GetSequence();
+
+        //SetPositionPuzzle(0.25f, 16, 1);
+    }
+
+    public void SetPositionPuzzle(float targetX, float targetY, float targetZ)
+    {
+        _targetX = targetX;
+        _targetY = targetY;
+        _targetZ = targetZ;
+    }
+
+    private Sequence GetSequence()
+    {
+        Sequence sequence = DOTween.Sequence();
+
+        sequence.Join(GetTweenRotation(_targetAngleX));
+
+        //sequence.Join(GetTweenMoveX(_targetX));
+        //sequence.Join(GetTweenMoveY(_targetY));
+        //sequence.Join(GetTweenMoveZ(_targetZ));
+
+        sequence.Join(GetTweenMove(_targetX, _targetY, _targetZ));
+
+        sequence.OnComplete(() => 
+        OnRotated?.Invoke());
+
+        return sequence;
+    }
+
+    private Tween GetTweenMove(float targetX, float targetY, float targetZ)
+    {
+        return transform.DOLocalMove(new Vector3(targetX, targetY, _targetZ), _duration);
+    }
+
+    private Tween GetTweenMoveY(float targetY)
+    {
+        return transform.DOLocalMoveY(targetY, _duration);
+    }
+
+    private Tween GetTweenMoveX(float targetX)
+    {
+        return transform.DOLocalMoveX(targetX, _duration);
+    }
+
+    private Tween GetTweenMoveZ(float targetZ)
+    {
+        return transform.DOLocalMoveZ(targetZ, _duration);
     }
 
     private Tween GetTweenRotation(float targetAngleX)
     {
-        return transform.DORotate(
-            new Vector3(targetAngleX, 0, 0),
-            _duration,
-            _rotateMode
-        ).SetEase(_easeType);
+        return transform.DORotate(GetTargetAngleX(targetAngleX), _duration,_rotateMode)
+            .SetEase(_easeType);
+    }
+
+    private Vector3 GetTargetAngleX(float targetAngleX)
+    {
+        return new Vector3(targetAngleX, 0, 0);
     }
 }

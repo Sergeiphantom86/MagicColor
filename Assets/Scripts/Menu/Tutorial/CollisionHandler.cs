@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class CollisionHandler : MonoBehaviour
+public class CollisionHandler : MonoBehaviour, ICollisionHandler
 {
     public event Action<Collider> OnEnter;
     public event Action<Collider> OnExit;

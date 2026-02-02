@@ -6,7 +6,8 @@ using UnityEngine;
 public class Agitator : MonoBehaviour, IAnimatable
 {
     [SerializeField] private ParticleSystem _particleSystem;
-    [SerializeField] private ParticleSystemPool _destruction;
+    [SerializeField] private Effecter _destruction;
+    [SerializeField] private AudioClip _destructionSound;
 
     private const float MinDirectionValue = -1f;
     private const float MaxDirectionValue = 1f;
@@ -21,6 +22,7 @@ public class Agitator : MonoBehaviour, IAnimatable
     private float _delayBeforeDestroy;
     private Viewer _viewer;
     private Sequence _sequence;
+    private Voiceover _voiceover;
     private Sequence _explosionSequence;
     private TextureInitializer _textureInitializer;
 
@@ -35,6 +37,7 @@ public class Agitator : MonoBehaviour, IAnimatable
         _delayBeforeDestroy = 0.1f;
 
         _viewer = GetComponent<Viewer>();
+        _voiceover = GetComponent<Voiceover>();
         _textureInitializer = GetComponent<TextureInitializer>();
     }
 
@@ -65,11 +68,15 @@ public class Agitator : MonoBehaviour, IAnimatable
 
         CompleteSequence(pixels);
 
+        if (_voiceover != null && _destructionSound != null)
+        {
+            _voiceover.Play(_destructionSound);
+        }
+
         if (_destruction != null)
         {
-            ParticleSystem particleSystem = _destruction.Pool.Get();
-            _destruction.CreateEffect(GetEffect(particleSystem));
-            _destruction.Return(particleSystem);
+            _destruction.CraeteParticles(_particleSystem.transform.position,Quaternion.identity, transform.localScale.x);
+   
             _explosionSequence.Play();
         }
 
@@ -80,7 +87,6 @@ public class Agitator : MonoBehaviour, IAnimatable
     {
         _explosionSequence.OnComplete(() =>
         {
- 
             _textureInitializer.ClearAllFragments();
 
             this.SafeDelayedCall(_delay, () => {
@@ -173,15 +179,6 @@ public class Agitator : MonoBehaviour, IAnimatable
     private Vector3 GetRandomTargetRotation(float rotationZ)
     {
         return new Vector3(0, 0, rotationZ + Random.Range(-_rotationIntensity, _rotationIntensity));
-    }
-
-    private ParticleSystem GetEffect(ParticleSystem particleSystem)
-    {
-        particleSystem.transform.position = _particleSystem.transform.position;
-        particleSystem.transform.localScale = gameObject.transform.localScale;
-        particleSystem.gameObject.SetActive(true);
-
-        return particleSystem;
     }
 
     private void TurnOffParticleSystem()

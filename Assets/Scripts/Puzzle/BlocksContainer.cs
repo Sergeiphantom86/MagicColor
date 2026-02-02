@@ -6,16 +6,19 @@ using UnityEngine;
 public class BlocksContainer : MonoBehaviour, IBlocksContainer
 {
     [SerializeField] private TextureInitializer _textureInitializer;
+    [SerializeField] private Repainter _repainter;
     [SerializeField] private AudioClip _dragg;
     [SerializeField] private AudioClip _taking;
     [SerializeField] private AudioClip _throwOff;
-    [SerializeField] private AudioClip _destruction;
 
     private List<Block> _blocks;
     private int _initialBlocksCount;
     private BlockSpawner _blockSpawner;
+    private bool _isInitialize;
+    private float _delayTime;
 
     public Transform Transform => transform;
+    public float DelayTime => _delayTime;
 
     public event Action BlockDestroyed;
 
@@ -25,34 +28,50 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     private void Awake()
     {
         _blocks = new List<Block>();
-
         _blockSpawner = GetComponent<BlockSpawner>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        _blocks = _blockSpawner.SpawnedBlocks;
+        _repainter.OnRecoloredBlock += Subscribe;
+        _blockSpawner.BlockSpawned += Register;
     }
 
-    private void OnEnable() =>
-       _textureInitializer.OnInitialize += Initialize;
-
-    private void OnDisable() =>
-        _textureInitializer.OnInitialize -= Initialize;
-
-    private void Initialize(int colorsCount)
+    private void OnDisable()
     {
-        _initialBlocksCount = colorsCount;
+        _repainter.OnRecoloredBlock -= Subscribe;
+        _blockSpawner.BlockSpawned -= Register;
+    }
+
+    private void Register(Block block)
+    {
+        _blocks.Add(block);
+    }
+
+    private void CalculateStartTimeGame(Block block)
+    {
+        if (_isInitialize == false)
+        {
+            _isInitialize = true;
+
+            if (block.TryGetComponent(out SpawnDropAnimation spawnDropAnimation))
+            {
+                _delayTime = spawnDropAnimation.Duration * _blocks.Count;
+            }
+        }
+    }
+
+    private void Subscribe(List<IColorable> colorableObjects)
+    {
 
         foreach (var block in _blocks)
         {
-            block.Initialize(_destruction);
+            CalculateStartTimeGame(block);
 
-            block.OnDestroyed += HandleBlockDestroyed;
-
-            if (block.TryGetComponent(out TouchDragInput touchDragInput))
+            if (block.IsRepainted)
             {
-                touchDragInput.SetAudioClip(_dragg, _taking, _throwOff);
+                block.OnDestroyed += HandleBlockDestroyed;
+                _initialBlocksCount++;
             }
         }
     }

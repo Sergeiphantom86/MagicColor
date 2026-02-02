@@ -9,7 +9,7 @@ namespace YG.MenuNav
 
         public virtual void Start()
         {
-            if (buttonCash == false)
+            if (!buttonCash)
                 buttonCash.GetComponent<Button>();
         }
 

@@ -5,5 +5,28 @@
     "floatValues": [],
     "intKeys": [],
     "intValues": [],
-    "idSave": 19153
+    "intExample": 5,
+    "strExample": "Hello!",
+    "boolExample": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "idSave": 7784,
+    "_indexSecondQuest": 2,
+    "_questIndex": 2,
+    "_maxReachedQuestIndex": 1,
+    "_currentCoin": 290340,
+    "_currentCrystal": 290000,
+    "_isFirstTutorial": false,
+    "_isSecondTutorial": true,
+    "_isMenuTutorial": true,
+    "_isTransparency": false,
+    "_isTutorial": false,
+    "_isAutomaticallyNewLevel": false,
+    "_stars": 3,
+    "_musicVolume": 0.30000001192092898,
+    "_soundVolume": 0.30000001192092898,
+    "_spins": 0
 }

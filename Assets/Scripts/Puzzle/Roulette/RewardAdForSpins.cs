@@ -12,7 +12,8 @@ public class RewardAdForSpins : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _textMeshPro;
     [SerializeField] private Counter _counter;
 
-    private string _rewardID = "add_spins";
+    private readonly string _rewardID = "add_spins";
+
     private Button _button;
 
     public event Action OnSpinsAdded;
@@ -41,9 +42,20 @@ public class RewardAdForSpins : MonoBehaviour
         YG2.onErrorRewardedAdv += OnAdError;
     }
 
+    private void OnEnable()
+    {
+        OnAdError();
+    }
+
+    private void OnDisable()
+    {
+        _button.interactable = false;
+    }
+
     private void ShowRewardedAd()
     {
         _button.interactable = false;
+      
         YG2.RewardedAdvShow(_rewardID);
     }
 
@@ -54,6 +66,8 @@ public class RewardAdForSpins : MonoBehaviour
             for (int i = 0; i < ParseTextToInt(); i++)
             {
                 OnSpinsAdded?.Invoke();
+
+                gameObject.SetActive(false);
             }
         }
     }

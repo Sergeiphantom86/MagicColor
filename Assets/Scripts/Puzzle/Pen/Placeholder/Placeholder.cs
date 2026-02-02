@@ -52,7 +52,8 @@ public class Placeholder : ColorableObject
     private void Repaint(Color color)
     {
         _colorable.SetColor(color);
-        _colorable.SetAlpha(color, 1);
+        _colorable.SetAlpha(1);
+        EnableEmission(color);
     }
 
     private void SetPosition(float nextSpawnYPosition)

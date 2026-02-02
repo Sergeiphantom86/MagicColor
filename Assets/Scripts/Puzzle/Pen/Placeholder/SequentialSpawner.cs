@@ -21,6 +21,22 @@ public class SequentialSpawner : MonoBehaviour
         _placeholders = new List<Placeholder>();
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out Drop drop))
+        {
+            if(drop.TryGetComponent(out IColorable component))
+            {
+                Color color = component.GetColor();
+
+                if (color != Color.white)
+                {
+                    SpawnObject(color);
+                }
+            }
+        }
+    }
+
     public void SpawnObject(Color color)
     {
         if (_objectToSpawn == null)
@@ -36,19 +52,24 @@ public class SequentialSpawner : MonoBehaviour
         }
 
         StartCoroutine(UpdatePointInCreatedObject(GetPlaceholder(), color));
+
+        Reduce();
     }
 
     public void Reduce()
     {
         if (_placeholder == null)
         {
-            _placeholder = _placeholders[0];
+            if (_placeholders.Count == 0)
+                return;
 
+            _placeholder = _placeholders[0];
             _placeholders.RemoveAt(0);
         }
 
         _placeholder.ReduceSize();
     }
+
 
     private IEnumerator UpdatePointInCreatedObject(Placeholder spawnedObject, Color color)
     {
@@ -64,8 +85,9 @@ public class SequentialSpawner : MonoBehaviour
 
     private float GetDelayTime(float duration)
     {
-        return duration <= 0  ? duration : _defaultDuration;
+        return duration > 0 ? duration : _defaultDuration;
     }
+
 
     private void AssignNextSpawnPosition(Vector3 position)
     {

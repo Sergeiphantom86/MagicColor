@@ -10,6 +10,7 @@ public class Mirage : MonoBehaviour
 
     private bool _isMoved;
     private bool _isColored;
+    private bool _firstTouch;
     private float _duration;
     private float _timeRepaint;
 
@@ -18,7 +19,6 @@ public class Mirage : MonoBehaviour
     private Material _material;
     private Collider _collider;
     private Voiceover _voiceover;
-    private Indicator _indicator;
     private PathMover _pathMover;
     private HandMover _handMover;
     private Renderer _rendererWall;
@@ -29,10 +29,11 @@ public class Mirage : MonoBehaviour
 
     public event Action OnMovement;
     public event Action OnCompleted;
+    public event Action OnTouch;
 
     private void Awake()
     {
-        _duration = 1;
+        _duration = 0.1f;
         _timeRepaint = 0.001f;
         _isMoved = true;
         _collider = GetComponent<Collider>();
@@ -58,9 +59,20 @@ public class Mirage : MonoBehaviour
         _handMover.EnableMoveAnimationX();
     }
 
+    public void Stop()
+    {
+        _handMover.Stop();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Wall wall) == false) return;
+
+        if (_firstTouch == false)
+        {
+            _firstTouch = true;
+            OnTouch?.Invoke();
+        }
 
         Move(wall);
 
@@ -85,7 +97,7 @@ public class Mirage : MonoBehaviour
         if (_isColored == false) return;
 
         _voiceover.Play(_audioClip);
-
+       
         _wall = wall;
 
         _collider.enabled = false;
@@ -100,12 +112,9 @@ public class Mirage : MonoBehaviour
     {
         if (_wall.TryGetComponent(out ColorCollisionHandler colorCollisionHandler) == false) return;
 
-        if (_wall.TryGetComponent(out Indicator indicator) == false) return;
-
         if (_wall.TryGetComponent(out Renderer renderer) == false) return;
 
         _colorCollisionHandler = colorCollisionHandler;
-        _indicator = indicator;
         _rendererWall = renderer;
     }
 
@@ -120,6 +129,12 @@ public class Mirage : MonoBehaviour
 
         wallRenderer.material.color = blockRenderer.material.color;
 
+        yield return _waitBeforeChangingLanes;
+
+        _handMover.Stop();
+
+        yield return _waitBeforeChangingLanes;
+        yield return _waitBeforeChangingLanes;
         yield return _waitBeforeChangingLanes;
 
         ContinueDriving(wallRenderer);
@@ -142,7 +157,7 @@ public class Mirage : MonoBehaviour
 
         ReturnMaterial(renderer, _material, _color);
 
-        _pathMover.Move(_indicator.transform, _wall.Point);
+        _pathMover.Move(_wall.MiddlePoint, _wall.EndPoint);
     }
 
     private void SaveMaterial(Material material)

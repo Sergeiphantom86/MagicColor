@@ -22,9 +22,16 @@ public class WalletAnimator : MonoBehaviour
         _displayedBalance = _wallet.Balance;
         _waitForSeconds = new WaitForSeconds(_wallet.Duration);
         _numberFormatter = new NumberFormatter();
+
         UpdateBalanceText();
 
         _wallet.OnBalanceChanged += HandleBalanceChanged;
+    }
+
+    private void OnDestroy()
+    {
+        _wallet.OnBalanceChanged -= HandleBalanceChanged;
+        _balanceTween?.Kill();
     }
 
     private void HandleBalanceChanged(long newBalance, string name)
@@ -35,12 +42,6 @@ public class WalletAnimator : MonoBehaviour
     private void UpdateBalanceText()
     {
         _textMeshPro.text = _numberFormatter.FormatNumber(_displayedBalance);
-    }
-
-    private void OnDestroy()
-    {
-        _wallet.OnBalanceChanged -= HandleBalanceChanged;
-        _balanceTween?.Kill();
     }
 
     private IEnumerator WaitEndAnimation(long newBalance)

@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using YG;
@@ -25,7 +26,6 @@ public class MenuSound : MonoBehaviour
     private float _volumeDB;
     private int _delay;
     private float _playbackTime;
-    private float _startPlayback;
     private WaitForSeconds _waitForSeconds;
     private WaitForSeconds _waitStop;
 
@@ -33,13 +33,10 @@ public class MenuSound : MonoBehaviour
     {
         _delay = 2;
         _playbackTime = 0.5f;
-        _startPlayback = 0.03f;
         _waitForSeconds = new WaitForSeconds(_delay);
         _waitStop = new WaitForSeconds(_playbackTime);
-        _playbackTime = 0.5f;
         SetupAudioSources();
-        PlayBackgroundMusic(YG2.saves.MusicPlaybackTime);
-
+        PlayBackgroundMusic(YG2.saves.MusicTime);
     }
 
     private void OnEnable()
@@ -53,7 +50,12 @@ public class MenuSound : MonoBehaviour
         _musicVolumeChanger.OnVolumeChange -= SetVolume;
         _sounVolumeChanger.OnVolumeChange -= SetVolume;
 
-        YG2.saves.SetMusicPlaybackTime(_musicSource.time);
+        YG2.saves.SetMusicTime(_musicSource.time);
+    }
+
+    private void OnDestroy()
+    {
+        YG2.SaveProgress();
     }
 
     public void PlayButtonClick(AudioClip audioClip)
@@ -71,7 +73,6 @@ public class MenuSound : MonoBehaviour
     private void SetAudioClip(AudioClip audioClip)
     {
         _soundSource.clip = audioClip;
-        _soundSource.time = _startPlayback;
         _soundSource.Play();
     }
 
@@ -120,13 +121,13 @@ public class MenuSound : MonoBehaviour
         }
     }
 
-    public void PlayBackgroundMusic(float time)
+    private void PlayBackgroundMusic(float time)
     {
         if (_backgroundMusic == null || _musicSource.isPlaying) return;
 
         _musicSource.clip = _backgroundMusic;
-        _musicSource.Play();
         _musicSource.time = time;
+        _musicSource.Play();
     }
 
     private void SetVolume(VolumeChanger volumeChanger, float volume)

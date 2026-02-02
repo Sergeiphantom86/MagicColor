@@ -1,8 +1,9 @@
 using DG.Tweening;
 using System;
+using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(InputHandler), typeof(CollisionHandler), typeof(Voiceover))]
+[RequireComponent(typeof(InputHandler), typeof(ICollisionHandler), typeof(Voiceover))]
 public class Key : Currency
 {
     [SerializeField] private Point _startPoint;
@@ -18,11 +19,11 @@ public class Key : Currency
     private float _movementDuration;
     private float _delayBetweenMovements;
     private Voiceover _voiceover;
-    private ParticleSystem _shine;
     private Vector3 _rotationAngles;
     private Sequence _movementSequence;
     private InputHandler _inputHandler;
-    private CollisionHandler _collisionHandler;
+    private ICollisionHandler _collisionHandler;
+    private SpriteRenderer _spriteRenderer;
 
     public event Action OnShift;
     public event Action OnSelected;
@@ -30,16 +31,16 @@ public class Key : Currency
     private void Awake()
     {
         _quantity = "1";
-        _zoomIn = 0.5f;
-        _zoomOut = 0.1f;
+        _zoomIn = 4;
+        _zoomOut = 1;
         _isDragging = true;
-        _movementDuration = 1f;
+        _movementDuration = 1;
         _delayBetweenMovements = 0.5f;
-        _rotationAngles = new Vector3(30, 0, 40);
+        _rotationAngles = new Vector3(-25, 0, 0);
         _voiceover = GetComponent<Voiceover>();
         _inputHandler = GetComponent<InputHandler>();
-        _collisionHandler = GetComponent<CollisionHandler>();
-        _shine = GetComponentInChildren<ParticleSystem>();
+        _collisionHandler = GetComponent<ICollisionHandler>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         if (_voiceover == null)
         {
@@ -56,12 +57,11 @@ public class Key : Currency
             Debug.LogError("CollisionHandler == null");
         }
 
-        if (_shine == null)
+        if (_spriteRenderer == null)
         {
-            Debug.LogError("ParticleSystem == null");
+            Debug.LogError("SpriteRenderer == null");
         }
 
-        _shine.Stop();
         SetValue(_quantity);
     }
 
@@ -91,21 +91,26 @@ public class Key : Currency
         _isDragging = true;
 
         _movementSequence.Play();
-        _voiceover.Play(_flight);
+        
+        StartCoroutine(WaitAudioPlayback(_flight));
 
         OnSelected?.Invoke();
 
+    }
+
+    private IEnumerator WaitAudioPlayback(AudioClip clip)
+    {
+        _voiceover.Play(clip);
+        yield return new WaitForSeconds(clip.length);
+        _voiceover.Play(clip);
     }
 
     private void Hide(Collider collider)
     {
         if (collider.TryGetComponent(out Block _) == false) return;
 
-        Icon.enabled = false;
-
+        _spriteRenderer.enabled = false;
         _voiceover.Play(_hiding);
-        _shine.Stop();
-
     }
 
     private void Show(Collider collider)
@@ -113,37 +118,46 @@ public class Key : Currency
         if (collider.TryGetComponent(out Block _) == false) return;
 
         _isDragging = false;
-        Icon.enabled = true;
+        _spriteRenderer.enabled = true;
 
-        _shine.Play();
         _voiceover.Play(_appearance);
 
         OnShift?.Invoke();
-
     }
 
     private void CreateAnimationSequences()
     {
         _movementSequence = DOTween.Sequence();
 
-        CreateAnimationSequence(_startPoint.transform.position, _movementDuration, _rotationAngles, _zoomIn, Ease.OutBounce);
+        _spriteRenderer.rendererPriority = 1;
 
-        _movementSequence.AppendInterval(_delayBetweenMovements);
-
-        CreateAnimationSequence(_endPoint.transform.position, _movementDuration, -_rotationAngles, _zoomOut, Ease.InOutBack);
+        _movementSequence
+            .Append(BuildMove(
+                _startPoint.transform.position,
+                _movementDuration,
+                _rotationAngles,
+                transform.localScale.x * _zoomIn,
+                Ease.OutBounce
+            ))
+            .AppendInterval(_delayBetweenMovements)
+            .Append(BuildMove(
+                _endPoint.transform.position,
+                _movementDuration * 4,
+                -_rotationAngles,
+                transform.localScale.x * _zoomOut,
+                Ease.InOutBack
+            ));
 
         _movementSequence.Pause();
     }
 
-    private void CreateAnimationSequence(Vector3 position, float duration, Vector3 rotationAngles, float scaleMultiplier, Ease ease)
+    private Sequence BuildMove(Vector3 position, float duration, Vector3 rotationAngles, float scaleMultiplier, Ease ease)
     {
-        _movementSequence.Append(transform.DOMove(position, duration))
+        return DOTween.Sequence()
+            .Append(transform.DOMove(position, duration))
             .Join(transform.DORotate(rotationAngles, duration))
             .Join(transform.DOScale(scaleMultiplier, duration))
-            .SetEase(ease).OnComplete(() =>
-            {
-                gameObject.SetActive(false);
-            });
+             .SetEase(ease);
     }
 
     private void OnDestroy()

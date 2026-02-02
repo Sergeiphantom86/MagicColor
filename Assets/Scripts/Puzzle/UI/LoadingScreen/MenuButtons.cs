@@ -10,19 +10,49 @@ public class MenuButtons
 
     public void Initialize(Action onStart, Action onResume)
     {
-        _startButton.onClick.AddListener(() => onStart?.Invoke());
-        _resumeButton.onClick.AddListener(() => onResume?.Invoke());
-        _resumeButton.gameObject.SetActive(false);
+        if (_startButton != null)
+        {
+            _startButton.onClick.AddListener(() => onStart?.Invoke());
+
+            _startButton.gameObject.SetActive(false);
+        }
+
+        if (_resumeButton != null)
+        {
+            _resumeButton.onClick.AddListener(() => onResume?.Invoke());
+
+            _resumeButton.gameObject.SetActive(false);
+        }
     }
 
     public void CleanUp()
     {
-        _startButton.onClick.RemoveAllListeners();
-        _resumeButton.onClick.RemoveAllListeners();
+        if (_startButton != null)
+        {
+            _startButton.onClick.RemoveAllListeners();
+        }
+
+        if (_resumeButton != null)
+        {
+            _resumeButton.onClick.RemoveAllListeners();
+        }
     }
 
-    public void ShowResumeButton() => 
-        _resumeButton.gameObject.SetActive(true);
+    public void ShowResumeButton()
+    {
+        if (_resumeButton != null)
+        {
+            _resumeButton.gameObject.SetActive(true);
+        }
+    }
+
+    public void ShowStartButton()
+    {
+        if (_startButton != null)
+        {
+            _startButton.gameObject.SetActive(true);
+        }
+    }
 
     public void HideStartButton() => 
         _startButton.gameObject.SetActive(false);

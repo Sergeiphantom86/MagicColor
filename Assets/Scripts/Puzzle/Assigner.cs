@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Assigner : MonoBehaviour
 {
-    private CollisionHandler _collisionHandler;
+    private ICollisionHandler _collisionHandler;
 
     private void Awake()
     {
-        _collisionHandler = GetComponent<CollisionHandler>();
+        _collisionHandler = GetComponent<ICollisionHandler>();
     }
 
     private void OnEnable()

@@ -1,6 +1,8 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using YG;
 
 [RequireComponent(typeof(ButtonController))]
 public class Counter : MonoBehaviour
@@ -14,6 +16,7 @@ public class Counter : MonoBehaviour
     private Tween _countTween;
     private TextMeshProUGUI _counterText;
     private ButtonController _buttonController;
+    private Image _image;
 
     public bool HasAttempts => _currentCount > 0;
 
@@ -29,14 +32,14 @@ public class Counter : MonoBehaviour
 
     private void Awake()
     {
-        _initialCount = 1;
+        _initialCount = YG2.saves.Spins;
         _animationDuration = 0.5f;
 
-        _currentCount = _initialCount;
-        _displayedCount = _initialCount;
+        SetCoutSpins();
 
         _buttonController = GetComponent<ButtonController>();
         _counterText = GetComponentInChildren<TextMeshProUGUI>();
+        _image = GetComponent<Image>();
 
         if (_counterText == null)
         {
@@ -57,6 +60,8 @@ public class Counter : MonoBehaviour
         {
             Debug.LogError("ButtonController не назначен!", this);
         }
+
+        _rewardAdForSpins.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -64,13 +69,26 @@ public class Counter : MonoBehaviour
         UpdateText();
     }
 
+    private void SetCoutSpins()
+    {
+        _initialCount++;
+
+        _currentCount = _initialCount;
+        _displayedCount = _initialCount;
+    }
+
     private void AddSpin()
     {
-        _currentCount++;
-        AnimateCounterChange();
+        SwitchVisibility(true);
 
         if (_buttonController != null)
+        {
             _buttonController.UpdateState();
+        }
+
+        _currentCount++;
+
+        AnimateCounterChange();
     }
 
     public void DecreaseCount()
@@ -80,6 +98,19 @@ public class Counter : MonoBehaviour
         _currentCount--;
         AnimateCounterChange();
         _buttonController.UpdateState();
+
+        if (_currentCount == 0)
+        {
+            SwitchVisibility(false);
+
+            _rewardAdForSpins.gameObject.SetActive(true);
+        }
+    }
+
+    private void SwitchVisibility(bool isOn)
+    {
+        _counterText.enabled = isOn;
+        _image.enabled = isOn;
     }
 
     private void AnimateCounterChange()
@@ -104,6 +135,7 @@ public class Counter : MonoBehaviour
 
     private void OnDestroy()
     {
+        YG2.saves.SaveSpinsCount(_currentCount);
         _countTween?.Kill();
     }
 }

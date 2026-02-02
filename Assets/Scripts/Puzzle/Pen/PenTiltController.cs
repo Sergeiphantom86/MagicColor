@@ -1,52 +1,35 @@
-using UnityEngine;
-using DG.Tweening;
+﻿using UnityEngine;
 
 public class PenTiltController : MonoBehaviour
 {
-    private float _maxTiltAngle;
-    private float _tiltDuration;
+    [Header("Tilt Settings")]
+    [SerializeField] private float _maxTiltAngle;
+    [SerializeField] private float _tiltDuration;
+
     private float _currentAngle;
-    private Tween _tiltTween;
 
     private void Awake()
     {
-        _maxTiltAngle = 30;
-        _tiltDuration = 0.2f;
-
         _currentAngle = transform.localEulerAngles.z;
-        transform.localEulerAngles = new Vector3(0, 0, transform.localEulerAngles.z);
+        transform.localEulerAngles = new Vector3(0, 0, _currentAngle);
     }
 
     private void Update()
     {
-        ApplyTiltBasedOnDistance(transform.position.x);
+        float targetAngle = GetTargetAngle(transform.position.x);
+
+        if (Mathf.Approximately(targetAngle, _currentAngle) == false)
+        {
+            _currentAngle = Mathf.Lerp(_currentAngle, targetAngle, Time.deltaTime / _tiltDuration);
+
+            transform.localEulerAngles = new Vector3(0, 0, _currentAngle);
+        }
     }
-
-    public void ApplyTiltBasedOnDistance(float distanceFromCenter)
+  
+    private float GetTargetAngle(float distanceFromCenter)
     {
-        StartTween(-GetTargetAngele(distanceFromCenter));
-    }
-
-    private float GetTargetAngele(float distanceFromCenter)
-    {
-        return distanceFromCenter * _maxTiltAngle;
-    }
-
-    private void StartTween(float targetAngle)
-    {
-        _tiltTween?.Kill();
-
-        _tiltTween = DOTween.To(() => 
-        _currentAngle,angle =>
-                {
-                    _currentAngle = angle;
-                    transform.localEulerAngles = new Vector3(0, 0, angle);
-                },
-                targetAngle,_tiltDuration);
-    }
-
-    private void OnDestroy()
-    {
-        _tiltTween?.Kill();
+        float angle = distanceFromCenter * _maxTiltAngle;
+        angle = Mathf.Clamp(angle, -_maxTiltAngle, _maxTiltAngle);
+        return -angle;
     }
 }

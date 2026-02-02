@@ -6,20 +6,39 @@ public class StarsController : MonoBehaviour
 {
     private float _initialDelay;
     private float _delayBetweenStars;
+    private int _lastSavedScore;
     private StarIndicator[] _stars;
     private Sequence _animationSequence;
+    private StarsCounter _starCounter;
 
     private void Awake()
     {
         _initialDelay = 0.5f;
         _delayBetweenStars = 0.3f;
         _stars = GetComponentsInChildren<StarIndicator>();
+        _starCounter = GetComponent<StarsCounter>();
         SetActive(false);
+    }
+
+    private void Start()
+    {
+        ShowWithAnimation(_starCounter.CalculateStarsByAbsoluteTime(_lastSavedScore));
     }
 
     private void OnEnable()
     {
         ResetAll();
+    }
+
+    public void SavePlayerTime(float timeInSeconds)
+    {
+        if (timeInSeconds <= 0)
+        {
+            Debug.LogError($"Invalid time! Using fallback {timeInSeconds} {this}");
+            return;
+        }
+
+        _lastSavedScore = Mathf.RoundToInt(timeInSeconds);
     }
 
     public void ShowWithAnimation(int activeCount)
@@ -34,13 +53,14 @@ public class StarsController : MonoBehaviour
         for (int i = 0; i < activeCount; i++)
         {
             int index = i;
-            float delay = i * _delayBetweenStars;
-
-            _animationSequence.InsertCallback(_initialDelay + delay,() => 
-            _stars[index].TurnOn());
+            _animationSequence.InsertCallback(_initialDelay + GetDelay(i), () =>
+                _stars[index].TurnOn());
         }
+    }
 
-        YG2.saves.SetCountStars(activeCount);
+    private float GetDelay(int index)
+    {
+        return index * _delayBetweenStars;
     }
 
     public void SetActive(bool isOn)

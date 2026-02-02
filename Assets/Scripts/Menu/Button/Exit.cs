@@ -1,19 +1,38 @@
+using System;
 using UnityEngine;
-using YG;
+using UnityEngine.UI;
 
 public class Exit : MonoBehaviour
 {
-    private int _indexCorrector;
+    [SerializeField] private Button _spinButton;
+
+    private Button _button;
+
+    public event Action<Vector3> OnShow;
 
     private void Awake()
     {
-        _indexCorrector = 1;
+        _button = GetComponent<Button>();
+
+        if (_button == null)
+        {
+            Debug.LogError("Button == null");
+        }
     }
 
-    public int GetIndex()
+    private void Start()
     {
-        int index = YG2.saves.QuestIndex - _indexCorrector;
-        
-        return index;
+        _button.onClick.AddListener(Show);
+    }
+
+    private void Show()
+    {
+        OnShow?.Invoke(transform.position);
+        _button.interactable = false;
+
+        if (_spinButton != null)
+        {
+            _spinButton.interactable = false;
+        }
     }
 }

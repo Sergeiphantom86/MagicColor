@@ -138,6 +138,10 @@ MonoBehaviour:
       it: 
       de: 
       hi: 
+  BannerAdv:
+    simulationInEditor: 1
+    size: 100
+    color: {r: 0, g: 1, b: 0, a: 0.5}
   Flags:
     flags: []
   InterstitialAdv:
@@ -150,7 +154,7 @@ MonoBehaviour:
     enable: 1
     saveScoreAnonymousPlayers: 1
     listLBSim:
-    - technoName: CoinWallet
+    - technoName: Coin
       entries: '1. Max: 7123
 
         2. Maria: 15321
@@ -164,7 +168,7 @@ MonoBehaviour:
 
         6. Player 6:
         340000'
-      isDefault: 0
+      isDefault: 1
       isInvertSortOrder: 0
       decimalOffset: 0
       type: numeric
@@ -198,30 +202,6 @@ MonoBehaviour:
         score: 127000
         photo: demo image
         uniqueID: 000
-        extraData: 
-      - rank: 6
-        name: Player 6
-        score: 340000
-        photo: demo image
-        uniqueID: 321
-        extraData: 
-      - rank: 6
-        name: Player 6
-        score: 340000
-        photo: demo image
-        uniqueID: 321
-        extraData: 
-      - rank: 6
-        name: Player 6
-        score: 340000
-        photo: demo image
-        uniqueID: 321
-        extraData: 
-      - rank: 6
-        name: Player 6
-        score: 340000
-        photo: demo image
-        uniqueID: 321
         extraData: 
       - rank: 6
         name: Player 6
@@ -233,7 +213,7 @@ MonoBehaviour:
         rank: 1
         score: 1000000
         extraData: 
-    - technoName: CrystalWallet
+    - technoName: Crystal
       entries: '1. Max: 7123
 
         2. Maria: 15321
@@ -247,7 +227,7 @@ MonoBehaviour:
 
         6. Player 6:
         340000'
-      isDefault: 0
+      isDefault: 1
       isInvertSortOrder: 0
       decimalOffset: 0
       type: numeric
@@ -288,38 +268,14 @@ MonoBehaviour:
         photo: demo image
         uniqueID: 321
         extraData: 
-      - rank: 6
-        name: Player 6
-        score: 340000
-        photo: demo image
-        uniqueID: 321
-        extraData: 
-      - rank: 6
-        name: Player 6
-        score: 340000
-        photo: demo image
-        uniqueID: 321
-        extraData: 
-      - rank: 6
-        name: Player 6
-        score: 340000
-        photo: demo image
-        uniqueID: 321
-        extraData: 
-      - rank: 6
-        name: Player 6
-        score: 340000
-        photo: demo image
-        uniqueID: 321
-        extraData: 
       currentPlayer:
         rank: 1
-        score: 303
+        score: 1000000
         extraData: 
   Localization:
     setLanguageMod: 1
   Metrica:
-    enable: 0
+    enable: 1
     metricaCounterID: 0
     log: 1
     useYandexMetrica: 1
@@ -385,11 +341,16 @@ MonoBehaviour:
     objectName: NameYourObject
     methodName: NameYourMethod
   RewardedAdv:
-    rewardedAfterClosing: 1
     skipInterAdvAfterReward: 0
     labelAdvSimLabel: 0
   ServerTime:
-    serverTime: 1721201231000
+    manualDateSetup: 0
+    year: 2025
+    month: 6
+    day: 15
+    hour: 12
+    minute: 30
+    second: 30
   Storage:
     saveLocal: 1
     saveCloud: 1
@@ -405,7 +366,8 @@ MonoBehaviour:
     syncInitSDK: 0
     loadSceneIfSDKLate: 1
     loadSceneIndex: 0
-    simulationLoadScene: 0
+    initDelaySimulation: 0
+    buildNumber: 27
   Simulation:
     device: 1
     language: ru
@@ -414,8 +376,8 @@ MonoBehaviour:
     loadAdv: 0
     testFailAds: 0
   Templates:
-    logoImageFormat: 0
-    backgroundImgFormat: 0
+    logoImageFormat: 3
+    backgroundImgFormat: 3
     gradientBackgroundByLoadGame:
       radial: 0
       angleInclination: 140
@@ -431,7 +393,10 @@ MonoBehaviour:
       color2: {r: 1, g: 0.831, b: 0.149, a: 0.7}
     fixedAspectRatio: 0
     aspectRatio: 16/9
+    disableForMobile: 1
     fillBackground: 0
+    imageBackground: 0
+    imageName: background.jpg
     gradientBackgroundByAspectRatio:
       radial: 0
       angleInclination: 140
@@ -446,18 +411,20 @@ MonoBehaviour:
     showFirstAdv: 0
     interAdvInterval: 0
     postponeCallByFail: 0
+    setLanguageMod: 0
     useYandexMetrica: 0
     metricaCounterID: 0
     skipInterAdvAfterReward: 0
     saveLocal: 0
     saveCloud: 0
+    autoPauseGame: 0
     selectWebGLTemplate: 1
     runInBackground: 1
     enableExceptions: 1
     compressionFormat: 1
     decompressionFallback: 1
     autoGraphicsAPI: 1
-    minimalCodeCompression: 1
+    managedStrippingLevel: 1
     dataCaching: 0
     colorSpace: 0
     archivingBuild: 0

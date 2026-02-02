@@ -15,6 +15,8 @@ public class ErrorPanel : MonoBehaviour
         _blinkDuration = 0.1f;
         _renderer = GetComponent<Image>();
         _sleep = new WaitForSeconds(_blinkDuration);
+
+        gameObject.SetActive(false);
     }
 
     private void OnEnable()

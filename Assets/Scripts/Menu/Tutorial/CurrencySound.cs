@@ -13,6 +13,9 @@ public class CurrencySound : MonoBehaviour
 
     private void OnEnable()
     {
-        _voiceover.Play(_audioClip);
+        if (_voiceover != null)
+        {
+            _voiceover.Play(_audioClip);
+        }
     }
 }

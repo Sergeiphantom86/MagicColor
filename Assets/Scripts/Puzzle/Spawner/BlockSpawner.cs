@@ -1,0 +1,139 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[RequireComponent(typeof(ObjectPooler<Block>))]
+public class BlockSpawner : BaseSpawner<Block>
+{
+    [SerializeField] private int _blocksToSpawn;
+    [SerializeField] private GridSystem _gridSystem;
+    [SerializeField] private Effecter _effectFalling;
+
+    private GridPositionHelper _gridHelper;
+    private int _offset;
+
+    public List<Block> SpawnedBlocks => _spawnedObjects;
+
+    public event System.Action<Block> BlockSpawned;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        _offset = 2;
+
+        if (_gridSystem == null)
+            _gridSystem = GridSystem.Instance;
+
+        _gridHelper = new GridPositionHelper(_gridSystem);
+    }
+
+    private void Start()
+    {
+        SpawnBlocks();
+
+        StartCoroutine(PutPlace());
+    }
+
+    private void SpawnBlocks()
+    {
+        for (int i = 0; i < _blocksToSpawn; i++)
+        {
+            TrySpawnSingleBlock();
+        }
+    }
+
+    private void TrySpawnSingleBlock()
+    {
+        Block block = SpawnObject(Vector3.zero, transform);
+
+        if (block == null) return;
+
+        Vector2Int? origin = GetRandomAvailableOrigin(block);
+
+        if (origin.HasValue == false)
+        {
+            Despawn(block);
+            return;
+        }
+
+        PlaceBlock(block, origin.Value);
+    }
+
+    private Vector2Int? GetRandomAvailableOrigin(Block block)
+    {
+        List<Vector2Int> availableCenters = _gridHelper.GetAvailableCenters(block.SizeInCells);
+
+        if (availableCenters.Count == 0)
+            return null;
+
+        Vector2Int centerCell = availableCenters[Random.Range(0, availableCenters.Count)];
+        return _gridSystem.GetOriginFromCenter(centerCell, block.SizeInCells);
+    }
+
+    private void PlaceBlock(Block block, Vector2Int origin)
+    {
+        if (block.TryGetComponent(out ColorableObject anim))
+        {
+            anim.TurnOffRender();
+        }
+
+        Vector3 worldPos = _gridSystem
+            .GetComponent<Grid>()
+            .GetCellCenterWorld(GetPosition(origin));
+
+        ConfigureBlock(block, origin, worldPos);
+        _gridSystem.PlaceBlock(origin, block);
+    }
+
+    private IEnumerator PutPlace()
+    {
+        yield return new WaitForSeconds(1f);
+
+        foreach (Block block in _spawnedObjects)
+        {
+            if (block.TryGetComponent(out SpawnDropAnimation anim))
+            {
+                anim.gameObject.SetActive(false);
+                anim.Create(_effectFalling);
+            }
+        }
+
+        StartCoroutine(PutBackPlace());
+    }
+
+    private IEnumerator PutBackPlace()
+    {
+        foreach (Block block in _spawnedObjects)
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            if (block.TryGetComponent(out SpawnDropAnimation anim))
+            {
+                if (block.TryGetComponent(out ColorableObject colorableObject))
+                {
+                    colorableObject.TurnOnRender();
+                    colorableObject.SetAlpha(1f);
+                }
+
+                anim.gameObject.SetActive(true);
+                block.TurnOnCollider();
+
+            }
+        }
+    }
+
+    private void ConfigureBlock(Block block, Vector2Int origin, Vector3 worldPos)
+    {
+        block.transform.SetParent(transform);
+        block.transform.position = worldPos;
+        block.SetGridPosition(origin);
+
+        BlockSpawned?.Invoke(block);
+    }
+
+    private Vector3Int GetPosition(Vector2Int origin)
+    {
+        return new Vector3Int(origin.x + _offset, origin.y + _offset, 0);
+    }
+}

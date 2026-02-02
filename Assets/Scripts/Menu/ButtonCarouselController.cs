@@ -1,153 +1,122 @@
-using UnityEngine;
-using DG.Tweening;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(ButtonKeeper))]
-public class ButtonCarouselController : MonoBehaviour
+public class ButtonCarouselController : MonoBehaviour, ICarousel
 {
-    [SerializeField] private int _defaultIndex = 0;
-    [SerializeField] private float _animationDuration = 0.3f;
-    [SerializeField] private Ease _easeType = Ease.OutBack;
+    [SerializeField] private int _defaultIndex;
+    [SerializeField] private float _animationDuration;
+    [SerializeField] private float _centerScale;
+    [SerializeField] private float _sideScale;
+    [SerializeField] private float _centerAlpha;
+    [SerializeField] private float _sideAlpha;
+    [SerializeField] private float _distanceFromCenter;
 
+    private struct ButtonVisualState
+    {
+        public float PositionX;
+        public float Scale;
+        public float Alpha;
+    }
 
-    private RectTransform[] _buttons;
-    private Vector2[] _originalPositions;
     private int _currentIndex;
-    private float _screenWidth;
-    private ButtonKeeper _buttonKeeper;
-    private RectTransform _canvasRect;
     private bool _isInitialized;
-    private float _screenWidthMultiplier;
+    private CarouselData _data;
+    private CarouselLayoutCalculator _layout;
+    private CarouselAnimator _animator;
 
-    public RectTransform CurrentButton => _buttons[_currentIndex];
-    public Vector2 CurrentButtonOriginalPosition => _originalPositions[_currentIndex];
+    public int CurrentIndex => _currentIndex;
+
+    public float ScrollDuration => _animationDuration;
 
     private void Awake()
     {
-        _screenWidthMultiplier = 1.1f;
-        _buttonKeeper = GetComponent<ButtonKeeper>();
-        _canvasRect = GetComponentInParent<Canvas>().GetComponent<RectTransform>();
         InitializeSystem();
-    }
-
-    private void InitializeSystem()
-    {
-        ValidateButtons();
-        InitializeArrays();
-        CacheOriginalPositions();
-        CalculateScreenWidth();
-        SetupInitialPositions();
-        _isInitialized = true;
-    }
-
-    private void ValidateButtons()
-    {
-        if (_buttonKeeper == null || _buttonKeeper.Buttons.Length == 0)
-            Debug.LogError("Button components are not assigned!");
-    }
-
-    private void InitializeArrays()
-    {
-        _buttons = new RectTransform[_buttonKeeper.Buttons.Length];
-        _originalPositions = new Vector2[_buttonKeeper.Buttons.Length];
-    }
-
-    private void CacheOriginalPositions()
-    {
-        for (int i = 0; i < _buttonKeeper.Buttons.Length; i++)
-        {
-            if (_buttonKeeper.Buttons[i] == null)
-            {
-                Debug.LogError($"Button at index {i} is null!");
-                continue;
-            }
-
-            _buttons[i] = _buttonKeeper.Buttons[i].GetComponent<RectTransform>();
-            _originalPositions[i] = _buttons[i].anchoredPosition;
-        }
-    }
-
-    private void CalculateScreenWidth()
-    {
-        if (_canvasRect == null)
-        {
-            Debug.LogError("Canvas not found in parents!");
-            _screenWidth = Screen.width;
-            return;
-        }
-
-        _screenWidth = _canvasRect.rect.width;
-
-        _screenWidth *= _screenWidthMultiplier;
-    }
-
-    private void SetupInitialPositions()
-    {
-        _currentIndex = Mathf.Clamp(_defaultIndex, 0, _buttons.Length - 1);
-
-        for (int i = 0; i < _buttons.Length; i++)
-        {
-            if (_buttons[i] == null) continue;
-
-            float targetX = i == _currentIndex
-                ? _originalPositions[i].x
-                : (i < _currentIndex ? -_screenWidth : _screenWidth);
-
-            UpdateButtonPosition(_buttons[i], targetX);
-        }
     }
 
     public void ShowRelative(int direction)
     {
         if (_isInitialized == false) return;
+        ScrollToButton(_currentIndex + direction);
+    }
 
-        int newIndex = _currentIndex + direction;
+    public void ScrollToButton(int targetIndex)
+    {
+        if (_isInitialized == false) return;
+        if (targetIndex < 0 || targetIndex >= _data.Buttons.Length) return;
+        if (targetIndex == _currentIndex) return;
 
-        if (newIndex >= 0 && newIndex < _buttons.Length)
+        _currentIndex = targetIndex;
+        UpdateAllButtons(false);
+    }
+
+    private void InitializeSystem()
+    {
+        var keeper = GetComponent<ButtonKeeper>();
+
+        if (keeper == null || keeper.Buttons.Length == 0)
         {
-            ShowButton(newIndex);
+            Debug.LogError("ButtonKeeper missing");
+            return;
         }
+
+        _data = new CarouselData(keeper);
+
+        _currentIndex = Mathf.Clamp(_defaultIndex, 0, _data.Buttons.Length - 1);
+
+        _layout = new CarouselLayoutCalculator(_data.Buttons, _data.OriginalPositions, _centerScale, _sideScale, _distanceFromCenter);
+
+        _animator = new CarouselAnimator(_animationDuration);
+
+        UpdateAllButtons(true);
+
+        _isInitialized = true;
     }
 
-    public void UpdateButtonPosition(RectTransform button, float xPosition)
+    private void UpdateAllButtons(bool instant)
     {
-        if (button == null) return;
-
-        Vector2 pos = button.anchoredPosition;
-        pos.x = xPosition;
-        button.anchoredPosition = pos;
+        for (int i = 0; i < _data.Buttons.Length; i++)
+            UpdateButton(i, instant);
     }
 
-    private void ShowButton(int index)
+    private void UpdateButton(int index, bool instant)
     {
-        if (index < 0 || index >= _buttons.Length) return;
-
-        if (index == _currentIndex) return;
-
-        if (_buttons[index] == null) return;
-
-        int direction = index > _currentIndex ? -1 : 1;
-
-        AnimateTransition(_currentIndex, direction);
-
-        SetupNewButton(index, -direction);
-
-        _currentIndex = index;
+        ButtonVisualState state = CalculateVisualState(index);
+        ApplyVisualState(index, state, instant);
     }
 
-    private void AnimateTransition(int index, int direction)
-    {
-        if (_buttons[index] == null) return;
 
-        _buttons[index].DOAnchorPosX(direction * _screenWidth, _animationDuration)
-            .SetEase(_easeType).SetEase(_easeType);
+    private void ApplyVisualState(int index,ButtonVisualState state,bool instant)
+    {
+        if (instant)
+        {
+            _animator.ApplyImmediate(
+                _data.Buttons[index],
+                _data.CanvasGroups[index],
+                state.PositionX,
+                state.Scale,
+                state.Alpha
+            );
+
+            return;
+        }
+
+        _animator.ApplyAnimated(
+                 _data.Buttons[index],
+                 _data.CanvasGroups[index],
+                 state.PositionX,
+                 state.Scale,
+                 state.Alpha
+             );
     }
 
-    private void SetupNewButton(int index, int direction)
+    private ButtonVisualState CalculateVisualState(int index)
     {
-        if (_buttons[index] == null) return;
+        bool isCenter = index == _currentIndex;
 
-        UpdateButtonPosition(_buttons[index], direction * _screenWidth);
-        _buttons[index].DOAnchorPosX(_originalPositions[index].x, _animationDuration)
-            .SetEase(_easeType);
+        return new ButtonVisualState
+        {
+            PositionX = _layout.GetTargetPositionX(index, _currentIndex),
+            Scale = isCenter ? _centerScale : _sideScale,
+            Alpha = isCenter ? _centerAlpha : _sideAlpha
+        };
     }
 }

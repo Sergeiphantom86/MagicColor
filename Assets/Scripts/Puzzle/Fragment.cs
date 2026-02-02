@@ -8,6 +8,7 @@ public class Fragment : MonoBehaviour
     private float _startAlpha;
     private Transform _transform;
     private SpriteRenderer _renderer;
+    private Color _currentColor;
 
     public SpriteRenderer Renderer => _renderer;
 
@@ -17,7 +18,6 @@ public class Fragment : MonoBehaviour
 
         _finalAlpha = 1;
         _startAlpha = 0.3f;
-        _renderer.sortingOrder = 1;
 
         _transform = transform;
     }
@@ -25,6 +25,11 @@ public class Fragment : MonoBehaviour
     public void SetColor(Color color)
     {
         _renderer.color = color;
+    }
+
+    public Color GetColor()
+    {
+        return _renderer.color;
     }
 
     public void TurnOnTransparency()

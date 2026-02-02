@@ -5,11 +5,13 @@ using YG;
 [RequireComponent(typeof(TransitionChooser))]
 public class QuestSystem : MonoBehaviour
 {
-    private int _currentQuestIndex;
+    private bool _isOn;
+    private Quest _next;
     private Quest _active;
     private IReadOnlyList<Quest> _quests;
     private List<Quest> _subscribedQuests;
     private TransitionChooser _transitionChooser;
+    private int _currentQuestIndex;
 
     private void Awake()
     {
@@ -29,8 +31,7 @@ public class QuestSystem : MonoBehaviour
         }
 
         _currentQuestIndex = YG2.saves.QuestIndex;
-
-        gameObject.SetActive(false);
+        _isOn = YG2.saves.IsAutomaticallyNewLevel;
     }
 
     public void Initialize(IReadOnlyList<Quest> quests)
@@ -39,44 +40,81 @@ public class QuestSystem : MonoBehaviour
 
         _quests = quests;
 
-        SetNextIndex();
-
         ProcessSavedProgress();
-    }
-
-    private void SetNextIndex()
-    {
-        if (YG2.saves.IsSimilar)
-        {
-            _currentQuestIndex++;
-
-            YG2.saves.SetQuestIndex(_currentQuestIndex);
-        }
     }
 
     private void ProcessSavedProgress()
     {
+        if (IsQuestListValid() == false)
+            return;
+
+        UnlockQuestsUpToSavedIndex();
+        SetActiveQuestIndicator();
+        TryAutoTransition();
+    }
+
+    private bool IsQuestListValid()
+    {
         if (_quests == null || _quests.Count == 0)
         {
             Debug.LogError("Quests list is null or empty");
-            return;
+            return false;
         }
 
-        for (int i = 0; i <= GetIndex(); i++)
+        return true;
+    }
+
+    private void UnlockQuestsUpToSavedIndex()
+    {
+        int lastIndex = GetIndex();
+
+        for (int i = 0; i <= lastIndex; i++)
         {
-            _active = _quests[i];
-
-            if (_active.IsUnlocked == false)
-            {
-                _active.Unlock();
-                _active.OnCompleted += OnCompleted;
-                _subscribedQuests.Add(_active);
-            }
+            SetupQuest(i);
         }
+    }
 
+    private void SetupQuest(int index)
+    {
+        _active = _quests[index];
+        _next = GetNextQuest(index);
+
+        if (_active.IsUnlocked)
+            return;
+
+        _active.Unlock();
+        SubscribeToQuest(_active);
+    }
+
+    private Quest GetNextQuest(int index)
+    {
+        return (index + 1 < _quests.Count)
+            ? _quests[index + 1]
+            : null;
+    }
+
+    private void SubscribeToQuest(Quest quest)
+    {
+        quest.OnSelect += OnCompleted;
+        _subscribedQuests.Add(quest);
+    }
+
+    private void SetActiveQuestIndicator()
+    {
         if (_active != null)
             _active.SetActiveIndicator(true);
     }
+
+    private void TryAutoTransition()
+    {
+        if (_isOn == false || _active == null)
+            return;
+
+        _active.OnClicked();
+        YG2.saves.SetAutomaticTransition(false);
+    }
+
+
 
     private int GetIndex()
     {
@@ -87,14 +125,20 @@ public class QuestSystem : MonoBehaviour
     {
         if (_active == quest)
         {
-            YG2.saves.SetSimilarity(true);
-        }
-        else
-        {
-            YG2.saves.SetSimilarity(false);
+            if (_next != null)
+            {
+                _currentQuestIndex++;
+                YG2.saves.SetQuestIndex(_currentQuestIndex);
+                YG2.saves.SetNewSprite(_next.Sprite);
+            }
         }
 
-        _transitionChooser.ChoosePuzzle(quest);
+        YG2.SaveProgress();
+
+        if (_transitionChooser != null)
+        {
+            _transitionChooser.ChoosePuzzle(quest);
+        }
     }
 
     private void OnDestroy()
@@ -103,9 +147,10 @@ public class QuestSystem : MonoBehaviour
         {
             if (quest != null)
             {
-                quest.OnCompleted -= OnCompleted;
+                quest.OnSelect -= OnCompleted;
             }
         }
+
         _subscribedQuests.Clear();
     }
 }

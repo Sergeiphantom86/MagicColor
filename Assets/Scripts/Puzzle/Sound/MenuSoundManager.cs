@@ -105,6 +105,8 @@ public class MenuSoundManager : MonoBehaviour
 
     private void SetVolume(VolumeChanger volumeChanger, float volume)
     {
+        Debug.Log(volume);
+        
         UpdateMixerVolume(volumeChanger.name, volume);
         YG2.saves.SetVolume(volumeChanger, volume);
         SaveVolumeSettings();

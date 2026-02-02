@@ -1,80 +1,84 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Rewards : MonoBehaviour
 {
-    private int _rewardTutorial;
-    private float _delay;
-    private float _duration;
-    private CoinWallet _coinWallet;
-    private CrystalWallet _crystalWallet;
+    [SerializeField] private float _delay = 0.15f;
+    [SerializeField] private bool _isImmediately;
+
     private WaitForSeconds _waitForSeconds;
-    private Coroutine _activationCoroutine;
+    private List<Reward> _rewards;
 
     private void Awake()
     {
-        _delay = 0.2f;
-        _duration = 0.5f;
-        _rewardTutorial = 5000;
         _waitForSeconds = new WaitForSeconds(_delay);
-        _coinWallet = GetComponentInChildren<CoinWallet>(true);
-        _crystalWallet = GetComponentInChildren<CrystalWallet>(true);
+        _rewards = new List<Reward>();
 
-        TurnOffWallet();
-    }
+        Reward[] foundRewards = GetComponentsInChildren<Reward>(true);
 
-    private void Start()
-    {
-        EnableRewards();
-    }
-
-    private void OnDisable()
-    {
-        DisableRewardsImmediate();
-    }
-
-    private void EnableRewards()
-    {
-        if (_activationCoroutine != null)
+        foreach (Reward reward in foundRewards)
         {
-            StopCoroutine(_activationCoroutine);
+            _rewards.Add(reward);
         }
-        _activationCoroutine = StartCoroutine(EnableRewardsWithDelay());
     }
 
-    private void DisableRewardsImmediate()
+    private void OnEnable()
     {
-        if (_activationCoroutine != null)
+        StartCoroutine(EnableRewardsWithDelay());
+    }
+
+    public void Save()
+    {
+        foreach (Reward reward in _rewards)
         {
-            StopCoroutine(_activationCoroutine);
-            _activationCoroutine = null;
+            reward.Save();
         }
-
-        TurnOffWallet();
     }
 
-    private void TurnOffWallet()
+    public void Appoint(Currency currency, int value)
     {
-        _coinWallet.gameObject.SetActive(false);
-        _crystalWallet.gameObject.SetActive(false);
+        List<Reward> matchingRewards = GetSortedList(currency);
+
+        foreach (Reward reward in matchingRewards)
+        {
+            Show(reward, value);
+        }
+    }
+
+    private List<Reward> GetSortedList(Currency currency)
+    {
+        return  _rewards
+            .Where(reward => reward.Currency != null &&
+                   reward.Currency.GetType() == currency.GetType())
+            .ToList();
+    }
+
+    private void Show(Reward reward, int value)
+    {
+        reward.SetValue(value);
+        reward.Show();
     }
 
     private IEnumerator EnableRewardsWithDelay()
     {
         yield return _waitForSeconds;
 
-        TurnOnWallet(_coinWallet, true);
+        foreach (Reward reward in _rewards)
+        {
+            if (reward != null)
+            {
+                reward.Show();
+            }
 
-        yield return _waitForSeconds;
+            yield return _waitForSeconds;
+            yield return _waitForSeconds;
+        }
 
-        TurnOnWallet(_crystalWallet, true);
-
-        _activationCoroutine = null;
-    }
-
-    private void TurnOnWallet(Wallet wallet, bool isOn)
-    {
-        wallet.gameObject.SetActive(isOn);
-        wallet.AddFunds(_rewardTutorial, _duration);
+        if (_isImmediately)
+        {
+            Save();
+        }
     }
 }

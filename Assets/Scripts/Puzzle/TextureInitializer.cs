@@ -10,13 +10,15 @@ public class TextureInitializer : MonoBehaviour
     private const float IgnoredTransparency = 0.1f;
 
     [SerializeField] private AnimatorPuzzle _animator;
-    [SerializeField] private int _scaleMultiplier;
+    [SerializeField] private float _scaleMultiplier;
     [SerializeField] private bool _isSaveCollections = true;
 
     private int _totalCount;
     private Color[] _pixels;
     private Vector2 _pivot;
+    private Vector3 _mobilePosition;
     private PixelPool _pixelPool;
+    private ZoomChanger _zoomChanger;
     private ColorPrecision _precision;
     private List<Fragment> _fragmentsList;
     private Dictionary<Color, Queue<Fragment>> _fragments;
@@ -31,9 +33,11 @@ public class TextureInitializer : MonoBehaviour
     private void Awake()
     {
         _pixelPool = GetComponent<PixelPool>();
+        _zoomChanger = new ZoomChanger();
         _fragmentsList = new List<Fragment>();
         _fragments = new Dictionary<Color, Queue<Fragment>>();
         _precision = new ColorPrecision();
+        _mobilePosition = transform.position;
     }
 
     public void SpawnPixelsFromTexture(Texture2D texture)
@@ -43,6 +47,8 @@ public class TextureInitializer : MonoBehaviour
             Debug.LogError("Texture is null!");
             return;
         }
+
+        EditMobile();
 
         _pixels = texture.GetPixels();
 
@@ -54,9 +60,9 @@ public class TextureInitializer : MonoBehaviour
         Group(width, height, _pivot);
 
         gameObject.transform.localScale = Vector3.one * _scaleMultiplier;
-
+  
         OnInitialize?.Invoke(_fragments.Count);
-
+       
         CanPaint?.Invoke(Fragments.Keys.ToList());
 
         if (_animator != null)
@@ -71,6 +77,16 @@ public class TextureInitializer : MonoBehaviour
         {
             _pixelPool.ReturnAllFragments(_fragmentsList);
             _fragmentsList.Clear();
+        }
+    }
+
+    private void EditMobile()
+    {
+        if (_zoomChanger.IsMobileWithTallScreen())
+        {
+            _scaleMultiplier += 0.05f;
+            _mobilePosition.y = 0;
+            transform.position = _mobilePosition;
         }
     }
 

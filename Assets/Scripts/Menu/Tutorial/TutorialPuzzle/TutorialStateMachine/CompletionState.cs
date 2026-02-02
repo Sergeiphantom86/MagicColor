@@ -17,22 +17,20 @@ public class CompletionState : TutorialState
     private IEnumerator CompletionRoutine()
     {
         yield return Context.WaitForSeconds;
+        yield return Context.WaitForSeconds;
 
         Context.Hints.TurnOn(false);
 
         yield return Context.WaitForSeconds;
-
-        TurnOffVisualDisplay();
-
+        yield return Context.WaitForSeconds;
         yield return Context.WaitForSeconds;
 
-        Context.Hints.gameObject.SetActive(false);
-        Context.MenuLoader.SaveCurrency();
+        Context.Hints.TurnOff();
     }
 
     private void TurnOffVisualDisplay()
     {
-        Context.Mirage.gameObject.SetActive(false);
+        //Context.Mirage.gameObject.SetActive(false);
         Context.HandMover.gameObject.SetActive(false);
     }
 }

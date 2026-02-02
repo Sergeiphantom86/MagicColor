@@ -2,23 +2,35 @@
 
 public class ColorPrecision : IColorPrecision
 {
-    private readonly int _precision = 6;
-    private readonly float _epsilon = 0.1f;
+    private const int PrecisionSteps = 6;
+    private const float ColorEpsilon = 0.02f;
+    private const float AlphaThreshold = 0.9f;
 
     public Color Reduce(Color color)
     {
-        return new Color(RoundComponent(color.r), RoundComponent(color.g), RoundComponent(color.b));
+        return new Color(
+            Round(color.r),
+            Round(color.g),
+            Round(color.b),
+            color.a
+        );
     }
 
     public bool Match(Color firstColor, Color secondColor)
     {
-        return Mathf.Abs(firstColor.r - secondColor.r) < _epsilon &&
-               Mathf.Abs(firstColor.g - secondColor.g) < _epsilon &&
-               Mathf.Abs(firstColor.b - secondColor.b) < _epsilon;
+        if (firstColor.a < AlphaThreshold || secondColor.a < AlphaThreshold)
+            return false;
+
+        firstColor = Reduce(firstColor);
+        secondColor = Reduce(secondColor);
+
+        return Mathf.Abs(firstColor.r - secondColor.r) <= ColorEpsilon &&
+               Mathf.Abs(firstColor.g - secondColor.g) <= ColorEpsilon &&
+               Mathf.Abs(firstColor.b - secondColor.b) <= ColorEpsilon;
     }
 
-    private float RoundComponent(float component)
+    private float Round(float value)
     {
-        return Mathf.Round(component * _precision) / _precision;
+        return Mathf.Round(value * PrecisionSteps) / PrecisionSteps;
     }
 }

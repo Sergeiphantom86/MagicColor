@@ -70,6 +70,7 @@ public class BounceRotator : MonoBehaviour
     private void ResetRotation()
     {
         _rotationSequence?.Kill();
+        _rotationSequence = null;
         transform.DOKill();
     }
 

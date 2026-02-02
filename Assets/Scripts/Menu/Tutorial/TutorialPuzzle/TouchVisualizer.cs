@@ -59,4 +59,10 @@ public class TouchVisualizer : MonoBehaviour
             .SetEase(Ease.InOutQuad, _overshoot)
             .SetLoops(-1, LoopType.Restart);
     }
+
+    public void TurnOff()
+    {
+        _spriteRenderer.enabled = false;
+        _sequence.Kill();
+    }
 }

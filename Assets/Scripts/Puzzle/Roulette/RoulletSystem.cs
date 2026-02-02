@@ -11,6 +11,7 @@ public class RouletteSystem : MonoBehaviour
     [SerializeField] private Counter _counter;
     [SerializeField] private Arrow _arrow;
     [SerializeField] private RewardAnimator _rewardAnimator;
+    [SerializeField] private ButtonHome _buttonHome;
 
     private List<Currency> _items;
     private bool _isSpinning;
@@ -54,12 +55,15 @@ public class RouletteSystem : MonoBehaviour
 
     private void Spin()
     {
-        if (_isSpinning || HasValidItems() == false || _counter.HasAttempts == false) return;
-        
-        _counter.DecreaseCount();
-
+        if (_isSpinning || HasValidItems() == false || _counter.HasAttempts == false)
+        {
+            return;
+        }
+  
         _isSpinning = true;
+        _counter.DecreaseCount();
         _spinButtonController.SetLocalBlock(true);
+        _buttonHome.Button.interactable = false;
 
         Currency result = GetPrize();
 
@@ -68,6 +72,7 @@ public class RouletteSystem : MonoBehaviour
             _isSpinning = false;
             _spinButtonController.SetLocalBlock(false);
             _rewardAnimator.ActivateAtPosition(result);
+            _buttonHome.Button.interactable = true;
         });
     }
 
@@ -83,6 +88,7 @@ public class RouletteSystem : MonoBehaviour
         }
 
         Debug.LogWarning("Prize selection failed, returning first item");
+
         return _items.First();
     }
 

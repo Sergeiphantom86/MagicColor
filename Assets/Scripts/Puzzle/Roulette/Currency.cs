@@ -21,7 +21,7 @@ public class Currency : MonoBehaviour
 
     public Image Icon => _image;
 
-    public int Winn => YG2.saves.CurrentValue;
+    public int Winn => YG2.saves.Reward;
 
     private void Awake()
     {
@@ -70,7 +70,6 @@ public class Currency : MonoBehaviour
     {
         return _sectorSize / 2f;
     }
-
 
     private string GetCleanNumericString(string textMeshPro)
     {

@@ -14,7 +14,6 @@ public class ButtonFactory
             case Play: return new PlayButton();
             case Settings: return new SettingsButton();
             case Leaderboard: return new LeaderboardButton();
-            case Shop: return new ShopButton();
             default:
                 Debug.LogError($"Unknown button type: {buttonType}");
                 return null;

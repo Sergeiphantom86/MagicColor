@@ -38,6 +38,7 @@ public class InputHandler : MonoBehaviour
             case TouchPhase.Ended:
             case TouchPhase.Canceled:
                 OnThrowed?.Invoke();
+                Debug.Log(Input.imeIsSelected);
                 break;
         }
     }
@@ -46,7 +47,7 @@ public class InputHandler : MonoBehaviour
     {
         Vector3 currentMousePosition = Input.mousePosition;
 
-        switch (true)
+        switch (Input.imeIsSelected)
         {
             case bool _ when Input.GetMouseButtonDown(0):
                 SelectBlock(currentMousePosition);

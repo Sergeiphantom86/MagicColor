@@ -5,14 +5,12 @@ async function InitPlayer() {
     return new Promise(async (resolve) => {
         try {
             if (!ysdk)
-                return Final(NotAuthorized());
+                return Final(NotAuthorized(false));
 
             player = await ysdk.getPlayer();
 
-            if (!player.isAuthorized()) {
-                await ysdk.auth.openAuthDialog();
-                return InitPlayer().then(resolve);
-            }
+            if (!player.isAuthorized())
+                return Final(NotAuthorized());
 
             const authJson = {
                 "playerAuth": "resolved",
@@ -25,7 +23,7 @@ async function InitPlayer() {
             return Final(JSON.stringify(authJson));
         } catch (e) {
             console.error('CRASH init Player: ', e.message);
-            return Final(NotAuthorized());
+            return Final(NotAuthorized(false));
         }
 
         function Final(res) {
@@ -37,11 +35,11 @@ async function InitPlayer() {
 }
 
 
-function NotAuthorized() {
+function NotAuthorized(isInitSDK = true) {
     let authJson = {
         "playerAuth": "rejected",
         "playerName": "unauthorized",
-        "playerId": "unauthorized",
+        "playerId": isInitSDK ? player.getUniqueID() : "unauthorized",
         "playerPhoto": "no data",
         "payingStatus": "unknown"
     };

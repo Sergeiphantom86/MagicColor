@@ -5,7 +5,6 @@ using UnityEngine;
 public class WindowInitializer : MonoBehaviour
 {  
     [SerializeField] private Window _gameSelection;
-    [SerializeField] private Window _shopWindow;
     [SerializeField] private Window _settingsWindow;
     [SerializeField] private Window _leaderboardWindow;
 
@@ -27,13 +26,17 @@ public class WindowInitializer : MonoBehaviour
 
     private void RegisterActions()
     {
-        RegisterAction(ButtonFactory.Play, () => ToggleWindow(_gameSelection));
-        RegisterAction(ButtonFactory.Shop, () => ToggleWindow(_shopWindow));
-        RegisterAction(ButtonFactory.Settings, () => ToggleWindow(_settingsWindow));
-        RegisterAction(ButtonFactory.Leaderboard, () => ToggleWindow(_leaderboardWindow));
+        RegisterAction(ButtonFactory.Play, () => 
+        ToggleWindow(_gameSelection));
+
+        RegisterAction(ButtonFactory.Settings, () => 
+        ToggleWindow(_settingsWindow));
+
+        RegisterAction(ButtonFactory.Leaderboard, () => 
+        ToggleWindow(_leaderboardWindow));
     }
 
-    public void RegisterAction(string actionName, Action action)
+    private void RegisterAction(string actionName, Action action)
     {
         if (_windowActions.ContainsKey(actionName))
         {

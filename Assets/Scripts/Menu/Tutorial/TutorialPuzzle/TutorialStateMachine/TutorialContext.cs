@@ -15,13 +15,16 @@ public class TutorialContext
     public BlockSpawner Container { get; set; }
     public bool IsAnimationChange { get; set; }
     public WaitForSeconds WaitForSeconds { get; }
+    public WaitForSeconds WaitFirstStop { get; }
     public TouchVisualizer Visualizer { get; set; }
     public StateTutorial StateTutorial { get; set; }
-    public TouchDragInput CurrentTouchInput { get; set; }
+    public ITouchDragInput CurrentTouchInput { get; set; }
+    public GridDragMovement GridDragMovement { get; set; }
 
     public TutorialContext()
     {
         WaitForSeconds = new WaitForSeconds(_delay);
+        WaitFirstStop = new WaitForSeconds(_delay / 6);
     }
 
     public void AdjustPositions(Vector3? handPosition = null, Vector3? visualizerPosition = null, Vector3? miragePosition = null, float yOffset = 0f)

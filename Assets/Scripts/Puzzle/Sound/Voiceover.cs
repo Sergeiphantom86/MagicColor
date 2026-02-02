@@ -13,6 +13,9 @@ public class Voiceover : MonoBehaviour
     [SerializeField] private AudioMixerGroup _sfxGroup;
 
     private AudioSource _sfxSource;
+    private float _currentVolume;
+
+    public bool IsPlaying => _sfxSource.isPlaying;
 
     private void Awake()
     {
@@ -26,10 +29,27 @@ public class Voiceover : MonoBehaviour
     {
         if (clip != null && _sfxSource != null )
         {
+            if (_currentVolume != _sfxSource.volume)
+            {
+                LoadVolumeSettings();
+            }
+
             _sfxSource.clip = clip;
-            _sfxSource.time = 0.05f;
+
             _sfxSource.Play();
         }
+    }
+
+    public void Stop()
+    {
+        _sfxSource.Stop();
+    }
+
+    public void SetVolume(float vfd)
+    {
+        float dbVolume = Mathf.Log10(YG2.saves.SoundVolume * vfd) * DBMultiplier;
+
+        _sfxGroup.audioMixer.SetFloat(SoundVolume, dbVolume);
     }
 
     private void LoadVolumeSettings()
@@ -37,10 +57,10 @@ public class Voiceover : MonoBehaviour
         float clampedVolume = Mathf.Clamp(YG2.saves.SoundVolume, MinVolume, MaxVolume);
         float dbVolume = Mathf.Log10(clampedVolume) * DBMultiplier;
 
-
         if (_sfxGroup != null)
         {
             _sfxGroup.audioMixer.SetFloat(SoundVolume, dbVolume);
+            _currentVolume = dbVolume;
         }
     }
 

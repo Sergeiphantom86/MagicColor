@@ -7,30 +7,39 @@ public class TransitionChooser : MonoBehaviour
     private const string Tutorial = nameof(Tutorial);
 
     [SerializeField] private OfferPanel _offerPanel;
+    [SerializeField] private OfferPanel _offerPanelmobile;
 
-    private Quest _quest;
     private int _indexTransparent;
+    private Sprite _sprite;
+    private ZoomChanger _zoomChanger;
 
     private void Awake()
     {
         _indexTransparent = 2;
+        _zoomChanger = new ZoomChanger();
     }
 
     private void OnEnable()
     {
-        _offerPanel.OnTutorial += TurnOnTutorial;
+        _offerPanel.OnConsent += TurnOnTutorial;
+        _offerPanelmobile.OnConsent += TurnOnTutorial;
+
         _offerPanel.OnCancelled += SkipTutorial;
+        _offerPanelmobile.OnCancelled += SkipTutorial;
     }
 
     private void OnDisable()
     {
-        _offerPanel.OnTutorial -= TurnOnTutorial;
+        _offerPanel.OnConsent -= TurnOnTutorial;
+        _offerPanelmobile.OnConsent -= TurnOnTutorial;
+
         _offerPanel.OnCancelled -= SkipTutorial;
+        _offerPanelmobile.OnCancelled -= SkipTutorial;
     }
 
     public void ChoosePuzzle(Quest quest)
     {
-        SetQuest(quest);
+        _sprite = quest.Sprite;
 
         YG2.saves.SetTutorial(quest.Index);
 
@@ -41,21 +50,27 @@ public class TransitionChooser : MonoBehaviour
 
         if (quest.IsTutorial)
         {
-            YG2.saves.SetSprite(_quest.Sprite);
-            YG2.saves.SetTutorial(false);
+            YG2.saves.ChangeTutorial(false);
             quest.SetTutorial(false);
 
-            _offerPanel.gameObject.SetActive(true);
+            if (_zoomChanger.IsMobileWithTallScreen())
+            {
+                _offerPanelmobile.TurnOn();
+            }
+            else
+            {
+                _offerPanel.TurnOn();
+            }
 
             return;
         }
 
-        ConfigureTransition(Puzzle, _quest.Sprite);
+        ConfigureTransition(Puzzle);
     }
 
     private void SkipTutorial()
     {
-        ConfigureTransition(Puzzle, _quest.Sprite);
+        ConfigureTransition(Puzzle);
     }
 
     private void TurnOnTutorial()
@@ -63,20 +78,17 @@ public class TransitionChooser : MonoBehaviour
         ConfigureTransition(Tutorial);
     }
 
-    private void ConfigureTransition(string name, Sprite sprite = null)
+    private void ConfigureTransition(string name)
     {
-        YG2.saves.SetSprite(sprite);
+        if (_sprite != null)
+        {
+            YG2.saves.SetCurrentSprite(_sprite);
+        }
+        else
+        {
+            Debug.LogWarning($"Cached sprite is null when transitioning to {name}");
+        }
 
         SceneLoader.Instance.LoadSceneWithSplash(name);
-    }
-
-    private void SetQuest(Quest quest)
-    {
-        if (quest == null)
-        {
-            Debug.LogError($"Quest = null {this}");
-        }
-        
-        _quest = quest;
     }
 }

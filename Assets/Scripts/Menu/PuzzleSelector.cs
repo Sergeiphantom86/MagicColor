@@ -19,4 +19,9 @@ public class PuzzleSelector : MonoBehaviour
             return;
         }
     }
+
+    public void SetSprite(Sprite sprite)
+    {
+        _puzzleImage.sprite = sprite;
+    }
 }

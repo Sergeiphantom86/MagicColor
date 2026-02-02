@@ -14,14 +14,14 @@ public class SettingsButton : MenuButtonBase
         }
 
         button.onClick.AddListener(() =>
-           Press(button.name, handlerButtonWindowInteraction, buttonSound, audioClip));
+           Press(button, handlerButtonWindowInteraction, buttonSound, audioClip));
     }
 
-    public override void Press(string name,
+    public override void Press(Button button,
         HandlerButtonWindowInteraction handlerButtonWindowInteraction,
         ButtonSoundHandler buttonSound, AudioClip audioClip)
     {
-        handlerButtonWindowInteraction.Show(name);
+        handlerButtonWindowInteraction.OnButtonClicked(button);
         buttonSound.PlayButtonSound(audioClip);
     }
 }

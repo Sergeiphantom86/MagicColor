@@ -5,7 +5,8 @@ using UnityEngine;
 public class Activator : MonoBehaviour
 {
     [SerializeField] private AudioClip _winn;
-    [SerializeField] private AudioClip _pixelActivation;
+    [SerializeField] private AudioClip _pixelSound;
+
     [SerializeField] private Transform _transformPenHolder;
     [SerializeField] private BlocksContainer _blocksContainer;
     [SerializeField] private SequentialSpawner _sequentialSpawner;
@@ -13,45 +14,64 @@ public class Activator : MonoBehaviour
 
     private float _delay;
     private float _duration;
-    private bool _isProcessing;
-    private bool _isAccelerated;
-    private int _remainingPixels;
-    private int _totalCountPixel;
     private float _transitionReducing;
+
+    private bool _isProcessing;
+    private int _totalCountPixel;
+
     private Voiceover _voiceover;
-    private WaitForSeconds _forSeconds;
+    private WaitForSeconds _delayWait;
     private IColorPrecision _colorPrecision;
+
     private FragmentQueueProcessor _queueProcessor;
+    private PuzzleProgressTracker _progressTracker;
+    private FillSpeedController _speedController;
 
     public event Action OnPuzzleComplete;
+    public event Action<float> OnApproach;
+    public event Action<Color> ColorHasChanged;
 
     private void Awake()
     {
-        _delay = 2;
+        _delay = 3f;
         _duration = 0.3f;
-        _transitionReducing = 0.25f;
+        _transitionReducing = 0.295f;
+        _delayWait = new WaitForSeconds(_delay);
 
-        _forSeconds = new WaitForSeconds(_delay);
         _voiceover = GetComponent<Voiceover>();
+        _colorPrecision = new ColorPrecision();
+
+        _progressTracker = new PuzzleProgressTracker();
+        _speedController = new FillSpeedController();
+
         IMover mover = GetComponent<IMover>();
-        IBlocksContainer blocksContainer = _blocksContainer;
         IFragmentAnimator animator = GetComponent<IFragmentAnimator>();
 
-        _colorPrecision = new ColorPrecision();
-        _queueProcessor = new FragmentQueueProcessor(_voiceover, _pixelActivation, mover, animator, blocksContainer);
-
-        _queueProcessor.OnFragmentActivated += HandleFragmentActivated;
+        _queueProcessor = new FragmentQueueProcessor(
+            _voiceover,
+            _pixelSound,
+            mover,
+            animator,
+            _blocksContainer
+        );
     }
 
     private void OnEnable()
     {
-        _queueProcessor.OnIncreaseSpeed += SpeedFillingProcess;
+        _queueProcessor.ColorHasChanged += ColorHasChanged;
+        _queueProcessor.OnIncreaseSpeed += OnSpeedIncreaseRequested;
+        _queueProcessor.OnFragmentActivated += _progressTracker.OnFragmentActivated;
+
+        _progressTracker.PuzzleCompleted += OnPuzzleFinished;
     }
 
     private void OnDisable()
     {
-        _queueProcessor.OnIncreaseSpeed -= SpeedFillingProcess;
-        _queueProcessor.OnFragmentActivated -= HandleFragmentActivated;
+        _queueProcessor.ColorHasChanged -= ColorHasChanged;
+        _queueProcessor.OnIncreaseSpeed -= OnSpeedIncreaseRequested;
+        _queueProcessor.OnFragmentActivated -= _progressTracker.OnFragmentActivated;
+
+        _progressTracker.PuzzleCompleted -= OnPuzzleFinished;
     }
 
     private void OnDestroy()
@@ -61,18 +81,16 @@ public class Activator : MonoBehaviour
 
     public void EnqueueFragments(Color color)
     {
-        if (_textureInitializer == null) return;
+        if (_textureInitializer == null)
+            return;
 
-        if (_totalCountPixel == 0)
-        {
-            _totalCountPixel = _textureInitializer.TotalCount;
-            _remainingPixels = _totalCountPixel;
-        }
+        InitProgressIfNeeded();
 
-        var fragments = _textureInitializer.GetFragmentsByColor(_colorPrecision.Reduce(color));
+        var fragments = _textureInitializer.GetFragmentsByColor(
+            _colorPrecision.Reduce(color)
+        );
 
         _queueProcessor.EnqueueFragments(fragments);
-        _sequentialSpawner.SpawnObject(color);
 
         if (_isProcessing == false)
         {
@@ -80,45 +98,47 @@ public class Activator : MonoBehaviour
         }
     }
 
+    private void InitProgressIfNeeded()
+    {
+        if (_totalCountPixel > 0)
+            return;
+
+        _totalCountPixel = _textureInitializer.TotalCount;
+        _progressTracker.Init(_totalCountPixel);
+    }
+
     private IEnumerator ProcessingRoutine()
     {
         _isProcessing = true;
-       
-        yield return _queueProcessor.ProcessQueueRoutine(_transformPenHolder.position, _duration, _transitionReducing);
+
+        yield return _queueProcessor.ProcessQueueRoutine(
+            _transformPenHolder.position,
+            _duration,
+            _transitionReducing
+        );
 
         _isProcessing = false;
     }
 
-    private void HandleFragmentActivated()
+    private void OnSpeedIncreaseRequested(float remainingTime)
     {
-        _remainingPixels--;
-        CheckPuzzleComplete();
-        _sequentialSpawner.Reduce();
+        StartCoroutine(SpeedRoutine(remainingTime));
     }
 
-    private void CheckPuzzleComplete()
+    private IEnumerator SpeedRoutine(float remainingTime)
     {
-        if (_remainingPixels <= 0)
-        {
-            _voiceover.Play(_winn);
-            OnPuzzleComplete?.Invoke();
-        }
+        yield return _delayWait;
+
+        _speedController.TryAccelerate(
+            remainingTime,
+            OnApproach,
+            _queueProcessor.SpeedUpMovement
+        );
     }
 
-    private void SpeedFillingProcess()
+    private void OnPuzzleFinished()
     {
-        if (_isAccelerated == false)
-        {
-            _isAccelerated = true;
-
-            StartCoroutine(Wait());
-        }
-    }
-
-    private IEnumerator Wait()
-    {
-        yield return _forSeconds;
-
-        _queueProcessor.SpeedUpMovement();
+        _voiceover.Play(_winn);
+        OnPuzzleComplete?.Invoke();
     }
 }

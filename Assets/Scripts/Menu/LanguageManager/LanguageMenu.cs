@@ -7,22 +7,18 @@ using YG;
 [RequireComponent(typeof(Image))]
 public class LanguageMenu : MonoBehaviour
 {
-    [SerializeField] private LanguageBar _languageBar;
-    [SerializeField] private Flag _buttonFlagImage;
     [SerializeField] private GameObject _choice;
-    [SerializeField] private ButtonAnimator _animator;
     [SerializeField] private ButtonSoundHandler _buttonSound;
     [SerializeField] private AudioClip _clickSound;
 
     private Button _button;
-    private Image _image;
     private Vector2 _positionOnFlag;
+    private LanguageBar _languageBar;
 
     private void Awake()
     {
         _button = GetComponentInChildren<Button>();
-
-        _image = _buttonFlagImage.GetComponent<Image>();
+        _languageBar = GetComponent<LanguageBar>();
 
         if (IsValidState() == false)
         {
@@ -31,7 +27,7 @@ public class LanguageMenu : MonoBehaviour
 
         SetDefaltPositionFlag();
 
-        _languageBar.gameObject.SetActive(false);
+        OnLanguageChanged(YG2.lang);
     }
 
     private void SetDefaltPositionFlag()
@@ -73,7 +69,7 @@ public class LanguageMenu : MonoBehaviour
 
     private bool IsValidState()
     {
-        return _buttonFlagImage != null && _languageBar != null && _choice != null;
+        return _languageBar != null && _choice != null;
     }
 
     private void ToggleLanguagePanel(AudioClip audioClip)
@@ -81,7 +77,6 @@ public class LanguageMenu : MonoBehaviour
         _buttonSound.PlayButtonSound(audioClip);
 
         TurnOff();
-        OpenLanguageBar();
     }
 
     private void ChangeLanguage(string langCode)
@@ -92,30 +87,15 @@ public class LanguageMenu : MonoBehaviour
         }
 
         TurnOn();
-        CloseLanguageBar();
-    }
-
-    private void CloseLanguageBar()
-    {
-        _animator.TurnOff();
-        _languageBar.TurnOff();
-    }
-
-    private void OpenLanguageBar()
-    {
-        _animator.TurnOn();
-        _languageBar.TurnOn();
     }
 
     private void TurnOff()
     {
         _buttonSound.PlayButtonSound(_clickSound);
-        gameObject.SetActive(false);
     }
     private void TurnOn()
     {
         _buttonSound.PlayButtonSound(_clickSound);
-        gameObject.SetActive(true);
     }
 
     private void OnLanguageChanged(string language)
@@ -126,7 +106,6 @@ public class LanguageMenu : MonoBehaviour
     private void ApplyLanguageSelection(Button targetButton)
     {
         MoveChoiceToButton(targetButton);
-        UpdateSelectionVisual(targetButton);
     }
 
     private Button FindButtonForLanguage(string language)
@@ -141,13 +120,5 @@ public class LanguageMenu : MonoBehaviour
     {
         _choice.transform.SetParent(targetButton.transform);
         _choice.transform.localPosition = _positionOnFlag;
-    }
-
-    private void UpdateSelectionVisual(Button targetButton)
-    {
-        if (targetButton.TryGetComponent<Image>(out var buttonImage))
-        {
-            _image.sprite = buttonImage.sprite;
-        }
     }
 }

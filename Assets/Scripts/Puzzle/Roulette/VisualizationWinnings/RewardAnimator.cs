@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 public class RewardAnimator : MonoBehaviour
 {
     [SerializeField] private GameObject _spritePrefab;
-    [SerializeField] private Transform _targetTransform;
+    [SerializeField] private Rewards _rewards;
     [SerializeField] private CoinWallet _coinWallet;
     [SerializeField] private CrystalWallet _crystalWallet;
     [SerializeField] private float _explosionRadius;
@@ -35,6 +36,7 @@ public class RewardAnimator : MonoBehaviour
     public void ActivateAtPosition(Currency item)
     {
         int particleCount = GetNumberParticles(item);
+
         _voiceover.Play(_audioClip);
 
         for (int i = 0; i < particleCount; i++)
@@ -42,12 +44,7 @@ public class RewardAnimator : MonoBehaviour
             CreateParticle(item);
         }
         
-        HandleParticleComplete(item, GetDuration());
-    }
-
-    private float GetDuration()
-    {
-        return _duration + _moveToTargetDuration;
+        HandleParticleComplete(item);
     }
 
     private int GetNumberParticles(Currency item)
@@ -72,7 +69,7 @@ public class RewardAnimator : MonoBehaviour
         
         anim.Initialize(
             randomPosition: CalculateRandomPosition(),
-            targetPosition: _targetTransform.position,
+            targetPosition: _rewards.transform.position,
             settings: GetParticleAnimation());
 
 
@@ -89,15 +86,21 @@ public class RewardAnimator : MonoBehaviour
                 firstPhaseRatio: _firstPhaseRatio);
     }
 
-    private void HandleParticleComplete(Currency item, float duration)
+    private void HandleParticleComplete(Currency item)
+    {
+        _rewards.Appoint(item, GetAward(item));
+    }
+
+    private int GetAward(Currency item)
     {
         if (item is Crystal)
         {
-            _crystalWallet.AddFunds(item.Value, duration);
-            return;
+            return item.Value;
         }
-
-        _coinWallet.AddFunds(item.Value * item.Winn, duration);
+        else
+        {
+            return item.Value * item.Winn * YG2.saves.CountStars;
+        }
     }
 
     private Vector3 CalculateRandomPosition()

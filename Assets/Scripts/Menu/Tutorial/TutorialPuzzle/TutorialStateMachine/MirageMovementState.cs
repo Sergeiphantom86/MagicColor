@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEngine;
 
 public class MirageMovementState : TutorialState
 {
@@ -7,10 +8,7 @@ public class MirageMovementState : TutorialState
 
     public override void Enter()
     {
-        Context.Visualizer.gameObject.SetActive(false);
-        Context.Mirage.gameObject.SetActive(true);
-
-        Context.Mirage.transform.position = Context.HandMover.transform.position;
+        Context.Visualizer.TurnOff();
 
         Context.AdjustPositions(
            miragePosition: Context.HandMover.transform.position,
@@ -18,26 +16,30 @@ public class MirageMovementState : TutorialState
        );
 
         Context.HandMover.EnableMoveAnimationZ();
-        Context.Mirage.EnableMoveAnimationZ();
-
-        Context.Mirage.OnMovement += OnMirageMovement;
-        Context.Mirage.OnCompleted += OnMirageCompleted;
+        Context.GridDragMovement.Moved += OnMirageMovement;
+        Context.CurrentBlock.OnDestroyed += OnMirageCompleted;
     }
 
     public override void Update() { }
 
     public override void Exit()
     {
-        Context.Mirage.OnMovement -= OnMirageMovement;
-        Context.Mirage.OnCompleted -= OnMirageCompleted;
+        Context.GridDragMovement.Moved -= OnMirageMovement;
+        Context.CurrentBlock.OnDestroyed -= OnMirageCompleted;
+    }
+
+    private void Stop()
+    {
+        StateMachine.StartCoroutine(WaitFirst());
     }
 
     private void OnMirageMovement()
     {
-        StateMachine.StartCoroutine(ShowHintsAndContinue());
+        Context.Hints.TurnOn(true);
+        Context.HandMover.TurnOff();
     }
 
-    private void OnMirageCompleted()
+    private void OnMirageCompleted(Block block)
     {
         StateMachine.ChangeState(new CompletionState(StateMachine, Context));
     }
@@ -45,14 +47,23 @@ public class MirageMovementState : TutorialState
     private IEnumerator ShowHintsAndContinue()
     {
         Context.Hints.TurnOn(true);
+        Context.HandMover.TurnOff();
 
         yield return Context.WaitForSeconds;
         yield return Context.WaitForSeconds;
         yield return Context.WaitForSeconds;
 
-        Context.Hints.gameObject.SetActive(false);
+        //Context.Hints.TurnOn(false);
+        //Context.Mirage.EnableMoveAnimationX();
+    }
 
-        Context.HandMover.EnableMoveAnimationX();
-        Context.Mirage.EnableMoveAnimationX();
+    private IEnumerator WaitFirst()
+    {
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
+        
+        //Context.Mirage.Stop();
+        Context.HandMover.Stop();
     }
 }

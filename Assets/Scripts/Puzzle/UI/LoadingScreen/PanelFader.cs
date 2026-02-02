@@ -11,8 +11,6 @@ public class PanelFader : MonoBehaviour
     private Tween _currentTween;
     private float _blackout;
 
-    public float FadeDuration => _fadeDuration;
-
     private void Awake()
     {
         _canvasGroup = GetComponent<CanvasGroup>();

@@ -1,9 +1,9 @@
+﻿using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Grid))]
 public class GridSystem : MonoBehaviour
 {
-    [SerializeField] private BlocksContainer _blocksContainer;
     public static GridSystem Instance { get; private set; }
 
     [SerializeField] private int _gridSizeX;
@@ -18,58 +18,117 @@ public class GridSystem : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            _unityGrid = GetComponent<Grid>();
-        }
-        else
+        if (Instance != null)
         {
             Destroy(gameObject);
+            return;
         }
 
-        _grid = new GameObject[_gridSizeX, _gridSizeY];
+        Instance = this;
+
+        _unityGrid = GetComponent<Grid>();
     }
 
-    public Vector2Int WorldToGridPosition(Vector3 worldPosition)
+    public void SetGridSize(int gridSizeX, int gridSizeY)
     {
-        Vector3Int cellPos = _unityGrid.WorldToCell(worldPosition);
-        return new Vector2Int(cellPos.x, cellPos.y);
+        _gridSizeX = gridSizeX;
+        _gridSizeY = gridSizeY;
+        _grid = new GameObject[_gridSizeX, _gridSizeY];
     }
 
     public Vector3 GridToWorldPosition(Vector2Int gridPosition)
     {
-        return _unityGrid.GetCellCenterWorld(new Vector3Int(gridPosition.x, gridPosition.y, 0));
+        return _unityGrid.GetCellCenterWorld(
+            new Vector3Int(gridPosition.x, gridPosition.y, 0)
+        );
     }
 
-    public bool IsCellEmpty(Vector2Int gridPosition)
+    public bool IsValidGridPosition(Vector2Int pos)
     {
-        return IsValidGridPosition(gridPosition) && _grid[gridPosition.x, gridPosition.y] == null;
+        return pos.x >= 0 && pos.y >= 0 &&
+               pos.x < _gridSizeX &&
+               pos.y < _gridSizeY;
     }
 
-    public void UpdateCell(Vector2Int gridPosition, GameObject block)
+    public Vector2Int GetOriginFromCenter(Vector2Int center, Vector2Int size)
     {
-        if (IsValidGridPosition(gridPosition))
+        Vector2Int offset = GetCenterToOriginOffset(size);
+        return center - offset;
+    }
+
+    private Vector2Int GetCenterToOriginOffset(Vector2Int size)
+    {
+        return new Vector2Int(
+            GetHalfSize(size.x),
+            GetHalfSize(size.y)
+        );
+    }
+
+    private int GetHalfSize(int size)
+    {
+        return Mathf.FloorToInt((size - 1) / 2f);
+    }
+
+
+    public bool CanPlaceBlock(Vector2Int origin, Vector2Int size)
+    {
+        return ForEachCell(origin, size, pos =>
+            IsValidGridPosition(pos) && _grid[pos.x, pos.y] == null
+        );
+    }
+
+    public void PlaceBlock(Vector2Int origin, Block block)
+    {
+        ForEachCell(origin, block.SizeInCells, pos =>
         {
-            Block gridBlock = block.GetComponent<Block>();
+            if (IsValidGridPosition(pos) == false)
+                return false;
 
-            gridBlock.SetGridPosition(gridPosition);
+            _grid[pos.x, pos.y] = block.gameObject;
+           
+            return true;
+        });
 
-            _grid[gridPosition.x, gridPosition.y] = block;
+        block.SetGridPosition(origin);
+    }
+
+    public void ClearBlock(Block block)
+    {
+        Vector2Int origin = block.GridPosition;
+
+        ForEachCell(origin, block.SizeInCells, pos => 
+        {
+            if (IsValidGridPosition(pos))
+                _grid[pos.x, pos.y] = null;
+            return true;
+        });
+    }
+
+    private bool ForEachCell(Vector2Int origin, Vector2Int size, Func<Vector2Int, bool> check)
+    {
+
+        for (int i = 0; i < GetTotalCells(size); i++)
+        {
+            if (check(GetPosition(origin, size, i)) == false)
+                return false;
         }
+
+        return true;
     }
 
-    public void ClearCell(Vector2Int gridPosition)
+    private int GetTotalCells(Vector2Int size)
     {
-        if (IsValidGridPosition(gridPosition))
-            _grid[gridPosition.x, gridPosition.y] = null;
+        return size.x * size.y;
     }
 
-    public bool IsValidGridPosition(Vector2Int gridPosition)
+    private Vector2Int GetPosition(Vector2Int origin, Vector2Int size, int index)
     {
-        return gridPosition.x >= 0 &&
-               gridPosition.x < _gridSizeX &&
-               gridPosition.y >= 0 &&
-               gridPosition.y < _gridSizeY;
+        return origin + new Vector2Int(GetCellX(index, size.x), GetCellY(index, size.y));
     }
+
+    private int GetCellX(int index, int width) => 
+        index % width;
+
+    private int GetCellY(int index, int width) => 
+        index / width;
 }

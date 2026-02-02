@@ -15,17 +15,17 @@ public abstract class MenuButtonBase : IMenuButton
         if (handlerButtonWindowInteraction == null) 
             throw new ArgumentNullException(nameof(handlerButtonWindowInteraction));
 
-        _soundHandler = buttonSound ?? throw new ArgumentNullException(nameof(buttonSound));
-        _audioClip = audioClip ?? throw new ArgumentNullException(nameof(audioClip));
+        _soundHandler = buttonSound != null ? buttonSound : throw new ArgumentNullException(nameof(buttonSound));
+        _audioClip = audioClip != null ? audioClip : throw new ArgumentNullException(nameof(audioClip));
 
         button.onClick.AddListener(() =>
-          Press(button.name, handlerButtonWindowInteraction, buttonSound, audioClip));
+          Press(button, handlerButtonWindowInteraction, buttonSound, audioClip));
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnButtonClicked);
     }
 
-    public virtual void Press(string name,
+    public virtual void Press(Button button,
        HandlerButtonWindowInteraction handlerButtonWindowInteraction,
        ButtonSoundHandler buttonSound, AudioClip audioClip){ }
 

@@ -35,6 +35,7 @@ public class StarIndicator : MonoBehaviour
         }
 
         _inactivePart.enabled = true;
+
         _star.SetActive(false);
     }
 
@@ -47,8 +48,11 @@ public class StarIndicator : MonoBehaviour
         }
 
         _currentTween?.Kill();
+
         _star.SetActive(true);
+
         _star.transform.localScale = Vector3.one * _minScale;
+
         _currentTween = _star.transform.DOScale(Vector3.one, _duration)
             .SetDelay(_delay)
             .SetEase(Ease.OutBack, overshoot: _overshoot);
@@ -60,11 +64,17 @@ public class StarIndicator : MonoBehaviour
 
         if(_inactivePart == null) return;
 
-        _inactivePart.enabled = true;
+        //_inactivePart.enabled = true;
 
         if (_star != null)
         {
-            _star.SetActive(false);
+            _currentTween?.Kill();
+ 
+            //_star.transform.localScale = Vector3.zero;
+
+            _currentTween = _star.transform.DOScale(Vector3.zero, _duration)
+                .SetDelay(_delay)
+                .SetEase(Ease.OutBack, overshoot: _overshoot);
         }
     }
 }

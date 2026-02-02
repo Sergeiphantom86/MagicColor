@@ -1,10 +1,10 @@
 using DG.Tweening;
-using System;
 using UnityEngine;
 
 public class HandMover : MonoBehaviour
 {
     [SerializeField] private Pivot _pivot;
+    //[SerializeField] private GridDragMovement _gridDragMovement;
 
     private Vector3 _startScale;
     private Vector3 _targetScale;
@@ -17,7 +17,7 @@ public class HandMover : MonoBehaviour
 
     public Pivot Pivot => _pivot;
 
-    public event Action OnDiscontinued;
+    //public event Action OnDiscontinued;
 
     private void Awake()
     {
@@ -36,16 +36,21 @@ public class HandMover : MonoBehaviour
         SetPosition(transform.position);
     }
 
+    private void OnEnable()
+    {
+        //_gridDragMovement.Moved += Stop;
+    }
+
     private void OnDisable()
     {
+        //_gridDragMovement.Moved -= Stop;
+
         Stop();
     }
 
     public void SetPosition(Vector3 position)
     {
-        //position.x -= 0.1f;
         position.y += 0.5f;
-        //position.z += 0f;
 
         transform.position = position;
     }
@@ -54,7 +59,7 @@ public class HandMover : MonoBehaviour
     {
         _sequence?.Kill();
         _sequence = DOTween.Sequence();
-
+        
         _sequence.Append(transform
             .DOScale(_targetScale, _duration)
             .SetEase(Ease.OutBack, _overshoot))
@@ -63,16 +68,16 @@ public class HandMover : MonoBehaviour
 
     public void EnableMoveAnimationZ()
     {
-        GetAnimationSequence(0, _distanceZ)
-            .OnComplete(() =>
-            OnDiscontinued?.Invoke()); ;
+        GetAnimationSequence(0, _distanceZ).
+           SetLoops(-1, LoopType.Restart);
     }
 
     public void EnableMoveAnimationX()
     {
         GetAnimationSequence(-_distanceX)
-            .OnComplete(() => 
-            OnDiscontinued?.Invoke());
+            .OnComplete(() => { }
+            //OnDiscontinued?.Invoke()
+            );
     }
 
     public void EnableLoopingAnimationZ()
@@ -92,9 +97,15 @@ public class HandMover : MonoBehaviour
         return _sequence;
     }
 
+    public void TurnOff()
+    {
+        gameObject.SetActive(false);
+    }
+
     public void Stop()
     {
         _sequence?.Kill();
+
         transform.localScale = Vector3.one * _startScale.x;
     }
 

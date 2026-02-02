@@ -5,8 +5,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Toggle))]
 public class ToggleBase : MonoBehaviour
 {
-    [SerializeField] private VolumeChanger _volumeChanger;
-
     private Toggle _toggle;
 
     public event Action<bool> OnDisabling;
