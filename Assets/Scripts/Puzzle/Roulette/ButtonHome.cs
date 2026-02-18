@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
 
 [RequireComponent(typeof(Voiceover), typeof(Button), typeof(MenuLoader))]
 public class ButtonHome : MonoBehaviour
@@ -17,6 +16,7 @@ public class ButtonHome : MonoBehaviour
     private Voiceover _voiceover;
     private MenuLoader _menuLoader;
     private Button _button;
+    private IProgressSaver _progressSaver;
 
     public Button Button => _button;
 
@@ -25,6 +25,7 @@ public class ButtonHome : MonoBehaviour
         _button = GetComponent<Button>();
         _voiceover = GetComponent<Voiceover>();
         _menuLoader = GetComponent<MenuLoader>();
+        _progressSaver = new ProgressSaver();
 
         if (_button == null)
         {
@@ -60,7 +61,7 @@ public class ButtonHome : MonoBehaviour
         {
             if (_buttonController.IsSpin == false)
             {
-                YG2.saves.SetCurrency(_coin, _ticket.FullReward);
+                _progressSaver.SetCurrency(_coin, _ticket.FullReward);
             }
         }
 
@@ -70,7 +71,7 @@ public class ButtonHome : MonoBehaviour
 
     private IEnumerator WaitForWindowClose(AudioClip clip, bool isOn, int duration, Action callback)
     {
-        _voiceover.Play(clip);
+        _voiceover.PlayOneShot(clip);
 
         yield return new WaitForSeconds(clip.length + duration);
 

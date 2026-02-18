@@ -1,11 +1,11 @@
 using DG.Tweening;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class FinalPicture : MonoBehaviour
 {
     [SerializeField] private float _moveYDuration;
     [SerializeField] private float _targetYPosition;
+    [SerializeField] private float _targetZPosition;
     [SerializeField] private float _scaleDuration;
     [SerializeField] private float _scaleMultiplier;
     [SerializeField] private Activator _activator;
@@ -16,16 +16,18 @@ public class FinalPicture : MonoBehaviour
     private Sequence _currentSequence;
     private Voiceover _voiceover;
     private ZoomChanger _zoomChanger;
+    private IActivatable _activatable;
 
     private void Awake()
     {
         _voiceover = GetComponent<Voiceover>();
         _zoomChanger = new ZoomChanger();
 
+        _activatable = _activator;
+
         if (_zoomChanger.IsMobileWithTallScreen() == false)
         {
             _scaleMultiplier = 0.5f;
-            _targetYPosition *= 2;
         }
 
         _targetScale = Vector3.one * _scaleMultiplier;
@@ -45,22 +47,24 @@ public class FinalPicture : MonoBehaviour
         StopCurrentAnimation();
     }
 
-    public void ZoomIn(float time)
+    private void ZoomIn(float time)
     {
         StopCurrentAnimation();
 
-        _voiceover.Play(_clip);
+        _voiceover.PlayOneShot(_clip);
 
         _currentSequence = DOTween.Sequence();
 
-        GetCreatedSequence(time).OnComplete(() =>
+        GetCreatedSequence(time)
+            .SetEase(Ease.InElastic)
+            .OnComplete(() =>
         {
-            _activator.gameObject.SetActive(false);
+            _activatable.Deactivate();
             _currentSequence = null;
         });
     }
 
-    public void Demonstrate()
+    private void Demonstrate()
     {
         StopCurrentAnimation();
 
@@ -75,6 +79,7 @@ public class FinalPicture : MonoBehaviour
     {
         _currentSequence
            .Join(transform.DOLocalMoveY(_targetYPosition, duration).SetEase(Ease.OutBack))
+           .Join(transform.DOLocalMoveZ(_targetZPosition, duration).SetEase(Ease.OutBack))
            .Join(transform.DOScale(_targetScale, duration).SetEase(Ease.OutBack));
 
         return _currentSequence;

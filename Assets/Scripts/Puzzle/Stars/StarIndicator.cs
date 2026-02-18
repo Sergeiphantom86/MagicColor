@@ -14,6 +14,8 @@ public class StarIndicator : MonoBehaviour
 
     private Tweener _currentTween;
 
+    public bool IsActive {  get; private set; }
+
     private void Awake()
     {
         _delay = 0.1f;
@@ -22,6 +24,7 @@ public class StarIndicator : MonoBehaviour
         _overshoot = 1.5f;
 
         _inactivePart = GetComponent<Image>();
+        IsActive = true;
     }
 
     private void Start()
@@ -49,7 +52,7 @@ public class StarIndicator : MonoBehaviour
 
         _currentTween?.Kill();
 
-        _star.SetActive(true);
+        _star.SetActive (true);
 
         _star.transform.localScale = Vector3.one * _minScale;
 
@@ -64,13 +67,10 @@ public class StarIndicator : MonoBehaviour
 
         if(_inactivePart == null) return;
 
-        //_inactivePart.enabled = true;
-
+        IsActive = false;
         if (_star != null)
         {
             _currentTween?.Kill();
- 
-            //_star.transform.localScale = Vector3.zero;
 
             _currentTween = _star.transform.DOScale(Vector3.zero, _duration)
                 .SetDelay(_delay)

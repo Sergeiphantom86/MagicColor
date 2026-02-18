@@ -13,14 +13,14 @@ public class WallsContainer : MonoBehaviour
 
     public Vector3 Position => _position;
 
-    public void InitializeWalls(IColorPrecision colorPrecision, Bag bag, Rotator rotator, HintKey hintKey, Lock @lock, EffectsHandler effectsHandler, ErrorPanel errorPanel, Activator activator, AudioClip audioClip)
+    public void InitializeWalls(IColorPrecision colorPrecision, BagKey bag, Rotator rotator, HintKey hintKey, Lock @lock, ErrorPanel errorPanel, Activator activator, AudioClip audioClip)
     {
         if (_walls == null)
             _walls = new List<WallEngine>();
         else
             _walls.Clear();
 
-        if (ValidateDependencies(colorPrecision, bag, rotator, hintKey, @lock, effectsHandler, errorPanel, activator) == false)
+        if (ValidateDependencies(colorPrecision, bag, rotator, hintKey, @lock, errorPanel, activator) == false)
             return;
 
         foreach (Transform child in transform)
@@ -28,7 +28,7 @@ public class WallsContainer : MonoBehaviour
             _wall = child.GetComponent<WallEngine>();
             if (_wall == null) continue;
 
-            if (_wall.Initialize(colorPrecision, bag, rotator, hintKey, @lock, effectsHandler, errorPanel, activator, audioClip) == false)
+            if (_wall.Initialize(colorPrecision, bag, rotator, hintKey, @lock, errorPanel, activator, audioClip) == false)
             {
                 Debug.LogError("WallEngine failed to initialize", _wall);
                 continue;
@@ -38,7 +38,7 @@ public class WallsContainer : MonoBehaviour
         }
     }
 
-    private bool ValidateDependencies(IColorPrecision colorPrecision, Bag bag, Rotator rotator, HintKey hintKey, Lock @lock, EffectsHandler effectsHandler, ErrorPanel errorPanel, Activator activator)
+    private bool ValidateDependencies(IColorPrecision colorPrecision, BagKey bag, Rotator rotator, HintKey hintKey, Lock @lock, ErrorPanel errorPanel, Activator activator)
     {
         if (colorPrecision == null)
             return LogNull(nameof(colorPrecision));
@@ -54,8 +54,6 @@ public class WallsContainer : MonoBehaviour
 
         if (@lock == null)
             return LogNull(nameof(@lock));
-        if (effectsHandler == null)
-            return LogNull(nameof(effectsHandler));
 
         if (errorPanel == null)
             return LogNull(nameof(errorPanel));

@@ -10,7 +10,7 @@ public class GridPositionHelper
         _gridSystem = gridSystem;
     }
 
-    public List<Vector2Int> GetAvailableCenters(Vector2Int blockSize)
+    public List<Vector2Int> GetAvailableCenters(Vector2Int blockSize,int marginFromBorder = 0)
     {
         List<Vector2Int> available = new();
 
@@ -19,19 +19,26 @@ public class GridPositionHelper
 
         Vector2Int offset = GetCenterOffset(blockSize);
 
-        int minX = offset.x;
-        int maxX = totalCellsX - (blockSize.x - offset.x) - 1;
-        int minY = offset.y;
-        int maxY = totalCellsY - (blockSize.y - offset.y) - 1;
+        int minX = offset.x + marginFromBorder;
+        int maxX = totalCellsX - (blockSize.x - offset.x) - 1 - marginFromBorder;
 
-        int total = (maxX - minX + 1) * (maxY - minY + 1);
+        int minY = offset.y + marginFromBorder;
+        int maxY = totalCellsY - (blockSize.y - offset.y) - 1 - marginFromBorder;
+
+        if (minX > maxX || minY > maxY)
+            return available;
+
+        int width = maxX - minX + 1;
+        int total = width * (maxY - minY + 1);
+
         for (int i = 0; i < total; i++)
         {
-            int x = minX + i % (maxX - minX + 1);
-            int y = minY + i / (maxX - minX + 1);
+            int x = minX + i % width;
+            int y = minY + i / width;
 
-            Vector2Int center = new (x, y);
-            Vector2Int origin = _gridSystem.GetOriginFromCenter(center, blockSize);
+            Vector2Int center = new(x, y);
+            Vector2Int origin =
+                _gridSystem.GetOriginFromCenter(center, blockSize);
 
             if (_gridSystem.CanPlaceBlock(origin, blockSize))
                 available.Add(center);
@@ -39,6 +46,7 @@ public class GridPositionHelper
 
         return available;
     }
+
 
     private Vector2Int GetCenterOffset(Vector2Int size)
     {

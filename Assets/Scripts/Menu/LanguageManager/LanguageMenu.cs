@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
 
 [RequireComponent(typeof(Image))]
 public class LanguageMenu : MonoBehaviour
@@ -14,11 +13,13 @@ public class LanguageMenu : MonoBehaviour
     private Button _button;
     private Vector2 _positionOnFlag;
     private LanguageBar _languageBar;
+    private IProgressSaver _progressSaver;
 
     private void Awake()
     {
         _button = GetComponentInChildren<Button>();
         _languageBar = GetComponent<LanguageBar>();
+        _progressSaver = new ProgressSaver();
 
         if (IsValidState() == false)
         {
@@ -27,7 +28,7 @@ public class LanguageMenu : MonoBehaviour
 
         SetDefaltPositionFlag();
 
-        OnLanguageChanged(YG2.lang);
+        OnLanguageChanged(_progressSaver.GetTranslationLanguage());
     }
 
     private void SetDefaltPositionFlag()
@@ -40,7 +41,7 @@ public class LanguageMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        YG2.onSwitchLang += OnLanguageChanged;
+        _progressSaver.SubscribeSwitchLang(OnLanguageChanged);
 
         if (_button == null) 
         {
@@ -55,7 +56,7 @@ public class LanguageMenu : MonoBehaviour
 
     private void OnDestroy()
     {
-        YG2.onSwitchLang -= OnLanguageChanged;
+        _progressSaver.UnsubscribeSwitchLang(OnLanguageChanged); 
     }
 
     private void ClickOnSelectionButton()
@@ -81,9 +82,9 @@ public class LanguageMenu : MonoBehaviour
 
     private void ChangeLanguage(string langCode)
     {
-        if (YG2.lang != langCode)
+        if (_progressSaver.GetTranslationLanguage() != langCode)
         {
-            YG2.SwitchLanguage(langCode);
+            _progressSaver.SwitchLanguage(langCode);
         }
 
         TurnOn();

@@ -8,7 +8,6 @@ public class UnifiedSwipeController : MonoBehaviour, IBeginDragHandler, IDragHan
     [SerializeField] private float _swipeThreshold = 50f;
     [SerializeField] private Tutorial _tutorial;
     [SerializeField] private AudioClip _swipeSound;
-    [SerializeField] private PageSlider _slider;
 
     private ICarousel _carousel;
     private ButtonSoundHandler _buttonSound;
@@ -54,11 +53,6 @@ public class UnifiedSwipeController : MonoBehaviour, IBeginDragHandler, IDragHan
         Vector2 delta = eventData.position - _startDragPosition;
 
         if (Mathf.Abs(delta.x) < 80f) return;
-
-        if (delta.x < 0)
-            _slider.Next();
-        else
-            _slider.Prev();
     }
 
     private bool ShouldBlockInput()

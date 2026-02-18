@@ -64,6 +64,16 @@ public class GridSystem : MonoBehaviour
         );
     }
 
+    public Vector3 GetWorldPosition(Vector2Int origin, Vector2Int size)
+    {
+        Vector2Int centerCell = new Vector2Int(
+            origin.x + (size.x - 1) / 2,
+            origin.y + (size.y - 1) / 2
+        );
+
+        return GridToWorldPosition(centerCell);
+    }
+
     private int GetHalfSize(int size)
     {
         return Mathf.FloorToInt((size - 1) / 2f);
@@ -77,26 +87,25 @@ public class GridSystem : MonoBehaviour
         );
     }
 
-    public void PlaceBlock(Vector2Int origin, Block block)
+    public void PlaceObject(Vector2Int origin, IGridOccupant occupant)
     {
-        ForEachCell(origin, block.SizeInCells, pos =>
+        ForEachCell(origin, occupant.SizeInCells, pos =>
         {
             if (IsValidGridPosition(pos) == false)
                 return false;
 
-            _grid[pos.x, pos.y] = block.gameObject;
-           
+            _grid[pos.x, pos.y] = occupant.GameObject;
             return true;
         });
 
-        block.SetGridPosition(origin);
+        occupant.SetGridPosition(origin);
     }
 
-    public void ClearBlock(Block block)
+    public void ClearCell(IGridOccupant occupant)
     {
-        Vector2Int origin = block.GridPosition;
+        Vector2Int origin = occupant.GridPosition;
 
-        ForEachCell(origin, block.SizeInCells, pos => 
+        ForEachCell(origin, occupant.SizeInCells, pos => 
         {
             if (IsValidGridPosition(pos))
                 _grid[pos.x, pos.y] = null;
@@ -123,12 +132,12 @@ public class GridSystem : MonoBehaviour
 
     private Vector2Int GetPosition(Vector2Int origin, Vector2Int size, int index)
     {
-        return origin + new Vector2Int(GetCellX(index, size.x), GetCellY(index, size.y));
+        return origin + new Vector2Int(
+            GetCellX(index, size.x),
+            GetCellY(index, size.x)
+        );
     }
 
-    private int GetCellX(int index, int width) => 
-        index % width;
-
-    private int GetCellY(int index, int width) => 
-        index / width;
+    private int GetCellX(int index, int width) => index % width;
+    private int GetCellY(int index, int width) => index / width;
 }

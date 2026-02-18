@@ -7,9 +7,12 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
 {
     [SerializeField] private TextureInitializer _textureInitializer;
     [SerializeField] private Repainter _repainter;
-    [SerializeField] private AudioClip _dragg;
-    [SerializeField] private AudioClip _taking;
-    [SerializeField] private AudioClip _throwOff;
+    [SerializeField] private AudioClip _soundDragg;
+    [SerializeField] private AudioClip _soundRaise;
+    [SerializeField] private AudioClip _soundDestruction;
+    [SerializeField] private Effecter _effectImpact;
+    [SerializeField] private Effecter _effectDestruct;
+    [SerializeField] private Effecter _effectSmock;
 
     private List<Block> _blocks;
     private int _initialBlocksCount;
@@ -46,6 +49,8 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     private void Register(Block block)
     {
         _blocks.Add(block);
+
+        block.Initializat(_effectImpact, _effectSmock, _effectDestruct, _soundDestruction, _soundDragg, _soundRaise);
     }
 
     private void CalculateStartTimeGame(Block block)

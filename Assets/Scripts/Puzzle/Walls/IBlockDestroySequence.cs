@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IBlockDestroySequence
 {
-    public void WaitStart(Block block, Color color, Wall wall);
+    public void WaitStart(IColorable colorable, Color color);
 }

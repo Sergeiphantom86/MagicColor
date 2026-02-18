@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Rewards : MonoBehaviour
 {
-    [SerializeField] private float _delay = 0.15f;
+    [SerializeField] private float _delay;
     [SerializeField] private bool _isImmediately;
 
     private WaitForSeconds _waitForSeconds;

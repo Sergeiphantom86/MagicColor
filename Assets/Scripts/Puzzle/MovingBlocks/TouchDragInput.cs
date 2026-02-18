@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(GridDragMovement), typeof(Magnifier), typeof(InputHandler))]
+[RequireComponent(typeof(GridDragMovement), typeof(Magnifier), typeof(IInputHandler))]
 [RequireComponent(typeof(IColorable), typeof(Voiceover))]
 public class TouchDragInput : MonoBehaviour, ITouchDragInput
 {
@@ -9,20 +9,21 @@ public class TouchDragInput : MonoBehaviour, ITouchDragInput
     private Magnifier _selectable;
     private IColorable _colorable;
     private GridDragMovement _dragMovement;
-    private InputHandler _inputHandler;
+    private IInputHandler _inputHandler;
     private Voiceover _voiceover;
 
     public bool IsSelected => _isSelected;
 
     public event Action<Vector2> OnTouchClick;
     public event Action<Vector2> OnTouchDrag;
+    public event Action OnDropped;
 
     private void Awake()
     {
         _colorable = GetComponent<IColorable>();
         _selectable = GetComponent<Magnifier>();
         _voiceover = GetComponent<Voiceover>();
-        _inputHandler = GetComponent<InputHandler>();
+        _inputHandler = GetComponent<IInputHandler>();
         _dragMovement = GetComponent<GridDragMovement>();
 
         if (_dragMovement == null)
@@ -84,6 +85,7 @@ public class TouchDragInput : MonoBehaviour, ITouchDragInput
             _isSelected = false;
             _selectable.Deselect();
             _colorable.Disable();
+            OnDropped?.Invoke();
         }
     }
 }

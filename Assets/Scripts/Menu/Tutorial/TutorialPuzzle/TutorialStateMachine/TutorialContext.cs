@@ -2,36 +2,68 @@ using UnityEngine;
 
 public class TutorialContext
 {
-    private readonly float _delay = 1f;
+    private readonly float _delay = 0.5f;
+    private readonly float _starShutdownDelay = 4;
+    private readonly float _delayDisablingUI = 7;
 
-    public Key Key { get; set; }
-    public Lock Lock { get; set; }
-    public Hints Hints { get; set; }
-    public Mirage Mirage { get; set; }
-    public Rotator Rotator { get; set; }
-    public Block CurrentBlock { get; set; }
-    public HandMover HandMover { get; set; }
-    public MenuLoader MenuLoader { get; set; }
-    public BlockSpawner Container { get; set; }
-    public bool IsAnimationChange { get; set; }
-    public WaitForSeconds WaitForSeconds { get; }
+    public Key Key { get; private set; }
+
+    public Lock Lock { get; private set; }
+
+    public Hints Hints { get; private set; }
+
+    public Timer Timer { get; private set; }
+
+    public Rotator Rotator { get; private set; }
+
     public WaitForSeconds WaitFirstStop { get; }
-    public TouchVisualizer Visualizer { get; set; }
-    public StateTutorial StateTutorial { get; set; }
-    public ITouchDragInput CurrentTouchInput { get; set; }
-    public GridDragMovement GridDragMovement { get; set; }
+
+    public WaitForSeconds WaitForSeconds { get; }
+
+    public WaitForSeconds WaitUIDisabled { get; }
+
+    public WaitForSeconds WaitStarTurnOff { get; }
+
+    public HandMover HandMover { get; private set; }
+
+    public BlockSpawner Container { get; private set; }
+
+    public TouchVisualizer Visualizer { get; private set; }
+
+    public StateTutorial StateTutorial { get; private set; }
+
+    public TutorialAbilities TutorialAbilities { get; private set; }
 
     public TutorialContext()
     {
         WaitForSeconds = new WaitForSeconds(_delay);
-        WaitFirstStop = new WaitForSeconds(_delay / 6);
+        WaitFirstStop = new WaitForSeconds(_delay / _delay * 2);
+        WaitStarTurnOff = new WaitForSeconds(_starShutdownDelay);
+        WaitUIDisabled = new WaitForSeconds(_delayDisablingUI);
+    }
+
+    public void InitBase(HandMover handMover, TouchVisualizer visualizer)
+    {
+        HandMover = handMover;
+        Visualizer = visualizer;
+    }
+
+    public void InitScene(Key key, Lock @lock, Hints hints, Timer timer, Rotator rotator, BlockSpawner container, StateTutorial stateTutorial , TutorialAbilities tutorialAbilities)
+    {
+        Key = key;
+        Lock = @lock;
+        Hints = hints;
+        Timer = timer;
+        Rotator = rotator;
+        Container = container;
+        StateTutorial = stateTutorial;
+        TutorialAbilities = tutorialAbilities;
     }
 
     public void AdjustPositions(Vector3? handPosition = null, Vector3? visualizerPosition = null, Vector3? miragePosition = null, float yOffset = 0f)
     {
-        SetObjectPosition(GetTransform(HandMover), handPosition, 0, yOffset - 0.2f, 0);
+        SetObjectPosition(GetTransform(HandMover), handPosition, 0, yOffset, 0);
         SetObjectPosition(GetTransform(Visualizer), visualizerPosition, 0, yOffset, 0);
-        SetObjectPosition(GetTransform(Mirage), miragePosition, 0, -yOffset - 0.2f, 0);
     }
 
     private Transform GetTransform(Component component)
@@ -43,15 +75,20 @@ public class TutorialContext
     {
         if (targetTransform != null && position.HasValue)
         {
-            targetTransform.position = CalculatePosition(position.Value, xOffset, yOffset, zOffset);
+            targetTransform.position = GetPosition(position.Value, xOffset, yOffset, zOffset);
         }
     }
 
-    private Vector3 CalculatePosition(Vector3 position, float xOffset, float yOffset, float zOffset)
+    private Vector3 GetPosition(Vector3 position, float xOffset, float yOffset, float zOffset)
     {
         position.x += xOffset;
         position.y += yOffset;
         position.z += zOffset;
         return position;
+    }
+
+    public void DebugS(string name)
+    {
+        Debug.Log(name);
     }
 }

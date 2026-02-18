@@ -1,87 +1,121 @@
-using System.Collections;
+using System.Linq;
 using UnityEngine;
 
-public class BlockTutorialState : TutorialState
+public class BlockTutorialState : TutorialStater
 {
-    private const int BLOCK_INDEX = 4;
+    private readonly TutorialStateMachine _stateMachine;
+    private readonly TutorialContext _context;
+    private readonly float _yOffset;
 
-    public BlockTutorialState(TutorialStateMachine stateMachine, TutorialContext context)
-        : base(stateMachine, context) { }
+    private StarsCounter _starsCounter;
+    private const int BLOCK_INDEX = 4;
+    private Block _block;
+    private ITouchDragInput _input;
+    private GridDragMovement _movement;
+    private bool _isAnimationChange;
+    private IProgressSaver _progressSaver;
+
+    public BlockTutorialState(TutorialStateMachine stateMachine, TutorialContext context, StarsCounter starsCounter) : base(stateMachine, context)
+    {
+        _stateMachine = stateMachine;
+        _context = context;
+        _yOffset = 0.5f;
+        _starsCounter = starsCounter;
+        _progressSaver = new ProgressSaver();
+        _progressSaver.SetTutorialBasics();
+    }
 
     public override void Enter()
     {
-        StateMachine.StartCoroutine(ShowHintsAndContinue());
-    }
+        if (_context == null)
+        {
+            Debug.LogError("MovementState: context is null");
+            return;
+        }
 
-    public override void Update() { }
+        _starsCounter.EnableOneStar();
+
+        ShowHintsAndContinue();
+    }
 
     public override void Exit()
     {
-        Context.CurrentTouchInput.OnTouchClick -= OnClick;
+        _input.OnTouchClick -= OnClick;
     }
 
     private void SetBlock(int index)
     {
-        if (Context.Container.SpawnedBlocks == null || index < 0 || index >= Context.Container.SpawnedBlocks.Count)
+        if (_context.Container.SpawnedBlocks == null || index < 0 || index >= _context.Container.SpawnedBlocks.Count)
         {
-            Debug.LogError($"Invalid block index: {index}");
+            Debug.LogError($"Invalid block index: {index} or SpawnedBlocks null");
             return;
         }
 
-        Block block = Context.Container.SpawnedBlocks[index];
+        _block = GetBlock();
 
-
-        Context.CurrentBlock = block;
-
-        if (block.TryGetComponent(out ITouchDragInput touchDragInput))
+        if (_block == null)
         {
-            Context.CurrentTouchInput = touchDragInput;
+            Debug.LogError("SpawnedBlocks[index] is null");
+            return;
         }
 
-        if (block.TryGetComponent(out GridDragMovement gridDragMovement))
+        if (_block.TryGetComponent(out ITouchDragInput input) == false)
         {
-            Context.GridDragMovement = gridDragMovement;
+            Debug.LogError("MovementState: _block missing ITouchDragInput");
+            return;
         }
+
+        if (_block.TryGetComponent(out GridDragMovement movement) == false)
+        {
+            Debug.LogError("MovementState: _block missing GridDragMovement");
+            return;
+        }
+
+        _input = input;
+        _movement = movement;
+    }
+
+    private Block GetBlock()
+    {
+        return _context.Container.SpawnedBlocks.FirstOrDefault(block =>
+        {
+            if (block.TryGetComponent<IColorable>(out var colorable))
+            {
+                return colorable.IsRepainted;
+            }
+
+            return false;
+        });
     }
 
     private void DisableUnnecessaryComponents()
     {
-        Context.Lock.gameObject.SetActive(false);
-        Context.Key.gameObject.SetActive(false);
+        _context.Lock.gameObject.SetActive(false);
+        _context.Key.gameObject.SetActive(false);
     }
 
     private void OnClick(Vector2 position)
     {
-        
-        if (Context.IsAnimationChange == false)
+        if (_isAnimationChange == false)
         {
-            Context.IsAnimationChange = true;
-            StateMachine.ChangeState(new MirageMovementState(StateMachine, Context));
+            _isAnimationChange = true;
+
+            _stateMachine.ChangeState(new MovementState(_stateMachine, _context, _block, _movement, _input));
         }
     }
 
-    private IEnumerator ShowHintsAndContinue()
+    private void ShowHintsAndContinue()
     {
-        yield return Context.WaitForSeconds;
-        yield return Context.WaitForSeconds;
-        yield return Context.WaitForSeconds;
-        yield return Context.WaitForSeconds;
-
-
         SetBlock(BLOCK_INDEX);
 
-        Context.Visualizer.gameObject.SetActive(true);
+        _context.Visualizer.gameObject.SetActive(true);
 
-        Context.AdjustPositions(
-          handPosition: Context.CurrentBlock.transform.position,
-          visualizerPosition: Context.CurrentBlock.transform.position,
-          yOffset: 0.5f
-      );
+        _context.AdjustPositions(_block.transform.position, _block.transform.position, yOffset: _yOffset);
 
-        Context.HandMover.EnableScaleAnimation();
+        _context.HandMover.EnableScaleAnimation();
 
         DisableUnnecessaryComponents();
 
-        Context.CurrentTouchInput.OnTouchClick += OnClick;
+        _input.OnTouchClick += OnClick;
     }
 }

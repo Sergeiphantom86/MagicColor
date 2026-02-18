@@ -9,4 +9,5 @@ public interface ITouchDragInput
 
     public event Action<Vector2> OnTouchClick;
     public event Action<Vector2> OnTouchDrag;
+    public event Action OnDropped;
 }

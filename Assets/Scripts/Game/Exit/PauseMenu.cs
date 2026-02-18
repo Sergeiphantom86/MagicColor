@@ -1,35 +1,50 @@
 using UnityEngine;
-using YG;
 
 public class PauseMenu : MonoBehaviour
 {
     private int _speedTimePassing;
+    private bool _isPaused;
+
+    public bool IsPaused => _isPaused;
 
     private void Awake()
     {
         _speedTimePassing = 1;
     }
 
-    public void ResumeGame()
+    private void Start()
     {
+        gameObject.SetActive(false);
+    }
+
+    public void Resume()
+    {
+        _isPaused = false; 
+
         SwitchTime(false, _speedTimePassing);
     }
 
-    public void PauseGame()
+    public void Stop()
     {
+        _isPaused = true;
+
         SwitchTime(true, _speedTimePassing - _speedTimePassing);
     }
 
-    public void LoadMenu()
+    public void Load(string sceneName)
     {
         SwitchTime(false, _speedTimePassing);
-        SceneLoader.Instance.ExitToMainMenu();
-        YG2.SaveProgress();
+
+        if (SceneLoader.Instance != null)
+        {
+            SceneLoader.Instance.LoadSceneWithSplash(sceneName);
+        }
     }
 
     private void SwitchTime(bool isOn, int speedTimePassing)
     {
         gameObject.SetActive(isOn);
+
         Time.timeScale = speedTimePassing;
     }
 }

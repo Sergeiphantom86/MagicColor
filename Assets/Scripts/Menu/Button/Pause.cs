@@ -6,7 +6,6 @@ public class Pause
     public void Configure(Button button, HandlerButtonWindowInteraction manager)
     {
         button.onClick.RemoveAllListeners();
-        //button.onClick.AddListener(() => manager.OnButtonClicked("Pause"));
         button.GetComponentInChildren<TMP_Text>().text = "Пауза";
     }
 }

@@ -8,22 +8,20 @@ public class TutorialStateMachine : MonoBehaviour
 
     private void Awake()
     {
-        _context = new TutorialContext();
-        InitializeContext();
-
+        _context = CreateContext();
         ChangeState(new InitializationState(this, _context));
     }
 
-    protected virtual void InitializeContext()
+    protected virtual TutorialContext CreateContext()
     {
-        _context.Mirage = GetComponentInChildren<Mirage>(true);
-        _context.HandMover = GetComponentInChildren<HandMover>(true);
-        _context.Visualizer = GetComponentInChildren<TouchVisualizer>(true);
-    }
+        var context = new TutorialContext();
 
-    private void Update()
-    {
-        _currentState?.Update();
+        context.InitBase(
+            handMover: GetComponentInChildren<HandMover>(true),
+            visualizer: GetComponentInChildren<TouchVisualizer>(true)
+        );
+
+        return context;
     }
 
     public void ChangeState(ITutorialState newState)
@@ -36,5 +34,10 @@ public class TutorialStateMachine : MonoBehaviour
     public new Coroutine StartCoroutine(IEnumerator routine)
     {
         return base.StartCoroutine(routine);
+    }
+
+    public void StopCurrentCoroutine(Coroutine routine)
+    {
+        StopCoroutine(routine);
     }
 }

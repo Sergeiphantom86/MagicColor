@@ -2,7 +2,7 @@ using DG.Tweening;
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Block))]
+[RequireComponent(typeof(Block), typeof(ITouchDragInput))]
 public class GridDragMovement : MonoBehaviour
 {
     [SerializeField] private float _moveDuration;
@@ -83,14 +83,14 @@ public class GridDragMovement : MonoBehaviour
         Vector2Int targetOrigin =
             _grid.GetOriginFromCenter(targetCenter, _block.SizeInCells);
 
-        _grid.ClearBlock(_block);
+        _grid.ClearCell(_block);
 
         if (_grid.CanPlaceBlock(targetOrigin, _block.SizeInCells) == false)
         {
             Vector2Int currentOrigin =
                 _grid.GetOriginFromCenter(_currentCenterCell, _block.SizeInCells);
 
-            _grid.PlaceBlock(currentOrigin, _block);
+            _grid.PlaceObject(currentOrigin, _block);
             _accumulatedDelta = Vector3.zero;
             return;
         }
@@ -107,7 +107,7 @@ public class GridDragMovement : MonoBehaviour
         Vector2Int origin =
             _grid.GetOriginFromCenter(targetCenter, _block.SizeInCells);
 
-        _grid.PlaceBlock(origin, _block);
+        _grid.PlaceObject(origin, _block);
 
         _moveTween = _transform.DOMove(GetWorldCenterFromOrigin(origin), _moveDuration).SetEase(Ease.OutQuad);
 
@@ -138,7 +138,7 @@ public class GridDragMovement : MonoBehaviour
     private Vector3 ScreenToWorld(Vector3 screenPos)
     {
         Ray ray = _camera.ScreenPointToRay(screenPos);
-        Plane plane = new Plane(Vector3.up, _transform.position);
+        Plane plane = new(Vector3.up, _transform.position);
 
         return plane.Raycast(ray, out float dist)
             ? ray.GetPoint(dist)

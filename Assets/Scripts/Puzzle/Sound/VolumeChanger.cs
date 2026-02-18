@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
 
 [RequireComponent(typeof(Slider))]
 public class VolumeChanger: MonoBehaviour
 {
+    private IProgressSaver _progressSaver;
     private ToggleBase _toggleBase;
     private Slider _volumeSlider;
     private float _temporaryVolume;
@@ -15,6 +15,7 @@ public class VolumeChanger: MonoBehaviour
 
     private void Awake()
     {
+        _progressSaver = new ProgressSaver();
         _volumeSlider = GetComponent<Slider>();
         _toggleBase = GetComponentInChildren<ToggleBase>();
 
@@ -32,11 +33,11 @@ public class VolumeChanger: MonoBehaviour
 
         if (this is MusicVolumeController)
         {
-            _volumeSlider.value = YG2.saves.MusicVolume;
+            _volumeSlider.value = _progressSaver.Saves.MusicVolume;
         }
         else
         {
-            _volumeSlider.value = YG2.saves.SoundVolume;
+            _volumeSlider.value = _progressSaver.Saves.SoundVolume;
         }
     }
 
@@ -61,7 +62,7 @@ public class VolumeChanger: MonoBehaviour
         
         OnVolumeChange?.Invoke(this, volume);
 
-        YG2.saves.SetVolume(this, volume);
+        _progressSaver.SetVolume(this, volume);
     }
 
     public void ToggleSoundsMute(bool isOn)

@@ -1,11 +1,11 @@
 using UnityEngine;
-using YG;
 
 public class Ticket : MonoBehaviour
 {
     private TextAnimator _textAnimator;
     private Currency _currency;
     private long _fullReward;
+    private IProgressSaver _progressSaver;
 
     public long FullReward => _fullReward;
 
@@ -13,6 +13,7 @@ public class Ticket : MonoBehaviour
     {
         _currency = GetComponent<Currency>();
         _textAnimator = GetComponentInChildren<TextAnimator>();
+        _progressSaver = new ProgressSaver();
 
         if (_currency == null)
         {
@@ -32,7 +33,7 @@ public class Ticket : MonoBehaviour
 
     private void Show()
     {
-        _fullReward = _currency.Winn * YG2.saves.CountStars;
+        _fullReward = _progressSaver.Saves.Reward * _progressSaver.Saves.CountStars;
 
         _textAnimator.AnimateToValue(_fullReward);
     }

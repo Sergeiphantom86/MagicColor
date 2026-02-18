@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
 
 [RequireComponent(typeof(ButtonKeeper), typeof(ButtonSoundHandler), typeof(WindowInitializer))]
 public class HandlerButtonWindowInteraction : MonoBehaviour
@@ -14,6 +13,7 @@ public class HandlerButtonWindowInteraction : MonoBehaviour
     private ButtonSoundHandler _buttonSoundHandler;
     private WindowInitializer _windowInitializer;
     private ICarousel _carousel;
+    private IProgressSaver _progressSaver;
 
     private void Awake()
     {
@@ -21,10 +21,11 @@ public class HandlerButtonWindowInteraction : MonoBehaviour
         _buttonKeeper = GetComponent<ButtonKeeper>();
         _windowInitializer = GetComponent<WindowInitializer>();
         _carousel = GetComponent<ICarousel>();
+        _progressSaver = new ProgressSaver();
 
         _windowInitializer.Initialize();
 
-        YG2.StartInit();
+        _progressSaver.StartInitYG2();
     }
 
     private void Start()

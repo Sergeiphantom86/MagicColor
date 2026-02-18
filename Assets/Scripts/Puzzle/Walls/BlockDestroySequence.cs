@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class BlockDestroySequence : MonoBehaviour, IBlockDestroySequence
 {
-    private EffectsHandler _effects;
     private Activator _activator;
-
+    private IPointer _pointer;
     private WaitForSeconds _waitShutdown;
     private WaitForSeconds _waitActivat;
     private float _delayShutdown;
@@ -14,10 +13,10 @@ public class BlockDestroySequence : MonoBehaviour, IBlockDestroySequence
 
     public event Action<Block> IsTouched;
 
-    public void Initialize(EffectsHandler effects, Activator activator)
+    public void Initialize(Activator activator)
     {
-        _effects = effects;
         _activator = activator;
+        _pointer = GetComponent<IPointer>();
     }
 
     private void Awake()
@@ -28,21 +27,28 @@ public class BlockDestroySequence : MonoBehaviour, IBlockDestroySequence
         _waitActivat = new WaitForSeconds(_delayActivat);
     }
 
-    public void WaitStart(Block block, Color color, Wall wall)
+    public void WaitStart(IColorable colorable, Color color)
     {
+        if (colorable is not Block block)
+            return;
+
+        colorable.SetRenderQueue();
+
         IsTouched?.Invoke(block);
 
-        StartCoroutine(Run(block, color, wall));
+        StartCoroutine(Run(colorable, block, color));
     }
 
-    private IEnumerator Run(Block block, Color color, Wall wall)
+    private IEnumerator Run(IColorable colorable, Block block, Color color)
     {
         yield return _waitShutdown;
 
-        _effects.Stop();
-        block.Destroy(wall.MiddlePoint, wall.EndPoint);
+        colorable.ReturnRenderQueue();
+
+        block.Destroy(_pointer.MiddlePoint, _pointer.EndPoint);
 
         yield return _waitActivat;
+
         _activator.EnqueueFragments(color);
     }
 }

@@ -4,37 +4,35 @@ using UnityEngine;
 
 [RequireComponent(typeof(PathMover), typeof(ITouchDragInput))]
 [RequireComponent(typeof(Collider), typeof(Voiceover))]
-public class Block : ColorableObject, IDestroyable
+public class Block : ColorableObject, IDestroyable, IGridOccupant
 {
     [Header("Grid")]
     [SerializeField] private Vector2Int _sizeInCells;
 
-    [Header("Effects")]
-    [SerializeField] private Rotator _rotation;
-    [SerializeField] private Effecter _impactPool;
-    [SerializeField] private Effecter _destructionPool;
-    [SerializeField] private Effecter _smockPool;
-    [SerializeField] private AudioClip _audioClip;
-    [SerializeField] private AudioClip _dragging;
-    [SerializeField] private AudioClip _taking;
-
-    private float _delayDisablingRender;
-    private Vector2Int _gridPosition;
+    private Effecter _effectImpact;
+    private Effecter _effectDestruct;
+    private Effecter _effectSmock;
+    private AudioClip _soundDestruction;
+    private AudioClip _soundDragg;
+    private AudioClip _soundRaise;
     private Collider _collider;
     private Voiceover _voiceover;
+    private Magnifier _magnifier;
     private PathMover _pathMover;
     private InkSpawner _inkSpawner;
-    private ITouchDragInput _touchDragInput;
     private WaitForSeconds _waitForSeconds;
-    private CollisionHandler _collisionHandler;
     private GridDragMovement _gridDragMovement;
-    private Magnifier _magnifier;
+    private Vector2Int _gridPosition;
+    private ITouchDragInput _touchDragInput;
+    private float _delayDisablingRender;
     private bool _isDestroyed;
 
     public bool IsDestroyed => _isDestroyed;
 
     public Vector2Int SizeInCells => _sizeInCells;
     public Vector2Int GridPosition => _gridPosition;
+
+    public GameObject GameObject => gameObject;
 
     public event Action<Block> OnDestroyed;
     public event Action BlockSpawned;
@@ -48,7 +46,6 @@ public class Block : ColorableObject, IDestroyable
         _pathMover = GetComponent<PathMover>();
         _touchDragInput = GetComponent<ITouchDragInput>();
         _inkSpawner = GetComponentInChildren<InkSpawner>();
-        _collisionHandler = GetComponent<CollisionHandler>();
         _gridDragMovement = GetComponent<GridDragMovement>();
         _magnifier = GetComponent<Magnifier>();
         _collider.enabled = false;
@@ -57,7 +54,6 @@ public class Block : ColorableObject, IDestroyable
     private void OnEnable()
     {
         InitializeComponents();
-        _collisionHandler.OnEnter += PlaySound;
         _gridDragMovement.Moved += ShowEffectMovement;
         _magnifier.OnDropped += PlayFallingSound;
         _magnifier.OnRaised += PlayFallingSound;
@@ -65,10 +61,19 @@ public class Block : ColorableObject, IDestroyable
 
     private void OnDisable()
     {
-        _collisionHandler.OnEnter -= PlaySound;
         _gridDragMovement.Moved -= ShowEffectMovement;
         _magnifier.OnDropped -= PlayFallingSound;
         _magnifier.OnRaised -= PlayFallingSound;
+    }
+
+    public void Initializat(Effecter effectImpact, Effecter effectSmock, Effecter effectDestruct, AudioClip soundDestruction, AudioClip soundDragg, AudioClip soundRaise)
+    {
+        _effectImpact = effectImpact;
+        _effectDestruct = effectDestruct;
+        _effectSmock = effectSmock;
+        _soundDestruction = soundDestruction;
+        _soundDragg = soundDragg;
+        _soundRaise = soundRaise;
     }
 
     public void SetGridPosition(Vector2Int gridPosition)
@@ -84,13 +89,13 @@ public class Block : ColorableObject, IDestroyable
         _collider.enabled = false;
         _isDestroyed = true;
 
-        _impactPool.CraeteParticles(transform.position, Quaternion.identity, 30);
-        _impactPool.CreateEffect();
+        _effectImpact.CraeteParticles(transform.position, Quaternion.identity, 1);
+        _effectImpact.Create();
 
         _touchDragInput.ThrowOff();
         AssignOriginal();
 
-        _voiceover.Play(_audioClip);
+        _voiceover.PlayOneShot(_soundDestruction);
 
         _pathMover.Move(waypoint, endPoint, ExecuteDestruction);
     }
@@ -115,16 +120,14 @@ public class Block : ColorableObject, IDestroyable
 
     private void ExecuteDestruction()
     {
-        SetRender();
-
         OnDestroyed?.Invoke(this);
-        
+
         if (GridSystem.Instance != null)
         {
-            GridSystem.Instance.ClearBlock(this);
+            GridSystem.Instance.ClearCell(this);
         }
 
-        _destructionPool.CraeteParticles(transform.position, Quaternion.identity, 1);
+        _effectDestruct.CraeteParticles(transform.position, Quaternion.identity, 1);
 
         if (_inkSpawner == null)
         {
@@ -144,22 +147,14 @@ public class Block : ColorableObject, IDestroyable
         TurnOffRenderer();
     }
 
-    private void PlaySound(Collider collider)
-    {
-        if (collider.TryGetComponent(out WallsContainer wallsContainer))
-        {
-            _voiceover.Play(_audioClip);
-        }
-    }
-
     private void ShowEffectMovement()
     {
-        _voiceover.Play(_dragging);
-        _smockPool.CraeteParticles(transform.position, Quaternion.identity, 0.3f);
+        _voiceover.PlayOneShot(_soundDragg);
+        _effectSmock.CraeteParticles(transform.position, Quaternion.identity, 0.3f);
     }
 
     private void PlayFallingSound()
     {
-        _voiceover.Play(_taking);
+        _voiceover.PlayOneShot(_soundRaise);
     }
 }

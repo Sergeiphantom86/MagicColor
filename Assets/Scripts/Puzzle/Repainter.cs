@@ -141,7 +141,7 @@ public class Repainter : MonoBehaviour
 
         if (_blocks.Count == 0)
         {
-            Debug.Log("AssignOriginal");
+            Debug.LogError("AssignOriginal");
         }
 
         UpdateColors(colors);

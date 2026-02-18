@@ -4,6 +4,6 @@ public class PauseButton : ButtonMenu
     {
         base.PressButton();
 
-        PauseMenu.PauseGame();
+        PauseMenu.Stop();
     }
 }

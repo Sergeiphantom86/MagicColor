@@ -1,11 +1,12 @@
 using System;
-using YG;
 
 public class NumberFormatter
 {
     private readonly string[] _suffixesEN = { "", "K", "M", "B", "T", "Q" };
     private readonly string[] _suffixesRU = { "", "Ò", "Ì", "Ìð", "Ò", "Ê" };
     private readonly string[] _suffixesTR = { "", "B", "M", "Mr", "Tr", "Kn" };
+
+    private readonly IProgressSaver _progressSaver = new ProgressSaver();
 
     private const double ScalingFactor = 1000.0;
     private const int ScalingThreshold = 100000;
@@ -31,15 +32,12 @@ public class NumberFormatter
 
     private string[] GetSuffixesForCurrentLanguage()
     {
-        switch (YG2.lang)
+        return _progressSaver.GetTranslationLanguage() switch
         {
-            case "ru":
-                return _suffixesRU;
-            case "tr":
-                return _suffixesTR;
-            default:
-                return _suffixesEN;
-        }
+            "ru" => _suffixesRU,
+            "tr" => _suffixesTR,
+            _ => _suffixesEN,
+        };
     }
 
     private bool ShouldUseDirectFormatting(double absNumber)

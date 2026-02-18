@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3569318901766821196}
   - component: {fileID: 5539832859811840060}
+  - component: {fileID: 8633382928406994661}
   m_Layer: 0
   m_Name: AveragePuzzle
   m_TagString: Untagged
@@ -58,6 +59,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gridSize: {x: 26, y: 26}
   _position: {x: 0.7, y: 6, z: 0}
+--- !u!114 &8633382928406994661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4348131125566316469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a39bbffbaa6462c48b1d4414d2c45b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &511805392614297873
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66,6 +79,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3569318901766821196}
     m_Modifications:
+    - target: {fileID: 28651637893225061, guid: 49c6633663d02b246ae959989a54a1c8, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4124476385873063377, guid: 49c6633663d02b246ae959989a54a1c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.38
@@ -110,6 +127,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall 1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6704753100502266622, guid: 49c6633663d02b246ae959989a54a1c8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b9b1dabaf48fec6448be84bf5133fdae, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -268,6 +289,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3569318901766821196}
     m_Modifications:
+    - target: {fileID: 28651637893225061, guid: 49c6633663d02b246ae959989a54a1c8, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4124476385873063377, guid: 49c6633663d02b246ae959989a54a1c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.39
@@ -312,6 +337,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall 1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6704753100502266622, guid: 49c6633663d02b246ae959989a54a1c8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b9b1dabaf48fec6448be84bf5133fdae, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

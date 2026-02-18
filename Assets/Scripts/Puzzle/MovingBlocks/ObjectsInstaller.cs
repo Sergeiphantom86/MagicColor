@@ -1,26 +1,28 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using YG;
 
-[RequireComponent(typeof(Repainter))]
+[RequireComponent(typeof(Repainter), typeof(KeyInstaller), typeof(LockInstaller))]
 public class ObjectsInstaller : MonoBehaviour
 {
     [SerializeField] private Key _key;
     [SerializeField] private Lock _lock;
-    [SerializeField] private Bag _bag;
     [SerializeField] private Rotator _rotation;
     [SerializeField] private Canvas _transformParent;
 
-    private bool _isPlacedKey;
-    private bool _isPlacedLock;
-    private int _desiredBlockCount;
     private Repainter _repainter;
+    private KeyInstaller _keyInstaller;
+    private LockInstaller _lockInstaller;
+    private IProgressSaver _progressSaver;
+    private bool _isTutorial;
 
     private void Awake()
     {
-        _desiredBlockCount = 3;
         _repainter = GetComponent<Repainter>();
+        _keyInstaller = GetComponent<KeyInstaller>();
+        _lockInstaller = GetComponent<LockInstaller>();
+        _progressSaver = new ProgressSaver();
+
+        _isTutorial = _progressSaver.Saves.IsUnlockKey;
 
         if (_repainter == null)
         {
@@ -28,15 +30,8 @@ public class ObjectsInstaller : MonoBehaviour
             return;
         }
 
-        if (YG2.saves.IsTutorial == false)
-        {
-            _key.gameObject.SetActive(false);
-            _lock.gameObject.SetActive(false);
-            _bag.gameObject.SetActive(false);
-
-            _key = null;
-            _lock = null;
-        }
+        _keyInstaller.Initialized(_key, _isTutorial);
+        _lockInstaller.Initialized(_lock, _isTutorial);
     }
 
     private void OnEnable()
@@ -53,105 +48,15 @@ public class ObjectsInstaller : MonoBehaviour
 
     private void PlaceLockOnRepaintedWalls(List<IColorable> colorables)
     {
-        if (CanPlaceLock() == false) return;
+        if (_isTutorial == false) return;
 
-        var eligibleWall = colorables
-            .FirstOrDefault(colorable => IsEligibleWallForLock(colorable)) as Wall;
-
-        if (eligibleWall != null)
-        {
-            PlaceLockOnWall(eligibleWall);
-        }
+        _lockInstaller.TryPlaceLock(colorables);
     }
 
     private void PlaceKeyOnUnrepaintedBlock(List<IColorable> colorables)
     {
-        if (CanPlaceKey() == false) return;
+        if (_isTutorial == false) return;
 
-        var eligibleBlocks = FindEligibleBlocksForKey(colorables);
-
-        if (eligibleBlocks.Count > 0)
-        {
-            PlaceKeyOnRandomBlock(eligibleBlocks);
-        }
-    }
-
-    private bool CanPlaceKey()
-    {
-        return _key != null && _isPlacedKey == false;
-    }
-
-    private bool CanPlaceLock()
-    {
-        return _lock != null && _isPlacedLock == false;
-    }
-
-    private bool IsEligibleWallForLock(IColorable colorable)
-    {
-        return colorable is Wall wall && colorable.IsRepainted && wall.CenterFence != null;
-    }
-
-    private void PlaceLockOnWall(Wall wall)
-    {
-        if (_lock == null && _lock.IsUsed == false) return;
-
-        _lock.transform.position = wall.CenterFence.position;
-
-        AdjustLockRotation(wall);
-
-        wall.Block();
-
-        _isPlacedLock = true;
-
-        _lock.SetUsed(_isPlacedLock);
-
-    }
-
-    private void AdjustLockRotation(Wall wall)
-    {
-        Quaternion wallRotation = Quaternion.Euler(0f, wall.GetAngleY(), 0f);
-
-        Quaternion perpendicularRotation = wallRotation * Quaternion.Euler(0, 90f, 90);
-
-        Vector3 lockRotation = perpendicularRotation.eulerAngles;
-
-        _lock.SetAngle(lockRotation);
-    }
-
-    private List<Block> FindEligibleBlocksForKey(List<IColorable> colorables)
-    {
-        return PickRandomSubset(GetUnpaintedBlocks(colorables), _desiredBlockCount);
-    }
-
-    private List<Block> GetUnpaintedBlocks(List<IColorable> colorables)
-    {
-        return colorables.OfType<Block>()
-                         .Where(block => block.IsRepainted == false)
-                         .ToList();
-    }
-
-    private List<Block> PickRandomSubset(List<Block> blocks, int maxCount)
-    {
-        return blocks.Count <= maxCount ? blocks : GetRandomSelection(blocks, maxCount);
-    }
-
-    private List<Block> GetRandomSelection(List<Block> blocks, int count) =>
-        blocks.OrderBy(_ => Random.value).Take(count).ToList();
-
-    private void PlaceKeyOnRandomBlock(List<Block> eligibleBlocks)
-    {
-        _key.transform.position = GetSelectedBlock(eligibleBlocks).transform.position;
-
-        _isPlacedKey = true;
-    }
-
-    private Block GetSelectedBlock(List<Block> eligibleBlocks)
-    {
-        return eligibleBlocks[GetRandomIndex(eligibleBlocks.Count)];
-    }
-
-    private int GetRandomIndex(int quantity)
-    {
-        return Random.Range(0, quantity);
+        _keyInstaller.TryPlaceKey(colorables);
     }
 }

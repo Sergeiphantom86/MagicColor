@@ -3,7 +3,6 @@
 [RequireComponent(typeof(Wall), typeof(WallMovement))]
 public class WallEngine : MonoBehaviour, IWallInteractor
 {
-    private Wall _wall;
     private WallMovement _movement;
     private Rotator _rotation;
     private WallLayoutUpdater _layoutUpdater;
@@ -13,7 +12,6 @@ public class WallEngine : MonoBehaviour, IWallInteractor
 
     private void Awake()
     {
-        _wall = GetComponent<Wall>();
         _movement = GetComponent<WallMovement>();
         _layoutUpdater = GetComponent<WallLayoutUpdater>();
         _voiceover = GetComponent<Voiceover>();
@@ -21,93 +19,76 @@ public class WallEngine : MonoBehaviour, IWallInteractor
 
     private void OnDisable()
     {
-        _blockDestroySequence.IsTouched -= jcdc;
+        _blockDestroySequence.IsTouched -= Move;
 
 
         if (_rotation != null)
             _rotation.OnRotated -= _movement.CacheStartPosition;
     }
 
-    public bool Initialize(IColorPrecision colorPrecision, Bag bag, Rotator rotator, HintKey hintKey, Lock @lock, EffectsHandler effectsHandler, ErrorPanel errorPanel, Activator activator, AudioClip audioClip)
+    public bool Initialize(IColorPrecision colorPrecision, BagKey bag, Rotator rotator,
+        HintKey hintKey, Lock @lock,
+        ErrorPanel errorPanel, Activator activator, AudioClip audioClip)
     {
         if (ValidateDependencies(colorPrecision, bag, rotator, hintKey, @lock) == false)
             return false;
 
+        if (ValidateComponents(out ColorCollisionHandler collisionHandler,
+                                out WallInteractionController interactionController,
+                                out LockFeedbackService lockFeedback,
+                                out BlockDestroySequence blockDestroySequence) == false)
+            return false;
+
         _rotation = rotator;
-        _blockDestroySequence = GetComponent<BlockDestroySequence>();
-        LockFeedbackService lockFeedback = GetComponent<LockFeedbackService>();
-        ColorCollisionHandler collisionHandler = GetComponent<ColorCollisionHandler>();
-        WallInteractionController interactionController = GetComponent<WallInteractionController>();
 
-        if (collisionHandler == null)
-        {
-            Debug.LogError("WallEngine initialization failed: ColorCollisionHandler missing", this);
-            return false;
-        }
+        _blockDestroySequence = blockDestroySequence;
 
-        if (interactionController == null)
-        {
-            Debug.LogError("WallEngine initialization failed: WallInteractionController missing", this);
-            return false;
-        }
+        InitMovement();
 
-        if (_layoutUpdater == null)
-        {
-            Debug.LogError("WallEngine initialization failed: WallLayoutUpdater missing", this);
-            return false;
-        }
-
-        if (lockFeedback == null)
-        {
-            Debug.LogError("WallEngine initialization failed: LockFeedbackService missing", this);
-            return false;
-        }
-
-        if (_blockDestroySequence == null)
-        {
-            Debug.LogError("WallEngine initialization failed: BlockDestroySequence missing", this);
-            return false;
-        }
-
-        if (_movement != null)
-        {
-            _movement.CacheStartPosition();
-            _rotation.OnRotated += _movement.CacheStartPosition;
-        }
-
-        _layoutUpdater.Initialize(_rotation);
-        lockFeedback.InitializComponents(@lock, hintKey);
-        interactionController.Initialize(new BagUnlockPolicy(bag, 1), this);
-        collisionHandler.Initialize(colorPrecision, hintKey, errorPanel);
-        _blockDestroySequence.Initialize(effectsHandler, activator);
-
-        _blockDestroySequence.IsTouched += jcdc;
+        InitSystems(collisionHandler, interactionController, lockFeedback, colorPrecision, bag, hintKey, @lock, errorPanel, activator);
 
         _audioClip = audioClip;
-
-        return true; 
+        return true;
     }
-
-    private void jcdc(Block block)
-    {
-        PushMovement();
-    }
-
 
     public void PushMovement()
     {
         _movement.Push();
- 
+
         if (_voiceover != null && _audioClip != null)
-            _voiceover.Play(_audioClip);
+            _voiceover.PlayOneShot(_audioClip);
     }
 
-    public void Unlock()
+    private void Move(Block block)
     {
-        _wall.Unblock();
+        PushMovement();
     }
 
-    private bool ValidateDependencies(IColorPrecision colorPrecision, Bag bag, Rotator rotator, HintKey hintKey, Lock @lock)
+    private void InitSystems(ColorCollisionHandler collisionHandler, WallInteractionController interactionController, 
+        LockFeedbackService lockFeedback, IColorPrecision colorPrecision, BagKey bag, HintKey hintKey, 
+        Lock @lock, ErrorPanel errorPanel, Activator activator)
+    {
+        _layoutUpdater.Initialize(_rotation);
+
+        BagUnlockPolicy bagUnlockPolicy =  new(bag, 1);
+        lockFeedback.InitializComponents(@lock, hintKey);
+        interactionController.Initialize(bagUnlockPolicy, this);
+        collisionHandler.Initialize(colorPrecision, hintKey, errorPanel);
+
+        _blockDestroySequence.Initialize(activator);
+        _blockDestroySequence.IsTouched += Move;
+    }
+
+    private void InitMovement()
+    {
+        if (_movement == null)
+            return;
+
+        _movement.CacheStartPosition();
+        _rotation.OnRotated += _movement.CacheStartPosition;
+    }
+
+    private bool ValidateDependencies(IColorPrecision colorPrecision, BagKey bag, Rotator rotator, HintKey hintKey, Lock @lock)
     {
         if (colorPrecision == null)
             return LogNull(nameof(colorPrecision));
@@ -127,9 +108,40 @@ public class WallEngine : MonoBehaviour, IWallInteractor
         return true;
     }
 
+    private bool ValidateComponents(
+    out ColorCollisionHandler collisionHandler,
+    out WallInteractionController interactionController,
+    out LockFeedbackService lockFeedback,
+    out BlockDestroySequence blockDestroySequence)
+    {
+        collisionHandler = GetComponent<ColorCollisionHandler>();
+        interactionController = GetComponent<WallInteractionController>();
+        lockFeedback = GetComponent<LockFeedbackService>();
+        blockDestroySequence = GetComponent<BlockDestroySequence>();
+
+        if (collisionHandler == null)
+            return LogNull(nameof(ColorCollisionHandler));
+
+        if (interactionController == null)
+            return LogNull(nameof(WallInteractionController));
+
+        if (_layoutUpdater == null)
+            return LogNull(nameof(WallLayoutUpdater));
+
+        if (lockFeedback == null)
+            return LogNull(nameof(LockFeedbackService));
+
+        if (blockDestroySequence == null)
+            return LogNull(nameof(BlockDestroySequence));
+
+        return true;
+    }
+
+
     private bool LogNull(string dependencyName)
     {
-        Debug.LogError($"{nameof(WallEngine)} initialization failed: {dependencyName} is NULL", this);
+        Debug.LogError(
+         $"[{nameof(WallEngine)}] Initialization failed: {dependencyName} missing", this);
 
         return false;
     }

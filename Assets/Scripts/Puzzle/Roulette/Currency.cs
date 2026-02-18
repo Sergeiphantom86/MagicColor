@@ -2,7 +2,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
 
 public class Currency : MonoBehaviour
 {
@@ -10,10 +9,13 @@ public class Currency : MonoBehaviour
     [SerializeField] private Image _image;
 
     private WeightCalculator _weightCalculator;
+    private IProgressSaver _progressSaver;
     private int _value;
     private int _weight;
+    private int _divider;
     private int _indexInRoulette;
     private float _sectorSize;
+    private float _quantityDegrees;
 
     public int Weight => _weight;
 
@@ -21,14 +23,18 @@ public class Currency : MonoBehaviour
 
     public Image Icon => _image;
 
-    public int Winn => YG2.saves.Reward;
+    public int Winn => _progressSaver.Saves.Reward;
 
     private void Awake()
     {
+        _divider = 2;
         _indexInRoulette = -1;
+        _quantityDegrees = 360;
+
         _weightCalculator = new WeightCalculator();
         _textMeshPro = GetComponentInChildren<TextMeshProUGUI>();
         _image = GetComponentInChildren<Image>();
+        _progressSaver = new ProgressSaver();
 
         if (_textMeshPro == null)
         {
@@ -50,7 +56,7 @@ public class Currency : MonoBehaviour
     public void Initialize( int index, int totalItems)
     {
         _indexInRoulette = index;
-        _sectorSize = 360f / totalItems;
+        _sectorSize = _quantityDegrees / totalItems;
     }
 
     public float GetAngle()
@@ -68,7 +74,7 @@ public class Currency : MonoBehaviour
 
     private float GetSectorCenter()
     {
-        return _sectorSize / 2f;
+        return _sectorSize / _divider;
     }
 
     private string GetCleanNumericString(string textMeshPro)

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using YG;
 
 [RequireComponent(typeof(TransitionChooser))]
 public class QuestSystem : MonoBehaviour
@@ -12,11 +11,13 @@ public class QuestSystem : MonoBehaviour
     private List<Quest> _subscribedQuests;
     private TransitionChooser _transitionChooser;
     private int _currentQuestIndex;
+    private IProgressSaver _progressSaver;
 
     private void Awake()
     {
         _transitionChooser = GetComponent<TransitionChooser>();
         _subscribedQuests = new List<Quest>();
+        _progressSaver = new ProgressSaver();
 
         if (_transitionChooser == null)
         {
@@ -24,14 +25,14 @@ public class QuestSystem : MonoBehaviour
             return;
         }
 
-        if (YG2.saves == null)
+        if (_progressSaver.Saves == null)
         {
             Debug.LogError("QuestCollector not found!");
             return;
         }
 
-        _currentQuestIndex = YG2.saves.QuestIndex;
-        _isOn = YG2.saves.IsAutomaticallyNewLevel;
+        _currentQuestIndex = _progressSaver.Saves.QuestIndex;
+        _isOn = _progressSaver.Saves.IsAutomaticallyNewLevel;
     }
 
     public void Initialize(IReadOnlyList<Quest> quests)
@@ -111,7 +112,7 @@ public class QuestSystem : MonoBehaviour
             return;
 
         _active.OnClicked();
-        YG2.saves.SetAutomaticTransition(false);
+        _progressSaver.SetAutomaticTransition(false);
     }
 
 
@@ -128,12 +129,12 @@ public class QuestSystem : MonoBehaviour
             if (_next != null)
             {
                 _currentQuestIndex++;
-                YG2.saves.SetQuestIndex(_currentQuestIndex);
-                YG2.saves.SetNewSprite(_next.Sprite);
+                _progressSaver.SetQuestIndex(_currentQuestIndex);
+                _progressSaver.SetNewSprite(_next.Sprite);
             }
         }
 
-        YG2.SaveProgress();
+        _progressSaver.SaveProgress();
 
         if (_transitionChooser != null)
         {

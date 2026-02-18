@@ -4,14 +4,21 @@ public class LockInteractionHandler
 {
     private Lock _lock;
     private HintKey _hintKey;
+    private bool _initialized;
 
     public void SetHint(HintKey hintKey) => 
         _hintKey = hintKey;
 
-    public void TryHandle(Collider other)
+    public void Set(Collider other)
     {
         if (other.TryGetComponent(out Lock @lock))
-            _lock = @lock;
+        {
+            if (_initialized == false)
+            {
+                _initialized = true;
+                _lock = @lock;
+            }
+        }
     }
 
     public void ShowBlockedFeedback()
@@ -24,6 +31,9 @@ public class LockInteractionHandler
 
     public void Unblock()
     {
-        _lock.Unblock();
+        if (_lock != null)
+        {
+            _lock.Unblock();
+        }
     }
 }

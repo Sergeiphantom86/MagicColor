@@ -1,9 +1,11 @@
 using System;
 using UnityEngine;
 
-public class InputHandler : MonoBehaviour
+public class InputHandler : MonoBehaviour, IInputHandler
 {
     private Touch _touch;
+
+    public Vector3 Point {  get; private set; }
 
     public event Action<Vector2> OnSelected;
     public event Action<Vector2> OnMoved;
@@ -47,19 +49,17 @@ public class InputHandler : MonoBehaviour
     {
         Vector3 currentMousePosition = Input.mousePosition;
 
-        switch (Input.imeIsSelected)
+        if (Input.GetMouseButtonDown(0))
         {
-            case bool _ when Input.GetMouseButtonDown(0):
-                SelectBlock(currentMousePosition);
-                break;
-
-            case bool _ when Input.GetMouseButton(0):
-                OnMoved?.Invoke(currentMousePosition);
-                break;
-
-            case bool _ when Input.GetMouseButtonUp(0):
-                OnThrowed?.Invoke();
-                break;
+            SelectBlock(currentMousePosition);
+        }
+        else if (Input.GetMouseButton(0))
+        {
+            OnMoved?.Invoke(currentMousePosition);
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            OnThrowed?.Invoke();
         }
     }
 
@@ -77,10 +77,12 @@ public class InputHandler : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
+            Point = hit.point;
             return hit.collider.transform == transform ||
                    hit.collider.transform.IsChildOf(transform);
         }
 
+        Point = Vector2.zero;
         return false;
     }
 }

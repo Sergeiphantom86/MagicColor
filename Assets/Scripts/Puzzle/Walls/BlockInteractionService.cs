@@ -1,20 +1,18 @@
-using System;
 using UnityEngine;
 
 public class BlockInteractionService : IBlockInteractionService
 {
-    private readonly Wall _wall;
+    private readonly IUnblocker _wall;
     private readonly IBlockDestroySequence _destroySequence;
+    private readonly ILockFeedbackService _lockFeedbackService;
 
-    private bool _isOpen;
     private ErrorPanel _errorPanel;
 
-    public bool IsOpen => _isOpen;
-
-    public BlockInteractionService(Wall wall, IBlockDestroySequence destroySequence)
+    public BlockInteractionService(IUnblocker wall, IBlockDestroySequence destroySequence, ILockFeedbackService lockFeedbackService)
     {
         _wall = wall;
         _destroySequence = destroySequence;
+        _lockFeedbackService = lockFeedbackService;
 
         if (_destroySequence == null)
         {
@@ -25,6 +23,12 @@ public class BlockInteractionService : IBlockInteractionService
         if (_wall == null)
         {
             Debug.LogError("Wall == null");
+            return;
+        }
+
+        if (_lockFeedbackService == null)
+        {
+            Debug.LogError("ILockFeedbackService == null");
             return;
         }
     }
@@ -54,16 +58,13 @@ public class BlockInteractionService : IBlockInteractionService
             return;
         }
 
-        if (colorable is not Block block)
-            return;
-
         if (_wall.IsBlocked)
         {
             _errorPanel.TurnOn();
-            _isOpen = true;
+            _lockFeedbackService.Play();
             return;
         }
 
-        _destroySequence.WaitStart(block, color, _wall);
+        _destroySequence.WaitStart(colorable, color);
     }
 }

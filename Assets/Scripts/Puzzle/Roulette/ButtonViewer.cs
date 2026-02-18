@@ -16,9 +16,6 @@ public class ButtonViewer : MonoBehaviour
     {
         _duration = 0.3f;
         _transform = transform;
-
-        //SetEndScale();
-        //SetStartScale();
     }
 
     private void OnEnable()

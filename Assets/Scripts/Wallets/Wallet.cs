@@ -1,34 +1,40 @@
 using System;
-using System.Collections;
 using UnityEngine;
-using YG;
+using System.Collections;
 
 public class Wallet : MonoBehaviour
 {
-    [SerializeField] private bool autoLoadFromSave = true;
+    [SerializeField] private bool autoLoadFromSave;
 
     private long _balance;
-    private bool isInitialized = false;
     private float _delay;
+    private float _duration;
+    private float _callDelay;
+    private bool isInitialized;
     private WaitForSeconds _waitFor;
+    private IProgressSaver _progressSaver;
+    private IProcessTransacter _transacter;
 
     public long Balance => _balance;
-    public float Duration { get; private set; }
+    public float Duration => _duration;
 
     public string Name => GetType().Name;
 
     public event Action<long, string> OnBalanceChanged;
-    public event Action<long, string> OnSpendSuccess;
 
     private void Awake()
     {
         _delay = 1.5f;
+        _callDelay = 0.1f;
+        _duration = 0.5f;
         _waitFor = new WaitForSeconds(_delay);
+        _progressSaver = new ProgressSaver();
+        _transacter = new ProcessTransacter();
     }
 
     private void Start()
     {
-        if (autoLoadFromSave && YG2.saves != null)
+        if (autoLoadFromSave && _progressSaver.Saves != null)
         {
             LoadFromSave();
         }
@@ -36,43 +42,47 @@ public class Wallet : MonoBehaviour
 
     private void OnEnable()
     {
-        if (autoLoadFromSave)
+        if (autoLoadFromSave && _progressSaver.Saves != null)
         {
-            YG2.onGetSDKData += OnYGDataLoaded;
+            _progressSaver.SubscribeSDKData(OnYGDataLoaded);
         }
     }
 
     private void OnDisable()
     {
-        if (autoLoadFromSave)
+        if (autoLoadFromSave && _progressSaver.Saves != null)
         {
-            YG2.onGetSDKData -= OnYGDataLoaded;
+            _progressSaver.UnsubscribeSDKData(OnYGDataLoaded);
         }
     }
 
-    public void AddFunds(long amount, float duration)
+    public void AddFunds(long amount)
     {
         if (amount <= 0) return;
 
-        if (ProcessTransaction(amount))
-        {
-            Duration = duration;
-        }
+        if (_transacter.ProcessTransaction(amount, _balance) == false) return;
+
+        _balance += amount;
+
+        OnBalanceChanged?.Invoke(_balance, Name);
     }
 
     public bool SpendFunds(long amount)
     {
         if (CanSpend(amount) == false) return false;
 
-        bool success = ProcessTransaction(-amount);
+        bool success = _transacter.ProcessTransaction(amount, _balance);
 
         if (success)
         {
-            OnSpendSuccess?.Invoke(amount, Name);
+            _balance -= amount;
+
+            _progressSaver.SaveBalanceAfterPurchase(_balance);
+            OnBalanceChanged?.Invoke(_balance, Name);
         }
         else
         {
-            Debug.LogWarning($"Insufficient funds! Trying to spend {amount}, but balance is {_balance}");
+            Debug.LogWarning($"Недостаточно средств! Пытаюсь потратить {amount}, но баланс равен {_balance}");
         }
 
         return success;
@@ -80,23 +90,23 @@ public class Wallet : MonoBehaviour
 
     private void OnYGDataLoaded()
     {
-        if (autoLoadFromSave && !isInitialized)
+        if (autoLoadFromSave && isInitialized == false)
         {
-            Invoke(nameof(LoadFromSave), 0.1f);
+            Invoke(nameof(LoadFromSave), _callDelay);
         }
     }
 
     private void LoadFromSave()
     {
-        if (YG2.saves == null) return;
+        if (_progressSaver.Saves == null) return;
 
         if (this is CoinWallet)
         {
-            SetInitialBalance(YG2.saves.CurrentCoin);
+            SetInitialBalance(_progressSaver.Saves.CurrentCoin);
         }
         else if (this is CrystalWallet)
         {
-            StartCoroutine(Wait(YG2.saves.CurrentCrystal));
+            StartCoroutine(Wait(_progressSaver.Saves.CurrentCrystal));
         }
 
         isInitialized = true;
@@ -111,31 +121,6 @@ public class Wallet : MonoBehaviour
     private bool CanSpend(long amount)
     {
         return amount > 0 && _balance >= amount;
-    }
-
-    private bool ProcessTransaction(long amount)
-    {
-        if (amount == 0)
-            return false;
-
-        if (amount < 0)
-        {
-            if (Math.Abs(amount) > _balance)
-                return false;
-        }
-
-        long newBalance = checked(_balance + amount);
-
-        if (newBalance != _balance)
-        {
-            _balance = newBalance;
-
-            OnBalanceChanged?.Invoke(_balance, Name);
-
-            return true;
-        }
-
-        return false;
     }
 
     private IEnumerator Wait(long savedCrystals)

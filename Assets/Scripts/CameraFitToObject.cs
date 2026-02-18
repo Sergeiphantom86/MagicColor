@@ -27,9 +27,12 @@ public class CameraFitToObject : MonoBehaviour
         _angleDivider = 2;
         _shiftExitFov = 110f;
         _shiftEnterFov = 115f;
+
         _camera = _camera != null ? _camera : Camera.main;
-        _startPosition = transform.position;
+
         _zoomChanger = new ZoomChanger();
+
+        _startPosition = transform.position;
     }
 
     private void Start()

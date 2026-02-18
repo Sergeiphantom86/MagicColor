@@ -919,9 +919,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d938b1a7a0c62f444a293305d671929b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coinWallet: {fileID: 0}
-  _crystalWallet: {fileID: 0}
-  _rewards: {fileID: 3244064460445623548}
 --- !u!114 &399975887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2596,6 +2593,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1215917136738023785, guid: 7496481737bd88742b772699eb88ee55, type: 3}
   m_PrefabInstance: {fileID: 5641547614707216641}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1938258484 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1453665638631708176, guid: 7496481737bd88742b772699eb88ee55, type: 3}
+  m_PrefabInstance: {fileID: 5641547614707216641}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &2054891349 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1049085462108027020, guid: 160de3bad73ea44b6b354786584e0ad0, type: 3}
@@ -3022,10 +3024,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7776242318147634067, guid: 7496481737bd88742b772699eb88ee55, type: 3}
   m_PrefabInstance: {fileID: 5641547614707216641}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1938258484}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb92acbccf7bcab479e7f7a29c15cce2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3244064460445623549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938258484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac7f2e4644743fd4f9564a50fb7137ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &5641547614707216641
@@ -3063,6 +3077,10 @@ PrefabInstance:
     - target: {fileID: 398152895761559926, guid: 7496481737bd88742b772699eb88ee55, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 895665641878473667, guid: 7496481737bd88742b772699eb88ee55, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1215917136738023785, guid: 7496481737bd88742b772699eb88ee55, type: 3}
       propertyPath: m_Pivot.x
@@ -3288,6 +3306,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3419357987041510124, guid: 7496481737bd88742b772699eb88ee55, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7358705518096727369}
+    - targetCorrespondingSourceObject: {fileID: 1453665638631708176, guid: 7496481737bd88742b772699eb88ee55, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3244064460445623549}
   m_SourcePrefab: {fileID: 100100000, guid: 7496481737bd88742b772699eb88ee55, type: 3}
 --- !u!224 &7021423320137228340 stripped
 RectTransform:

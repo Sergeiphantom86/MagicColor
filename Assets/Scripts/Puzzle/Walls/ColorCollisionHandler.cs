@@ -1,12 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Wall), typeof(ColorMatchService), typeof(IBlockDestroySequence))]
-[RequireComponent(typeof(LockFeedbackService), typeof(IColorMatchService), typeof(ILockFeedbackService))]
+[RequireComponent(typeof(Wall), typeof(IColorMatchService), typeof(ILockFeedbackService))]
+[RequireComponent(typeof(IColorMatchService), typeof(ICollisionHandler), typeof(IBlockDestroySequence))]
 public class ColorCollisionHandler : MonoBehaviour
 {
-    private Wall _wall;
-    private WallBlockProcessor _wallProcessor;
+    private IUnblocker _wall;
     private LockInteractionHandler _lockHandler;
     private BlockInteractionService _blockInteraction;
     private ICollisionProcessor _collisionProcessor;
@@ -19,15 +18,12 @@ public class ColorCollisionHandler : MonoBehaviour
 
     private void Awake()
     {
-        _wall = GetComponent<Wall>();
-        _wallProcessor = new WallBlockProcessor(_wall);
-
+        _wall = GetComponent<IUnblocker>();
         _colorMatch = GetComponent<ColorMatchService>();
         _lockFeedback = GetComponent<LockFeedbackService>();
         _collisionHandler = GetComponent<CollisionHandler>();
         _destroySequence = GetComponent<BlockDestroySequence>();
-
-        _blockInteraction = new BlockInteractionService(_wall, _destroySequence);
+        _blockInteraction = new BlockInteractionService(_wall, _destroySequence, _lockFeedback);
         _lockHandler = new LockInteractionHandler();
     }
 
@@ -45,22 +41,19 @@ public class ColorCollisionHandler : MonoBehaviour
 
     public bool Initialize(IColorPrecision colorPrecision, HintKey hintKey, ErrorPanel errorPanel)
     {
-        if (Validate(colorPrecision, hintKey, errorPanel) == false)
+        if (Validate(colorPrecision, hintKey, errorPanel, _lockHandler) == false)
             return false;
 
         _lockHandler.SetHint(hintKey);
         _blockInteraction.SetPanelError(errorPanel);
         _colorMatch.Initialize(colorPrecision);
 
-        _collisionProcessor = new CollisionProcessor(
-            _colorMatch,
-            _blockInteraction
-        );
+        _collisionProcessor = new CollisionProcessor(_colorMatch,_blockInteraction);
 
         return true;
     }
 
-    private bool Validate(IColorPrecision colorPrecision, HintKey hintKey, ErrorPanel errorPanel)
+    private bool Validate(IColorPrecision colorPrecision, HintKey hintKey, ErrorPanel errorPanel, LockInteractionHandler _lockHandler)
     {
         if (_colorMatch == null) return Log("ColorMatchService");
         if (_lockFeedback == null) return Log("LockFeedbackService");
@@ -69,6 +62,7 @@ public class ColorCollisionHandler : MonoBehaviour
         if (colorPrecision == null) return Log(nameof(colorPrecision));
         if (hintKey == null) return Log(nameof(hintKey));
         if (errorPanel == null) return Log(nameof(errorPanel));
+        if (_lockHandler == null) return Log(nameof(_lockHandler));
 
         return true;
     }
@@ -82,6 +76,8 @@ public class ColorCollisionHandler : MonoBehaviour
     private void Enter(Collider other)
     {
         _collisionProcessor.ProcessEnter(other);
+        
+        _lockHandler.Set(other);
     }
 
     private void Exit(Collider other)
@@ -91,7 +87,7 @@ public class ColorCollisionHandler : MonoBehaviour
 
     public void UnblockWall()
     {
-        _wallProcessor.UnblockWall();
+        _wall.Unblock();
         _lockHandler.Unblock();
     }
 

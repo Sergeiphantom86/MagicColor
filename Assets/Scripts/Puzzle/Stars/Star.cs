@@ -6,6 +6,8 @@ public class Star : MonoBehaviour
 {
     private Image _image;
 
+    public bool IsActive { get; private set; }
+
     private void Awake()
     {
         _image = GetComponent<Image>();
@@ -20,5 +22,6 @@ public class Star : MonoBehaviour
         }
 
         _image.enabled = isOn;
+        IsActive = isOn;
     }
 }

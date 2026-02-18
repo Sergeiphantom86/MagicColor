@@ -3,7 +3,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
 
 [RequireComponent(typeof(Button))]
 public class RewardAdForSpins : MonoBehaviour
@@ -15,12 +14,14 @@ public class RewardAdForSpins : MonoBehaviour
     private readonly string _rewardID = "add_spins";
 
     private Button _button;
+    private IProgressSaver _progressSaver;
 
     public event Action OnSpinsAdded;
 
     private void Awake()
     {
         _button = GetComponent<Button>();
+        _progressSaver = new ProgressSaver();
 
         if (_button == null)
         {
@@ -36,10 +37,7 @@ public class RewardAdForSpins : MonoBehaviour
 
         _button.onClick.AddListener(ShowRewardedAd);
 
-        YG2.onRewardAdv += OnRewardReceived;
-        YG2.onOpenRewardedAdv += OnAdOpened;
-        YG2.onCloseRewardedAdv += OnAdClosed;
-        YG2.onErrorRewardedAdv += OnAdError;
+        _progressSaver.SubscribeADSReward(OnRewardReceived, OnAdOpened, OnAdClosed, OnAdError);
     }
 
     private void OnEnable()
@@ -55,8 +53,8 @@ public class RewardAdForSpins : MonoBehaviour
     private void ShowRewardedAd()
     {
         _button.interactable = false;
-      
-        YG2.RewardedAdvShow(_rewardID);
+
+        _progressSaver.RewardedAdvShow(_rewardID);
     }
 
     private void OnRewardReceived(string id)
@@ -98,10 +96,8 @@ public class RewardAdForSpins : MonoBehaviour
 
     private void OnDestroy()
     {
-        YG2.onRewardAdv -= OnRewardReceived;
-        YG2.onOpenRewardedAdv -= OnAdOpened;
-        YG2.onCloseRewardedAdv -= OnAdClosed;
-        YG2.onErrorRewardedAdv -= OnAdError;
+        _progressSaver.UnsubscribeADSReward(OnRewardReceived, OnAdOpened, OnAdClosed, OnAdError);
+
 
         if (_button != null)
             _button.onClick.RemoveListener(ShowRewardedAd);

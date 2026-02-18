@@ -9,15 +9,17 @@ public class Timer : MonoBehaviour
     [SerializeField] private string _timeFormat = "mm':'ss";
     [SerializeField] private BlocksContainer _blocksContainer;
     [SerializeField] private StarsController _starCounter;
+    [SerializeField] private PauseMenu _pauseMenu;
 
     private float _value;
     private bool _isRunning;
     private TimeSpan _span;
     private float _delayCompensation;
 
-    public bool IsRunning => _isRunning;
+    public int CurrentTimeSeconds { get; private set; }
 
     public TMP_Text TimerText => _timerText;
+    public bool IsRunning => _isRunning;
 
     public event Action HasBegun;
 
@@ -28,11 +30,14 @@ public class Timer : MonoBehaviour
 
     private void Update()
     {
-        if (_isRunning)
+        if (_isRunning && _pauseMenu.IsPaused == false)
         {
             _value += Time.unscaledDeltaTime;
 
+            CurrentTimeSeconds = (int)_value;
+
             _span = TimeSpan.FromSeconds(_value);
+
             _timerText.text = _span.ToString(_timeFormat);
         }
     }

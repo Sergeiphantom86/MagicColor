@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Activator : MonoBehaviour
+public class Activator : MonoBehaviour, IActivatable
 {
     [SerializeField] private AudioClip _winn;
     [SerializeField] private AudioClip _pixelSound;
@@ -47,13 +47,7 @@ public class Activator : MonoBehaviour
         IMover mover = GetComponent<IMover>();
         IFragmentAnimator animator = GetComponent<IFragmentAnimator>();
 
-        _queueProcessor = new FragmentQueueProcessor(
-            _voiceover,
-            _pixelSound,
-            mover,
-            animator,
-            _blocksContainer
-        );
+        _queueProcessor = new FragmentQueueProcessor(_voiceover, _pixelSound, mover, animator, _blocksContainer);
     }
 
     private void OnEnable()
@@ -79,6 +73,16 @@ public class Activator : MonoBehaviour
         _queueProcessor?.Cleanup();
     }
 
+    public void Activate()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
+
     public void EnqueueFragments(Color color)
     {
         if (_textureInitializer == null)
@@ -86,9 +90,7 @@ public class Activator : MonoBehaviour
 
         InitProgressIfNeeded();
 
-        var fragments = _textureInitializer.GetFragmentsByColor(
-            _colorPrecision.Reduce(color)
-        );
+        var fragments = _textureInitializer.GetFragmentsByColor(_colorPrecision.Reduce(color));
 
         _queueProcessor.EnqueueFragments(fragments);
 
@@ -138,7 +140,9 @@ public class Activator : MonoBehaviour
 
     private void OnPuzzleFinished()
     {
-        _voiceover.Play(_winn);
+        _voiceover.PlayOneShot(_winn);
         OnPuzzleComplete?.Invoke();
+
+        gameObject.SetActive(false);
     }
 }

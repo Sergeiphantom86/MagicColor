@@ -1,42 +1,66 @@
 using TMPro;
-using DG.Tweening;
+using System;
 using UnityEngine;
-using System.Collections;
+using DG.Tweening;
 
-[RequireComponent(typeof(Wallet))]
+[RequireComponent(typeof(Wallet), typeof(TextMeshProUGUI), typeof(Voiceover))]
 public class WalletAnimator : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _textMeshPro;
+    [SerializeField] private AudioClip _audioClip;
 
-    private Wallet _wallet;
-    private Tween _balanceTween;
+    private float _soundTimer;
     private long _displayedBalance;
     private float _animationDuration;
-    private WaitForSeconds _waitForSeconds;
+    private Wallet _wallet;
+    private Tween _balanceTween;
+    private Voiceover _voiceover;
+    private TextMeshProUGUI _textMeshPro;
     private NumberFormatter _numberFormatter;
+
+    public event Action Finished;
 
     private void Awake()
     {
-        _animationDuration = 0.5f;
         _wallet = GetComponent<Wallet>();
-        _displayedBalance = _wallet.Balance;
-        _waitForSeconds = new WaitForSeconds(_wallet.Duration);
+        _voiceover = GetComponent<Voiceover>();
+        _textMeshPro = GetComponent<TextMeshProUGUI>();
         _numberFormatter = new NumberFormatter();
 
-        UpdateBalanceText();
+        _displayedBalance = _wallet.Balance;
+        _animationDuration = 0.5f;
 
+        if (_wallet == null)
+        {
+            Debug.Log("Wallet == null");
+            return;
+        }
+
+        if (_textMeshPro == null)
+        {
+            Debug.Log("TextMeshProUGUI == null");
+            return;
+        }
+
+        UpdateBalanceText();
+    }
+
+    private void OnEnable()
+    {
         _wallet.OnBalanceChanged += HandleBalanceChanged;
     }
 
     private void OnDestroy()
     {
         _wallet.OnBalanceChanged -= HandleBalanceChanged;
+
         _balanceTween?.Kill();
     }
 
     private void HandleBalanceChanged(long newBalance, string name)
     {
-        StartCoroutine(WaitEndAnimation(newBalance));
+        Debug.Log(name);
+        
+        HandleBalanceChanged(newBalance);
     }
 
     private void UpdateBalanceText()
@@ -44,19 +68,32 @@ public class WalletAnimator : MonoBehaviour
         _textMeshPro.text = _numberFormatter.FormatNumber(_displayedBalance);
     }
 
-    private IEnumerator WaitEndAnimation(long newBalance)
+    private void HandleBalanceChanged(long newBalance)
     {
-        yield return _waitForSeconds;
-
         _balanceTween?.Kill();
 
-        _balanceTween = DOTween.To(() =>
-        _displayedBalance, animatedValue =>
+        _balanceTween = DOTween.To(() => _displayedBalance, balance =>
         {
-            _displayedBalance = animatedValue;
-            UpdateBalanceText();
-        }, 
-        newBalance, _animationDuration).
-        SetEase(Ease.OutQuad);
+          _soundTimer += Time.unscaledDeltaTime;
+
+            if (_soundTimer >= 0.05f)
+            {
+                _voiceover.PlayOneShot(_audioClip);
+                _soundTimer = 0f;
+            }
+
+            _displayedBalance = balance;
+
+          UpdateBalanceText();
+        },
+        newBalance,_animationDuration)
+            .SetEase(Ease.OutQuad)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                _soundTimer = 0f;
+                Debug.Log("HandleBalanceChanged");
+                Finished?.Invoke();
+            });
     }
 }

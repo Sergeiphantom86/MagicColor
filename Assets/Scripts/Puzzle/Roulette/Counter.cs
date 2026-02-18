@@ -2,7 +2,6 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
 
 [RequireComponent(typeof(ButtonController))]
 public class Counter : MonoBehaviour
@@ -16,6 +15,7 @@ public class Counter : MonoBehaviour
     private Tween _countTween;
     private TextMeshProUGUI _counterText;
     private ButtonController _buttonController;
+    private IProgressSaver _progressSaver;
     private Image _image;
 
     public bool HasAttempts => _currentCount > 0;
@@ -32,14 +32,13 @@ public class Counter : MonoBehaviour
 
     private void Awake()
     {
-        _initialCount = YG2.saves.Spins;
         _animationDuration = 0.5f;
-
-        SetCoutSpins();
 
         _buttonController = GetComponent<ButtonController>();
         _counterText = GetComponentInChildren<TextMeshProUGUI>();
         _image = GetComponent<Image>();
+
+        _progressSaver = new ProgressSaver();
 
         if (_counterText == null)
         {
@@ -61,6 +60,13 @@ public class Counter : MonoBehaviour
             Debug.LogError("ButtonController не назначен!", this);
         }
 
+        if (_progressSaver == null)
+        {
+            Debug.LogError("ProgressSaver == null");
+        }
+
+        SetCoutSpins();
+
         _rewardAdForSpins.gameObject.SetActive(false);
     }
 
@@ -71,6 +77,8 @@ public class Counter : MonoBehaviour
 
     private void SetCoutSpins()
     {
+        _initialCount = _progressSaver.Saves.Spins;
+
         _initialCount++;
 
         _currentCount = _initialCount;
@@ -135,7 +143,7 @@ public class Counter : MonoBehaviour
 
     private void OnDestroy()
     {
-        YG2.saves.SaveSpinsCount(_currentCount);
+        _progressSaver.SaveSpinsCount(_currentCount);
         _countTween?.Kill();
     }
 }

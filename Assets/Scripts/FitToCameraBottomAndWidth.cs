@@ -16,9 +16,11 @@ public class FitToCameraBottomAndWidth : MonoBehaviour
     {
         _camera = GetComponent<Camera>();
         _zoomChanger = new ZoomChanger();
+
         _startPositionY = 12;
         _baseOrthoSize = 6;
         _baseOrthoSize /= 2;
+
         SetStartPosition(_startPositionY);
 
         if (_zoomChanger.IsMobileWithTallScreen()) return;
@@ -50,13 +52,13 @@ public class FitToCameraBottomAndWidth : MonoBehaviour
         {
             _camera.orthographic = true;
             _camera.orthographicSize = GetTargetOrthogonal();
-            SetStartPosition(_startPosition.y + _camera.orthographicSize * 2);
+            SetStartPosition(_startPosition.y + _camera.orthographicSize * 1.1f);
         }
     }
 
     private float GetTargetOrthogonal()
     {
-        return _baseOrthoSize + (2f / GetCurrentAspect());
+        return _baseOrthoSize + (1 / GetCurrentAspect());
     }
 
     private float GetCurrentAspect()

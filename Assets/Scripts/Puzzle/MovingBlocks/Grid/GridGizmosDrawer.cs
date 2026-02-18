@@ -21,7 +21,7 @@ public class GridGizmosDrawer : MonoBehaviour
         if (_grid == null || _gridSystem == null)
             return;
 
-        DrawGrid();
+        //DrawGrid();
         DrawOccupiedCells();
     }
 
@@ -56,10 +56,13 @@ public class GridGizmosDrawer : MonoBehaviour
 
         float cellSize = _grid.cellSize.x;
 
-        foreach (var block in FindObjectsOfType<Block>())
+        foreach (var occupant in FindObjectsOfType<MonoBehaviour>())
         {
-            Vector2Int origin = block.GridPosition;
-            Vector2Int size = block.SizeInCells;
+            if (occupant is not IGridOccupant gridOccupant)
+                continue;
+
+            Vector2Int origin = gridOccupant.GridPosition;
+            Vector2Int size = gridOccupant.SizeInCells;
 
             for (int x = 0; x < size.x; x++)
             {

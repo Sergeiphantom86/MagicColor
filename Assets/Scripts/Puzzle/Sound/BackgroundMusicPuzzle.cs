@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Audio;
-using YG;
 
 [RequireComponent(typeof(AudioSource))]
 public class BackgroundMusicPuzzle : MonoBehaviour
@@ -14,11 +13,13 @@ public class BackgroundMusicPuzzle : MonoBehaviour
     [SerializeField] private AudioClip _backgroundMusic;
 
     private AudioSource _musicSource;
+    private IProgressSaver _progressSaver;
     private float _volumeDB;
 
     private void Awake()
     {
         _musicSource = GetComponent<AudioSource>();
+        _progressSaver = new ProgressSaver();
 
         if (_musicSource == null)
         {
@@ -30,19 +31,19 @@ public class BackgroundMusicPuzzle : MonoBehaviour
 
     private void Start()
     {
-        UpdateMixerVolume(MusicVolume, YG2.saves.MusicVolume);
+        UpdateMixerVolume(MusicVolume, _progressSaver.Saves.MusicVolume);
 
-        PlayBackgroundMusic(YG2.saves.MusicTime);
+        PlayBackgroundMusic(_progressSaver.Saves.MusicTime);
     }
 
     private void OnDisable()
     {
-        YG2.saves.SetMusicTime(_musicSource.time);
+        _progressSaver.SetMusicTime(_musicSource.time);
     }
 
     private void OnDestroy()
     {
-        YG2.SaveProgress();
+        _progressSaver.SaveProgress();
     }
 
     private void PlayBackgroundMusic(float time)

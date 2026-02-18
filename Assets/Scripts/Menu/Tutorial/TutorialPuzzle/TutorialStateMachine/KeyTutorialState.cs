@@ -1,29 +1,48 @@
 using DG.Tweening;
 
-public class KeyTutorialState : TutorialState
+public class KeyTutorialState : TutorialStater
 {
-    public KeyTutorialState(TutorialStateMachine stateMachine, TutorialContext context)
-        : base(stateMachine, context) { }
+    private readonly TutorialStateMachine _stateMachine;
+    private readonly StateTutorial _stateTutorial;
+    private readonly TouchVisualizer _visualizer;
+    private readonly TutorialContext _context;
+    private readonly HandMover _handMover;
+    private readonly Lock _lock;
+    private readonly Key _key;
+    private readonly IProgressSaver _progressSaver;
+
+    public KeyTutorialState(TutorialStateMachine stateMachine, TutorialContext context): base(stateMachine, context)
+    {
+        _context = context;
+        _stateMachine = stateMachine;
+
+        _stateTutorial = _context.StateTutorial;
+        _visualizer = _context.Visualizer;
+        _handMover = _context.HandMover;
+        _lock = _context.Lock;
+        _key = _context.Key;
+        _progressSaver = new ProgressSaver();
+        _progressSaver.SetUnblockingTutorial();
+    }
 
     public override void Enter()
     {
-        Context.HandMover.Pivot.transform.position = Context.Key.transform.position;
-        
-        Context.StateTutorial.Initialization(Context.HandMover, Context.Visualizer, Context.Key, Context.Lock);
+        _handMover.Pivot.transform.position = _key.transform.position;
 
-        Context.StateTutorial.OnCompleted += OnTutorialCompleted;
+        _stateTutorial.Initialization(_handMover, _visualizer, _key, _lock);
+   
+        _stateTutorial.OnCompleted += OnTutorialCompleted;
     }
-
-    public override void Update() { }
 
     public override void Exit()
     {
-        Context.StateTutorial.OnCompleted -= OnTutorialCompleted;
+        _stateTutorial.OnCompleted -= OnTutorialCompleted;
+
         DOTween.Kill(this);
     }
 
     private void OnTutorialCompleted()
     {
-        StateMachine.ChangeState(new CompletionState(StateMachine, Context));
+        _stateMachine.ChangeState(new CompletionState(StateMachine, Context));
     }
 }

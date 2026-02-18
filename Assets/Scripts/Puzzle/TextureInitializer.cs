@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class TextureInitializer : MonoBehaviour
 {
@@ -10,13 +11,13 @@ public class TextureInitializer : MonoBehaviour
     private const float IgnoredTransparency = 0.1f;
 
     [SerializeField] private AnimatorPuzzle _animator;
+    [SerializeField] private Vector3 _mobilePosition;
     [SerializeField] private float _scaleMultiplier;
     [SerializeField] private bool _isSaveCollections = true;
 
     private int _totalCount;
     private Color[] _pixels;
     private Vector2 _pivot;
-    private Vector3 _mobilePosition;
     private PixelPool _pixelPool;
     private ZoomChanger _zoomChanger;
     private ColorPrecision _precision;
@@ -37,7 +38,13 @@ public class TextureInitializer : MonoBehaviour
         _fragmentsList = new List<Fragment>();
         _fragments = new Dictionary<Color, Queue<Fragment>>();
         _precision = new ColorPrecision();
-        _mobilePosition = transform.position;
+    }
+
+    public Queue<Fragment> GetFragmentsByColor(Color color)
+    {
+        return _fragments.TryGetValue(color, out Queue<Fragment> fragments)
+            ? new Queue<Fragment>(fragments)
+            : new Queue<Fragment>();
     }
 
     public void SpawnPixelsFromTexture(Texture2D texture)
@@ -60,9 +67,9 @@ public class TextureInitializer : MonoBehaviour
         Group(width, height, _pivot);
 
         gameObject.transform.localScale = Vector3.one * _scaleMultiplier;
-  
+
         OnInitialize?.Invoke(_fragments.Count);
-       
+
         CanPaint?.Invoke(Fragments.Keys.ToList());
 
         if (_animator != null)
@@ -82,10 +89,8 @@ public class TextureInitializer : MonoBehaviour
 
     private void EditMobile()
     {
-        if (_zoomChanger.IsMobileWithTallScreen())
+        if (_zoomChanger.IsMobileWithTallScreen() && SceneManager.GetActiveScene().name != "Menu")
         {
-            _scaleMultiplier += 0.05f;
-            _mobilePosition.y = 0;
             transform.position = _mobilePosition;
         }
     }
@@ -146,12 +151,5 @@ public class TextureInitializer : MonoBehaviour
     private Vector3 GetPosition(int x, int y, Vector2 pivot)
     {
         return new Vector3((x - pivot.x) * PixelSize, (y - pivot.y) * PixelSize, 0);
-    }
-
-    public Queue<Fragment> GetFragmentsByColor(Color color)
-    {
-        return _fragments.TryGetValue(color, out Queue<Fragment> fragments)
-            ? new Queue<Fragment>(fragments)
-            : new Queue<Fragment>();
     }
 }

@@ -3,8 +3,8 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(InputHandler), typeof(ICollisionHandler), typeof(Voiceover))]
-public class Key : Currency
+[RequireComponent(typeof(IInputHandler), typeof(ICollisionHandler), typeof(Voiceover))]
+public class Key : Currency, IActivatable
 {
     [SerializeField] private Point _startPoint;
     [SerializeField] private Point _endPoint;
@@ -21,7 +21,7 @@ public class Key : Currency
     private Voiceover _voiceover;
     private Vector3 _rotationAngles;
     private Sequence _movementSequence;
-    private InputHandler _inputHandler;
+    private IInputHandler _inputHandler;
     private ICollisionHandler _collisionHandler;
     private SpriteRenderer _spriteRenderer;
 
@@ -31,14 +31,14 @@ public class Key : Currency
     private void Awake()
     {
         _quantity = "1";
-        _zoomIn = 4;
+        _zoomIn = 2;
         _zoomOut = 1;
         _isDragging = true;
         _movementDuration = 1;
         _delayBetweenMovements = 0.5f;
         _rotationAngles = new Vector3(-25, 0, 0);
         _voiceover = GetComponent<Voiceover>();
-        _inputHandler = GetComponent<InputHandler>();
+        _inputHandler = GetComponent<IInputHandler>();
         _collisionHandler = GetComponent<ICollisionHandler>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
@@ -63,6 +63,7 @@ public class Key : Currency
         }
 
         SetValue(_quantity);
+        TurnOffDisplay();
     }
 
     private void Start()
@@ -84,6 +85,16 @@ public class Key : Currency
         _collisionHandler.OnEnter -= Hide;
     }
 
+    public void Activate()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
+
     private void Play(Vector2 vector)
     {
         if (_isDragging) return;
@@ -100,17 +111,27 @@ public class Key : Currency
 
     private IEnumerator WaitAudioPlayback(AudioClip clip)
     {
-        _voiceover.Play(clip);
+        _voiceover.PlayOneShot(clip);
         yield return new WaitForSeconds(clip.length);
-        _voiceover.Play(clip);
+        _voiceover.PlayOneShot(clip);
     }
 
     private void Hide(Collider collider)
     {
         if (collider.TryGetComponent(out Block _) == false) return;
 
+        TurnOffDisplay();
+        _voiceover.PlayOneShot(_hiding);
+    }
+
+    private void TurnOffDisplay()
+    {
         _spriteRenderer.enabled = false;
-        _voiceover.Play(_hiding);
+    }
+
+    private void TurnOnDisplay()
+    {
+        _spriteRenderer.enabled = true;
     }
 
     private void Show(Collider collider)
@@ -118,9 +139,10 @@ public class Key : Currency
         if (collider.TryGetComponent(out Block _) == false) return;
 
         _isDragging = false;
-        _spriteRenderer.enabled = true;
 
-        _voiceover.Play(_appearance);
+        TurnOnDisplay();
+
+        _voiceover.PlayOneShot(_appearance);
 
         OnShift?.Invoke();
     }

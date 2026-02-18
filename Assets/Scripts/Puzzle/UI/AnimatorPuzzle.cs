@@ -4,33 +4,16 @@ using UnityEngine;
 [RequireComponent(typeof(Canvas))]
 public class AnimatorPuzzle : MonoBehaviour
 {
-    [SerializeField] private FireworksController _fireworks;
-    [SerializeField] private VictoryPlaque _victoryPlaque;
-    [SerializeField] private GameObject _starRatingPanel;
-    [SerializeField] private Pen _pen;
-    [SerializeField] private RectTransform _penHolder;
     [SerializeField] private Puzzle _puzzle;
-    [SerializeField] private BlockSpawner _blockSpawner;
-
-    private Canvas _canvas;
-    private Activator _activator;
-    private RectTransform _rectTransform;
+    [SerializeField] private Activator _activator;
+    [SerializeField] private VictoryPlaque _victoryPlaque;
+    [SerializeField] private FireworksController _fireworks;
 
     public event Action OnAnimationComplete;
 
     private void Awake()
     {
-        _canvas = GetComponent<Canvas>();
-
-        if (_canvas == null) Debug.LogError("Canvas component not found in children!", this);
-
-        if (_pen != null) _activator = _pen.GetComponent<Activator>();
-
         if (_activator == null) Debug.LogError("Activator component not found on Pen object!", this);
-
-        _rectTransform = _canvas.GetComponent<RectTransform>();
-
-        if(_rectTransform == null) Debug.LogError("Activator component not found on Pen object!", this);
     }
 
     private void OnEnable()

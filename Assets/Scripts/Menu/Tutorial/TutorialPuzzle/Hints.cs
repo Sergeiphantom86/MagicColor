@@ -17,7 +17,7 @@ public class Hints : MonoBehaviour
     public void TurnOn(bool isOn)
     {
         gameObject.SetActive(true);
-        _voiceover.Play(_audioClip);
+        _voiceover.PlayOneShot(_audioClip);
         _textSwitcher.TurnOffDesiredOne(isOn);
     }
 

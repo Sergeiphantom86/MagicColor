@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
 
 public class AutomaticTransitionInstaller : MonoBehaviour
 {
@@ -8,11 +7,13 @@ public class AutomaticTransitionInstaller : MonoBehaviour
     
     private Button _nextPuzzle;
     private PuzzleSelector _selector;
+    private IProgressSaver _progressSaver;
 
     private void Awake()
     {
         _nextPuzzle = GetComponent<Button>();
         _selector = GetComponentInChildren<PuzzleSelector>();
+        _progressSaver = new ProgressSaver();
 
         if (_nextPuzzle == null)
         {
@@ -36,21 +37,21 @@ public class AutomaticTransitionInstaller : MonoBehaviour
 
     private void SetValue()
     {
-        YG2.saves.SetAutomaticTransition(true);
+        _progressSaver.SetAutomaticTransition(true);
 
         _buttonHome.GoMenu();
     }
 
     private void Show()
     {
-        if (YG2.saves.TryEnableFollowingQuest(YG2.saves.QuestIndex + 1))
+        if (_progressSaver.TryEnableFollowingQuest(_progressSaver.Saves.QuestIndex + 1))
         {
             gameObject.SetActive(false);
         }
         
-        if (YG2.saves.NewSprite != null && _selector != null)
+        if (_progressSaver.Saves.NewSprite != null && _selector != null)
         {   
-            _selector.SetSprite(YG2.saves.NewSprite);
+            _selector.SetSprite(_progressSaver.Saves.NewSprite);
         }
     }
 }

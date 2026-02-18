@@ -8,7 +8,6 @@ public class WallLayoutUpdater : MonoBehaviour, IWallLayout
     private Point _point;
     private Indicator _indicator;
     private Rotator _rotator;
-    private Vector3 _startPosition;
 
     private Vector2Int _lastResolution;
 

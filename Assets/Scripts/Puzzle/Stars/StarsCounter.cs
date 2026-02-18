@@ -1,41 +1,59 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class StarsCounter : MonoBehaviour
 {
-    private int _maxStars;
+    private int _baseMaxStars;
+    private int _currentMaxStars;
     private int _minStars;
     private int _maxTimeSeconds;
 
-    public int MaxStars => _maxStars;
     public int MinStars => _minStars;
+    public int MaxStars => _currentMaxStars;
     public int MaxTimeSeconds => _maxTimeSeconds;
 
     private void Awake()
     {
-        _maxStars = 5;
+        _baseMaxStars = 5;
+        _currentMaxStars = _baseMaxStars;
         _minStars = 1;
-        _maxTimeSeconds = 60;
+        _maxTimeSeconds = 360;
     }
 
-    public float GetTimePerStar()
+    public int DisableOneStar()
     {
-        return (float)_maxTimeSeconds / (_maxStars - _minStars + 1);
+        _currentMaxStars = Mathf.Max(_minStars, _baseMaxStars - 1);
+
+        return _currentMaxStars;
     }
 
-    public int CalculateStarsByAbsoluteTime(int timeInSeconds)
+    public int EnableOneStar()
     {
-        if (timeInSeconds > _maxTimeSeconds) return _minStars;
+        _currentMaxStars = _baseMaxStars;
 
-        return Mathf.Clamp(GetStars(timeInSeconds), _minStars, _maxStars);
+        return _currentMaxStars;
     }
 
-    private int GetStars(int timeInSeconds)
+    public int GetCountStars(int timeInSeconds)
     {
-        return Mathf.RoundToInt(_minStars + GetProgress(timeInSeconds) * (_maxStars - _minStars));
+        if (timeInSeconds > _maxTimeSeconds)
+            return _minStars;
+
+        return Mathf.Clamp(
+            GetStars(timeInSeconds, _maxTimeSeconds),
+            _minStars,
+            _currentMaxStars
+        );
     }
 
-    private float GetProgress(int timeInSeconds)
+    private int GetStars(int timeInSeconds, int maxTimeSeconds)
     {
-        return 1f - Mathf.Clamp01((float)timeInSeconds / _maxTimeSeconds);
+        return Mathf.RoundToInt(
+            _minStars + GetProgress(timeInSeconds, maxTimeSeconds) * (_currentMaxStars - _minStars)
+        );
+    }
+
+    private float GetProgress(int timeInSeconds, int maxTimeSeconds)
+    {
+        return 1f - Mathf.Clamp01((float)timeInSeconds / maxTimeSeconds);
     }
 }

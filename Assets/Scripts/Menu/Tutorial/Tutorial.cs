@@ -1,5 +1,4 @@
 using UnityEngine;
-using YG;
 
 [RequireComponent(typeof(EngineTutorialMenu))]
 public class Tutorial : MonoBehaviour
@@ -8,8 +7,8 @@ public class Tutorial : MonoBehaviour
     private const string IsClick = nameof(IsClick);
 
     private bool _isFinished;
-
     private EngineTutorialMenu _engineTutorialMenu;
+    private IProgressSaver _progressSaver;
 
     public bool IsSwipeAllowed { get; private set; }
     public bool IsClickAllowed { get; private set; }
@@ -18,8 +17,9 @@ public class Tutorial : MonoBehaviour
     private void Awake()
     {
         _engineTutorialMenu = GetComponent<EngineTutorialMenu>();
+        _progressSaver = new ProgressSaver();
 
-        _isFinished = YG2.saves.IsMenuTutorial;
+        _isFinished = _progressSaver.Saves.IsMenuTutorial;
 
         if (_isFinished)
         {
@@ -67,6 +67,6 @@ public class Tutorial : MonoBehaviour
         IsSwipeAllowed = false;
         IsClickAllowed = false;
 
-        YG2.saves.DisableTutorialMenu();
+        _progressSaver.DisableTutorialMenu();
     }
 }

@@ -12,20 +12,53 @@ public class Effecter : MonoBehaviour
     private int _defaultPoolSize;
     private ParticleSystem _particleSystem;
     private ObjectPool<ParticleSystem> _pool;
-    private CFXR_Effect _cFXR_Effect;
+    private CFXR_Effect _cFXREffect;
     private WaitForSeconds _waitForSeconds;
 
     private void Awake()
     {
         _maxPoolSize = 50;
         _defaultPoolSize = 10;
-        _cFXR_Effect = GetComponent<CFXR_Effect>();
+        _cFXREffect = GetComponent<CFXR_Effect>();
         _waitForSeconds = new WaitForSeconds(_prefab.main.duration);
 
         InitializePools();
     }
 
-    public void InitializePools()
+    public void CraeteParticles(Vector3 position, Quaternion quaternion, float scale)
+    {
+        ParticleSystem particles = _pool.Get();
+
+        SetLocation(particles, position, quaternion, scale);
+
+        Return(particles);
+    }
+
+    public void Create()
+    {
+        if (_cFXREffect != null)
+        {
+            _cFXREffect.ResetState();
+
+            if (_cFXREffect.cameraShake != null)
+            {
+                _cFXREffect.cameraShake.FetchCameras();
+                _cFXREffect.cameraShake.StartShake();
+            }
+        }
+    }
+    public ParticleSystem CreatePooledItem()
+    {
+        _particleSystem = Instantiate(_prefab);
+
+        _particleSystem.transform.SetParent(transform);
+
+        _particleSystem.gameObject.SetActive(false);
+
+        return _particleSystem;
+    }
+
+    private void InitializePools()
     {
         _pool = new ObjectPool<ParticleSystem>(
             createFunc: CreatePooledItem,
@@ -38,43 +71,9 @@ public class Effecter : MonoBehaviour
         );
     }
 
-    public void Return(ParticleSystem particles)
+    private void Return(ParticleSystem particles)
     {
         StartCoroutine(ReturnAfterDelay(particles));
-    }
-
-    public void CreateEffect()
-    {
-        if (_cFXR_Effect != null)
-        {
-            _cFXR_Effect.ResetState();
-
-            if (_cFXR_Effect.cameraShake != null)
-            {
-                _cFXR_Effect.cameraShake.FetchCameras();
-                _cFXR_Effect.cameraShake.StartShake();
-            }
-        }
-    }
-
-    public void CraeteParticles(Vector3 position, Quaternion quaternion, float scale)
-    {
-        ParticleSystem particles = _pool.Get();
-
-        SetLocation(particles, position, quaternion, scale);
-
-        Return(particles);
-    }
-
-    private ParticleSystem CreatePooledItem()
-    {
-        _particleSystem = Instantiate(_prefab);
-
-        _particleSystem.transform.SetParent(transform);
-
-        _particleSystem.gameObject.SetActive(false);
-
-        return _particleSystem;
     }
 
     private void OnTakeFromPool(ParticleSystem particles)
@@ -91,9 +90,9 @@ public class Effecter : MonoBehaviour
             particles.Play();
         }
 
-        if (_cFXR_Effect != null)
+        if (_cFXREffect != null)
         {
-            _cFXR_Effect.ResetState();
+            _cFXREffect.ResetState();
         }
     }
 

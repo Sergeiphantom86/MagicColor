@@ -1,10 +1,16 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using YG;
 
 public class MenuLoader : MonoBehaviour
 {
     private const string Menu = nameof(Menu);
+
+    private IProgressSaver _progressSaver;
+
+    private void Awake()
+    {
+        _progressSaver = new ProgressSaver();
+    }
 
     public void TargetScene(string scenName)
     {
@@ -24,7 +30,7 @@ public class MenuLoader : MonoBehaviour
     {
         if (gameObject.TryGetComponent(out Exit _))
         {
-            YG2.saves.SetIndexExit();
+            _progressSaver.SetIndexExit();
         }
     }
 }

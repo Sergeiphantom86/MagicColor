@@ -1,34 +1,43 @@
-using YG;
-
-public class InitializationState : TutorialState
+public class InitializationState : TutorialStater
 {
-    public InitializationState(TutorialStateMachine stateMachine, TutorialContext context)
-        : base(stateMachine, context) { }
+    private readonly IProgressSaver _progressSaver;
+    private readonly TutorialStateMachine _stateMachine;
+    private readonly TutorialContext _context;
+
+    public InitializationState(TutorialStateMachine stateMachine, TutorialContext context) : base(stateMachine, context)
+    {
+        _progressSaver = new ProgressSaver();
+
+        _context = context;
+        _stateMachine = stateMachine;
+    }
 
     public override void Enter()
     {
-        Context.Visualizer.gameObject.SetActive(false);
-        Context.Hints.gameObject.SetActive(false);
+        _context.Visualizer.gameObject.SetActive(false);
+        _context.Hints.gameObject.SetActive(false);
 
-        Context.Rotator.OnRotated += OnRotated;
+        _context.Rotator.OnRotated += OnRotated;
     }
-
-    public override void Update() { }
 
     public override void Exit()
     {
-        Context.Rotator.OnRotated -= OnRotated;
+        _context.Rotator.OnRotated -= OnRotated;
     }
 
     private void OnRotated()
     {
-        if (YG2.saves.IsTutorial)
+        if (_progressSaver.Saves.IsTutorialBasics == false)
         {
-            StateMachine.ChangeState(new KeyTutorialState(StateMachine, Context));
+            _stateMachine.ChangeState(new UITutorialState(_stateMachine, _context));
         }
-        else
+        else if(_progressSaver.Saves.IsUnblockingTutorial == false)
         {
-            StateMachine.ChangeState(new BlockTutorialState(StateMachine, Context));
+            _stateMachine.ChangeState(new KeyTutorialState(_stateMachine, _context));
+        }
+        else if (_progressSaver.Saves.IsAbilityTutorial == false)
+        {
+            _stateMachine.ChangeState(_context.TutorialAbilities);
         }
     }
 }

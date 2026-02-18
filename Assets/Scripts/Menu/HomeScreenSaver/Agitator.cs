@@ -70,7 +70,7 @@ public class Agitator : MonoBehaviour, IAnimatable
 
         if (_voiceover != null && _destructionSound != null)
         {
-            _voiceover.Play(_destructionSound);
+            _voiceover.PlayOneShot(_destructionSound);
         }
 
         if (_destruction != null)

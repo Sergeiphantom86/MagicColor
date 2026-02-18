@@ -95,7 +95,7 @@ Material:
     - _Metallic: 0
     - _Mode: 3
     - _OcclusionStrength: 1
-    - _Outline: 0.1
+    - _Outline: 0.08
     - _OutlineAlpha: 0
     - _Parallax: 0.02
     - _PulseMax: 1.09
@@ -103,7 +103,7 @@ Material:
     - _PulseSpeed: 1
     - _QueueControl: -1
     - _QueueOffset: 0
-    - _Radius: 0.05
+    - _Radius: 0.072
     - _SmoothnessTextureChannel: 1
     - _SpecularHighlights: 1
     - _SpotDensity: 0.34

@@ -5,31 +5,27 @@ using UnityEngine;
 
 public class FragmentQueueProcessor
 {
-    private readonly Queue<Fragment> _fragmentsQueue = new();
     private readonly IMover _mover;
     private readonly Voiceover _voiceover;
     private readonly AudioClip _pixelActivation;
     private readonly IBlocksContainer _blocksContainer;
     private readonly IFragmentAnimator _fragmentAnimator;
+    private readonly Queue<Fragment> _fragmentsQueue;
+    private readonly float _minDuration;
 
-    private Fragment _currentFragment;
-    private Vector3 _startPosition;
-
-    private bool _isProcessing;
-    private bool _needSpeedBoost;
     private bool _isSoundOn;
-
+    private bool _needSpeedBoost;
     private float _currentDuration;
     private float _durationStep;
-    private float _minDuration;
-
     private Color _currentColor;
+    private Vector3 _startPosition;
+    private Fragment _currentFragment;
 
     public event Action OnFragmentActivated;
     public event Action<float> OnIncreaseSpeed;
     public event Action<Color> ColorHasChanged;
 
-    public FragmentQueueProcessor(Voiceover voiceover,AudioClip pixelActivation,IMover mover,IFragmentAnimator fragmentAnimator,IBlocksContainer blocksContainer)
+    public FragmentQueueProcessor(Voiceover voiceover, AudioClip pixelActivation, IMover mover, IFragmentAnimator fragmentAnimator, IBlocksContainer blocksContainer)
     {
         _mover = mover;
         _voiceover = voiceover;
@@ -38,6 +34,7 @@ public class FragmentQueueProcessor
         _fragmentAnimator = fragmentAnimator;
         _isSoundOn = true;
         _minDuration = 0.01f;
+        _fragmentsQueue = new();
 
         if (_blocksContainer != null)
         {
@@ -57,16 +54,15 @@ public class FragmentQueueProcessor
     {
         foreach (var fragment in fragments)
         {
-            if (fragment != null && !_fragmentsQueue.Contains(fragment))
+            if (fragment != null && _fragmentsQueue.Contains(fragment) == false)
             {
                 _fragmentsQueue.Enqueue(fragment);
             }
         }
     }
 
-    public IEnumerator ProcessQueueRoutine(Vector3 startPosition,float initialDuration,float durationStep)
+    public IEnumerator ProcessQueueRoutine(Vector3 startPosition, float initialDuration, float durationStep)
     {
-        _isProcessing = true;
         _startPosition = startPosition;
         _currentDuration = initialDuration;
         _durationStep = durationStep;
@@ -86,6 +82,7 @@ public class FragmentQueueProcessor
             );
 
             _fragmentAnimator.ActivateFragment(_currentFragment);
+
             PlayActivationSound();
 
             TryRequestSpeedIncrease();
@@ -94,8 +91,6 @@ public class FragmentQueueProcessor
         }
 
         yield return _mover.MoveToPosition(_startPosition, _currentDuration);
-
-        _isProcessing = false;
     }
 
     public void SpeedUpMovement()
@@ -108,11 +103,8 @@ public class FragmentQueueProcessor
 
     private void RequestSpeedBoost()
     {
-        if (_isProcessing)
-        {
-            _needSpeedBoost = true;
-            _isSoundOn = false;
-        }
+        _needSpeedBoost = true;
+        _isSoundOn = false;
     }
 
     private void TryRequestSpeedIncrease()
@@ -133,6 +125,7 @@ public class FragmentQueueProcessor
     private void NotifyColorChangeIfNeeded(Fragment fragment)
     {
         var fragmentColor = fragment.GetColor();
+
         if (_currentColor == fragmentColor)
             return;
 
@@ -145,7 +138,7 @@ public class FragmentQueueProcessor
     {
         if (_pixelActivation != null && _isSoundOn)
         {
-            _voiceover.Play(_pixelActivation);
+            _voiceover.PlayOneShot(_pixelActivation);
         }
     }
 }

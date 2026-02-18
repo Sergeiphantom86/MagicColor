@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Audio;
-using YG;
 
 [RequireComponent(typeof(AudioSource))]
 public class Voiceover : MonoBehaviour
@@ -14,30 +13,30 @@ public class Voiceover : MonoBehaviour
 
     private AudioSource _sfxSource;
     private float _currentVolume;
+    private IProgressSaver _progressSaver;
 
     public bool IsPlaying => _sfxSource.isPlaying;
 
     private void Awake()
     {
         _sfxSource = GetComponent<AudioSource>();
+        _progressSaver = new ProgressSaver();
         _sfxSource.outputAudioMixerGroup = _sfxGroup;
 
         LoadVolumeSettings();
     }
 
+    public void PlayOneShot(AudioClip clip)
+    {
+        if (clip == false || _sfxSource == false || _sfxSource.enabled == false || gameObject.activeInHierarchy == false) return;
+
+        _sfxSource.PlayOneShot(clip);
+    }
+
     public void Play(AudioClip clip)
     {
-        if (clip != null && _sfxSource != null )
-        {
-            if (_currentVolume != _sfxSource.volume)
-            {
-                LoadVolumeSettings();
-            }
-
-            _sfxSource.clip = clip;
-
-            _sfxSource.Play();
-        }
+        _sfxSource.clip = clip;
+        _sfxSource.Play();
     }
 
     public void Stop()
@@ -47,14 +46,14 @@ public class Voiceover : MonoBehaviour
 
     public void SetVolume(float vfd)
     {
-        float dbVolume = Mathf.Log10(YG2.saves.SoundVolume * vfd) * DBMultiplier;
+        float dbVolume = Mathf.Log10(_progressSaver.Saves.SoundVolume * vfd) * DBMultiplier;
 
         _sfxGroup.audioMixer.SetFloat(SoundVolume, dbVolume);
     }
 
     private void LoadVolumeSettings()
     {
-        float clampedVolume = Mathf.Clamp(YG2.saves.SoundVolume, MinVolume, MaxVolume);
+        float clampedVolume = Mathf.Clamp(_progressSaver.Saves.SoundVolume, MinVolume, MaxVolume);
         float dbVolume = Mathf.Log10(clampedVolume) * DBMultiplier;
 
         if (_sfxGroup != null)

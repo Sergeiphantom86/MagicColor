@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using YG;
 
 public class SceneFlowController : MonoBehaviour
 {
@@ -12,16 +11,26 @@ public class SceneFlowController : MonoBehaviour
     [SerializeField] private TextureInitializer _textureInitializer;
     [SerializeField] private TutorialPuzzle _tutorialPuzzle;
     [SerializeField] private Timer _timer;
+    [SerializeField] private PuzzlesIdentifier _puzzlesIdentifier; 
 
     private Sprite _sprite;
     private string _sceneName;
+    private IProgressSaver _progressSaver;
+    private AdRewardController _adRewardController;
 
     private void Awake()
     {
         _sceneName = SceneManager.GetActiveScene().name;
+        _progressSaver = new ProgressSaver();
+        _adRewardController = GetComponent<AdRewardController>();
     }
 
-    public void StartGame()
+    private void Start()
+    {
+        StartGame();
+    }
+
+    private void StartGame()
     {
         SetSprite();
 
@@ -33,18 +42,23 @@ public class SceneFlowController : MonoBehaviour
     {
         if (_sceneName != Tutorial)
         {
-            _menuLoader.TargetScene(Roulette);
-            YG2.SaveProgress();
+            _adRewardController.ShowRewardAd(LoadSceneRoulette);
+            _progressSaver.SaveProgress();
             return;
         }
 
         _menuLoader.TargetScene(Puzzle);
     }
 
+    private void LoadSceneRoulette()
+    {
+        _menuLoader.TargetScene(Roulette);
+    }
+
     private void SetSprite()
     {
         _sprite = _tutorialPuzzle != null
            ? _tutorialPuzzle.Sprite
-           : YG2.saves?.CurrentSprite;
+           : _progressSaver.Saves?.CurrentSprite;
     }
 }

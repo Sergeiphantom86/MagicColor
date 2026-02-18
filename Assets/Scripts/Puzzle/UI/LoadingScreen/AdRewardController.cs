@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using YG;
 
 public class AdRewardController : MonoBehaviour
 {
@@ -8,24 +7,43 @@ public class AdRewardController : MonoBehaviour
 
     [SerializeField] private OfferPanel _offerPanel;
 
+    private IProgressSaver _progressSaver;
+
     private Action OnComplete;
+
+    private void Awake()
+    {
+        _progressSaver = new ProgressSaver();
+    }
 
     private void OnEnable()
     {
-        _offerPanel.OnConsent += ShowAd;
-        _offerPanel.OnCancelled += Complete;
+        if (_offerPanel != null)
+        {
+            _offerPanel.OnConsent += ShowAd;
+            _offerPanel.OnCancelled += Complete;
+        }
 
-        YG2.onCloseRewardedAdv += Complete;
-        YG2.onErrorRewardedAdv += Complete;
+        _progressSaver.SubscribeADSReward(
+            onRewardReceived: null, 
+            onAdOpened: null, 
+            onAdClosed: Complete, 
+            onAdError: Complete);
     }
 
     private void OnDisable()
     {
-        _offerPanel.OnConsent -= ShowAd;
-        _offerPanel.OnCancelled -= Complete;
+        if (_offerPanel != null)
+        {
+            _offerPanel.OnConsent -= ShowAd;
+            _offerPanel.OnCancelled -= Complete;
+        }
 
-        YG2.onCloseRewardedAdv -= Complete;
-        YG2.onErrorRewardedAdv -= Complete;
+        _progressSaver.UnsubscribeADSReward(
+            onRewardReceived: null,
+            onAdOpened: null,
+            onAdClosed: Complete,
+            onAdError: Complete);
     }
 
     public void ShowRewardAd(Action onComplete)
@@ -36,9 +54,9 @@ public class AdRewardController : MonoBehaviour
 
     private void ShowAd()
     {
-        if (YG2.nowRewardAdv == false && YG2.nowAdsShow == false)
+        if (_progressSaver.CanShowAd())
         {
-            YG2.RewardedAdvShow(RewardID, null);
+            _progressSaver.RewardedAdvShow(RewardID, null);
         }
         else
         {

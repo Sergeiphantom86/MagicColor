@@ -1,19 +1,20 @@
 using UnityEngine;
+using System;
 
-[RequireComponent(typeof(InputHandler), typeof(ColorCollisionHandler))]
+[RequireComponent(typeof(IInputHandler), typeof(ColorCollisionHandler))]
 public class WallInteractionController : MonoBehaviour
 {
     private IUnlockPolicy _unlockPolicy;
     private IWallInteractor _wall;
 
-    private InputHandler _inputHandler;
+    private IInputHandler _inputHandler;
     private ColorCollisionHandler _colorCollisionHandler;
 
     private bool _initialized;
 
     private void Awake()
     {
-        _inputHandler = GetComponent<InputHandler>();
+        _inputHandler = GetComponent<IInputHandler>();
         _colorCollisionHandler = GetComponent<ColorCollisionHandler>();
     }
 
@@ -23,10 +24,10 @@ public class WallInteractionController : MonoBehaviour
             return;
 
         _unlockPolicy = unlockPolicy ??
-            throw new System.ArgumentNullException(nameof(unlockPolicy));
+            throw new ArgumentNullException(nameof(unlockPolicy));
 
         _wall = wall ??
-            throw new System.ArgumentNullException(nameof(wall));
+            throw new ArgumentNullException(nameof(wall));
 
         Subscribe();
 
@@ -57,11 +58,10 @@ public class WallInteractionController : MonoBehaviour
     {
         if (_unlockPolicy.TryUnlock())
         {
-            _wall.Unlock();
-            return;
+            _colorCollisionHandler.UnblockWall();
         }
 
-        //_wall.PushMovement();
+        _wall.PushMovement();
     }
 
     private void OnBlockTouch(Block block)

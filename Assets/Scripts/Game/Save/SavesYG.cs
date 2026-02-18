@@ -6,22 +6,44 @@ namespace YG
     {
         private const int MinIndexValue = 0;
         private const long MinCurrentValue = 0;
-        private const int IndexSecondTutorial = 2;
+        private const int IndexTutorialBasics = 0;
+        private const int IndexUnblockingTutorial = 1;
+        private const int IndexAbilityTutorial = 2;
 
-        [SerializeField] private int _indexSecondQuest = IndexSecondTutorial;
+        [SerializeField] private int _indexUnblockingTutorial = IndexUnblockingTutorial;
+
         [SerializeField] private int _questIndex;
+
         [SerializeField] private int _maxReachedQuestIndex;
+
+        [SerializeField] private int _quantityAbilities;
+
         [SerializeField] private long _currentCoin;
+
         [SerializeField] private long _currentCrystal;
-        [SerializeField] private bool _isFirstTutorial = true;
-        [SerializeField] private bool _isSecondTutorial = true;
+
+        [SerializeField] private bool _isTutorialBasics;
+
+        [SerializeField] private bool _isUnblockingTutorial;
+
+        [SerializeField] private bool _isAbilityTutorial;
+
+        [SerializeField] private bool _isUnlockAbilities;
+
         [SerializeField] private bool _isMenuTutorial;
+
         [SerializeField] private bool _isTransparency;
-        [SerializeField] private bool _isTutorial;
+
+        [SerializeField] private bool _isUnlockKey;
+
         [SerializeField] private bool _isAutomaticallyNewLevel;
+
         [SerializeField] private int _stars;
+
         [SerializeField] private float _musicVolume = 0.3f;
+
         [SerializeField] private float _soundVolume = 0.3f;
+
         [SerializeField] private int _spins;
 
         private Sprite _newSprite;
@@ -30,22 +52,47 @@ namespace YG
         private int _reward;
 
         public bool IsAutomaticallyNewLevel => _isAutomaticallyNewLevel;
-        public bool IsFirstTutorial => _isFirstTutorial;
-        public bool IsSecondTutorial => _isSecondTutorial;
+
+        public bool IsTutorialBasics => _isTutorialBasics;
+
+        public bool IsUnblockingTutorial => _isUnblockingTutorial;
+
+        public bool IsAbilityTutorial => _isAbilityTutorial;
+
         public bool IsMenuTutorial => _isMenuTutorial;
-        public int IndexSecondQuest => _indexSecondQuest;
+
+        public bool IsUnlockAbilities => _isUnlockAbilities;
+
+        public int IndexSecondQuest => _indexUnblockingTutorial;
+
+        public int QuantityAbilities => _quantityAbilities;
+
         public long CurrentCrystal => _currentCrystal;
+
         public bool IsTransparency => _isTransparency;
+
         public float MusicVolume => _musicVolume;
+
         public float SoundVolume => _soundVolume;
+
         public float MusicTime { get; private set; }
+
+        public int IndexPuzzle { get; set; }
+
         public long CurrentCoin => _currentCoin;
-        public bool IsTutorial => _isTutorial;
+
+        public bool IsUnlockKey => _isUnlockKey;
+
         public int QuestIndex => _questIndex;
+
         public int CountStars => _stars;
+
         public int Reward => _reward;
+
         public int Spins => _spins;
+
         public Sprite NewSprite => _newSprite;
+
         public Sprite CurrentSprite => _currentSprite;
 
         public void SetCountQuest(int countQuest)
@@ -75,9 +122,12 @@ namespace YG
 
         public void SaveSpinsCount(int spins)
         {
-            _spins = 0;
-            
-            _spins += spins;
+            _spins = spins;
+        }
+
+        public void SetQuantityAbilities(int quantityAbilities)
+        {
+            _quantityAbilities = quantityAbilities;
         }
 
         public void SetTutorial(int index)
@@ -88,10 +138,20 @@ namespace YG
                 return;
             }
 
-            if (index == _indexSecondQuest)
+            if (index == _indexUnblockingTutorial)
             {
-                _isTutorial = true;
+                _isUnlockKey = true;
             }
+
+            if (index == IndexAbilityTutorial)
+            {
+                _isUnlockAbilities = true;
+            }
+        }
+
+        public void ObstacleSwitch()
+        {
+            _isUnlockAbilities = false;
         }
 
         public void DisableTutorialMenu()
@@ -101,13 +161,13 @@ namespace YG
 
         public void ChangeTutorial(bool isTutorial)
         {
-            if (_isFirstTutorial)
+            if (_isTutorialBasics)
             {
-                _isFirstTutorial = isTutorial;
+                _isTutorialBasics = isTutorial;
                 return;
             }
 
-            _isSecondTutorial = isTutorial;
+            _isUnblockingTutorial = isTutorial;
         }
 
         public void SetReward(int reward)
@@ -130,7 +190,7 @@ namespace YG
                 Debug.LogError("SetCurrency: передан null currency");
                 return;
             }
-            
+
             if (balance == 0) return;
 
             if (currency is Coin)
@@ -143,6 +203,11 @@ namespace YG
             }
         }
 
+        public void SaveBalanceAfterPurchase(long balance)
+        {
+            _currentCoin = balance;
+        }
+
         private long TryGetBalance(long balance)
         {
             if (balance < MinCurrentValue)
@@ -152,6 +217,21 @@ namespace YG
             }
 
             return balance;
+        }
+
+        public void SetTutorialBasics()
+        {
+            _isTutorialBasics = true;
+        }
+
+        public void SetAbilityTutorial()
+        {
+            _isAbilityTutorial = true;
+        }
+
+        public void SetUnblockingTutorial()
+        {
+            _isUnblockingTutorial = true;
         }
 
         public void SetQuestIndex(int questIndex)
@@ -196,7 +276,7 @@ namespace YG
 
             if (ValidateAllData(volumeChanger) && volumeChanger is MusicVolumeController)
                 _musicVolume = volume;
-            else if (ValidateAllData(volumeChanger) &&volumeChanger is VolumeSoundsController)
+            else if (ValidateAllData(volumeChanger) && volumeChanger is VolumeSoundsController)
                 _soundVolume = volume;
         }
 
@@ -226,13 +306,16 @@ namespace YG
             _currentCrystal = 0;
             _soundVolume = 0.3f;
             _musicVolume = 0.3f;
+            _quantityAbilities = 0;
             _maxReachedQuestIndex = 0;
-            _isFirstTutorial = true;
-            _isSecondTutorial = true;
+            _isTutorialBasics = false;
+            _isUnblockingTutorial = false;
+            _isAbilityTutorial = false;
             _isMenuTutorial = false;
             _isTransparency = false;
-            _isTutorial = false;
-            _indexSecondQuest = IndexSecondTutorial;
+            _isUnlockKey = false;
+            _isUnlockAbilities = false;
+            _indexUnblockingTutorial = IndexUnblockingTutorial;
         }
     }
 }

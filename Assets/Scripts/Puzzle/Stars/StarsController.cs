@@ -1,6 +1,5 @@
 using DG.Tweening;
 using UnityEngine;
-using YG;
 
 public class StarsController : MonoBehaviour
 {
@@ -22,7 +21,7 @@ public class StarsController : MonoBehaviour
 
     private void Start()
     {
-        ShowWithAnimation(_starCounter.CalculateStarsByAbsoluteTime(_lastSavedScore));
+        ShowWithAnimation(_starCounter.GetCountStars(_lastSavedScore));
     }
 
     private void OnEnable()

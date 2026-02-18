@@ -53,7 +53,7 @@ public class StarRatingCalculator : MonoBehaviour
 
         for (int time = 1; time <= _starCounter.MaxTimeSeconds; time += _stepSeconds)
         {
-            int stars = _starCounter.CalculateStarsByAbsoluteTime(time);
+            int stars = _starCounter.GetCountStars(time);
 
             if (_starsToTimes.ContainsKey(stars) == false)
                 _starsToTimes[stars] = new List<int>();

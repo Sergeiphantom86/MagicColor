@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using YG;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(Renderer))]
 public class ColorableObject : MonoBehaviour, IColorable
@@ -11,16 +11,20 @@ public class ColorableObject : MonoBehaviour, IColorable
 
     [SerializeField] private bool _isTransparent;
 
-    private Color _originalColor;
+    private float _time;
     private float _delay;
     private bool _isRepainted;
+    private int _renderQueue;
+    private int _startRenderQueue;
+    private float _fadeDuration;
     private float _valueTransparency;
     private Material _material;
+    private Renderer _renderer;
+    private Color _originalColor;
     private Indicator _indicator;
     private Coroutine _coroutine;
-    private Renderer _renderer;
     private WaitForSeconds _waitForSeconds;
-    private float _fadeDuration;
+    private IProgressSaver _progressSaver;
 
     public bool IsRepainted => _isRepainted;
 
@@ -28,9 +32,14 @@ public class ColorableObject : MonoBehaviour, IColorable
     {
         _delay = 10;
         _fadeDuration = 1f;
+        _renderQueue = 4000;
         _valueTransparency = 0.3f;
+
         _indicator = GetComponent<Indicator>();
+
+        _progressSaver = new ProgressSaver();
         _waitForSeconds = new WaitForSeconds(_delay);
+
         InitializeRenderer();
         ValidateRenderer();
 
@@ -41,10 +50,7 @@ public class ColorableObject : MonoBehaviour, IColorable
 
         _material = _renderer.material;
 
-        //if (_isTransparent)
-        //{
-        //    SetAlpha( _valueTransparency);
-        //}
+        _startRenderQueue = _renderer.material.renderQueue;
     }
 
 
@@ -67,40 +73,32 @@ public class ColorableObject : MonoBehaviour, IColorable
     {
         if (color == null) return;
 
-        InitializeRenderer();
-        ValidateRenderer();
+        if (_renderer.material == null) return;
 
-        if (_renderer.material != null)
+        SetOriginalColor(color);
+
+        if (_indicator != null)
         {
-            SetOriginalColor(color);
-
-            if (this is Drop)
-            {
-                if (_material == null)
-                {
-                    _material = _renderer.material;
-                }
-
-                _material.color = _originalColor;
-
-                return;
-            }
-
-            if (_indicator != null)
-            {
-                _indicator.TurnOnSpriteRenderer();
-            }
+            _indicator.TurnOnSpriteRenderer();
         }
+
+        if (this is not Drop) return;
+
+        if (_material == null)
+        {
+            _material = _renderer.material;
+        }
+
+        _material.color = _originalColor;
+
+        return;
     }
 
     private void InitializeRenderer()
     {
-        if (_renderer == null)
-        {
-            _renderer = GetComponent<Renderer>();
+        if (_renderer != null) return;
 
-            if (_renderer == null) return;
-        }
+        _renderer = GetComponent<Renderer>();
     }
 
     public void SetActive(bool state) =>
@@ -116,9 +114,14 @@ public class ColorableObject : MonoBehaviour, IColorable
         return Color.red;
     }
 
-    public void SetRender()
+    public void SetRenderQueue()
     {
-        //_material.renderQueue = 2000;
+        _material.renderQueue = _renderQueue;
+    }
+
+    public void ReturnRenderQueue()
+    {
+        _material.renderQueue = _startRenderQueue;
     }
 
     public void SetAlpha(float alpha)
@@ -143,37 +146,18 @@ public class ColorableObject : MonoBehaviour, IColorable
             return;
         }
 
-        if (_material == null)
-        {
-            Debug.Log("AssignOriginal");
-        }
-
         _material.color = Color.white;
     }
 
     public void EnableEmission(Color emissionColor, float intensity = 0.01f, float brightness = 0.5f)
     {
-        if (_renderer != null && _renderer.material != null)
-        {
-            _material.EnableKeyword(Emission);
+        if (_material == null && _material == null) return;
 
-            _material.SetFloat(EmissionIntensity, Mathf.Clamp01(intensity));
+        _material.EnableKeyword(Emission);
 
-            _material.SetColor(EmissionColor, GetDimmedEmissionColor(emissionColor, brightness));
-        }
-    }
+        _material.SetFloat(EmissionIntensity, Mathf.Clamp01(intensity));
 
-    public void DisableGlow()
-    {
-        if (_renderer != null && _renderer.material != null)
-        {
-            _material.DisableKeyword(Emission);
-
-            if (_material.HasProperty(EmissionColor))
-            {
-                _material.SetColor(EmissionColor, Color.black);
-            }
-        }
+        _material.SetColor(EmissionColor, GetDimmedEmissionColor(emissionColor, brightness));
     }
 
     public void Disable()
@@ -193,14 +177,12 @@ public class ColorableObject : MonoBehaviour, IColorable
 
     private IEnumerator FadeOutAndDisable()
     {
-        float time = 0f;
-
-        while (time < _fadeDuration)
+        while (_time < _fadeDuration)
         {
-            time += Time.deltaTime;
-            float t = time / _fadeDuration;
-            _originalColor.a = Mathf.Lerp(_originalColor.a, 0f, t);
+            _originalColor.a = Mathf.Lerp(_originalColor.a, 0f, GetTime(_time) / _fadeDuration);
+
             _material.color = _originalColor;
+
             yield return null;
         }
 
@@ -210,11 +192,9 @@ public class ColorableObject : MonoBehaviour, IColorable
         _renderer.enabled = false;
     }
 
-    protected float GetDistance()
+    private float GetTime(float time)
     {
-        float fenceHeight = _renderer != null ? _renderer.bounds.size.y : transform.localScale.y;
-        
-        return fenceHeight;
+        return time += Time.deltaTime;
     }
 
     private Color GetDimmedEmissionColor(Color color, float brightness)
@@ -224,8 +204,6 @@ public class ColorableObject : MonoBehaviour, IColorable
 
     private void ValidateRenderer()
     {
-        if (_renderer != null) return;
-
         if (_renderer == null)
             Debug.LogError($"Renderer not found on {name}", this);
     }
@@ -239,10 +217,10 @@ public class ColorableObject : MonoBehaviour, IColorable
     {
         yield return _waitForSeconds;
 
-        if (YG2.saves.IsTransparency)
+        if (_progressSaver.Saves.IsTransparency)
         {
             _material.color = Color.white;
-            SetAlpha( _valueTransparency);
+            SetAlpha(_valueTransparency);
         }
 
         _coroutine = null;

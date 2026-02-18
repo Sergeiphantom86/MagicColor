@@ -25,7 +25,6 @@ public class FireworksController : MonoBehaviour
         foreach (var fireworks in _allFireworksAudio)
         {
             fireworks.Stop();
-            //fireworks.StopFireworks();
         }
     }
 

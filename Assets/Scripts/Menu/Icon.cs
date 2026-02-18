@@ -1,15 +1,16 @@
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using YG;
 
 public class Icon : MonoBehaviour
 {
     private TextMeshProUGUI _textMeshProUGUI;
+    private IProgressSaver _progressSaver;
 
     private void Awake()
     {
         _textMeshProUGUI = GetComponentInChildren<TextMeshProUGUI>();
+        _progressSaver = new ProgressSaver();  
 
         SetRank(SetLexel().ToString().NullIfEmpty());
     }
@@ -25,7 +26,7 @@ public class Icon : MonoBehaviour
     {
         int value = 1;
 
-        value += YG2.saves.QuestIndex;
+        value += _progressSaver.Saves.QuestIndex;
 
         return value;
     }

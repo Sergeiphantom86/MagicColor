@@ -10,4 +10,6 @@ public interface IColorable
     public void Disable();
     public void SetAlpha(float alpha);
     public bool IsRepainted { get; }
+    public void SetRenderQueue();
+    public void ReturnRenderQueue();
 }

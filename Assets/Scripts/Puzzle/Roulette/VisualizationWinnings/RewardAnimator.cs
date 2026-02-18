@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
+
 
 public class RewardAnimator : MonoBehaviour
 {
@@ -21,6 +21,7 @@ public class RewardAnimator : MonoBehaviour
     private float _moveToTargetDuration;
     private float _explosionDistanceMultiplier;
     private Voiceover _voiceover;
+    private IProgressSaver _progressSaver;
 
     private void Awake()
     {
@@ -31,13 +32,14 @@ public class RewardAnimator : MonoBehaviour
         _explosionDistanceMultiplier = 20f;
         _directionRange = new Vector2(-2f, 2f);
         _voiceover = GetComponent<Voiceover>();
+        _progressSaver = new ProgressSaver();
     }
 
     public void ActivateAtPosition(Currency item)
     {
         int particleCount = GetNumberParticles(item);
 
-        _voiceover.Play(_audioClip);
+        _voiceover.PlayOneShot(_audioClip);
 
         for (int i = 0; i < particleCount; i++)
         {
@@ -99,7 +101,7 @@ public class RewardAnimator : MonoBehaviour
         }
         else
         {
-            return item.Value * item.Winn * YG2.saves.CountStars;
+            return item.Value * _progressSaver.Saves.Reward * _progressSaver.Saves.CountStars;
         }
     }
 

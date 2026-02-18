@@ -5,20 +5,42 @@ public class MenuController : MonoBehaviour
 {
     [SerializeField] private MenuButtons _menuButtons;
     [SerializeField] private PanelFader _panelFader;
-    [SerializeField] private ButtonHome _buttonHome;
     [SerializeField] private FireworksController _fireworks;
 
     private SceneFlowController _sceneFlow;
-    private AdRewardController _adRewardController;
     private PuzzleFlowController _puzzleFlow;
 
     private void Awake()
     {
         _sceneFlow = GetComponent<SceneFlowController>();
-        _adRewardController = GetComponent<AdRewardController>();
         _puzzleFlow = GetComponent<PuzzleFlowController>();
 
         _menuButtons.Initialize(OnAnyButton, OnResumeClicked);
+
+        if (_menuButtons == null)
+        {
+            Debug.LogError("MenuButtons == null");
+        }
+
+        if (_panelFader == null)
+        {
+            Debug.LogError("PanelFader == null");
+        }
+
+        if (_fireworks == null)
+        {
+            Debug.LogError("FireworksController == null");
+        }
+
+        if (_sceneFlow == null)
+        {
+            Debug.LogError("SceneFlowController == null");
+        }
+
+        if (_puzzleFlow == null)
+        {
+            Debug.LogError("PuzzleFlowController == null");
+        }
     }
 
     private IEnumerator Start()
@@ -26,7 +48,6 @@ public class MenuController : MonoBehaviour
         yield return new WaitForFixedUpdate();
 
         _panelFader.FadeOut();
-        _sceneFlow.StartGame();
     }
 
     private void OnEnable()
@@ -44,7 +65,6 @@ public class MenuController : MonoBehaviour
     private void OnPuzzleCompleted()
     {
         _menuButtons.ShowResumeButton();
-        _buttonHome.gameObject.SetActive(false);
     }
 
     private void OnResumeClicked()
@@ -53,7 +73,7 @@ public class MenuController : MonoBehaviour
 
         _panelFader.FadeIn(() =>
         {
-            _adRewardController.ShowRewardAd(_sceneFlow.LoadNextScene);
+            _sceneFlow.LoadNextScene();
         });
     }
 }

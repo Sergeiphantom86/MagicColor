@@ -1,14 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
 
 public class Reset : MonoBehaviour
 {
    private Button _button;
+    private IProgressSaver _progressSaver;
 
     private void Awake()
     {
         _button = GetComponent<Button>();
+        _progressSaver = new ProgressSaver();
     }
 
     private void Start()
@@ -18,7 +19,7 @@ public class Reset : MonoBehaviour
 
     private void TurnOn()
     {
-        YG2.SetDefaultSaves();
-        YG2.SaveProgress();
+        _progressSaver.SetDefaultValues();
+        _progressSaver.SaveProgress();
     }
 }

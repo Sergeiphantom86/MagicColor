@@ -1,8 +1,6 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
-using YG;
 
 [RequireComponent(typeof(AudioSource))]
 public class MenuSound : MonoBehaviour
@@ -26,6 +24,7 @@ public class MenuSound : MonoBehaviour
     private float _volumeDB;
     private int _delay;
     private float _playbackTime;
+    private IProgressSaver _progressSaver;
     private WaitForSeconds _waitForSeconds;
     private WaitForSeconds _waitStop;
 
@@ -35,8 +34,10 @@ public class MenuSound : MonoBehaviour
         _playbackTime = 0.5f;
         _waitForSeconds = new WaitForSeconds(_delay);
         _waitStop = new WaitForSeconds(_playbackTime);
+        _progressSaver = new ProgressSaver();
+
         SetupAudioSources();
-        PlayBackgroundMusic(YG2.saves.MusicTime);
+        PlayBackgroundMusic(_progressSaver.Saves.MusicTime);
     }
 
     private void OnEnable()
@@ -50,12 +51,12 @@ public class MenuSound : MonoBehaviour
         _musicVolumeChanger.OnVolumeChange -= SetVolume;
         _sounVolumeChanger.OnVolumeChange -= SetVolume;
 
-        YG2.saves.SetMusicTime(_musicSource.time);
+        _progressSaver.SetMusicTime(_musicSource.time);
     }
 
     private void OnDestroy()
     {
-        YG2.SaveProgress();
+        _progressSaver.SaveProgress();
     }
 
     public void PlayButtonClick(AudioClip audioClip)
@@ -114,10 +115,10 @@ public class MenuSound : MonoBehaviour
 
     private void LoadVolumeSettings()
     {
-        if (YG2.saves != null)
+        if (_progressSaver.Saves != null)
         {
-            _currentMusicVolume = YG2.saves.MusicVolume;
-            _currentSounVolume = YG2.saves.SoundVolume;
+            _currentMusicVolume = _progressSaver.Saves.MusicVolume;
+            _currentSounVolume = _progressSaver.Saves.SoundVolume;
         }
     }
 
@@ -170,7 +171,7 @@ public class MenuSound : MonoBehaviour
     {
         yield return _waitForSeconds;
 
-        YG2.SaveProgress();
+        _progressSaver.SaveProgress();
         _coroutineSaving = null;
     }
 }

@@ -1,4 +1,3 @@
-using DG.Tweening;
 using System;
 using UnityEngine;
 
@@ -9,7 +8,6 @@ public class Lock : MonoBehaviour
     [SerializeField] private AudioClip _blocking;
     [SerializeField] private ErrorPanel _errorPanel;
 
-    private Sequence _movementSequence;
     private Oscillator _ocillator;
     private Unblocker _unblocker;
     private Voiceover _voiceover;
@@ -41,9 +39,21 @@ public class Lock : MonoBehaviour
             return;
         }
 
+        if (_lockPointers == null)
+        {
+            Debug.LogError("LockPointer = null");
+            return;
+        }
+
         if (_voiceover == null)
         {
             Debug.LogError("Voiceover = null");
+            return;
+        }
+
+        if (_collider == null)
+        {
+            Debug.LogError("Collider = null");
             return;
         }
     }
@@ -55,21 +65,14 @@ public class Lock : MonoBehaviour
 
     public void SetAngle(Vector3 angleRotation)
     {
-        if (_movementSequence == null || _movementSequence.IsActive() == false)
-        {
-            _movementSequence = DOTween.Sequence();
-            _movementSequence.SetLink(gameObject);
-        }
-
-        _movementSequence.Append(transform.DORotate(angleRotation, 0));
+        transform.Rotate(angleRotation);
     }
 
     public void Unblock()
     {
         _unblocker.Play();
-        _voiceover.Play(_flight);
+        _voiceover.PlayOneShot(_flight);
         _collider.enabled = false;
-
         SetColor();
         OnUnblocking?.Invoke();
     }
@@ -82,7 +85,7 @@ public class Lock : MonoBehaviour
         }
 
         _ocillator.Play();
-        _voiceover.Play(_blocking);
+        _voiceover.PlayOneShot(_blocking);
     }
 
     private void SetColor()
@@ -91,10 +94,5 @@ public class Lock : MonoBehaviour
         {
             lockPointer.SetColor();
         }
-    }
-
-    private void OnDestroy()
-    {
-        _movementSequence?.Kill(_blocking);
     }
 }

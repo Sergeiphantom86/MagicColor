@@ -8,7 +8,6 @@ public class Fragment : MonoBehaviour
     private float _startAlpha;
     private Transform _transform;
     private SpriteRenderer _renderer;
-    private Color _currentColor;
 
     public SpriteRenderer Renderer => _renderer;
 

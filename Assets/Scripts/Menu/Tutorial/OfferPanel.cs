@@ -80,7 +80,7 @@ public class OfferPanel : MonoBehaviour
     {
         if (audioClip != null)
         {
-            _voiceover.Play(audioClip);
+            _voiceover.PlayOneShot(audioClip);
         }
     }
 

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using YG;
 
 public class QuestCollector : MonoBehaviour
 {
@@ -9,103 +8,90 @@ public class QuestCollector : MonoBehaviour
     [SerializeField] private Contender _contender;
 
     private List<Quest> _allQuests;
-    private List<Sprite> _sprits;
-    private int _indexFirstQuest;
-    private int _indexSecondQuest;
-    private bool _isFirstTutorial;
-    private bool _isSecondTutorial;
+    private List<Sprite> _spritesQuests;
+    private IProgressSaver _progressSaver;
+    private QuestCustomizer _questCustomizer;
 
     private void Awake()
     {
         _allQuests = new List<Quest>();
-        _sprits = new List<Sprite>();
-        _indexFirstQuest = 1;
-        _indexSecondQuest = YG2.saves.IndexSecondQuest;
-        _isFirstTutorial = YG2.saves.IsFirstTutorial;
-        _isSecondTutorial = YG2.saves.IsSecondTutorial;
+        _spritesQuests = new List<Sprite>();
+        _progressSaver = new ProgressSaver();
+        _questCustomizer = new QuestCustomizer(_progressSaver);
 
-        if (_questSystem == null)
-        {
-            Debug.LogError("QuestSystem is not assigned in QuestCollector!");
-            return;
-        }
-
-        if (_viewer == null)
-        {
-            Debug.LogError("Viewer is not assigned in QuestCollector!");
-            return;
-        }
-
-        if (_questSystem.transform == null)
-        {
-            Debug.LogError("QuestSystem transform is null!");
-            return;
-        }
+        ValidateDependencies();
     }
 
     private void Start()
     {
-        CollectChildQuests();
-        _questSystem.gameObject.SetActive(false);    
+        InitializeQuests();
+        _questSystem.gameObject.SetActive(false);
     }
 
-    private void CollectChildQuests()
+    private void InitializeQuests()
+    {
+        ClearCollections();
+        CollectQuests();
+        SaveQuestProgress();
+        SetupSprites();
+        _questCustomizer.Apply(_allQuests);
+        InitializeQuestSystem();
+    }
+
+    private void ClearCollections()
     {
         _allQuests.Clear();
-        _sprits.Clear();
+        _spritesQuests.Clear();
+    }
 
-        for (int i = 0; i < _contender.transform.childCount; i++)
+    private void SetupSprites()
+    {
+        SetLatestSprite();
+        _viewer.AddSprite(_spritesQuests);
+    }
+
+    private void SaveQuestProgress()
+    {
+        _progressSaver.SetCountQuest(_spritesQuests.Count);
+    }
+
+    private void CollectQuests()
+    {
+        foreach (Transform child in _contender.transform)
         {
-            if (GetTransformChild(i).TryGetComponent(out Quest quest))
+            if (child.TryGetComponent(out Quest quest))
             {
-                Quest customizedQuest = GetCustomized(quest, i);
-
-                if (customizedQuest != null)
-                {
-                    _allQuests.Add(customizedQuest);
-                    _sprits.Add(customizedQuest.Sprite);
-                }
+                _allQuests.Add(quest);
+                _spritesQuests.Add(quest.Sprite);
             }
         }
+    }
 
-        SetLatestSprite();
-
-        YG2.saves.SetCountQuest(_sprits.Count);
-
+    private void InitializeQuestSystem()
+    {
         _questSystem.Initialize(_allQuests);
-        _viewer.AddSprite(_sprits);
     }
 
     private void SetLatestSprite()
     {
-        if (_sprits == null || _sprits.Count == 0)
+        if (_spritesQuests == null || _spritesQuests.Count == 0)
             return;
 
-        int index = Mathf.Clamp(YG2.saves.QuestIndex, 0, _sprits.Count - 1);
+        int index = Mathf.Clamp(_progressSaver.Saves.QuestIndex, 0, _spritesQuests.Count - 1);
 
-        YG2.saves.SetNewSprite(_sprits[index]);
+        _progressSaver.SetNewSprite(_spritesQuests[index]);
     }
 
-    private Transform GetTransformChild(int index)
+    private void ValidateDependencies()
     {
-        return _contender.transform.GetChild(index);
+        if (_questSystem == null)
+            Debug.LogError("QuestSystem is not assigned!");
+
+        if (_viewer == null)
+            Debug.LogError("Viewer is not assigned!");
+
+        if (_contender == null)
+            Debug.LogError("Contender is not assigned!");
     }
 
-    private Quest GetCustomized(Quest quest, int index)
-    {
-        quest.SetIndex(index);
-
-        SetTutorial(quest, _isFirstTutorial, _indexFirstQuest);
-        SetTutorial(quest, _isSecondTutorial, _indexSecondQuest);
-
-        return quest;
-    }
-
-    private void SetTutorial(Quest quest, bool isTutorial, int index)
-    {
-        if (quest.Index == index)
-        {
-            quest.SetTutorial(isTutorial);
-        }
-    }
 }

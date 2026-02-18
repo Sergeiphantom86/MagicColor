@@ -1,14 +1,15 @@
 using UnityEngine;
-using YG;
 
 [RequireComponent(typeof(StarsController))]
 public class QuantityMenuStarsIndicator : MonoBehaviour
 {
     private StarsController _starsController;
+    private IProgressSaver _progressSaver;
 
     private void Awake()
     {
         _starsController = GetComponent<StarsController>();
+        _progressSaver = new ProgressSaver();
     }
 
     private void Start()
@@ -18,9 +19,9 @@ public class QuantityMenuStarsIndicator : MonoBehaviour
 
     private void ShowQuantity()
     {
-        if (YG2.saves.CountStars != 0)
+        if (_progressSaver.Saves.CountStars != 0)
         {
-            _starsController.ShowWithAnimation(YG2.saves.CountStars);
+            _starsController.ShowWithAnimation(_progressSaver.Saves.CountStars);
         }
     }
 }

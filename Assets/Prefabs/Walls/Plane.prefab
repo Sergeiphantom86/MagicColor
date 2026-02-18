@@ -12,6 +12,9 @@ GameObject:
   - component: {fileID: 8865241585637352250}
   - component: {fileID: 5521146215900059665}
   - component: {fileID: 7035998165479107248}
+  - component: {fileID: -4652723516795810629}
+  - component: {fileID: 1303762364942942241}
+  - component: {fileID: 7146677001368957675}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -103,6 +106,51 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &-4652723516795810629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048562502010311368}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e6bb5b36ea84f14cb5e153c48bdcec8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _grid: {fileID: 0}
+  _groundMask:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &1303762364942942241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048562502010311368}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04534af052f645946a97f8c9a34a0d04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7146677001368957675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048562502010311368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f0a04d16c4a6c949b77a272d756e414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 0}
+  _fallbackPrefabs: []
+  _collectionCheck: 1
+  _defaultPoolSize: 10
+  _maxPoolSize: 50

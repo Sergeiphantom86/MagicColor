@@ -1,5 +1,4 @@
 using UnityEngine;
-using YG;
 
 [RequireComponent(typeof(Currency))]
 public class Reward : MonoBehaviour
@@ -8,6 +7,7 @@ public class Reward : MonoBehaviour
 
     private Currency _currency;
     private TextAnimator _textAnimator;
+    private IProgressSaver _progressSaver;
 
     public Currency Currency => _currency;
 
@@ -15,6 +15,7 @@ public class Reward : MonoBehaviour
     {
         _currency = GetComponent<Currency>();
         _textAnimator = GetComponentInChildren<TextAnimator>(true);
+        _progressSaver = new ProgressSaver();
     }
 
     public void SetValue(int value)
@@ -38,7 +39,7 @@ public class Reward : MonoBehaviour
     {
         if (_currency != null)
         {
-            YG2.saves.SetCurrency(_currency, _textAnimator.Value);
+            _progressSaver.SetCurrency(_currency, _textAnimator.Value);
         }
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 public class HandMover : MonoBehaviour
 {
     [SerializeField] private Pivot _pivot;
-    //[SerializeField] private GridDragMovement _gridDragMovement;
 
     private Vector3 _startScale;
     private Vector3 _targetScale;
@@ -16,8 +15,6 @@ public class HandMover : MonoBehaviour
     private int _scaleMultiplier;
 
     public Pivot Pivot => _pivot;
-
-    //public event Action OnDiscontinued;
 
     private void Awake()
     {
@@ -36,15 +33,8 @@ public class HandMover : MonoBehaviour
         SetPosition(transform.position);
     }
 
-    private void OnEnable()
-    {
-        //_gridDragMovement.Moved += Stop;
-    }
-
     private void OnDisable()
     {
-        //_gridDragMovement.Moved -= Stop;
-
         Stop();
     }
 
@@ -63,7 +53,8 @@ public class HandMover : MonoBehaviour
         _sequence.Append(transform
             .DOScale(_targetScale, _duration)
             .SetEase(Ease.OutBack, _overshoot))
-            .SetLoops(-1, LoopType.Restart);
+            .SetLoops(-1, LoopType.Restart)
+            .SetUpdate(true);
     }
 
     public void EnableMoveAnimationZ()
@@ -74,10 +65,7 @@ public class HandMover : MonoBehaviour
 
     public void EnableMoveAnimationX()
     {
-        GetAnimationSequence(-_distanceX)
-            .OnComplete(() => { }
-            //OnDiscontinued?.Invoke()
-            );
+        GetAnimationSequence(-_distanceX);
     }
 
     public void EnableLoopingAnimationZ()
@@ -93,6 +81,8 @@ public class HandMover : MonoBehaviour
 
         _sequence.AppendInterval(_duration);
         _sequence.Join(transform.DOMove(GetTargetPosition(distanceX, distance), 1f));
+
+        _sequence.SetUpdate(true);
 
         return _sequence;
     }

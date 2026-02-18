@@ -13,7 +13,7 @@ EditorBuildSettings:
     guid: 0e8192f2d8b41bb46bc70abadfd32074
   - enabled: 1
     path: Assets/Scenes/Puzzle.unity
-    guid: 6cc7674ed0be4d540bce5a4e85943d58
+    guid: 60a5941b40793af4d88582c6042a0032
   - enabled: 1
     path: Assets/Scenes/Tutorial.unity
     guid: 9745d5d8edf81e849b4f5fc9b20122f8

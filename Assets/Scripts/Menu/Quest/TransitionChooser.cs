@@ -1,5 +1,4 @@
 using UnityEngine;
-using YG;
 
 public class TransitionChooser : MonoBehaviour
 {
@@ -12,11 +11,13 @@ public class TransitionChooser : MonoBehaviour
     private int _indexTransparent;
     private Sprite _sprite;
     private ZoomChanger _zoomChanger;
+    private IProgressSaver _progressSaver;
 
     private void Awake()
     {
         _indexTransparent = 2;
         _zoomChanger = new ZoomChanger();
+        _progressSaver = new ProgressSaver();
     }
 
     private void OnEnable()
@@ -41,17 +42,16 @@ public class TransitionChooser : MonoBehaviour
     {
         _sprite = quest.Sprite;
 
-        YG2.saves.SetTutorial(quest.Index);
-
         if (quest.Index == _indexTransparent)
         {
-            YG2.saves.MakeTransparent(true);
+            _progressSaver.MakeTransparent(true);
         }
 
-        if (quest.IsTutorial)
+        if (quest.IsTutorial == false)
         {
-            YG2.saves.ChangeTutorial(false);
-            quest.SetTutorial(false);
+            quest.SetTutorial(true);
+
+            _progressSaver.SetTutorial(quest.Index);
 
             if (_zoomChanger.IsMobileWithTallScreen())
             {
@@ -82,7 +82,7 @@ public class TransitionChooser : MonoBehaviour
     {
         if (_sprite != null)
         {
-            YG2.saves.SetCurrentSprite(_sprite);
+            _progressSaver.SetCurrentSprite(_sprite);
         }
         else
         {

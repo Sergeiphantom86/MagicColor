@@ -45,7 +45,7 @@ public class BounceRotator : MonoBehaviour
     {
         if (_isRotating) return;
         if (_useCooldown && Time.time - _lastRotationTime < _cooldownTime) return;
-        _voiceover.Play(_audioClip);
+        _voiceover.PlayOneShot(_audioClip);
         _isRotating = true;
         _lastRotationTime = Time.time;
         

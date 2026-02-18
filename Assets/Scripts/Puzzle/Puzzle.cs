@@ -1,20 +1,21 @@
 using DG.Tweening;
 using UnityEngine;
-using YG;
 
 public class Puzzle : MonoBehaviour
 {
     private Rotator _rotation;
+    private IProgressSaver _progressSaver;
 
     private void Awake()
     {
         _rotation = GetComponent<Rotator>();
+        _progressSaver = new ProgressSaver();
     }
 
     private void Start()
     {
-        YG2.saves.SetAutomaticTransition(false);
-        YG2.SaveProgress();
+        _progressSaver.SetAutomaticTransition(false);
+        _progressSaver.SaveProgress();
     }
 
     public void Return(float duration)

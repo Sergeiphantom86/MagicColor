@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
-using YG;
 
 [RequireComponent(typeof(AudioSource))]
 public class MenuSoundManager : MonoBehaviour
@@ -23,9 +22,12 @@ public class MenuSoundManager : MonoBehaviour
     private float _currentSounVolume = 1f;
     private Coroutine _coroutineSaving;
     private Coroutine _coroutine;
+    private IProgressSaver _progressSaver;
 
     private void Awake()
     {
+        _progressSaver = new ProgressSaver();
+
         SetupAudioSources();
 
         LoadVolumeSettings();
@@ -61,6 +63,7 @@ public class MenuSoundManager : MonoBehaviour
     private void SetupAudioSources()
     {
         AudioSource[] sources = GetComponents<AudioSource>();
+
         _soundSource = sources[0];
 
         if (sources.Length < 2)
@@ -88,10 +91,10 @@ public class MenuSoundManager : MonoBehaviour
 
     private void LoadVolumeSettings()
     {
-        if (YG2.saves != null)
+        if (_progressSaver.Saves != null)
         {
-            _currentMusicVolume = YG2.saves.MusicVolume;
-            _currentSounVolume = YG2.saves.SoundVolume;
+            _currentMusicVolume = _progressSaver.Saves.MusicVolume;
+            _currentSounVolume = _progressSaver.Saves.SoundVolume;
         }
     }
 
@@ -108,7 +111,7 @@ public class MenuSoundManager : MonoBehaviour
         Debug.Log(volume);
         
         UpdateMixerVolume(volumeChanger.name, volume);
-        YG2.saves.SetVolume(volumeChanger, volume);
+        _progressSaver.SetVolume(volumeChanger, volume);
         SaveVolumeSettings();
     }
 
@@ -135,7 +138,7 @@ public class MenuSoundManager : MonoBehaviour
 
         yield return new WaitForSeconds(delay);
 
-        YG2.SaveProgress();
+        _progressSaver.SaveProgress();
         _coroutineSaving = null;
     }
 

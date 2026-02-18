@@ -83,7 +83,7 @@ public class Mirage : MonoBehaviour
     {
         if (_isMoved == false) return;
 
-        _voiceover.Play(_audioClip);
+        _voiceover.PlayOneShot(_audioClip);
 
         _wall = wall;
 
@@ -96,7 +96,7 @@ public class Mirage : MonoBehaviour
     {
         if (_isColored == false) return;
 
-        _voiceover.Play(_audioClip);
+        _voiceover.PlayOneShot(_audioClip);
        
         _wall = wall;
 

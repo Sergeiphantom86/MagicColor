@@ -40,8 +40,8 @@ public class TextAnimator : MonoBehaviour
 
         if (_useSmoothAnimation)
         {
-            _balanceTween = DOTween.To(
-                () => _currentValue,
+            _balanceTween = DOTween.To(() => 
+            _currentValue,
                 animatedValue =>
                 {
                     _currentValue = animatedValue;
