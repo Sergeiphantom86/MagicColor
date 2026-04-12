@@ -6,9 +6,8 @@ namespace YG
     {
         private const int MinIndexValue = 0;
         private const long MinCurrentValue = 0;
-        private const int IndexTutorialBasics = 0;
-        private const int IndexUnblockingTutorial = 1;
-        private const int IndexAbilityTutorial = 2;
+        private const int IndexUnblockingTutorial = 5;
+        private const int IndexAbilityTutorial = 10;
 
         [SerializeField] private int _indexUnblockingTutorial = IndexUnblockingTutorial;
 
@@ -19,6 +18,8 @@ namespace YG
         [SerializeField] private int _quantityAbilities;
 
         [SerializeField] private long _currentCoin;
+
+        [SerializeField] private string _currentLanguage;
 
         [SerializeField] private long _currentCrystal;
 
@@ -46,12 +47,12 @@ namespace YG
 
         [SerializeField] private int _spins;
 
-        private Sprite _newSprite;
-        private Sprite _currentSprite;
         private int _countQuest;
         private int _reward;
 
         public bool IsAutomaticallyNewLevel => _isAutomaticallyNewLevel;
+
+        public int MaxReachedQuestIndex => _maxReachedQuestIndex;
 
         public bool IsTutorialBasics => _isTutorialBasics;
 
@@ -63,7 +64,11 @@ namespace YG
 
         public bool IsUnlockAbilities => _isUnlockAbilities;
 
+        public string CurrentLanguage => _currentLanguage;
+
         public int IndexSecondQuest => _indexUnblockingTutorial;
+
+        public int ObstacleDeactivatIndex => IndexAbilityTutorial;
 
         public int QuantityAbilities => _quantityAbilities;
 
@@ -91,10 +96,6 @@ namespace YG
 
         public int Spins => _spins;
 
-        public Sprite NewSprite => _newSprite;
-
-        public Sprite CurrentSprite => _currentSprite;
-
         public void SetCountQuest(int countQuest)
         {
             _countQuest = countQuest;
@@ -108,16 +109,6 @@ namespace YG
         public bool TryEnableFollowingQuest(int indexCurrentQuest)
         {
             return indexCurrentQuest >= _countQuest;
-        }
-
-        public void SetNewSprite(Sprite sprite)
-        {
-            _newSprite = sprite;
-        }
-
-        public void SetCurrentSprite(Sprite sprite)
-        {
-            _currentSprite = sprite;
         }
 
         public void SaveSpinsCount(int spins)
@@ -145,13 +136,13 @@ namespace YG
 
             if (index == IndexAbilityTutorial)
             {
-                _isUnlockAbilities = true;
+                ObstacleSwitch(true);
             }
         }
 
-        public void ObstacleSwitch()
+        public void ObstacleSwitch(bool isOn)
         {
-            _isUnlockAbilities = false;
+            _isUnlockAbilities = isOn;
         }
 
         public void DisableTutorialMenu()
@@ -239,6 +230,11 @@ namespace YG
             _questIndex = questIndex;
         }
 
+        public void SetCurrentLanguage(string language)
+        {
+            _currentLanguage = language;
+        }
+
         public int SetIndexExit()
         {
             if (_questIndex > _maxReachedQuestIndex)
@@ -308,6 +304,7 @@ namespace YG
             _musicVolume = 0.3f;
             _quantityAbilities = 0;
             _maxReachedQuestIndex = 0;
+            _currentLanguage = "ru";
             _isTutorialBasics = false;
             _isUnblockingTutorial = false;
             _isAbilityTutorial = false;

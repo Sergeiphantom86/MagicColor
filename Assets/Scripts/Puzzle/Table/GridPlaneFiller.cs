@@ -17,11 +17,24 @@ public class GridPlaneFiller : MonoBehaviour
     private int _multiplierPositions;
     private float _positionY;
 
+    private void Awake()
+    {
+        _grid = GetComponent<GridSystem>();
+    }
+
     public event Action<Material, int, int, float> HasChanged;
 
-    private void Start()
+    private void OnEnable()
     {
-        StartSpawn();
+        _grid.OnInitialized += StartSpawn;
+
+        if (_grid.IsInitialized)
+            StartSpawn();
+    }
+
+    private void OnDisable()
+    {
+        _grid.OnInitialized -= StartSpawn;
     }
 
     public void StartSpawn()
@@ -32,16 +45,15 @@ public class GridPlaneFiller : MonoBehaviour
             return;
         }
 
-        if (GridSystem.Instance == null)
+        if (_grid == null)
         {
             Debug.LogError($"{nameof(GridPlaneFiller)}: GridSystem instance is null!", this);
             return;
         }
 
-        _grid = GridSystem.Instance;
-
         if (ValidateGridSize() == false)
         {
+            Debug.LogError("ValidateGridSize");
             return;
         }
 
@@ -56,6 +68,7 @@ public class GridPlaneFiller : MonoBehaviour
             if (TryGetRenderer() == false)
             {
                 CleanupInstance();
+                Debug.LogError("ValidateGridSize");
                 return;
             }
 
@@ -64,9 +77,9 @@ public class GridPlaneFiller : MonoBehaviour
 
             HasChanged?.Invoke(_renderer.material, _grid.GridSizeX, _grid.GridSizeY, _grid.CellSize);
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
-            Debug.LogError($"{nameof(GridPlaneFiller)}: Failed to spawn plane. Error: {e.Message}", this);
+            Debug.LogError($"{nameof(GridPlaneFiller)}: Failed to spawn plane. Error: {exception.Message}", this);
             CleanupInstance();
         }
     }

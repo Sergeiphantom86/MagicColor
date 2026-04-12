@@ -10,20 +10,20 @@ public class GridGizmosDrawer : MonoBehaviour
     private Grid _grid;
     private GridSystem _gridSystem;
 
-    private void OnEnable()
-    {
-        _grid = GetComponent<Grid>();
-        _gridSystem = GetComponent<GridSystem>();
-    }
+    //private void OnEnable()
+    //{
+    //    _grid = GetComponent<Grid>();
+    //    _gridSystem = GetComponent<GridSystem>();
+    //}
 
-    private void OnDrawGizmos()
-    {
-        if (_grid == null || _gridSystem == null)
-            return;
+    //private void OnDrawGizmos()
+    //{
+    //    if (_grid == null || _gridSystem == null)
+    //        return;
 
-        //DrawGrid();
-        DrawOccupiedCells();
-    }
+    //    //DrawGrid();
+    //    DrawOccupiedCells();
+    //}
 
     private void DrawGrid()
     {

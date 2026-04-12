@@ -61,6 +61,10 @@ public class CustomCanvasScaler : MonoBehaviour
         if (_zoomChanger.IsMobileWithTallScreen() == false)
             yield break;
 
+        Debug.Log(scale);
+
         _canvas.scaleFactor = scale * _mobileScaleMultiplier;
+
+        Debug.Log(_canvas.scaleFactor);
     }
 }

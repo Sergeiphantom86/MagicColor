@@ -18,7 +18,6 @@ public class FragmentQueueProcessor
     private float _currentDuration;
     private float _durationStep;
     private Color _currentColor;
-    private Vector3 _startPosition;
     private Fragment _currentFragment;
 
     public event Action OnFragmentActivated;
@@ -61,9 +60,8 @@ public class FragmentQueueProcessor
         }
     }
 
-    public IEnumerator ProcessQueueRoutine(Vector3 startPosition, float initialDuration, float durationStep)
+    public IEnumerator ProcessQueueRoutine(float initialDuration, float durationStep)
     {
-        _startPosition = startPosition;
         _currentDuration = initialDuration;
         _durationStep = durationStep;
 
@@ -89,8 +87,6 @@ public class FragmentQueueProcessor
 
             OnFragmentActivated?.Invoke();
         }
-
-        yield return _mover.MoveToPosition(_startPosition, _currentDuration);
     }
 
     public void SpeedUpMovement()

@@ -19,29 +19,44 @@ public class PartitionSpawner : BaseSpawner<Partition>
     {
         base.Awake();
 
-        if (_gridSystem == null)
-            _gridSystem = GridSystem.Instance;
-
-        _gridHelper = new GridPositionHelper(_gridSystem);
         _progressSaver = new ProgressSaver();
-        _chainSpawner = new PartitionChainSpawner(_gridSystem);
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        if (_gridSystem == null || _pooler == null)
-        {
-            Debug.LogError("PartitionSpawner: dependencies missing");
-            return;
-        }
+        _gridSystem.OnInitialized += SpawnRandom;
 
-        if (_progressSaver.Saves.IsUnlockAbilities == false) return;
+        if (_gridSystem.IsInitialized)
+            SpawnRandom();
+    }
 
-        SpawnRandom();
+    private void OnDisable()
+    {
+        _gridSystem.OnInitialized -= SpawnRandom;
     }
 
     private void SpawnRandom()
     {
+        _gridHelper = new GridPositionHelper(_gridSystem);
+        _chainSpawner = new PartitionChainSpawner(_gridSystem);
+
+        if (_gridHelper == null)
+        {
+            Debug.LogError("GridPositionHelper: GridHelper is null");
+        }
+
+        if (_chainSpawner == null)
+        {
+            Debug.LogError("PartitionChainSpawner: GridHelper is null");
+        }
+
+        if (_gridSystem == null)
+        {
+            Debug.LogError("GridSystem: GridHelper is null");
+        }
+
+        if (_progressSaver.Saves.IsUnlockAbilities == false) return;
+
         for (int i = 0; i < _chainCount; i++)
         {
             TrySpawnSingle();
@@ -58,9 +73,10 @@ public class PartitionSpawner : BaseSpawner<Partition>
         if (TryGetAvailableCenters(partition.SizeInCells, out var centers) == false)
         {
             Despawn(partition);
+     
             return;
         }
-
+        
         Vector2Int center = GetCentr(centers);
         Vector2Int origin = _gridSystem.GetOriginFromCenter(center, partition.SizeInCells);
 
@@ -74,7 +90,7 @@ public class PartitionSpawner : BaseSpawner<Partition>
             Count = _chainCount,
             Spacing = _chainSpacing
         };
-
+        
         _chainSpawner.TrySpawnChain(_chainSpawnData, () =>
         SpawnObjectWithCurrentIndex(Vector3.zero, transform), PlacePartition);
     }
@@ -96,8 +112,9 @@ public class PartitionSpawner : BaseSpawner<Partition>
 
     private bool TryGetAvailableCenters(Vector2Int size, out List<Vector2Int> availableCenters)
     {
-        availableCenters = _gridHelper.GetAvailableCenters(size, _marginFromBorder);
-
+        
+        availableCenters = _gridHelper.GetAvailableOrigins(size, _marginFromBorder);
+        
         return availableCenters != null && availableCenters.Count > 0;
     }
 

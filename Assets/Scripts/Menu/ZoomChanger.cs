@@ -1,5 +1,4 @@
 using UnityEngine;
-using YG;
 
 public class ZoomChanger
 {
@@ -37,8 +36,6 @@ public class ZoomChanger
 
     public bool IsMobileWithTallScreen()
     {
-        //return false;
-        
         return _progressSaver.IdentifyDevice() && IsMobileLike();
     }
 

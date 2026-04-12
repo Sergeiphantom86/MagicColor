@@ -6,16 +6,16 @@ using UnityEngine;
 public class BlockSpawner : BaseSpawner<Block>
 {
     [SerializeField] private int _count;
+    [SerializeField] private int _index;
     [SerializeField] private GridSystem _gridSystem;
     [SerializeField] private Effecter _effectFalling;
-    [SerializeField] private int _index;
 
     private GridPositionHelper _gridHelper;
-    private WaitForSeconds _waitBeforePuttPlace;
     private WaitForSeconds _timeInterval;
-    private float _delayAppearance;
+    private WaitForSeconds _waitBeforePuttPlace;
     private float _delay;
     private float _transparency;
+    private float _delayAppearance;
 
     public List<Block> SpawnedBlocks => _spawnedObjects;
 
@@ -29,16 +29,19 @@ public class BlockSpawner : BaseSpawner<Block>
     {
         base.Awake();
 
-        _delayAppearance = 1;
-        _transparency = 1;
         _delay = 0.2f;
+        _transparency = 1;
+        _delayAppearance = 1;
         _waitBeforePuttPlace = new WaitForSeconds(_delayAppearance);
         _timeInterval = new WaitForSeconds(_delay);
 
         _currentPrefabIndex = _index;
 
         if (_gridSystem == null)
-            _gridSystem = GridSystem.Instance;
+        {
+            Debug.LogError("GridSystem not found");
+            return;
+        }
 
         _gridHelper = new GridPositionHelper(_gridSystem);
     }
@@ -47,7 +50,6 @@ public class BlockSpawner : BaseSpawner<Block>
     {
         SpawnerReady?.Invoke();
     }
-
 
     public void SpawnNecessaryBlocks()
     {
@@ -72,7 +74,7 @@ public class BlockSpawner : BaseSpawner<Block>
     private void TrySpawnSingleBlock()
     {
         Block block = SpawnObject(Vector3.zero, transform, _index);
-
+        
         if (block == null) return;
 
         Vector2Int? origin = GetRandomAvailableOrigin(block);

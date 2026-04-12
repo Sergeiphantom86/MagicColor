@@ -33,7 +33,7 @@ public class Activator : MonoBehaviour, IActivatable
 
     private void Awake()
     {
-        _delay = 3f;
+        _delay = 3;
         _duration = 0.3f;
         _transitionReducing = 0.295f;
         _delayWait = new WaitForSeconds(_delay);
@@ -112,13 +112,12 @@ public class Activator : MonoBehaviour, IActivatable
     private IEnumerator ProcessingRoutine()
     {
         _isProcessing = true;
-
+        yield return new WaitForSeconds(_duration * 4);
         yield return _queueProcessor.ProcessQueueRoutine(
-            _transformPenHolder.position,
             _duration,
             _transitionReducing
         );
-
+        
         _isProcessing = false;
     }
 
@@ -130,7 +129,7 @@ public class Activator : MonoBehaviour, IActivatable
     private IEnumerator SpeedRoutine(float remainingTime)
     {
         yield return _delayWait;
-
+       
         _speedController.TryAccelerate(
             remainingTime,
             OnApproach,
@@ -143,6 +142,6 @@ public class Activator : MonoBehaviour, IActivatable
         _voiceover.PlayOneShot(_winn);
         OnPuzzleComplete?.Invoke();
 
-        gameObject.SetActive(false);
+        Deactivate();
     }
 }

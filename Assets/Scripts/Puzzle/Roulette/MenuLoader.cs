@@ -23,7 +23,7 @@ public class MenuLoader : MonoBehaviour
 
         ReturnIndex();
 
-        SceneLoader.Instance.LoadSceneWithSplash(scenName);
+        SceneLoader.Instance.LoadSceneAsyncWithSplash(scenName);
     }
 
     private void ReturnIndex()

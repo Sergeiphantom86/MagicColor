@@ -32,7 +32,7 @@ public class NumberFormatter
 
     private string[] GetSuffixesForCurrentLanguage()
     {
-        return _progressSaver.GetTranslationLanguage() switch
+        return _progressSaver.Saves.CurrentLanguage switch
         {
             "ru" => _suffixesRU,
             "tr" => _suffixesTR,

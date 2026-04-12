@@ -9,7 +9,9 @@ public class FillSpeedController
         if (_isAccelerated) return;
 
         _isAccelerated = true;
+
         notify?.Invoke(remainingTime);
+
         applySpeed?.Invoke();
     }
 }

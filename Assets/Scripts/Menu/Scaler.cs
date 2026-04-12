@@ -5,7 +5,7 @@ public class Scaler : MonoBehaviour
 {
     private Tweener _currentTween;
 
-    public Tweener ChangeSize(Vector3 scale, float duration, float delay, float overshoot)
+    public Tweener ChangeSize(Vector3 scale, float duration, float delay = 1, float overshoot = 1)
     {
         _currentTween?.Kill();
 

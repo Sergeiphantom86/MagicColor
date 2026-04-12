@@ -35,13 +35,7 @@ public class ProgressSaver : IProgressSaver
     public bool TryEnableFollowingQuest(int index) =>
         WithSaves(savesYG2 => savesYG2.TryEnableFollowingQuest(index), false);
 
-    public void SetNewSprite(Sprite sprite) =>
-        WithSaves(savesYG2 => savesYG2.SetNewSprite(sprite));
-
-    public void SetCurrentSprite(Sprite sprite) =>
-        WithSaves(savesYG2 => savesYG2.SetCurrentSprite(sprite));
-
-    public void SaveSpinsCount(int spins) => 
+    public void SaveSpinsCount(int spins) =>
         WithSaves(savesYG2 => savesYG2.SaveSpinsCount(spins));
     public void SetQuantityAbilities(int spins) =>
         WithSaves(savesYG2 => savesYG2.SetQuantityAbilities(spins));
@@ -50,13 +44,13 @@ public class ProgressSaver : IProgressSaver
         WithSaves(savesYG2 => savesYG2.SetTutorial(index));
 
     public void SetTutorialBasics() =>
-    WithSaves(savesYG2 => savesYG2.SetTutorialBasics());
+        WithSaves(savesYG2 => savesYG2.SetTutorialBasics());
 
     public void SetUnblockingTutorial() =>
-   WithSaves(savesYG2 => savesYG2.SetUnblockingTutorial());
+        WithSaves(savesYG2 => savesYG2.SetUnblockingTutorial());
 
     public void SetAbilityTutorial() =>
-   WithSaves(savesYG2 => savesYG2.SetAbilityTutorial());
+        WithSaves(savesYG2 => savesYG2.SetAbilityTutorial());
 
     public void DisableTutorialMenu() =>
         WithSaves(savesYG2 => savesYG2.DisableTutorialMenu());
@@ -90,8 +84,11 @@ public class ProgressSaver : IProgressSaver
     public void SetAutomaticTransition(bool autoNextLevel) =>
         WithSaves(savesYG2 => savesYG2.SetAutomaticTransition(autoNextLevel));
 
-    public void ObstacleSwitch() => 
-        WithSaves(savesYG2 => savesYG2.ObstacleSwitch());
+    public void ObstacleSwitch(bool isOn) =>
+        WithSaves(savesYG2 => savesYG2.ObstacleSwitch(isOn));
+
+    public void SetCurrentLanguage(string langCode) =>
+       WithSaves(savesYG2 => savesYG2.SetCurrentLanguage(langCode));
 
     public void SaveProgress() =>
          YG2.SaveProgress();

@@ -5,10 +5,10 @@ public class AbilitySelectionManager : MonoBehaviour
 {
     public static AbilitySelectionManager Instance;
 
-    private Ability currentAbility;
-    private AbilityButton currentButton;
+    private Ability _currentAbility;
+    private AbilityButton _currentButton;
 
-    public bool HasSelection => currentAbility != null;
+    public bool HasSelection => _currentAbility != null;
 
     public event Action OnSelection;
 
@@ -19,27 +19,22 @@ public class AbilitySelectionManager : MonoBehaviour
 
     public void Select(AbilityButton button)
     {
-        if (currentButton != null)
-            currentButton.SetHighlight(false);
+        if (_currentButton != null)
+            _currentButton.SetHighlight(false);
 
-        currentButton = button;
-        currentAbility = button.Ability;
+        _currentButton = button;
+        _currentAbility = button.Ability;
 
-        currentButton.SetHighlight(true);
-    }
-
-    public Ability GetSelectedAbility()
-    {
-        return currentAbility;
+        _currentButton.SetHighlight(true);
     }
 
     public void ClearSelection()
     {
-        if (currentButton == null) return;
+        if (_currentButton == null) return;
 
-        currentButton.SetHighlight(false);
-        currentButton = null;
-        currentAbility = null;
+        _currentButton.SetHighlight(false);
+        _currentButton = null;
+        _currentAbility = null;
     }
 
     public void Use()

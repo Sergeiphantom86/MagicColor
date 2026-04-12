@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 public class QuestCustomizer
 {
     private readonly IProgressSaver _progressSaver;
     private readonly int _indexTutorialBasics = 0;
-    private readonly int _indexAbilityTutorial = 2;
+    private readonly int _indexAbilityTutorial;
     private readonly int _indexUnblockingTutorial;
     private readonly bool _isTutorialBasics;
     private readonly bool _isUnblockingTutorial;
@@ -15,6 +15,7 @@ public class QuestCustomizer
         _progressSaver = progressSaver;
 
         _indexUnblockingTutorial = _progressSaver.Saves.IndexSecondQuest;
+        _indexAbilityTutorial = _progressSaver.Saves.ObstacleDeactivatIndex;
 
         _isTutorialBasics = _progressSaver.Saves.IsTutorialBasics;
         _isUnblockingTutorial = _progressSaver.Saves.IsUnblockingTutorial;
@@ -25,14 +26,23 @@ public class QuestCustomizer
     {
         for (int i = 0; i < quests.Count; i++)
         {
-            ApplyState(quests[i], i);
+            quests[i].SetIndex(i);
+        }
+
+        if (_progressSaver.Saves.MaxReachedQuestIndex >= _indexAbilityTutorial)
+        {
+            EnableAllTutorials();
+            return;
+        }
+
+        for (int i = 0; i < quests.Count; i++)
+        {
+            ApplyState(quests[i]);
         }
     }
 
-    private void ApplyState(Quest quest, int index)
+    private void ApplyState(Quest quest)
     {
-        quest.SetIndex(index);
-
         SetTutorial(quest, _isTutorialBasics, _indexTutorialBasics);
         SetTutorial(quest, _isUnblockingTutorial, _indexUnblockingTutorial);
         SetTutorial(quest, _isAbilityTutorial, _indexAbilityTutorial);
@@ -40,9 +50,16 @@ public class QuestCustomizer
 
     private void SetTutorial(Quest quest, bool isTutorial, int index)
     {
-        if (quest.Index == index && !isTutorial)
+        if (quest.Index == index && isTutorial == false)
         {
-            quest.SetTutorial(false);
+            quest.SetTutorial(!isTutorial);
         }
+    }
+
+    private void EnableAllTutorials()
+    {
+        _progressSaver.SetTutorialBasics();
+        _progressSaver.SetUnblockingTutorial();
+        _progressSaver.SetAbilityTutorial();
     }
 }

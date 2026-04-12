@@ -9,6 +9,7 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     [SerializeField] private Repainter _repainter;
     [SerializeField] private AudioClip _soundDragg;
     [SerializeField] private AudioClip _soundRaise;
+    [SerializeField] private AudioClip _matchSound;
     [SerializeField] private AudioClip _soundDestruction;
     [SerializeField] private Effecter _effectImpact;
     [SerializeField] private Effecter _effectDestruct;
@@ -50,7 +51,7 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     {
         _blocks.Add(block);
 
-        block.Initializat(_effectImpact, _effectSmock, _effectDestruct, _soundDestruction, _soundDragg, _soundRaise);
+        block.Initializat(_effectImpact, _effectSmock, _effectDestruct, _soundDestruction, _soundDragg, _soundRaise, _matchSound);
     }
 
     private void CalculateStartTimeGame(Block block)

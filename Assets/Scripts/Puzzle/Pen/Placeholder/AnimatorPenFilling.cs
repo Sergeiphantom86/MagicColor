@@ -31,7 +31,7 @@ public class AnimatorPenFilling : MonoBehaviour
     private void UpdatePenSize(int quantity, Placeholder placeholder)
     {
         if (placeholder == null || quantity < 0) return;
-
+        
         Size = quantity;
         _currentOccupancy = GetQuantityOccupancy(quantity);
 
@@ -46,7 +46,7 @@ public class AnimatorPenFilling : MonoBehaviour
             Debug.LogError("FragmentSpawner or Fragments dictionary is null!", this);
             return 0;
         }
-
+        
         if (_fragmentCollector.Fragments.TryGetValue(color, out Queue<Fragment> fragments))
         {
             return fragments?.Count ?? 0;

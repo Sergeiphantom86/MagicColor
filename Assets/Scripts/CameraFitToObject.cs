@@ -65,6 +65,7 @@ public class CameraFitToObject : MonoBehaviour
         _currentAspect = (float)Screen.width / Screen.height;
 
         float targetFov = GetTargetFov();
+
         _camera.fieldOfView = targetFov;
 
         HandleCameraShift(targetFov);
@@ -74,7 +75,7 @@ public class CameraFitToObject : MonoBehaviour
     {
         if (_currentAspect >= _referenceAspect)
             return _baseFov;
-
+        
         return Mathf.Clamp(GetVerticalFov(_currentAspect) * Mathf.Rad2Deg, _baseFov, _maxFov);
     }
 

@@ -1,7 +1,6 @@
-using CartoonFX;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
+using System.Collections;
 
 public class Effecter : MonoBehaviour
 {
@@ -12,14 +11,12 @@ public class Effecter : MonoBehaviour
     private int _defaultPoolSize;
     private ParticleSystem _particleSystem;
     private ObjectPool<ParticleSystem> _pool;
-    private CFXR_Effect _cFXREffect;
     private WaitForSeconds _waitForSeconds;
 
     private void Awake()
     {
         _maxPoolSize = 50;
         _defaultPoolSize = 10;
-        _cFXREffect = GetComponent<CFXR_Effect>();
         _waitForSeconds = new WaitForSeconds(_prefab.main.duration);
 
         InitializePools();
@@ -34,19 +31,6 @@ public class Effecter : MonoBehaviour
         Return(particles);
     }
 
-    public void Create()
-    {
-        if (_cFXREffect != null)
-        {
-            _cFXREffect.ResetState();
-
-            if (_cFXREffect.cameraShake != null)
-            {
-                _cFXREffect.cameraShake.FetchCameras();
-                _cFXREffect.cameraShake.StartShake();
-            }
-        }
-    }
     public ParticleSystem CreatePooledItem()
     {
         _particleSystem = Instantiate(_prefab);
@@ -88,11 +72,6 @@ public class Effecter : MonoBehaviour
             }
 
             particles.Play();
-        }
-
-        if (_cFXREffect != null)
-        {
-            _cFXREffect.ResetState();
         }
     }
 

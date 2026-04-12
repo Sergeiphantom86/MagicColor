@@ -31,7 +31,6 @@ public class DustSizeCalculator : MonoBehaviour
         if (amount < 0)
         {
             Debug.LogWarning($"Значение запыленности не может быть отрицательным. Получено: {amount}. Установлено значение 0.");
-            amount = 0;
         }
     }
 

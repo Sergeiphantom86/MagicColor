@@ -27,8 +27,10 @@ public class SpawnDropAnimation : MonoBehaviour
 
     private void OnEnable()
     {
-        _voiceover.PlayOneShot(_fall);
-        _tween.Play();
+        _tween?.Play();
+
+        if (_voiceover != null && _fall != null)
+            _voiceover.PlayOneShot(_fall);
     }
 
     public void Create(Effecter effecter)
@@ -45,7 +47,6 @@ public class SpawnDropAnimation : MonoBehaviour
             .DOMove(_targetWorldPosition, _duration)
             .OnComplete(() =>
             {
-                effecter.Create();
                 effecter.CraeteParticles(transform.position, Quaternion.identity, 0.5f);
                 
                 _targetColor.SetAlpha(0.3f);

@@ -11,31 +11,44 @@ public class SceneFlowController : MonoBehaviour
     [SerializeField] private TextureInitializer _textureInitializer;
     [SerializeField] private TutorialPuzzle _tutorialPuzzle;
     [SerializeField] private Timer _timer;
-    [SerializeField] private PuzzlesIdentifier _puzzlesIdentifier; 
+    [SerializeField] private PuzzlesIdentifier _puzzlesIdentifier;
 
-    private Sprite _sprite;
     private string _sceneName;
+    private Sprite _sprite;
     private IProgressSaver _progressSaver;
     private AdRewardController _adRewardController;
 
     private void Awake()
     {
         _sceneName = SceneManager.GetActiveScene().name;
-        _progressSaver = new ProgressSaver();
         _adRewardController = GetComponent<AdRewardController>();
+
+        if (_textureInitializer == null)
+            Debug.LogError($"[SceneFlowController] TextureInitializer не назначен в инспекторе на объекте {gameObject.name}");
+        if (_menuLoader == null)
+            Debug.LogError($"[SceneFlowController] MenuLoader не назначен на объекте {gameObject.name}");
+        if (_adRewardController == null)
+            Debug.LogWarning($"[SceneFlowController] AdRewardController отсутствует на объекте {gameObject.name}");
     }
 
-    private void Start()
+    public void Initialize(Sprite sprite, IProgressSaver progressSaver)
     {
-        StartGame();
-    }
+        if (sprite == null)
+        {
+            Debug.LogError($"Sprite == null на объекте {gameObject.name}");
+            return;
+        }
 
-    private void StartGame()
-    {
-        SetSprite();
+        if (progressSaver == null)
+        {
+            Debug.LogError($"IProgressSaver == null на объекте {gameObject.name}");
+            return;
+        }
 
-        if (_sprite != null)
-            _textureInitializer.SpawnPixelsFromTexture(_sprite.texture);
+        _progressSaver = progressSaver;
+        _sprite = sprite;
+
+        _textureInitializer.SpawnPixelsFromTexture(TryGetSprite(_sprite).texture);
     }
 
     public void LoadNextScene()
@@ -55,10 +68,10 @@ public class SceneFlowController : MonoBehaviour
         _menuLoader.TargetScene(Roulette);
     }
 
-    private void SetSprite()
+    private Sprite TryGetSprite(Sprite sprite)
     {
-        _sprite = _tutorialPuzzle != null
+        return _tutorialPuzzle != null
            ? _tutorialPuzzle.Sprite
-           : _progressSaver.Saves?.CurrentSprite;
+           : sprite;
     }
 }

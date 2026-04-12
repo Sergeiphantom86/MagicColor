@@ -37,7 +37,7 @@ public class PauseMenu : MonoBehaviour
 
         if (SceneLoader.Instance != null)
         {
-            SceneLoader.Instance.LoadSceneWithSplash(sceneName);
+            SceneLoader.Instance.LoadSceneAsyncWithSplash(sceneName);
         }
     }
 

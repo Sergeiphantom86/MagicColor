@@ -32,18 +32,15 @@ public class BlockDestroySequence : MonoBehaviour, IBlockDestroySequence
         if (colorable is not Block block)
             return;
 
-        colorable.SetRenderQueue();
-
         IsTouched?.Invoke(block);
 
-        StartCoroutine(Run(colorable, block, color));
+        StartCoroutine(Run(block, color));
     }
 
-    private IEnumerator Run(IColorable colorable, Block block, Color color)
+    private IEnumerator Run(Block block, Color color)
     {
+        block.PlayMatchSound();
         yield return _waitShutdown;
-
-        colorable.ReturnRenderQueue();
 
         block.Destroy(_pointer.MiddlePoint, _pointer.EndPoint);
 

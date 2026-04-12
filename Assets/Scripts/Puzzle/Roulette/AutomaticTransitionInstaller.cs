@@ -4,16 +4,38 @@ using UnityEngine.UI;
 public class AutomaticTransitionInstaller : MonoBehaviour
 {
     [SerializeField] protected ButtonHome _buttonHome;
-    
+
     private Button _nextPuzzle;
     private PuzzleSelector _selector;
     private IProgressSaver _progressSaver;
+    private Sprite _newSprite;
 
     private void Awake()
     {
         _nextPuzzle = GetComponent<Button>();
         _selector = GetComponentInChildren<PuzzleSelector>();
-        _progressSaver = new ProgressSaver();
+    }
+
+    private void Start()
+    {
+        _nextPuzzle.onClick.AddListener(SetValue);
+    }
+
+    public void SetProgressSaver(IProgressSaver progressSaver, Sprite newSprite)
+    {
+        Initialized(progressSaver, newSprite);
+    }
+
+    private void Initialized(IProgressSaver progressSaver, Sprite newSprite)
+    {
+        if (progressSaver == null)
+        {
+            Debug.LogError("IProgressSaver == null");
+            return;
+        }
+
+        _newSprite = newSprite;
+        _progressSaver = progressSaver;
 
         if (_nextPuzzle == null)
         {
@@ -30,11 +52,6 @@ public class AutomaticTransitionInstaller : MonoBehaviour
         Show();
     }
 
-    private void Start()
-    {
-        _nextPuzzle.onClick.AddListener(SetValue);
-    }
-
     private void SetValue()
     {
         _progressSaver.SetAutomaticTransition(true);
@@ -44,14 +61,19 @@ public class AutomaticTransitionInstaller : MonoBehaviour
 
     private void Show()
     {
-        if (_progressSaver.TryEnableFollowingQuest(_progressSaver.Saves.QuestIndex + 1))
+        if (_progressSaver.TryEnableFollowingQuest(_progressSaver.Saves.QuestIndex))
         {
             gameObject.SetActive(false);
         }
-        
-        if (_progressSaver.Saves.NewSprite != null && _selector != null)
-        {   
-            _selector.SetSprite(_progressSaver.Saves.NewSprite);
+
+        if (_newSprite == null)
+        {
+            Debug.LogError("NewSprite == null");
+        }
+
+        if (_newSprite != null && _selector != null)
+        {
+            _selector.SetSprite(_newSprite);
         }
     }
 }

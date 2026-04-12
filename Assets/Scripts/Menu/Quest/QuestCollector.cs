@@ -16,26 +16,22 @@ public class QuestCollector : MonoBehaviour
     {
         _allQuests = new List<Quest>();
         _spritesQuests = new List<Sprite>();
-        _progressSaver = new ProgressSaver();
-        _questCustomizer = new QuestCustomizer(_progressSaver);
 
         ValidateDependencies();
     }
 
-    private void Start()
+    public void Initialize(IProgressSaver progressSaver, SpriteTransmitter spriteTransmitter)
     {
-        InitializeQuests();
-        _questSystem.gameObject.SetActive(false);
-    }
+        _progressSaver = progressSaver;
+        _questCustomizer = new QuestCustomizer(progressSaver);
 
-    private void InitializeQuests()
-    {
         ClearCollections();
         CollectQuests();
         SaveQuestProgress();
-        SetupSprites();
+        SetupSprites(spriteTransmitter);
+
+        _questSystem.Initialize(_allQuests, progressSaver, spriteTransmitter);
         _questCustomizer.Apply(_allQuests);
-        InitializeQuestSystem();
     }
 
     private void ClearCollections()
@@ -44,9 +40,9 @@ public class QuestCollector : MonoBehaviour
         _spritesQuests.Clear();
     }
 
-    private void SetupSprites()
+    private void SetupSprites(SpriteTransmitter spriteTransmitter)
     {
-        SetLatestSprite();
+        SetLatestSprite(spriteTransmitter);
         _viewer.AddSprite(_spritesQuests);
     }
 
@@ -67,19 +63,14 @@ public class QuestCollector : MonoBehaviour
         }
     }
 
-    private void InitializeQuestSystem()
-    {
-        _questSystem.Initialize(_allQuests);
-    }
-
-    private void SetLatestSprite()
+    private void SetLatestSprite(SpriteTransmitter spriteTransmitter)
     {
         if (_spritesQuests == null || _spritesQuests.Count == 0)
             return;
 
         int index = Mathf.Clamp(_progressSaver.Saves.QuestIndex, 0, _spritesQuests.Count - 1);
 
-        _progressSaver.SetNewSprite(_spritesQuests[index]);
+        spriteTransmitter.SetNew(_spritesQuests[index]);
     }
 
     private void ValidateDependencies()

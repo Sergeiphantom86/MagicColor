@@ -8,18 +8,17 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Pen
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 131db1577527b6d479beb4ed4dc1398d, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - _ALPHAPREMULTIPLY_ON
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3500
-  stringTagMap:
-    RenderType: Transparent
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -67,11 +66,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Alpha: 0.8
     - _BumpScale: 1
+    - _ColorIntensity: 3.23
     - _ColorMask: 15
+    - _ColorSpeed: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
+    - _EmissionPower: 0.5
     - _EmissionStrength: 1
     - _GlossMapScale: 1
     - _Glossiness: 1
@@ -81,9 +84,15 @@ Material:
     - _NoiseScale: 2
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _PulseMax: 1.5
+    - _PulseMin: 0.5
+    - _PulseSpeed: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _SpotDensity: 0.3
     - _SpotIntensity: 0.5
+    - _SpotScale: 10
+    - _SpotSpeed: 0.5
     - _SrcBlend: 1
     - _Stencil: 0
     - _StencilComp: 8
@@ -95,7 +104,9 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 0.5019608}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 0.084549636, g: 0.15943629, b: 0.9433962, a: 0.5019608}
+    - _ColorA: {r: 0, g: 0.14507627, b: 1, a: 0.8}
+    - _ColorB: {r: 0.9716981, g: 0.022917405, b: 0.3130206, a: 0.8}
+    - _EmissionColor: {r: 0.79663587, g: 0.033819433, b: 0.033819433, a: 0.44705883}
     - _NoiseSpeed: {r: 0.1, g: 0.1, b: 0, a: 0}
   m_BuildTextureStacks: []

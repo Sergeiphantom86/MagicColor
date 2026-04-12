@@ -8,6 +8,7 @@ public class FitToCameraBottomAndWidth : MonoBehaviour
     private float _startPositionY;
     private float _lastWidth;
     private float _lastHeight;
+    private float _mobilePositionX;
     private Vector3 _startPosition;
     private Coroutine _recalculateRoutine;
     private ZoomChanger _zoomChanger;
@@ -20,10 +21,23 @@ public class FitToCameraBottomAndWidth : MonoBehaviour
         _startPositionY = 12;
         _baseOrthoSize = 6;
         _baseOrthoSize /= 2;
+        _mobilePositionX = -0.25f;
 
         SetStartPosition(_startPositionY);
 
-        if (_zoomChanger.IsMobileWithTallScreen()) return;
+        if (_zoomChanger.IsMobileWithTallScreen())
+        {
+            SetMobilePositionX();
+
+            return;
+        }
+    }
+
+    private void SetMobilePositionX()
+    {
+        Vector3 position = _camera.transform.position;
+        position.x = _mobilePositionX;
+        _camera.transform.position = position;
     }
 
     private void Start()
@@ -52,7 +66,7 @@ public class FitToCameraBottomAndWidth : MonoBehaviour
         {
             _camera.orthographic = true;
             _camera.orthographicSize = GetTargetOrthogonal();
-            SetStartPosition(_startPosition.y + _camera.orthographicSize * 1.1f);
+            SetStartPosition(_startPosition.y + _camera.orthographicSize * 0.4f);
         }
     }
 

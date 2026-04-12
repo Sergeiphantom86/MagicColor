@@ -12,36 +12,55 @@ public class QuestSystem : MonoBehaviour
     private TransitionChooser _transitionChooser;
     private int _currentQuestIndex;
     private IProgressSaver _progressSaver;
+    private SpriteTransmitter _spriteTransmitter;
+    private ZoomChanger _zoomChanger;
 
     private void Awake()
     {
         _transitionChooser = GetComponent<TransitionChooser>();
         _subscribedQuests = new List<Quest>();
-        _progressSaver = new ProgressSaver();
+        _zoomChanger = new ZoomChanger();
 
         if (_transitionChooser == null)
         {
             Debug.LogError("TransitionChooser not found!");
             return;
         }
-
-        if (_progressSaver.Saves == null)
-        {
-            Debug.LogError("QuestCollector not found!");
-            return;
-        }
-
-        _currentQuestIndex = _progressSaver.Saves.QuestIndex;
-        _isOn = _progressSaver.Saves.IsAutomaticallyNewLevel;
     }
 
-    public void Initialize(IReadOnlyList<Quest> quests)
+    public void Initialize(IReadOnlyList<Quest> quests, IProgressSaver progressSaver, SpriteTransmitter spriteTransmitter)
     {
         if (quests == null || quests.Count == 0) return;
 
+        if (progressSaver.Saves == null)
+        {
+            Debug.LogError("IProgressSaver not found!");
+            return;
+        }
+
+        if (spriteTransmitter == null)
+        {
+            Debug.LogError("SpriteTransmitter not found!");
+            return;
+        }
+
+        _spriteTransmitter = spriteTransmitter;
+        _progressSaver = progressSaver;
         _quests = quests;
 
+        _currentQuestIndex = _progressSaver.Saves.QuestIndex;
+        _isOn = _progressSaver.Saves.IsAutomaticallyNewLevel;
+
+        _transitionChooser.Initialize(progressSaver, _zoomChanger, spriteTransmitter);
+
         ProcessSavedProgress();
+
+        TurnOff();
+    }
+
+    private void TurnOff()
+    {
+        gameObject.SetActive(false);
     }
 
     private void ProcessSavedProgress()
@@ -112,10 +131,7 @@ public class QuestSystem : MonoBehaviour
             return;
 
         _active.OnClicked();
-        _progressSaver.SetAutomaticTransition(false);
     }
-
-
 
     private int GetIndex()
     {
@@ -130,7 +146,7 @@ public class QuestSystem : MonoBehaviour
             {
                 _currentQuestIndex++;
                 _progressSaver.SetQuestIndex(_currentQuestIndex);
-                _progressSaver.SetNewSprite(_next.Sprite);
+                _spriteTransmitter.SetNew(_next.Sprite);
             }
         }
 
@@ -138,7 +154,8 @@ public class QuestSystem : MonoBehaviour
 
         if (_transitionChooser != null)
         {
-            _transitionChooser.ChoosePuzzle(quest);
+            _transitionChooser.ChoosePuzzle(quest, _isOn);
+            _progressSaver.SetAutomaticTransition(false);
         }
     }
 

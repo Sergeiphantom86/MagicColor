@@ -5,74 +5,135 @@ using UnityEngine;
 [RequireComponent(typeof(PenScaleController))]
 public class MoverPen : MonoBehaviour, IMover
 {
+    [SerializeField] private float _radius = 0.5f;
+    [SerializeField] private float _duration = 1f;
+    [SerializeField] private float _positionX = 1.5f;
+    [SerializeField] private float _positionZ = 5f;
+    [SerializeField] private float _centerChangeInterval = 10f;
+
     private PenScaleController _scaleController;
-    private Coroutine _randomMoveCoroutine;
-    private Tween _randomMoveTween;
-    private Quaternion _initialRotation;
+    private Coroutine _movementCoroutine;
+    private Tween _moveTween;
+    private Vector3 _center;
+    private bool _isRunning;
 
     private void Awake()
     {
+        _center = new Vector3(_positionX, 0, _positionZ);
+
         _scaleController = GetComponent<PenScaleController>();
 
         if (_scaleController == null)
         {
-            Debug.LogError($"{nameof(MoverPen)}: Не удалось получить PenscaleController!", this);
-            return;
+            Debug.LogError($"{nameof(MoverPen)}: Не найден PenScaleController!", this);
         }
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        StartRandomMove(new Vector3(2.5f, 0, 5), 1);
+        StartMovementLoop();
+    }
+
+    private void OnDisable()
+    {
+        StopAllMovement();
+    }
+
+    private void OnDestroy()
+    {
+        StopAllMovement();
     }
 
     public IEnumerator MoveToPosition(Vector3 targetPosition, float duration)
     {
-        StopRandomMove();
+        StopMovementLoop();
 
         if (ValidateMoveParameters(targetPosition, duration) == false)
             yield break;
 
         PrepareForProgrammaticMove();
-        yield return ExecuteMoveSequence(targetPosition, duration);
+
+        yield return ExecuteMove(targetPosition, duration);
+
         FinalizeMove();
+
+        StartMovementLoop();
     }
 
-    public void StartRandomMove(
-    Vector3 center,
-    float radius,
-    float minDuration = 0.5f,
-    float maxDuration = 1.5f)
+    private void StartMovementLoop()
     {
-        StopRandomMove();
-        transform.rotation = _initialRotation;
-        _randomMoveCoroutine = StartCoroutine(RandomMoveRoutine(center, radius, minDuration, maxDuration));
+        if (_movementCoroutine != null)
+            return;
+
+        _isRunning = true;
+        _movementCoroutine = StartCoroutine(MovementLoop());
     }
 
-    private void StopRandomMove()
+    private void StopMovementLoop()
     {
-        if (_randomMoveCoroutine != null)
+        _isRunning = false;
+
+        if (_movementCoroutine != null)
         {
-            StopCoroutine(_randomMoveCoroutine);
-            _randomMoveCoroutine = null;
+            StopCoroutine(_movementCoroutine);
+            _movementCoroutine = null;
         }
 
-        _randomMoveTween?.Kill();
-        _randomMoveTween = null;
+        _moveTween?.Kill();
+        _moveTween = null;
     }
 
+    private void StopAllMovement()
+    {
+        StopMovementLoop();
+    }
+
+    private IEnumerator MovementLoop()
+    {
+        while (_isRunning)
+        {
+            _center = new Vector3(_positionX, 0, _positionZ);
+            yield return RandomMoveForSeconds(_centerChangeInterval);
+
+            _center = new Vector3(-_positionX, 0, _positionZ);
+            yield return RandomMoveForSeconds(_centerChangeInterval);
+        }
+    }
+
+    private IEnumerator RandomMoveForSeconds(float time)
+    {
+        float timer = 0f;
+
+        while (timer < time && _isRunning)
+        {
+            Vector3 target = GetRandomPointInCircle(_center, _radius);
+
+            yield return ExecuteMove(target, _duration);
+
+            timer += _duration;
+        }
+    }
+
+    private IEnumerator ExecuteMove(Vector3 targetPosition, float duration)
+    {
+        _moveTween = transform
+            .DOMove(targetPosition, duration)
+            .SetEase(Ease.InOutSine);
+
+        yield return _moveTween.WaitForCompletion();
+    }
 
     private bool ValidateMoveParameters(Vector3 targetPosition, float duration)
     {
         if (float.IsNaN(targetPosition.x) || float.IsInfinity(targetPosition.x))
         {
-            Debug.LogError($"{nameof(MoverPen)}: Неверная координата X целевого положения!", this);
+            Debug.LogError($"{nameof(MoverPen)}: Некорректная координата X", this);
             return false;
         }
 
         if (duration <= 0)
         {
-            Debug.LogError($"{nameof(MoverPen)}: Продолжительность должна быть положительной величиной! Получен: {duration}", this);
+            Debug.LogError($"{nameof(MoverPen)}: duration должен быть > 0", this);
             return false;
         }
 
@@ -88,39 +149,22 @@ public class MoverPen : MonoBehaviour, IMover
         _scaleController.StartScaleUp();
     }
 
-    private IEnumerator ExecuteMoveSequence(Vector3 targetPosition, float duration)
-    {
-        yield return transform.DOMove(targetPosition, duration)
-            .SetEase(Ease.OutQuad).WaitForCompletion();
-    }
-
     private void FinalizeMove()
     {
-        if (_scaleController == null)
-            return;
-
-        _scaleController.StartScaleDown();
-
-        StartRandomMove(new Vector3(2.5f, 0, 5), 1);
+        if (_scaleController != null)
+        {
+            _scaleController.StartScaleDown();
+        }
     }
 
-    private IEnumerator RandomMoveRoutine(
-     Vector3 center,
-     float radius,
-     float minDuration,
-     float maxDuration)
+    private Vector3 GetRandomPointInCircle(Vector3 center, float radius)
     {
-        while (true)
-        {
-            Vector3 randomPoint = center + Random.insideUnitSphere * radius;
-            randomPoint.y = center.y;
+        Vector2 randomPoint = Random.insideUnitCircle * radius;
 
-            float duration = Random.Range(minDuration, maxDuration);
-
-            _randomMoveTween = transform.DOMove(randomPoint, duration)
-                .SetEase(Ease.InOutSine);
-
-            yield return _randomMoveTween.WaitForCompletion();
-        }
+        return new Vector3(
+            center.x + randomPoint.x,
+            center.y,
+            center.z + randomPoint.y
+        );
     }
 }

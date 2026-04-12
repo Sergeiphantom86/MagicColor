@@ -7,11 +7,6 @@ public class ButtonAnimator : MonoBehaviour
 
     private Coroutine _coroutine;
 
-    private void Awake()
-    {
-       
-    }
-
     public void TurnOff()
     {
         if (_coroutine != null)

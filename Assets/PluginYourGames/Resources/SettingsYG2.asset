@@ -51,12 +51,9 @@ MonoBehaviour:
       hi: 0
     fonts:
       defaultFont: []
-      ru:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      en:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      tr:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
+      ru: []
+      en: []
+      tr: []
       az: []
       be: []
       he: []
@@ -111,9 +108,9 @@ MonoBehaviour:
       de: []
       hi: []
     fontsSizeCorrect:
-      ru: 00000000
-      en: 00000000
-      tr: 00000000
+      ru: 
+      en: 
+      tr: 
       az: 
       be: 
       he: 
@@ -145,9 +142,9 @@ MonoBehaviour:
   Flags:
     flags: []
   InterstitialAdv:
-    showFirstAdv: 1
+    showFirstAdv: 0
     interAdvInterval: 60
-    postponeCallByFail: 1
+    postponeCallByFail: 0
     postponeCallTimer: 10
     labelAdvSimLabel: 0
   Leaderboards:
@@ -155,63 +152,66 @@ MonoBehaviour:
     saveScoreAnonymousPlayers: 1
     listLBSim:
     - technoName: Coin
-      entries: '1. Max: 7123
+      entries: '1. Max: 10
 
-        2. Maria: 15321
+        2. Masha: 15
 
-        3. anonymous: 62000
+        3. anonymous: 23
 
         4.
-        Player 4: 122000
+        Player 4: 30
 
-        5. Player current: 127000
+        5. Player current: 40
 
-        6. Player 6:
-        340000'
-      isDefault: 1
+        6. Player 6: 50
+
+        7.
+        Player 7: 60
+
+        8. Player 8: 70
+
+        9. Player 9: 80
+
+        10.
+        Player 10: 90'
+      isDefault: 0
       isInvertSortOrder: 0
       decimalOffset: 0
       type: numeric
       players:
       - rank: 1
         name: Max
-        score: 7123
+        score: 100
         photo: demo image
-        uniqueID: 789
+        uniqueID: 123
         extraData: 
       - rank: 2
-        name: Maria
-        score: 15321
+        name: Masha
+        score: 90
         photo: demo image
-        uniqueID: 987
+        uniqueID: 321
         extraData: 
       - rank: 3
         name: anonymous
-        score: 62000
+        score: 80
         photo: anonymous
-        uniqueID: 891
+        uniqueID: 456
         extraData: 
       - rank: 4
         name: Player 4
-        score: 122000
+        score: 70
         photo: demo image
         uniqueID: 321
         extraData: 
       - rank: 5
         name: Player current
-        score: 127000
+        score: 60
         photo: demo image
         uniqueID: 000
         extraData: 
-      - rank: 6
-        name: Player 6
-        score: 340000
-        photo: demo image
-        uniqueID: 321
-        extraData: 
       currentPlayer:
-        rank: 1
-        score: 1000000
+        rank: 5
+        score: 60
         extraData: 
     - technoName: Crystal
       entries: '1. Max: 7123
@@ -227,8 +227,8 @@ MonoBehaviour:
 
         6. Player 6:
         340000'
-      isDefault: 1
-      isInvertSortOrder: 0
+      isDefault: 0
+      isInvertSortOrder: 1
       decimalOffset: 0
       type: numeric
       players:
@@ -262,20 +262,14 @@ MonoBehaviour:
         photo: demo image
         uniqueID: 000
         extraData: 
-      - rank: 6
-        name: Player 6
-        score: 340000
-        photo: demo image
-        uniqueID: 321
-        extraData: 
       currentPlayer:
-        rank: 1
-        score: 1000000
+        rank: 5
+        score: 127000
         extraData: 
   Localization:
     setLanguageMod: 1
   Metrica:
-    enable: 1
+    enable: 0
     metricaCounterID: 0
     log: 1
     useYandexMetrica: 1
@@ -341,7 +335,7 @@ MonoBehaviour:
     objectName: NameYourObject
     methodName: NameYourMethod
   RewardedAdv:
-    skipInterAdvAfterReward: 0
+    skipInterAdvAfterReward: 1
     labelAdvSimLabel: 0
   ServerTime:
     manualDateSetup: 0
@@ -352,32 +346,36 @@ MonoBehaviour:
     minute: 30
     second: 30
   Storage:
-    saveLocal: 1
+    saveLocal: 0
     saveCloud: 1
     flush: 0
   Basic:
     platform: {fileID: 11400000, guid: c2a303d33a9fd394bae4c4b88b9a1c44, type: 2}
     autoApplySettings: 1
     autoPauseGame: 1
+    editTimeScale: 1
     editEventSystem: 1
     autoGRA: 1
     logInEditor: 1
     archivingBuild: 1
+    autoDefineSymbols: 1
     syncInitSDK: 0
-    loadSceneIfSDKLate: 1
+    loadSceneIfSDKLate: 0
     loadSceneIndex: 0
     initDelaySimulation: 0
-    buildNumber: 27
+    buildNumber: 71
   Simulation:
-    device: 1
+    device: 0
     language: ru
-    advIntervalSimulation: 10
+    enableInterAdv: 1
+    advIntervalSimulation: 60
     durationAdv: 0.5
     loadAdv: 0
     testFailAds: 0
+    pauseOnFocusGame: 0
   Templates:
-    logoImageFormat: 3
-    backgroundImgFormat: 3
+    logoImageFormat: 0
+    backgroundImgFormat: 0
     gradientBackgroundByLoadGame:
       radial: 0
       angleInclination: 140

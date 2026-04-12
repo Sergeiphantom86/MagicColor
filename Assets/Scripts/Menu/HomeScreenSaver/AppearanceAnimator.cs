@@ -67,7 +67,7 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
     {
         SetInitialSize(fragment);
 
-        fragment.gameObject.SetActive(true);
+        fragment.TurnOn();
 
         AddAnimation(index, fragment);
     }
@@ -85,13 +85,26 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
     private void AddAnimation(int index, Fragment fragment)
     {
         _currentSequence.Insert(
-              index * _delayBetweenObjects,
-              fragment.transform.DOScale(_endScale, _animationDuration).SetEase(Ease.OutBack));
+            index * _delayBetweenObjects,
+            fragment.transform
+                .DOScale(_endScale, _animationDuration)
+                .SetEase(Ease.OutBack)
+                .SetLink(fragment.gameObject)
+        );
     }
 
     private void ResetAnimation()
     {
         DOTweenExtensions.SafeKill(_currentSequence);
+
+        if (_fragments != null)
+        {
+            foreach (var fragment in _fragments)
+            {
+                if (fragment != null)
+                    fragment.transform.DOKill();
+            }
+        }
 
         _currentSequence = null;
     }

@@ -13,11 +13,12 @@ EditorBuildSettings:
     guid: 0e8192f2d8b41bb46bc70abadfd32074
   - enabled: 1
     path: Assets/Scenes/Puzzle.unity
-    guid: 60a5941b40793af4d88582c6042a0032
+    guid: 6a3eb2cb0eb538242931a51042786ff8
   - enabled: 1
     path: Assets/Scenes/Tutorial.unity
     guid: 9745d5d8edf81e849b4f5fc9b20122f8
   - enabled: 1
     path: Assets/Scenes/Roulette.unity
     guid: 060dcbc9982d80f4da8c0e88e19653c4
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: e5efe786e8cec3047bb9365b6513d1c1, type: 2}

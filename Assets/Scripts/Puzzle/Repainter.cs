@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Repainter : MonoBehaviour
 {
@@ -86,9 +86,9 @@ public class Repainter : MonoBehaviour
     {
         if (ShouldRepaint(colorables) == false) return;
 
-        var (Colors, Walls) = PreparePaintingData(colorables);
+        var (Colors, Objects) = PreparePaintingData(colorables);
 
-        ExecutePainting(Colors, Walls);
+        ExecutePainting(Colors, Objects);
     }
 
     private bool ShouldRepaint(List<IColorable> colorables)
@@ -96,11 +96,11 @@ public class Repainter : MonoBehaviour
         return colorables.Count > 0 && _colors.Count > 0;
     }
 
-    private (List<Color> Colors, List<IColorable> Walls) PreparePaintingData(List<IColorable> colorables)
+    private (List<Color> Colors, List<IColorable> Objects) PreparePaintingData(List<IColorable> colorables)
     {
         return (
             Colors: ShuffleColors(_colors),
-            Walls: SelectRandomColorables(colorables, _colors.Count));
+            Objects: SelectRandomColorables(colorables, _colors.Count));
     }
 
     private List<Color> ShuffleColors(List<Color> colors)

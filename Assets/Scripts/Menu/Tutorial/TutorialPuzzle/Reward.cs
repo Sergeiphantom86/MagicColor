@@ -29,10 +29,6 @@ public class Reward : MonoBehaviour
         {
             _textAnimator.AnimateToValue(_value);
         }
-        else
-        {
-            Debug.LogWarning($"TextAnimator не назначен на объекте {name}");
-        }
     }
 
     public void Save()

@@ -384,8 +384,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1940019580737230673}
   m_HandleRect: {fileID: 3909315746904513830}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.60999423
+  m_Value: -0.0000079554375
+  m_Size: 0.61
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1060,12 +1060,9 @@ MonoBehaviour:
       hi: 0
     fonts:
       defaultFont: []
-      ru:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      en:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      tr:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
+      ru: []
+      en: []
+      tr: []
       az: []
       be: []
       he: []
@@ -1120,9 +1117,9 @@ MonoBehaviour:
       de: []
       hi: []
     fontsSizeCorrect:
-      ru: 00000000
-      en: 00000000
-      tr: 00000000
+      ru: 
+      en: 
+      tr: 
       az: 
       be: 
       he: 
@@ -1213,8 +1210,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0412\u044B\u0431\u0440\u0430\u0442\u044C \u043F\u0430\u0437\u043B!!!"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: b246c4190f4e46ec9352fe15a7b09ce0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f4c4b7e153ed34639b17d3000ece2ed9, type: 2}
+  m_sharedMaterial: {fileID: -4918373443893110478, guid: f4c4b7e153ed34639b17d3000ece2ed9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2053,7 +2050,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offerPanel: {fileID: 0}
-  _offerPanelmobile: {fileID: 0}
+  _offerPanelMobile: {fileID: 0}
 --- !u!1 &5551989146167564230
 GameObject:
   m_ObjectHideFlags: 0
@@ -3303,7 +3300,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 116.99999}
+  m_AnchoredPosition: {x: 0, y: 117.00093}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &7912124222939847018
@@ -3426,7 +3423,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5044409624192867223}
   m_HandleRect: {fileID: 5086032482877861747}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4170,6 +4167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!114 &2117509177306144187 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2082264635702603873, guid: cf40fdbdf06c8491aa33f7d6edc813fb, type: 3}
@@ -4406,6 +4404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!224 &1940710833790859927 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2082264635702603874, guid: cf40fdbdf06c8491aa33f7d6edc813fb, type: 3}
@@ -4625,6 +4624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!224 &1885762891609550765 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2082264635702603874, guid: cf40fdbdf06c8491aa33f7d6edc813fb, type: 3}
@@ -4871,6 +4871,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!1001 &787841915781625775
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5575,6 +5576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!1001 &2149249800579447469
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6112,6 +6114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!224 &4267066407438910323 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2082264635702603874, guid: cf40fdbdf06c8491aa33f7d6edc813fb, type: 3}
@@ -6347,6 +6350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!1001 &3413065829518377410
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6566,6 +6570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!114 &3726752805879214499 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2082264635702603873, guid: cf40fdbdf06c8491aa33f7d6edc813fb, type: 3}
@@ -6955,6 +6960,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!114 &2810447697869700311 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2082264635702603873, guid: cf40fdbdf06c8491aa33f7d6edc813fb, type: 3}
@@ -7349,6 +7355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!224 &2573806343383865435 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2082264635702603874, guid: cf40fdbdf06c8491aa33f7d6edc813fb, type: 3}
@@ -7742,6 +7749,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!1001 &5528763661268512278
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7961,6 +7969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!114 &5791538852390116983 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2082264635702603873, guid: cf40fdbdf06c8491aa33f7d6edc813fb, type: 3}
@@ -8344,6 +8353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!224 &5407075850338674445 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2082264635702603874, guid: cf40fdbdf06c8491aa33f7d6edc813fb, type: 3}
@@ -9178,6 +9188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!1001 &8474201811347057783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9714,6 +9725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1935a04947b60144ab485151df52cee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indexPuzzle: 0
 --- !u!114 &7245104441491583451 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2082264635702603873, guid: cf40fdbdf06c8491aa33f7d6edc813fb, type: 3}

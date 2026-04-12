@@ -1,5 +1,6 @@
 using System;
-using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,61 +11,56 @@ public class LanguageMenu : MonoBehaviour
     [SerializeField] private ButtonSoundHandler _buttonSound;
     [SerializeField] private AudioClip _clickSound;
 
-    private Button _button;
+    private string _current;
     private Vector2 _positionOnFlag;
     private LanguageBar _languageBar;
     private IProgressSaver _progressSaver;
+    private float _flagPositionX;
+    private float _flagPositionY;
+
+    public bool IsInitialized { get; private set; }
 
     private void Awake()
     {
-        _button = GetComponentInChildren<Button>();
-        _languageBar = GetComponent<LanguageBar>();
         _progressSaver = new ProgressSaver();
+        _flagPositionX = 36;
+        _flagPositionY = -22;
+        _current = _progressSaver.Saves.CurrentLanguage;
+
+        _positionOnFlag = new Vector2(_flagPositionX, _flagPositionY);
+    }
+
+    private void Start()
+    {
+        OnLanguageChanged(_current);
+        ChangeLanguage(_current);
+
+        IsInitialized = true;
+    }
+
+    private void OnEnable()
+    {
+        _languageBar = GetComponent<LanguageBar>();
 
         if (IsValidState() == false)
         {
             Debug.LogError("Не назначен в испекторе!");
         }
 
-        SetDefaltPositionFlag();
-
-        OnLanguageChanged(_progressSaver.GetTranslationLanguage());
-    }
-
-    private void SetDefaltPositionFlag()
-    {
-        float positionX = 36;
-        float positionY = -22;
-        
-        _positionOnFlag = new Vector2(positionX, positionY);
-    }
-
-    private void OnEnable()
-    {
-        _progressSaver.SubscribeSwitchLang(OnLanguageChanged);
-
-        if (_button == null) 
-        {
-            Debug.LogError("Не назначен в испекторе!");
-        }
-
-        _button.onClick.AddListener(() => 
-        ToggleLanguagePanel(_clickSound));
-
         ClickOnSelectionButton();
-    }
-
-    private void OnDestroy()
-    {
-        _progressSaver.UnsubscribeSwitchLang(OnLanguageChanged); 
     }
 
     private void ClickOnSelectionButton()
     {
         foreach (Button button in _languageBar.Buttons)
         {
+            string lang = button.name.ToLower();
+
             button.onClick.AddListener(() =>
-            ChangeLanguage(button.name.ToLower()));
+            {
+                ChangeLanguage(lang);
+                ToggleLanguagePanel(_clickSound);
+            });
         }
     }
 
@@ -82,19 +78,23 @@ public class LanguageMenu : MonoBehaviour
 
     private void ChangeLanguage(string langCode)
     {
+        StartCoroutine(ChangeLanguageRoutine(langCode));
+    }
+
+    private IEnumerator ChangeLanguageRoutine(string langCode)
+    {
         if (_progressSaver.GetTranslationLanguage() != langCode)
         {
             _progressSaver.SwitchLanguage(langCode);
+            _progressSaver.Saves.SetCurrentLanguage(langCode);
         }
 
-        TurnOn();
+        yield return null;
+
+        OnLanguageChanged(langCode);
     }
 
     private void TurnOff()
-    {
-        _buttonSound.PlayButtonSound(_clickSound);
-    }
-    private void TurnOn()
     {
         _buttonSound.PlayButtonSound(_clickSound);
     }
@@ -106,20 +106,36 @@ public class LanguageMenu : MonoBehaviour
 
     private void ApplyLanguageSelection(Button targetButton)
     {
-        MoveChoiceToButton(targetButton);
+        if (targetButton == null)
+        {
+            Debug.LogWarning($"Language button not found or destroyed");
+            return;
+        }
+
+        if (_choice == null)
+            return;
+
+        _choice.transform.SetParent(targetButton.transform);
+        _choice.transform.localPosition = _positionOnFlag;
     }
 
     private Button FindButtonForLanguage(string language)
     {
-        return _languageBar.Buttons
-        .Where(button => button.name != null)
-        .FirstOrDefault(button => button.name
-        .Equals(language, StringComparison.OrdinalIgnoreCase));
-    }
+        List<Button> buttons = _languageBar.Buttons;
 
-    private void MoveChoiceToButton(Button targetButton)
-    {
-        _choice.transform.SetParent(targetButton.transform);
-        _choice.transform.localPosition = _positionOnFlag;
+        foreach (Button button in buttons)
+        {
+            if (button == null)
+                continue;
+
+            if (string.Equals(button.name,
+                language,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                return button;
+            }
+        }
+
+        return null;
     }
 }

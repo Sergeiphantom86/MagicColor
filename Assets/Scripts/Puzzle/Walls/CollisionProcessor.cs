@@ -33,7 +33,7 @@ public class CollisionProcessor : ICollisionProcessor
 
     public void ProcessExit(Collider other)
     {
-        if (other.TryGetComponent(out Block block) == false)
+        if (other.TryGetComponent(out Block _) == false)
             return;
 
         _colorMatch.Reset();

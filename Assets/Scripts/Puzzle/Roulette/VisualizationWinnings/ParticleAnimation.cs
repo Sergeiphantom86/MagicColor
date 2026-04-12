@@ -7,6 +7,8 @@ public class ParticleAnimation : MonoBehaviour
     private Vector3 _randomPosition;
     private Vector3 _targetPosition;
     private Settings _settings;
+    private Sequence _firstSequence;
+    private Sequence _secondSequence;
 
     private event Action OnCompleteCallback;
 
@@ -30,6 +32,13 @@ public class ParticleAnimation : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        _firstSequence?.Kill();
+        _secondSequence?.Kill();
+        transform.DOKill();
+    }
+
     public void Initialize(Vector3 randomPosition, Vector3 targetPosition, Settings settings, Action onComplete = null)
     {
         _randomPosition = randomPosition;
@@ -42,30 +51,30 @@ public class ParticleAnimation : MonoBehaviour
 
     private void RunAnimation()
     {
-        Sequence sequence = DOTween.Sequence();
+        _firstSequence = DOTween.Sequence();
 
-        sequence.Join(transform.DOScale(UnityEngine.Random.Range(_settings.MinScale, _settings.MaxScale), _settings.ScaleUpDuration));
-        sequence.Join(transform.DOMove(_randomPosition, _settings.MoveToRandomDuration));
-        sequence.Join(transform.DORotate(new Vector3(0, 0, 360f), _settings.MoveToRandomDuration, RotateMode.FastBeyond360));
+        _firstSequence.Join(transform.DOScale(UnityEngine.Random.Range(_settings.MinScale, _settings.MaxScale), _settings.ScaleUpDuration));
+        _firstSequence.Join(transform.DOMove(_randomPosition, _settings.MoveToRandomDuration));
+        _firstSequence.Join(transform.DORotate(new Vector3(0, 0, 360f), _settings.MoveToRandomDuration, RotateMode.FastBeyond360));
 
-        sequence.AppendCallback(MoveToTarget);
+        _firstSequence.AppendCallback(MoveToTarget);
     }
 
     private void MoveToTarget()
     {
-        Sequence sequence = DOTween.Sequence();
+        _secondSequence = DOTween.Sequence();
 
-        sequence.Append(transform.DOMove(GetMoveInitialSection(), GetDuration()).SetEase(Ease.Linear));
+        _secondSequence.Append(transform.DOMove(GetMoveInitialSection(), GetDuration()).SetEase(Ease.Linear));
 
-        sequence.Append(transform.DOMove(_targetPosition, _settings.MoveToTargetDuration * (1 - _settings.FirstPhaseRatio))
+        _secondSequence.Append(transform.DOMove(_targetPosition, _settings.MoveToTargetDuration * (1 - _settings.FirstPhaseRatio))
             .SetEase(Ease.InQuad));
 
-        sequence.Join(transform.DOScale(0f, _settings.MoveToTargetDuration * (1 - _settings.FirstPhaseRatio)));
+        _secondSequence.Join(transform.DOScale(0f, _settings.MoveToTargetDuration * (1 - _settings.FirstPhaseRatio)));
 
-        sequence.OnComplete(() =>
+        _secondSequence.OnComplete(() =>
         {
             OnCompleteCallback?.Invoke();
-
+            transform.DOKill();
             Destroy(gameObject);
         });
     }

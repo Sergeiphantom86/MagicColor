@@ -1,7 +1,7 @@
-using DG.Tweening;
-using System.Collections;
 using System.IO;
+using DG.Tweening;
 using UnityEngine;
+using System.Collections;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CanvasGroup), typeof(PanelFader))]
@@ -18,6 +18,8 @@ public class SceneLoader : MonoBehaviour
     private PanelFader _panelFader;
     private CanvasGroup _canvasGroup;
     private Coroutine _loadingCoroutine;
+    private WaitForSeconds _extraLoad;
+    private ResourcesSceneLoader _resourcesSceneLoader;
 
     public static SceneLoader Instance { get; private set; }
 
@@ -36,6 +38,7 @@ public class SceneLoader : MonoBehaviour
         _isFirstLoad = true;
         _canvasGroup = GetComponent<CanvasGroup>();
         _panelFader = GetComponent<PanelFader>();
+        _resourcesSceneLoader = GetComponent<ResourcesSceneLoader>();
 
         _canvasGroup.alpha = _isFirstLoad ? 1f : 0f;
         _canvasGroup.interactable = false;
@@ -44,25 +47,21 @@ public class SceneLoader : MonoBehaviour
 
     private void Start()
     {
-        LoadSceneWithSplash(Menu);
+        LoadSceneAsyncWithSplash(Menu);
     }
 
-    public void LoadSceneWithSplash(string sceneName)
+    public void LoadSceneAsyncWithSplash(string sceneName, float extraTime = 0)
     {
         if (_loadingCoroutine != null)
         {
             StopCoroutine(_loadingCoroutine);
         }
 
-        _loadingCoroutine = StartCoroutine(LoadSceneProcess(sceneName));
+        _extraLoad = new WaitForSeconds(extraTime);
+        _loadingCoroutine = StartCoroutine(LoadAsyncSceneProcess(sceneName));
     }
 
-    public void ExitToMainMenu()
-    {
-        SceneManager.LoadScene(Menu);
-    }
-
-    private IEnumerator LoadSceneProcess(string sceneName)
+    private IEnumerator LoadAsyncSceneProcess(string sceneName)
     {
         yield return _panelFader.Fade(1f, true).WaitForCompletion();
 
@@ -86,6 +85,9 @@ public class SceneLoader : MonoBehaviour
 
         yield return null;
 
+        _resourcesSceneLoader.DownloadNecessaryResources(sceneName);
+
+        yield return _extraLoad;
         yield return _panelFader.Fade(0, false).WaitForCompletion();
 
         _isFirstLoad = false;
@@ -96,10 +98,14 @@ public class SceneLoader : MonoBehaviour
         for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
             string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
-
-            if (Path.GetFileNameWithoutExtension(scenePath) == sceneName) return true;
+            
+            if (Path.GetFileNameWithoutExtension(scenePath) == sceneName)
+            {
+                return true;
+            }
         }
 
+        SceneManager.LoadSceneAsync(Menu);
         Debug.LogError($"—цена '{sceneName}' не найдена в настройках сборки!");
         return false;
     }

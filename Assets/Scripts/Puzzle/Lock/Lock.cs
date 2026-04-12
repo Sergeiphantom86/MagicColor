@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(Unblocker), typeof(Oscillator), typeof(Voiceover))]
 public class Lock : MonoBehaviour
@@ -21,10 +22,10 @@ public class Lock : MonoBehaviour
 
     private void Awake()
     {
-        _ocillator = GetComponent<Oscillator>();
+        _collider = GetComponent<Collider>();
         _unblocker = GetComponent<Unblocker>();
         _voiceover = GetComponent<Voiceover>();
-        _collider = GetComponent<Collider>();
+        _ocillator = GetComponent<Oscillator>();
         _lockPointers = GetComponentsInChildren<LockPointer>();
 
         if (_ocillator == null)
@@ -72,9 +73,14 @@ public class Lock : MonoBehaviour
     {
         _unblocker.Play();
         _voiceover.PlayOneShot(_flight);
+
         _collider.enabled = false;
+
         SetColor();
+
         OnUnblocking?.Invoke();
+
+        StartCoroutine(WaitTurnOff());
     }
 
     public void ShakeUp()
@@ -94,5 +100,12 @@ public class Lock : MonoBehaviour
         {
             lockPointer.SetColor();
         }
+    }
+
+    private IEnumerator WaitTurnOff()
+    {
+        yield return new WaitForSeconds(_flight.length);
+
+        gameObject.SetActive(false);
     }
 }

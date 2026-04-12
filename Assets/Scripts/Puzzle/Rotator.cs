@@ -27,8 +27,6 @@ public class Rotator : MonoBehaviour
         _rotationTween?.Kill();
 
         _rotationTween = GetSequence();
-
-        //SetPositionPuzzle(0.25f, 16, 1);
     }
 
     public void SetPositionPuzzle(float targetX, float targetY, float targetZ)
@@ -44,11 +42,7 @@ public class Rotator : MonoBehaviour
 
         sequence.Join(GetTweenRotation(_targetAngleX));
 
-        //sequence.Join(GetTweenMoveX(_targetX));
-        //sequence.Join(GetTweenMoveY(_targetY));
-        //sequence.Join(GetTweenMoveZ(_targetZ));
-
-        sequence.Join(GetTweenMove(_targetX, _targetY, _targetZ));
+        sequence.Join(GetTweenMove(_targetX, _targetY));
 
         sequence.OnComplete(() => 
         OnRotated?.Invoke());
@@ -56,24 +50,9 @@ public class Rotator : MonoBehaviour
         return sequence;
     }
 
-    private Tween GetTweenMove(float targetX, float targetY, float targetZ)
+    private Tween GetTweenMove(float targetX, float targetY)
     {
         return transform.DOLocalMove(new Vector3(targetX, targetY, _targetZ), _duration);
-    }
-
-    private Tween GetTweenMoveY(float targetY)
-    {
-        return transform.DOLocalMoveY(targetY, _duration);
-    }
-
-    private Tween GetTweenMoveX(float targetX)
-    {
-        return transform.DOLocalMoveX(targetX, _duration);
-    }
-
-    private Tween GetTweenMoveZ(float targetZ)
-    {
-        return transform.DOLocalMoveZ(targetZ, _duration);
     }
 
     private Tween GetTweenRotation(float targetAngleX)

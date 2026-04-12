@@ -6,8 +6,8 @@ public class GridSystem : MonoBehaviour
 {
     public static GridSystem Instance { get; private set; }
 
-    [SerializeField] private int _gridSizeX;
-    [SerializeField] private int _gridSizeY;
+    private int _gridSizeX;
+    private int _gridSizeY;
 
     private Grid _unityGrid;
     private GameObject[,] _grid;
@@ -15,6 +15,9 @@ public class GridSystem : MonoBehaviour
     public float CellSize => _unityGrid.cellSize.x;
     public int GridSizeX => _gridSizeX;
     public int GridSizeY => _gridSizeY;
+    public bool IsInitialized { get; private set; }
+
+    public event Action OnInitialized;
 
     private void Awake()
     {
@@ -31,9 +34,20 @@ public class GridSystem : MonoBehaviour
 
     public void SetGridSize(int gridSizeX, int gridSizeY)
     {
+        if (_unityGrid == null)
+        {
+            Debug.LogError("_unityGrid is null");
+            return;
+        }
+
         _gridSizeX = gridSizeX;
         _gridSizeY = gridSizeY;
+
         _grid = new GameObject[_gridSizeX, _gridSizeY];
+
+        IsInitialized = true;
+
+        OnInitialized?.Invoke();
     }
 
     public Vector3 GridToWorldPosition(Vector2Int gridPosition)
@@ -66,7 +80,7 @@ public class GridSystem : MonoBehaviour
 
     public Vector3 GetWorldPosition(Vector2Int origin, Vector2Int size)
     {
-        Vector2Int centerCell = new Vector2Int(
+        Vector2Int centerCell = new(
             origin.x + (size.x - 1) / 2,
             origin.y + (size.y - 1) / 2
         );
@@ -82,6 +96,12 @@ public class GridSystem : MonoBehaviour
 
     public bool CanPlaceBlock(Vector2Int origin, Vector2Int size)
     {
+        if (_grid == null)
+        {
+            Debug.LogError("GRID NOT INITIALIZED");
+            return false;
+        }
+
         return ForEachCell(origin, size, pos =>
             IsValidGridPosition(pos) && _grid[pos.x, pos.y] == null
         );
@@ -89,6 +109,9 @@ public class GridSystem : MonoBehaviour
 
     public void PlaceObject(Vector2Int origin, IGridOccupant occupant)
     {
+        if (_grid == null)
+            Debug.LogError("GRID NULL WHEN PLACING");
+
         ForEachCell(origin, occupant.SizeInCells, pos =>
         {
             if (IsValidGridPosition(pos) == false)

@@ -12,6 +12,7 @@ public class SequentialSpawner : MonoBehaviour
     private Transform _transform;
     private Placeholder _placeholder;
     private List<Placeholder> _placeholders;
+    private Color _currentColor;
 
     private void Awake()
     {
@@ -29,15 +30,17 @@ public class SequentialSpawner : MonoBehaviour
             {
                 Color color = component.GetColor();
 
-                if (color != Color.white)
+                if (color != Color.white && _currentColor != color)
                 {
+                    _currentColor = color;
+                    color.a = 1f;
                     SpawnObject(color);
                 }
             }
         }
     }
 
-    public void SpawnObject(Color color)
+    private void SpawnObject(Color color)
     {
         if (_objectToSpawn == null)
         {
@@ -56,17 +59,19 @@ public class SequentialSpawner : MonoBehaviour
         Reduce();
     }
 
-    public void Reduce()
+    private void Reduce()
     {
         if (_placeholder == null)
         {
             if (_placeholders.Count == 0)
+            {
                 return;
+            }
 
             _placeholder = _placeholders[0];
             _placeholders.RemoveAt(0);
         }
-
+       
         _placeholder.ReduceSize();
     }
 

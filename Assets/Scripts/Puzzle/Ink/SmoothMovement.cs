@@ -7,31 +7,31 @@ public class SmoothMoveToTarget : MonoBehaviour
     [SerializeField] private PenVisualer _target;
     [SerializeField] private Transform _waypoint;
 
-    private SmoothAppearance _smoothAppearance;
     private bool _isMoving;
     private float _minDistance;
     private float _delayTimer;
     private float _movementSpeed;
     private bool _reachedWaypoint;
     private float _waypointXOffset;
-    private float _randomXOffset;
     private Vector3 _modifiedWaypointPosition;
-    private UIMaterialOrder  _materialOrder;
+    private UIMaterialOrder _materialOrder;
+    private SmoothAppearance _smoothAppearance;
+    private Drop _drop;
 
     public bool IsMoving { get; private set; }
 
     private void Awake()
     {
-        _waypointXOffset = 0.5f;
         _delayTimer = 1;
         _movementSpeed = 20;
         _minDistance = 0.1f;
+        _waypointXOffset = 0.5f;
+
         _isMoving = false;
+        _reachedWaypoint = false;
+        _drop = GetComponent<Drop>();
         _smoothAppearance = GetComponent<SmoothAppearance>();
         _materialOrder = GetComponent<UIMaterialOrder>();
-        _reachedWaypoint = false;
-        _randomXOffset = 0f;
-        _modifiedWaypointPosition = Vector3.zero;
     }
 
     private void Update()
@@ -45,29 +45,33 @@ public class SmoothMoveToTarget : MonoBehaviour
         if (_isMoving == false || _target == null) return;
 
         UpdatePosition();
-        VerifyDestinationReached();
+
+        if (CheckWaypointArrival()) return;
     }
 
     public void BeginMovement()
     {
         IsMoving = true;
-        _randomXOffset = Random.Range(-_waypointXOffset, _waypointXOffset);
-        
+
+        transform.SetParent(null);
+
         if (_waypoint != null)
         {
             _modifiedWaypointPosition = _waypoint.position;
-            _modifiedWaypointPosition.x += _randomXOffset;
+            _modifiedWaypointPosition.x += GetRandomXOffset();
         }
+
+        _drop.PlaySoundMoving();
+    }
+
+    private float GetRandomXOffset()
+    {
+        return Random.Range(-_waypointXOffset, _waypointXOffset);
     }
 
     private void UpdatePosition()
     {
-        transform.position = Vector3.MoveTowards(transform.position,DetermineDestination(),_movementSpeed * Time.deltaTime);
-    }
-
-    private void VerifyDestinationReached()
-    {
-        if (CheckWaypointArrival()) return;
+        transform.position = Vector3.MoveTowards(transform.position, DetermineDestination(), _movementSpeed * Time.deltaTime);
     }
 
     private bool CheckWaypointArrival()

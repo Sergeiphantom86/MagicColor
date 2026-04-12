@@ -8,19 +8,18 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MagicSphere
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: b3d2d9e2ace6a3d4b88dd94c084301cf, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - _ALPHAPREMULTIPLY_ON
   - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -46,6 +45,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _GradientTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -64,23 +67,50 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Alpha: 0.52
+    - _AlphaBase: 0.35
+    - _AlphaEnd: 0.17
+    - _AlphaMax: 0.8
+    - _AlphaMin: 0
+    - _AlphaStart: 0.49
     - _BumpScale: 1
+    - _ColorSpeed: 0.5
     - _Cutoff: 0.5
+    - _DepthMultiplier: 0.5
+    - _DepthPower: 0.1
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
+    - _Duration: 2
+    - _EdgeGlow: 3.16
+    - _EmissionIntensity: 1.87
+    - _EmissionMultiplier: 0.1
+    - _EmissionPower: 1
+    - _FlowScale: 1
+    - _FresnelMultiplier: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _GradientOffset: 0.5
+    - _GradientSharpness: 1.11
     - _Metallic: 0
     - _Mode: 3
+    - _NoiseScale: 3
+    - _NoiseStrength: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 1
+    - _Softness: 5
     - _SpecularHighlights: 1
+    - _Speed: 1
     - _SrcBlend: 1
+    - _TweenEnd: 0.65
+    - _TweenStart: 0.15
     - _UVSec: 0
+    - _VolumePower: 0.5
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0.5019608}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.48235294}
+    - _ColorA: {r: 0, g: 0.07667971, b: 1, a: 0.5686275}
+    - _ColorB: {r: 1, g: 0.0039215684, b: 0.07140491, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

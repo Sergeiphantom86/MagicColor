@@ -1,5 +1,5 @@
 public interface IGameplaySettings
 {
     public void SetAutomaticTransition(bool isAutomaticallyNewLevel);
-    public void ObstacleSwitch();
+    public void ObstacleSwitch(bool isOn);
 }

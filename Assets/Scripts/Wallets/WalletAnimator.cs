@@ -58,8 +58,6 @@ public class WalletAnimator : MonoBehaviour
 
     private void HandleBalanceChanged(long newBalance, string name)
     {
-        Debug.Log(name);
-        
         HandleBalanceChanged(newBalance);
     }
 
@@ -92,7 +90,7 @@ public class WalletAnimator : MonoBehaviour
             .OnComplete(() =>
             {
                 _soundTimer = 0f;
-                Debug.Log("HandleBalanceChanged");
+
                 Finished?.Invoke();
             });
     }

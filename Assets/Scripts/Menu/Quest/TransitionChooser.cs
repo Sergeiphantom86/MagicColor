@@ -6,89 +6,70 @@ public class TransitionChooser : MonoBehaviour
     private const string Tutorial = nameof(Tutorial);
 
     [SerializeField] private OfferPanel _offerPanel;
-    [SerializeField] private OfferPanel _offerPanelmobile;
+    [SerializeField] private OfferPanel _offerPanelMobile;
 
-    private int _indexTransparent;
-    private Sprite _sprite;
-    private ZoomChanger _zoomChanger;
-    private IProgressSaver _progressSaver;
-
-    private void Awake()
-    {
-        _indexTransparent = 2;
-        _zoomChanger = new ZoomChanger();
-        _progressSaver = new ProgressSaver();
-    }
+    private IQuestTransitionService _transitionService;
+    private Sprite _cachedSprite;
 
     private void OnEnable()
     {
-        _offerPanel.OnConsent += TurnOnTutorial;
-        _offerPanelmobile.OnConsent += TurnOnTutorial;
+        _offerPanel.OnConsent += LoadTutorial;
+        _offerPanelMobile.OnConsent += LoadTutorial;
 
-        _offerPanel.OnCancelled += SkipTutorial;
-        _offerPanelmobile.OnCancelled += SkipTutorial;
+        _offerPanel.OnCancelled += LoadPuzzle;
+        _offerPanelMobile.OnCancelled += LoadPuzzle;
     }
 
     private void OnDisable()
     {
-        _offerPanel.OnConsent -= TurnOnTutorial;
-        _offerPanelmobile.OnConsent -= TurnOnTutorial;
+        _offerPanel.OnConsent -= LoadTutorial;
+        _offerPanelMobile.OnConsent -= LoadTutorial;
 
-        _offerPanel.OnCancelled -= SkipTutorial;
-        _offerPanelmobile.OnCancelled -= SkipTutorial;
+        _offerPanel.OnCancelled -= LoadPuzzle;
+        _offerPanelMobile.OnCancelled -= LoadPuzzle;
     }
 
-    public void ChoosePuzzle(Quest quest)
+    public void Initialize(IProgressSaver progressSaver, ZoomChanger zoomChanger, SpriteTransmitter spriteTransmitter)
     {
-        _sprite = quest.Sprite;
+        _transitionService = new QuestTransitionService(progressSaver, zoomChanger, spriteTransmitter);
+    }
 
-        if (quest.Index == _indexTransparent)
+    public void ChoosePuzzle(Quest quest, bool isAutomaticTransition)
+    {
+        _cachedSprite = quest.Sprite;
+
+        var result = _transitionService.ProcessQuest(quest);
+
+        if (result.ShowOffer)
         {
-            _progressSaver.MakeTransparent(true);
-        }
-
-        if (quest.IsTutorial == false)
-        {
-            quest.SetTutorial(true);
-
-            _progressSaver.SetTutorial(quest.Index);
-
-            if (_zoomChanger.IsMobileWithTallScreen())
-            {
-                _offerPanelmobile.TurnOn();
-            }
+            if (result.UseMobilePanel)
+                _offerPanelMobile.TurnOn();
             else
-            {
                 _offerPanel.TurnOn();
-            }
 
             return;
         }
 
-        ConfigureTransition(Puzzle);
+        LoadScene(result.SceneName, isAutomaticTransition);
     }
 
-    private void SkipTutorial()
-    {
-        ConfigureTransition(Puzzle);
-    }
+    private void LoadPuzzle() => 
+        LoadScene(Puzzle);
 
-    private void TurnOnTutorial()
-    {
-        ConfigureTransition(Tutorial);
-    }
+    private void LoadTutorial() => 
+        LoadScene(Tutorial);
 
-    private void ConfigureTransition(string name)
+    private void LoadScene(string sceneName, bool isAutomaticTransition = false)
     {
-        if (_sprite != null)
+        float extraTime = 0;
+
+        if (isAutomaticTransition)
         {
-            _progressSaver.SetCurrentSprite(_sprite);
+            extraTime = 0.2f;
         }
-        else
-        {
-            Debug.LogWarning($"Cached sprite is null when transitioning to {name}");
-        }
+        
+        _transitionService.SaveSprite(_cachedSprite);
 
-        SceneLoader.Instance.LoadSceneWithSplash(name);
+        SceneLoader.Instance.LoadSceneAsyncWithSplash(sceneName, extraTime);
     }
 }

@@ -23,6 +23,7 @@ namespace CartoonFX
             private static bool s_callbackRegistered;
             private static readonly List<CameraShake> s_cameraShakes = new();
             private static readonly Dictionary<Camera, Vector3> s_camerasPreRenderPosition = new();
+            private static readonly Dictionary<Camera, Vector3> _camerasStartPosition = new();
 
             // Editor settings
 #if UNITY_EDITOR
@@ -46,6 +47,7 @@ namespace CartoonFX
             [System.NonSerialized] public bool IsShaking;
             private Vector3 shakeVector;
             private float delaysTimer;
+            private Vector3 _startPosition;
 
             // Constants
             private const float GLOBAL_CAMERA_SHAKE_MULTIPLIER = 1.0f;
@@ -82,11 +84,18 @@ namespace CartoonFX
             public void StartShake()
             {
                 if (IsShaking)
-                {
                     StopShake();
-                }
 
                 IsShaking = true;
+
+                foreach (var cam in cameras)
+                {
+                    if (cam != null && !_camerasStartPosition.ContainsKey(cam))
+                    {
+                        _camerasStartPosition[cam] = cam.transform.localPosition;
+                    }
+                }
+
                 RegisterStaticCallback(this);
             }
 
@@ -94,6 +103,16 @@ namespace CartoonFX
             {
                 IsShaking = false;
                 shakeVector = Vector3.zero;
+
+                foreach (var cam in cameras)
+                {
+                    if (cam != null && _camerasStartPosition.ContainsKey(cam))
+                    {
+                        cam.transform.localPosition = _camerasStartPosition[cam];
+                        _camerasStartPosition.Remove(cam);
+                    }
+                }
+
                 UnregisterStaticCallback(this);
             }
 
@@ -135,6 +154,8 @@ namespace CartoonFX
             private void InstanceOnPreRenderCamera(Camera cam)
             {
 #if UNITY_EDITOR
+                _startPosition = cam.transform.localPosition;
+
                 AddSceneViewCameraIfNeeded(cam);
 #endif
 

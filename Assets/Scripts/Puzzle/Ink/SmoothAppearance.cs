@@ -1,8 +1,8 @@
-using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine;
 
-[RequireComponent(typeof(SmoothMoveToTarget))]
+[RequireComponent(typeof(SmoothMoveToTarget), typeof(Drop))]
 public class SmoothAppearance : MonoBehaviour
 {
     private float _duration;
@@ -12,6 +12,7 @@ public class SmoothAppearance : MonoBehaviour
     private Vector3 _originalScale;
     private SmoothMoveToTarget _smoothMoveToTarget;
     private Sequence _sequence;
+    private Drop _drop;
 
     private void Awake()
     {
@@ -20,6 +21,7 @@ public class SmoothAppearance : MonoBehaviour
         _useScale = true;
         _disableOnStart = true;
         _originalScale = new Vector3(0.2f, 0.2f, 0.2f);
+        _drop = GetComponent<Drop>();
         _smoothMoveToTarget = GetComponent<SmoothMoveToTarget>();
 
         if (_disableOnStart && _useScale)
@@ -31,8 +33,15 @@ public class SmoothAppearance : MonoBehaviour
         Show();
     }
 
+    private void OnDestroy()
+    {
+        _sequence?.Kill();
+    }
+
     public void Hide()
     {
+        _drop.PlaySoundSpawn();
+
         CreateSizeChangeSequence(
             Vector3.zero,
             _durationDeletion,
@@ -43,7 +52,7 @@ public class SmoothAppearance : MonoBehaviour
     private void Show()
     {
         gameObject.SetActive(true);
-
+        
         CreateSizeChangeSequence(
             _originalScale,
             _duration,

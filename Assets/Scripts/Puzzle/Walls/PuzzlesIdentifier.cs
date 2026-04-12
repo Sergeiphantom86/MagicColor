@@ -28,11 +28,6 @@ public class PuzzlesIdentifier : MonoBehaviour
         _colorPrecision = new ColorPrecision();
         _zoomChanger = new ZoomChanger();
 
-        if (_gridSystem == null)
-        {
-            _gridSystem = GridSystem.Instance;
-        }
-
         if (_wallPrefabs == null || _wallPrefabs.Count == 0)
         {
             Debug.LogError("No wall prefabs assigned", this);
@@ -44,6 +39,17 @@ public class PuzzlesIdentifier : MonoBehaviour
             Debug.LogError("BlockSpawner == null");
             return;
         }
+    }
+
+    private void Start()
+    {
+        _gridSystem = GridSystem.Instance;
+
+        if (_gridSystem == null)
+        {
+            Debug.LogError("GridSystem.Instance is NULL in Start");
+            return;
+        }
 
         PickUp();
     }
@@ -52,7 +58,7 @@ public class PuzzlesIdentifier : MonoBehaviour
     {
         if (_zoomChanger.IsMobileWithTallScreen())
         {
-            _index = 4;
+            _index = 3;
         }
         
         if (_wallPrefabs[_index] == null)

@@ -10,23 +10,26 @@ public class GhostGlowTween : MonoBehaviour
     [SerializeField] private Gradient _gradient;
     [SerializeField, Range(0f, 1f)] private float _tweenStart;
     [SerializeField, Range(0f, 1f)] private float _tweenEnd;
-    [SerializeField, Range(0f, 1f)] private float emissionMultiplier;
-
+    private float _emissionMultiplier;
     private Material _material;
 
     private void Awake()
     {
+        _emissionMultiplier = 0.1f;
         _material = GetComponent<Renderer>().material;
         _material.EnableKeyword(Emission);
+
+        if (_material.HasProperty(EmissionColor))
+            _material.SetColor(EmissionColor, Color.black);
     }
 
     private void Start()
     {
-        DOTween.To(() => _tweenStart, time =>
+        DOTween.To(() => 0f, time =>
         {
-            Color color = _gradient.Evaluate(time) * emissionMultiplier;
+            Color color = _gradient.Evaluate(time) * _emissionMultiplier;
             _material.SetColor(EmissionColor, color);
-        }, _tweenEnd, _duration)
+        }, 1f, _duration)
         .SetLoops(-1, LoopType.Yoyo)
         .SetEase(Ease.InOutSine)
         .SetTarget(this);

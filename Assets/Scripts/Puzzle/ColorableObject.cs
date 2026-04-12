@@ -1,6 +1,6 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 [RequireComponent(typeof(Renderer))]
 public class ColorableObject : MonoBehaviour, IColorable
@@ -71,8 +71,6 @@ public class ColorableObject : MonoBehaviour, IColorable
 
     public void SetColor(Color color)
     {
-        if (color == null) return;
-
         if (_renderer.material == null) return;
 
         SetOriginalColor(color);
@@ -117,11 +115,6 @@ public class ColorableObject : MonoBehaviour, IColorable
     public void SetRenderQueue()
     {
         _material.renderQueue = _renderQueue;
-    }
-
-    public void ReturnRenderQueue()
-    {
-        _material.renderQueue = _startRenderQueue;
     }
 
     public void SetAlpha(float alpha)
@@ -170,31 +163,24 @@ public class ColorableObject : MonoBehaviour, IColorable
         _coroutine = StartCoroutine(WaitReturn());
     }
 
-    public void TurnOffRenderer()
+    public Tween TurnOffRenderer()
     {
-        StartCoroutine(FadeOutAndDisable());
-    }
+        if (_renderer == null || _material == null)
+            return null;
 
-    private IEnumerator FadeOutAndDisable()
-    {
-        while (_time < _fadeDuration)
-        {
-            _originalColor.a = Mathf.Lerp(_originalColor.a, 0f, GetTime(_time) / _fadeDuration);
+        _renderer.enabled = true;
 
-            _material.color = _originalColor;
+        Color startColor = _material.color;
+        startColor.a = 1f;
+        _material.color = startColor;
 
-            yield return null;
-        }
-
-        _originalColor.a = 0f;
-        _material.color = _originalColor;
-
-        _renderer.enabled = false;
-    }
-
-    private float GetTime(float time)
-    {
-        return time += Time.deltaTime;
+        return DOTween.To(
+                () => _material.color,
+                color => _material.color = color,
+                new Color(_originalColor.r, _originalColor.g, _originalColor.b, _valueTransparency),
+                _fadeDuration
+            )
+            .SetEase(Ease.Linear);
     }
 
     private Color GetDimmedEmissionColor(Color color, float brightness)

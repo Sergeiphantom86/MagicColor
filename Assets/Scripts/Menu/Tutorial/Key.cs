@@ -17,9 +17,7 @@ public class Key : Currency, IActivatable
     private bool _isDragging;
     private string _quantity;
     private float _movementDuration;
-    private float _delayBetweenMovements;
     private Voiceover _voiceover;
-    private Vector3 _rotationAngles;
     private Sequence _movementSequence;
     private IInputHandler _inputHandler;
     private ICollisionHandler _collisionHandler;
@@ -34,9 +32,7 @@ public class Key : Currency, IActivatable
         _zoomIn = 2;
         _zoomOut = 1;
         _isDragging = true;
-        _movementDuration = 1;
-        _delayBetweenMovements = 0.5f;
-        _rotationAngles = new Vector3(-25, 0, 0);
+        _movementDuration = 0.5f;
         _voiceover = GetComponent<Voiceover>();
         _inputHandler = GetComponent<IInputHandler>();
         _collisionHandler = GetComponent<ICollisionHandler>();
@@ -157,15 +153,12 @@ public class Key : Currency, IActivatable
             .Append(BuildMove(
                 _startPoint.transform.position,
                 _movementDuration,
-                _rotationAngles,
                 transform.localScale.x * _zoomIn,
                 Ease.OutBounce
             ))
-            .AppendInterval(_delayBetweenMovements)
             .Append(BuildMove(
                 _endPoint.transform.position,
                 _movementDuration * 4,
-                -_rotationAngles,
                 transform.localScale.x * _zoomOut,
                 Ease.InOutBack
             ));
@@ -173,11 +166,10 @@ public class Key : Currency, IActivatable
         _movementSequence.Pause();
     }
 
-    private Sequence BuildMove(Vector3 position, float duration, Vector3 rotationAngles, float scaleMultiplier, Ease ease)
+    private Sequence BuildMove(Vector3 position, float duration, float scaleMultiplier, Ease ease)
     {
         return DOTween.Sequence()
             .Append(transform.DOMove(position, duration))
-            .Join(transform.DORotate(rotationAngles, duration))
             .Join(transform.DOScale(scaleMultiplier, duration))
              .SetEase(ease);
     }

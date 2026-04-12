@@ -7,7 +7,6 @@ public class ButtonViewer : MonoBehaviour
 
     private float _duration;
     private Vector3 _endScale;
-    private Vector3 _startScale;
     private Vector3 _targetPosition;
     private Sequence _sequence;
     private Transform _transform;
@@ -86,17 +85,5 @@ public class ButtonViewer : MonoBehaviour
            _transform.DOScale(_endScale, _duration)
                .SetEase(Ease.OutBack)
        );
-    }
-
-
-    private void SetStartScale()
-    {
-        _startScale = Vector3.zero;
-        _transform.localScale = _startScale;
-    }
-
-    private void SetEndScale()
-    {
-        _endScale = _transform.localScale;
     }
 }
