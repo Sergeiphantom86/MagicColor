@@ -9,7 +9,6 @@ public class RewardAdForSpins : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private TextMeshProUGUI _textMeshPro;
-    [SerializeField] private Counter _counter;
 
     private readonly string _rewardID = "add_spins";
 
@@ -26,12 +25,6 @@ public class RewardAdForSpins : MonoBehaviour
         if (_button == null)
         {
             Debug.LogError("Button не назначен!!!");
-            return;
-        }
-
-        if (_counter == null)
-        {
-            Debug.LogError("Counter не назначен!!!");
             return;
         }
 
@@ -59,7 +52,7 @@ public class RewardAdForSpins : MonoBehaviour
 
     private void OnRewardReceived(string id)
     {
-        if (id == _rewardID && _counter != null)
+        if (id == _rewardID)
         {
             for (int i = 0; i < ParseTextToInt(); i++)
             {

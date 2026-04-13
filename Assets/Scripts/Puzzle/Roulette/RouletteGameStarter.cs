@@ -4,8 +4,8 @@ public class RouletteGameStarter : MonoBehaviour
 {
     [SerializeField] AutomaticTransitionInstaller _automaticTransitionInstaller;
 
-    public void SetProgressSaver(IProgressSaver progressSaver, Sprite newSprite)
+    public void SetProgressSaver(IProgressSaver progressSaver, SpriteTransmitter spriteTransmitter)
     {
-        _automaticTransitionInstaller.SetProgressSaver(progressSaver, newSprite);
+        _automaticTransitionInstaller.SetProgressSaver(progressSaver, spriteTransmitter);
     }
 }

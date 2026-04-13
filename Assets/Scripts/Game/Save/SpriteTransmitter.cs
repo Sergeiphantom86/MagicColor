@@ -4,9 +4,13 @@ public class SpriteTransmitter : MonoBehaviour
 {
     private Sprite _new;
     private Sprite _current;
+    private bool _isAutomaticallyNewLevel;
 
     public Sprite New => _new;
+
     public Sprite Current => _current;
+
+    public bool IsAutomaticallyNewLevel => _isAutomaticallyNewLevel;
 
     public void SetNew(Sprite sprite)
     {
@@ -39,5 +43,10 @@ public class SpriteTransmitter : MonoBehaviour
         }
 
         _current = sprite;
+    }
+
+    public void SetAutomaticTransition(bool isAutomaticallyNewLevel)
+    {
+        _isAutomaticallyNewLevel = isAutomaticallyNewLevel;
     }
 }

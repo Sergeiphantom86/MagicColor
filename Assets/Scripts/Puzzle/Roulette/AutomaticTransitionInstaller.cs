@@ -9,6 +9,7 @@ public class AutomaticTransitionInstaller : MonoBehaviour
     private PuzzleSelector _selector;
     private IProgressSaver _progressSaver;
     private Sprite _newSprite;
+    private SpriteTransmitter _spriteTransmitter;
 
     private void Awake()
     {
@@ -21,12 +22,12 @@ public class AutomaticTransitionInstaller : MonoBehaviour
         _nextPuzzle.onClick.AddListener(SetValue);
     }
 
-    public void SetProgressSaver(IProgressSaver progressSaver, Sprite newSprite)
+    public void SetProgressSaver(IProgressSaver progressSaver, SpriteTransmitter spriteTransmitter)
     {
-        Initialized(progressSaver, newSprite);
+        Initialized(progressSaver, spriteTransmitter);
     }
 
-    private void Initialized(IProgressSaver progressSaver, Sprite newSprite)
+    private void Initialized(IProgressSaver progressSaver, SpriteTransmitter spriteTransmitter)
     {
         if (progressSaver == null)
         {
@@ -34,7 +35,8 @@ public class AutomaticTransitionInstaller : MonoBehaviour
             return;
         }
 
-        _newSprite = newSprite;
+        _spriteTransmitter = spriteTransmitter;
+        _newSprite = spriteTransmitter.New;
         _progressSaver = progressSaver;
 
         if (_nextPuzzle == null)
@@ -54,7 +56,7 @@ public class AutomaticTransitionInstaller : MonoBehaviour
 
     private void SetValue()
     {
-        _progressSaver.SetAutomaticTransition(true);
+        _spriteTransmitter.SetAutomaticTransition(true);
 
         _buttonHome.GoMenu();
     }

@@ -2,43 +2,85 @@ using UnityEngine;
 
 public class ResourcesSceneLoader : MonoBehaviour
 {
-    private const string Roulette = nameof(Roulette);
+    private const string Roulette = nameof( Roulette);
+    private const string Tutorial = nameof(Tutorial);
     private const string Puzzle = nameof(Puzzle);
     private const string Menu = nameof(Menu);
 
     private SpriteTransmitter _spriteTransmitter;
     private IProgressSaver _progressSaver;
-    private RouletteGameStarter _rouletteGameStarter;
-    private MenuStarter _menuStarter;
-    private SceneFlowController _sceneFlowController;
 
     private void Awake()
     {
         _spriteTransmitter = GetComponent<SpriteTransmitter>();
+
+        if (_spriteTransmitter == null)
+        {
+            Debug.LogError($"{nameof(SpriteTransmitter)} component missing on {gameObject.name}");
+        }
+
         _progressSaver = new ProgressSaver();
     }
 
-    public void DownloadNecessaryResources(string nameScene)
+    public void GoOver(string sceneName)
     {
-        if (Roulette == nameScene)
+        switch (sceneName)
         {
-            _rouletteGameStarter = FindObjectOfType<RouletteGameStarter>();
+            case Roulette:
+                InitializeRouletteScene();
+                break;
 
-            _rouletteGameStarter.SetProgressSaver(_progressSaver, _spriteTransmitter.New);
+            case Menu:
+                InitializeMenuScene();
+                break;
+
+            case Puzzle:
+            case Tutorial:
+                InitializePuzzleOrTutorialScene();
+                break;
+
+            default:
+                Debug.LogWarning($"No specific initialization defined for scene: {sceneName}");
+                break;
+        }
+    }
+
+    private void InitializeRouletteScene()
+    {
+        var rouletteStarter = FindObjectOfType<RouletteGameStarter>();
+
+        if (rouletteStarter == null)
+        {
+            Debug.LogError($"{nameof(RouletteGameStarter)} not found in Roulette scene.");
+            return;
         }
 
-        if (Menu == nameScene)
-        {
-            _menuStarter = FindObjectOfType<MenuStarter>();
+        rouletteStarter.SetProgressSaver(_progressSaver, _spriteTransmitter);
+    }
 
-            _menuStarter.Initialize(_progressSaver, _spriteTransmitter);
+    private void InitializeMenuScene()
+    {
+        var menuStarter = FindObjectOfType<MenuStarter>();
+
+        if (menuStarter == null)
+        {
+            Debug.LogError($"{nameof(MenuStarter)} not found in Menu scene.");
+            return;
         }
 
-        if (Puzzle == nameScene)
-        {
-            _sceneFlowController = FindObjectOfType<SceneFlowController>();
+        menuStarter.Initialize(_progressSaver, _spriteTransmitter);
+    }
 
-            _sceneFlowController.Initialize(_spriteTransmitter.Current, _progressSaver);
+    private void InitializePuzzleOrTutorialScene()
+    {
+        var sceneFlow = FindObjectOfType<SceneFlowController>();
+
+        if (sceneFlow == null)
+        {
+            Debug.LogError($"{nameof(SceneFlowController)} not found in {Puzzle} or {Tutorial} scene.");
+            return;
         }
+
+        sceneFlow.Initialize(_spriteTransmitter.Current, _progressSaver);
     }
 }

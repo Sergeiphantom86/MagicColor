@@ -19,7 +19,6 @@ public class Puzzle : MonoBehaviour
 
     private void Start()
     {
-        _progressSaver.SetAutomaticTransition(false);
         _progressSaver.SaveProgress();
     }
 

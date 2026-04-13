@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class HideOnStart : MonoBehaviour
@@ -16,25 +15,14 @@ public class HideOnStart : MonoBehaviour
         }
     }
 
-    private IEnumerator Start()
-    {
-        // ждём пока LanguageMenu завершит инициализацию
-        while (_languageMenu.IsInitialized == false)
-        {
-            yield return null;
-        }
-
-        gameObject.SetActive(false);
-    }
-
     private void OnEnable()
     {
-       // _languageMenu.OnInitialized += TurnOff;
+        _languageMenu.Initialized += TurnOff;
     }
 
     private void OnDisable()
     {
-        //_languageMenu.OnInitialized -= TurnOff;
+        _languageMenu.Initialized -= TurnOff;
     }
 
     private void TurnOff()

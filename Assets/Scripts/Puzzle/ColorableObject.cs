@@ -33,7 +33,7 @@ public class ColorableObject : MonoBehaviour, IColorable
         _delay = 10;
         _fadeDuration = 1f;
         _renderQueue = 4000;
-        _valueTransparency = 0.3f;
+        _valueTransparency = 0.6f;
 
         _indicator = GetComponent<Indicator>();
 

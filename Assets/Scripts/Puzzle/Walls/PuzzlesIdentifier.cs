@@ -18,6 +18,7 @@ public class PuzzlesIdentifier : MonoBehaviour
     private BlockSpawner _blockSpawner;
     private ColorPrecision _colorPrecision;
     private ZoomChanger _zoomChanger;
+    private float _positionX;
 
     public WallsContainer CurrentContainer { get; private set; }
 
@@ -27,6 +28,7 @@ public class PuzzlesIdentifier : MonoBehaviour
         _blockSpawner = GetComponentInChildren<BlockSpawner>();
         _colorPrecision = new ColorPrecision();
         _zoomChanger = new ZoomChanger();
+        _positionX = -0.25f;
 
         if (_wallPrefabs == null || _wallPrefabs.Count == 0)
         {
@@ -75,7 +77,7 @@ public class PuzzlesIdentifier : MonoBehaviour
 
         SetGridSize();
 
-        _rotation.SetPositionPuzzle(CurrentContainer.Position.x, CurrentContainer.Position.y, CurrentContainer.Position.z);
+        _rotation.SetPositionPuzzle(_positionX, CurrentContainer.Position.y, CurrentContainer.Position.z);
     }
 
     private void DestroyCurrentContainer()

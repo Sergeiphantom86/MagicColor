@@ -8,7 +8,7 @@ public class RouletteSystem : MonoBehaviour
     [SerializeField] private WheelAnimator _wheelAnimator;
     [SerializeField] private ButtonController _spinButtonController;
     [SerializeField] private ItemCollector _itemCollector;
-    [SerializeField] private Counter _counter;
+    [SerializeField] private RouletteCounter _counter;
     [SerializeField] private Arrow _arrow;
     [SerializeField] private RewardAnimator _rewardAnimator;
     [SerializeField] private ButtonHome _buttonHome;
@@ -28,7 +28,7 @@ public class RouletteSystem : MonoBehaviour
             Debug.LogError($"{nameof(ItemCollector)} ссылка не установлена!", this);
 
         if (_counter == null)
-            Debug.LogError($"{nameof(Counter)} ссылка не установлена!", this);
+            Debug.LogError($"{nameof(RouletteCounter)} ссылка не установлена!", this);
     }
 
     private void Start()

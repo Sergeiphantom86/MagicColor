@@ -13,6 +13,7 @@ public class SpawnDropAnimation : MonoBehaviour
     private ColorableObject _targetColor;
     private Collider _collider;
     private Voiceover _voiceover;
+    private float _valueTransparency;
 
     public float Duration => _duration;
 
@@ -21,7 +22,7 @@ public class SpawnDropAnimation : MonoBehaviour
         _targetColor = GetComponent<ColorableObject>();
         _collider = GetComponent<Collider>();
         _voiceover = GetComponent<Voiceover>();
-
+        _valueTransparency = 0.6f;
         gameObject.SetActive(false);
     }
 
@@ -49,7 +50,7 @@ public class SpawnDropAnimation : MonoBehaviour
             {
                 effecter.CraeteParticles(transform.position, Quaternion.identity, 0.5f);
                 
-                _targetColor.SetAlpha(0.3f);
+                _targetColor.SetAlpha(_valueTransparency);
             })
             .SetEase(_ease)
             .Pause();

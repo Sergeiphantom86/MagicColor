@@ -73,7 +73,7 @@ public class MenuController : MonoBehaviour
 
         _panelFader.FadeIn(() =>
         {
-            _sceneFlow.LoadNextScene();
+            _sceneFlow.LoadNext();
         });
     }
 }

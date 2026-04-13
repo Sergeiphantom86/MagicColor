@@ -1035,9 +1035,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d938b1a7a0c62f444a293305d671929b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coinWallet: {fileID: 0}
-  _crystalWallet: {fileID: 0}
-  _rewards: {fileID: 3244064459585382341}
 --- !u!1 &7208034721561222006
 GameObject:
   m_ObjectHideFlags: 0
@@ -2868,9 +2865,6 @@ PrefabInstance:
       addedObject: {fileID: 241230303082477871}
     - targetCorrespondingSourceObject: {fileID: 1025224234826758528, guid: c700cd9b643ea9945ac5d89a4f3ba3ec, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1830202168597554736}
-    - targetCorrespondingSourceObject: {fileID: 1025224234826758528, guid: c700cd9b643ea9945ac5d89a4f3ba3ec, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 4464297582044350277}
     - targetCorrespondingSourceObject: {fileID: 8519459787329979258, guid: c700cd9b643ea9945ac5d89a4f3ba3ec, type: 3}
       insertIndex: -1
@@ -3173,7 +3167,7 @@ MonoBehaviour:
   _wheelAnimator: {fileID: 1078758665889518091}
   _spinButtonController: {fileID: 4464297582044350277}
   _itemCollector: {fileID: 8914765380351594123}
-  _counter: {fileID: 1830202168597554736}
+  _counter: {fileID: 0}
   _arrow: {fileID: 7969004301611925553}
   _rewardAnimator: {fileID: 0}
   _buttonHome: {fileID: 2372860462145497613}
@@ -3677,7 +3671,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textMeshPro: {fileID: 348385762476797673}
-  _counter: {fileID: 1830202168597554736}
 --- !u!114 &6251070108353236656 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3204742188050354391, guid: c700cd9b643ea9945ac5d89a4f3ba3ec, type: 3}
@@ -4067,19 +4060,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1830202168597554736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8395729144947566567}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29b0e41ab8204d94c8acdbb14b2e0bd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rewardAdForSpins: {fileID: 8603411804711893427}
 --- !u!114 &4464297582044350277
 MonoBehaviour:
   m_ObjectHideFlags: 0

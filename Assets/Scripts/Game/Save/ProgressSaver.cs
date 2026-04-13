@@ -81,9 +81,6 @@ public class ProgressSaver : IProgressSaver
     public void SetVolume(VolumeChanger changer, float volume) =>
         WithSaves(savesYG2 => savesYG2.SetVolume(changer, volume));
 
-    public void SetAutomaticTransition(bool autoNextLevel) =>
-        WithSaves(savesYG2 => savesYG2.SetAutomaticTransition(autoNextLevel));
-
     public void ObstacleSwitch(bool isOn) =>
         WithSaves(savesYG2 => savesYG2.ObstacleSwitch(isOn));
 

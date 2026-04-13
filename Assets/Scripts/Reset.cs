@@ -21,5 +21,6 @@ public class Reset : MonoBehaviour
     {
         _progressSaver.SetDefaultValues();
         _progressSaver.SaveProgress();
+        SceneLoader.Instance.LoadSceneAsyncWithSplash("Menu");
     }
 }

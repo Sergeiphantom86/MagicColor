@@ -6,8 +6,8 @@ namespace YG
     {
         private const int MinIndexValue = 0;
         private const long MinCurrentValue = 0;
-        private const int IndexUnblockingTutorial = 5;
-        private const int IndexAbilityTutorial = 10;
+        private const int IndexUnblockingTutorial = 1;
+        private const int IndexAbilityTutorial = 2;
 
         [SerializeField] private int _indexUnblockingTutorial = IndexUnblockingTutorial;
 
@@ -19,7 +19,7 @@ namespace YG
 
         [SerializeField] private long _currentCoin;
 
-        [SerializeField] private string _currentLanguage;
+        [SerializeField] private string _currentLanguage = "ru";
 
         [SerializeField] private long _currentCrystal;
 
@@ -37,8 +37,6 @@ namespace YG
 
         [SerializeField] private bool _isUnlockKey;
 
-        [SerializeField] private bool _isAutomaticallyNewLevel;
-
         [SerializeField] private int _stars;
 
         [SerializeField] private float _musicVolume = 0.3f;
@@ -49,8 +47,6 @@ namespace YG
 
         private int _countQuest;
         private int _reward;
-
-        public bool IsAutomaticallyNewLevel => _isAutomaticallyNewLevel;
 
         public int MaxReachedQuestIndex => _maxReachedQuestIndex;
 
@@ -129,12 +125,12 @@ namespace YG
                 return;
             }
 
-            if (index == _indexUnblockingTutorial)
+            if (index >= _indexUnblockingTutorial)
             {
                 _isUnlockKey = true;
             }
 
-            if (index == IndexAbilityTutorial)
+            if (index >= IndexAbilityTutorial)
             {
                 ObstacleSwitch(true);
             }
@@ -285,11 +281,6 @@ namespace YG
             }
 
             return true;
-        }
-
-        public void SetAutomaticTransition(bool isAutomaticallyNewLevel)
-        {
-            _isAutomaticallyNewLevel = isAutomaticallyNewLevel;
         }
 
         private void OnDefaultSaves()

@@ -89,7 +89,7 @@ public class NumberFormatter
     private string AddSignAndSuffix(string value, int suffixIndex, bool isNegative, string[] suffixes)
     {
         return isNegative ?
-            $"-{value}{suffixes[suffixIndex]}" :
-            $"{value}{suffixes[suffixIndex]}";
+            $"-{value} {suffixes[suffixIndex]}" :
+            $"{value} {suffixes[suffixIndex]}";
     }
 }

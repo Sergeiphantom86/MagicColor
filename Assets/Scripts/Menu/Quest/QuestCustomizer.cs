@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 public class QuestCustomizer
 {
@@ -52,7 +53,7 @@ public class QuestCustomizer
     {
         if (quest.Index == index && isTutorial == false)
         {
-            quest.SetTutorial(!isTutorial);
+            quest.SetTutorial(false);
         }
     }
 

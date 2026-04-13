@@ -35,6 +35,7 @@ public class QuestTransitionService : IQuestTransitionService
 
             _result.ShowOffer = true;
             _result.UseMobilePanel = _zoomChanger.IsMobileWithTallScreen();
+
             return _result;
         }
 
@@ -46,6 +47,7 @@ public class QuestTransitionService : IQuestTransitionService
             _progressSaver.ObstacleSwitch(true);
 
         _result.SceneName = Puzzle;
+
         return _result;
     }
 

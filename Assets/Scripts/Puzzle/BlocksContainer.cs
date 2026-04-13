@@ -20,6 +20,7 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     private BlockSpawner _blockSpawner;
     private bool _isInitialize;
     private float _delayTime;
+    private HintCounter _hintCoroutine;
 
     public Transform Transform => transform;
     public float DelayTime => _delayTime;
@@ -33,6 +34,7 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     {
         _blocks = new List<Block>();
         _blockSpawner = GetComponent<BlockSpawner>();
+        _hintCoroutine = GetComponent<HintCounter>();
     }
 
     private void OnEnable()

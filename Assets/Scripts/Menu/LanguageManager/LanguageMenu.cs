@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class LanguageMenu : MonoBehaviour
+public class LanguageMenu : MonoBehaviour, IActivatable
 {
     [SerializeField] private GameObject _choice;
     [SerializeField] private ButtonSoundHandler _buttonSound;
@@ -17,31 +17,34 @@ public class LanguageMenu : MonoBehaviour
     private IProgressSaver _progressSaver;
     private float _flagPositionX;
     private float _flagPositionY;
+    private List<Button> _buttons;
 
-    public bool IsInitialized { get; private set; }
+    private bool _isInitialized;
+
+    public event Action Initialized;
 
     private void Awake()
     {
         _progressSaver = new ProgressSaver();
+        _languageBar = GetComponent<LanguageBar>();
+        _buttons = new List<Button>();
         _flagPositionX = 36;
         _flagPositionY = -22;
+
         _current = _progressSaver.Saves.CurrentLanguage;
 
         _positionOnFlag = new Vector2(_flagPositionX, _flagPositionY);
+
+        _buttons = _languageBar.Buttons;
     }
 
     private void Start()
     {
-        OnLanguageChanged(_current);
         ChangeLanguage(_current);
-
-        IsInitialized = true;
     }
 
     private void OnEnable()
     {
-        _languageBar = GetComponent<LanguageBar>();
-
         if (IsValidState() == false)
         {
             Debug.LogError("Не назначен в испекторе!");
@@ -52,14 +55,14 @@ public class LanguageMenu : MonoBehaviour
 
     private void ClickOnSelectionButton()
     {
-        foreach (Button button in _languageBar.Buttons)
+        foreach (Button button in _buttons)
         {
             string lang = button.name.ToLower();
 
             button.onClick.AddListener(() =>
             {
-                ChangeLanguage(lang);
                 ToggleLanguagePanel(_clickSound);
+                ChangeLanguage(lang);
             });
         }
     }
@@ -72,8 +75,6 @@ public class LanguageMenu : MonoBehaviour
     private void ToggleLanguagePanel(AudioClip audioClip)
     {
         _buttonSound.PlayButtonSound(audioClip);
-
-        TurnOff();
     }
 
     private void ChangeLanguage(string langCode)
@@ -94,11 +95,6 @@ public class LanguageMenu : MonoBehaviour
         OnLanguageChanged(langCode);
     }
 
-    private void TurnOff()
-    {
-        _buttonSound.PlayButtonSound(_clickSound);
-    }
-
     private void OnLanguageChanged(string language)
     {
         ApplyLanguageSelection(FindButtonForLanguage(language));
@@ -117,13 +113,18 @@ public class LanguageMenu : MonoBehaviour
 
         _choice.transform.SetParent(targetButton.transform);
         _choice.transform.localPosition = _positionOnFlag;
+
+        if (_isInitialized == false)
+        {
+            _isInitialized = true;
+
+            Initialized?.Invoke();
+        }
     }
 
     private Button FindButtonForLanguage(string language)
     {
-        List<Button> buttons = _languageBar.Buttons;
-
-        foreach (Button button in buttons)
+        foreach (Button button in _buttons)
         {
             if (button == null)
                 continue;
@@ -137,5 +138,15 @@ public class LanguageMenu : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void Activate()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
     }
 }

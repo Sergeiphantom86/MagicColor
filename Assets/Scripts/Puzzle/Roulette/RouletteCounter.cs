@@ -1,10 +1,10 @@
-using DG.Tweening;
 using TMPro;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(ButtonController))]
-public class Counter : MonoBehaviour
+public class RouletteCounter : MonoBehaviour
 {
     [SerializeField] private RewardAdForSpins _rewardAdForSpins;
 

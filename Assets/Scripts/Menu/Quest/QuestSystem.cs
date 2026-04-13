@@ -49,7 +49,7 @@ public class QuestSystem : MonoBehaviour
         _quests = quests;
 
         _currentQuestIndex = _progressSaver.Saves.QuestIndex;
-        _isOn = _progressSaver.Saves.IsAutomaticallyNewLevel;
+        _isOn = spriteTransmitter.IsAutomaticallyNewLevel;
 
         _transitionChooser.Initialize(progressSaver, _zoomChanger, spriteTransmitter);
 
@@ -155,7 +155,7 @@ public class QuestSystem : MonoBehaviour
         if (_transitionChooser != null)
         {
             _transitionChooser.ChoosePuzzle(quest, _isOn);
-            _progressSaver.SetAutomaticTransition(false);
+            _spriteTransmitter.SetAutomaticTransition(false);
         }
     }
 

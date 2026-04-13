@@ -85,7 +85,7 @@ public class SceneLoader : MonoBehaviour
 
         yield return null;
 
-        _resourcesSceneLoader.DownloadNecessaryResources(sceneName);
+        _resourcesSceneLoader.GoOver(sceneName);
 
         yield return _extraLoad;
         yield return _panelFader.Fade(0, false).WaitForCompletion();

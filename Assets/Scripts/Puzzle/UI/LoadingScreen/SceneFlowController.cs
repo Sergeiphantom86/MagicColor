@@ -14,7 +14,6 @@ public class SceneFlowController : MonoBehaviour
     [SerializeField] private PuzzlesIdentifier _puzzlesIdentifier;
 
     private string _sceneName;
-    private Sprite _sprite;
     private IProgressSaver _progressSaver;
     private AdRewardController _adRewardController;
 
@@ -46,16 +45,22 @@ public class SceneFlowController : MonoBehaviour
         }
 
         _progressSaver = progressSaver;
-        _sprite = sprite;
 
-        _textureInitializer.SpawnPixelsFromTexture(TryGetSprite(_sprite).texture);
+        sprite = TryGetSprite(sprite);
+
+        if (sprite == null)
+        {
+            Debug.Log(sprite);
+        }
+      
+        _textureInitializer.SpawnPixelsFromTexture(sprite.texture);
     }
 
-    public void LoadNextScene()
+    public void LoadNext()
     {
         if (_sceneName != Tutorial)
         {
-            _adRewardController.ShowRewardAd(LoadSceneRoulette);
+            _adRewardController.ShowRewardAd(LoadRoulette);
             _progressSaver.SaveProgress();
             return;
         }
@@ -63,7 +68,7 @@ public class SceneFlowController : MonoBehaviour
         _menuLoader.TargetScene(Puzzle);
     }
 
-    private void LoadSceneRoulette()
+    private void LoadRoulette()
     {
         _menuLoader.TargetScene(Roulette);
     }
