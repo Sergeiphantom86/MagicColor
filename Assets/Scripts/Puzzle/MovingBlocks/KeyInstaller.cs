@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class KeyInstaller : MonoBehaviour
 {
@@ -38,7 +39,15 @@ public class KeyInstaller : MonoBehaviour
         if (blocks.Count == 0)
             return;
 
-        _key.transform.position = blocks[Random.Range(0, blocks.Count)].transform.position;
+        Block block = blocks[Random.Range(0, blocks.Count)];
+
+        if (SceneManager.GetActiveScene().name == "Tutorial")
+        {
+            block.SetOutlineColor();
+        }
+
+        _key.transform.position = block.transform.position;
+
         _isPlaced = true;
     }
 

@@ -49,10 +49,13 @@ public class AdRewardController : MonoBehaviour
     public void ShowRewardAd(Action onComplete)
     {
         OnComplete = onComplete;
+
+        if (_offerPanel == null) return;
+
         _offerPanel.TurnOn();
     }
 
-    private void ShowAd()
+    public void ShowAd()
     {
         if (_progressSaver.CanShowAd())
         {

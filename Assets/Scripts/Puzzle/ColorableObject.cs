@@ -11,11 +11,11 @@ public class ColorableObject : MonoBehaviour, IColorable
 
     [SerializeField] private bool _isTransparent;
 
-    private float _time;
     private float _delay;
     private bool _isRepainted;
     private int _renderQueue;
     private int _startRenderQueue;
+    private int _selectedItemRenderQueue;
     private float _fadeDuration;
     private float _valueTransparency;
     private Material _material;
@@ -33,6 +33,7 @@ public class ColorableObject : MonoBehaviour, IColorable
         _delay = 10;
         _fadeDuration = 1f;
         _renderQueue = 4000;
+        _selectedItemRenderQueue = 3001;
         _valueTransparency = 0.6f;
 
         _indicator = GetComponent<Indicator>();
@@ -50,9 +51,11 @@ public class ColorableObject : MonoBehaviour, IColorable
 
         _material = _renderer.material;
 
-        _startRenderQueue = _renderer.material.renderQueue;
+        if (this is Block)
+        {
+            _startRenderQueue = _material.renderQueue;
+        }
     }
-
 
     public void TurnOffRender()
     {
@@ -67,6 +70,11 @@ public class ColorableObject : MonoBehaviour, IColorable
     public void InstallRepainted()
     {
         _isRepainted = true;
+    }
+
+    public void SetStartRenderQueueSelectedItem()
+    {
+         _material.renderQueue = _startRenderQueue;
     }
 
     public void SetColor(Color color)
@@ -115,6 +123,11 @@ public class ColorableObject : MonoBehaviour, IColorable
     public void SetRenderQueue()
     {
         _material.renderQueue = _renderQueue;
+    }
+
+    public void SetRenderQueueSelectedItem()
+    {
+        _material.renderQueue = _selectedItemRenderQueue;
     }
 
     public void SetAlpha(float alpha)

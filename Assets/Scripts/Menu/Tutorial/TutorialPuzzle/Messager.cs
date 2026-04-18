@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class HintKey : MonoBehaviour
+public class Messager : MonoBehaviour
 {
     private float _delay;
     private bool _isTurnOn;

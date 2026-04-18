@@ -87,6 +87,7 @@ public class MovementState : TutorialStater
     private void StartPulsation()
     {
         _isMoving = false;
+
         _coroutine = _stateMachine.StartCoroutine(WaitForOneStarLost());
     }
 

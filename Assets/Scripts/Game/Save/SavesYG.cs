@@ -6,8 +6,8 @@ namespace YG
     {
         private const int MinIndexValue = 0;
         private const long MinCurrentValue = 0;
-        private const int IndexUnblockingTutorial = 1;
-        private const int IndexAbilityTutorial = 2;
+        private const int IndexUnblockingTutorial = 4;
+        private const int IndexAbilityTutorial = 7;
 
         [SerializeField] private int _indexUnblockingTutorial = IndexUnblockingTutorial;
 

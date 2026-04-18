@@ -3,10 +3,10 @@ using UnityEngine;
 public class LockInteractionHandler
 {
     private Lock _lock;
-    private HintKey _hintKey;
+    private Messager _hintKey;
     private bool _initialized;
 
-    public void SetHint(HintKey hintKey) => 
+    public void SetHint(Messager hintKey) => 
         _hintKey = hintKey;
 
     public void Set(Collider other)

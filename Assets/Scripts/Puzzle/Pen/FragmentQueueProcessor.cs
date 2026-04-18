@@ -37,7 +37,7 @@ public class FragmentQueueProcessor
 
         if (_blocksContainer != null)
         {
-            _blocksContainer.BlockDestroyed += RequestSpeedBoost;
+            _blocksContainer.EverythDestroyed += RequestSpeedBoost;
         }
     }
 
@@ -45,7 +45,7 @@ public class FragmentQueueProcessor
     {
         if (_blocksContainer != null)
         {
-            _blocksContainer.BlockDestroyed -= RequestSpeedBoost;
+            _blocksContainer.EverythDestroyed -= RequestSpeedBoost;
         }
     }
 

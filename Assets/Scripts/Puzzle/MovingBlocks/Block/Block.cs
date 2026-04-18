@@ -32,6 +32,7 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
     private GridDragMovement _gridDragMovement;
     private Vector2Int _gridPosition;
     private ITouchDragInput _touchDragInput;
+    private Outline _outline;
 
     public Vector2Int SizeInCells => _sizeInCells;
 
@@ -50,6 +51,7 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
         _scaleDestructEffect = 1;
 
         _scaling = GetComponent<Scaler>();
+        _outline = GetComponent<Outline>();
         _collider = GetComponent<Collider>();
         _voiceover = GetComponent<Voiceover>();
         _pathMover = GetComponent<PathMover>();
@@ -59,6 +61,8 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
         _inkSpawner = GetComponentInChildren<InkSpawner>();
 
         _collider.enabled = false;
+        _outline.OutlineColor = Color.yellow;
+        _outline.enabled = false;
     }
 
     private void OnEnable()
@@ -77,7 +81,7 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
         _magnifier.OnRaised -= PlayFallingSound;
     }
 
-    public void Initializat(Effecter effectImpact, Effecter effectSmock, Effecter effectDestruct, AudioClip soundDestruction, AudioClip soundDragg, AudioClip soundRaise, AudioClip matchSound)
+    public void Initialize(Effecter effectImpact, Effecter effectSmock, Effecter effectDestruct, AudioClip soundDestruction, AudioClip soundDragg, AudioClip soundRaise, AudioClip matchSound)
     {
         _soundDragg = soundDragg;
         _soundRaise = soundRaise;
@@ -86,6 +90,11 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
         _effectImpact = effectImpact;
         _effectDestruct = effectDestruct;
         _soundDestruction = soundDestruction;
+    }
+
+    public void SetOutlineColor()
+    {
+        _outline.enabled = true;
     }
 
     public void SetGridPosition(Vector2Int gridPosition)
@@ -101,7 +110,10 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
     public void Destroy(Vector3 waypoint, Vector3 endPoint)
     {
         _collider.enabled = false;
+        _outline.enabled = false;
+
         SetRenderQueue();
+
         _effectImpact.CraeteParticles(transform.position, Quaternion.identity, _scaleImpactEffect);
 
         _touchDragInput.ThrowOff();
@@ -155,9 +167,9 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
         _inkSpawner.ActivateInkDrops(GetColor(), _duration);
     }
 
-    private Tween ReduceSize()
+    private void ReduceSize()
     {
-        return _scaling.ChangeSize(Vector3.zero, _duration)
+        _scaling.ChangeSize(Vector3.zero, _duration)
            .SetEase(Ease.InOutBounce);
     }
 

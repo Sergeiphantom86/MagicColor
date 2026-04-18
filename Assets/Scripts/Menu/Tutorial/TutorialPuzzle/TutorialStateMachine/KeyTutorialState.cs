@@ -37,7 +37,6 @@ public class KeyTutorialState : TutorialStater
     public override void Exit()
     {
         _stateTutorial.OnCompleted -= OnTutorialCompleted;
-
         DOTween.Kill(this);
     }
 

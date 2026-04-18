@@ -1,24 +1,27 @@
-using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
 using System;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class Blinker : MonoBehaviour, IActivatable
 {
-    [SerializeField] private float _blinkSpeed = 1f;
-    [SerializeField] private float _minAlpha = 0f;
-    [SerializeField] private float _maxAlpha = 1f;
-    [SerializeField] private bool _blinkOnStart = true;
     [SerializeField] private Button _button;
 
-    private Image _targetImage;
+    private float _minAlpha;
+    private float _maxAlpha;
+    private float _blinkSpeed;
     private Tween _blinkTween;
+    private Image _targetImage;
     private Color _originalColor;
 
     public event Action OnCompleted;
 
     private void Awake()
     {
+        _minAlpha = 0f;
+        _maxAlpha = 1f;
+        _blinkSpeed = 0.5f;
+
         _targetImage = GetComponent<Image>();
 
         if (_targetImage == null)
@@ -27,20 +30,15 @@ public class Blinker : MonoBehaviour, IActivatable
             enabled = false;
             return;
         }
+
         _originalColor = _targetImage.color;
 
         Deactivate();
     }
 
-    private void Start()
-    {
-        if (_blinkOnStart)
-            Play();
-    }
-
     private void OnEnable()
     {
-        _button.onClick.AddListener(Stop);
+        _button.onClick.AddListener(GoNext);
     }
 
     private void OnDisable()
@@ -50,32 +48,42 @@ public class Blinker : MonoBehaviour, IActivatable
 
     public void Play()
     {
-        Color startColor = _originalColor;
-        startColor.a = _maxAlpha;
-        _targetImage.color = startColor;
-
-        _blinkTween = _targetImage.DOFade(_minAlpha, _blinkSpeed / 2f)
+        SetAlpha(_maxAlpha);
+        _blinkTween = _targetImage.DOFade(_minAlpha, _blinkSpeed)
             .SetEase(Ease.InOutSine)
             .SetLoops(-1, LoopType.Yoyo)
             .SetUpdate(true);
     }
 
-    public void Stop()
+    private void GoNext()
     {
         OnCompleted?.Invoke();
+        Stop();
+    }
 
+    public void Stop()
+    {
         if (_blinkTween != null && _blinkTween.IsActive())
         {
             _blinkTween.Kill();
             _blinkTween = null;
+            SetAlpha(_minAlpha);
         }
 
         Deactivate();
     }
 
+    private void SetAlpha(float alpha)
+    {
+        Color startColor = _originalColor;
+        startColor.a = alpha;
+        _targetImage.color = startColor;
+    }
+
     public void Activate()
     {
         gameObject.SetActive(true);
+        Play();
     }
 
     public void Deactivate()

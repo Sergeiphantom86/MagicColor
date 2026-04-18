@@ -1,24 +1,32 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PurchaseButton : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _textMeshProUGUI;
+    private const string RewardID = "after_puzzle_reward";
+
+    [SerializeField] private TextMeshProUGUI _paymentCoin;
+    [SerializeField] private TextMeshProUGUI _paymentAdv;
     [SerializeField] private WalletAnimator _walletAnimator;
     [SerializeField] private AudioClip _audioClip;
     [SerializeField] private Blocker _blocker;
+    [SerializeField] private ParticleSystem _shine;
+    [SerializeField] private Messager _hint;
 
     private Voiceover _voiceover;
     private Button _button;
     private IProgressSaver _progressSaver;
     private IActivatable _activatable;
+    private PaymentType _currentPaymentType;
+    private long _result;
 
     public Button Button => _button;
 
     public event Action OnClick;
-    public event Action<long> OnPurchased;
+    public event Action<long> CoinPurchased;
 
     private void Awake()
     {
@@ -27,14 +35,22 @@ public class PurchaseButton : MonoBehaviour
         _progressSaver = new ProgressSaver();
         _button.interactable = true;
 
+        if (long.TryParse(_paymentCoin.text, out long result))
+        {
+            _result = result;
+        }
+
         _activatable = _blocker;
         _activatable.Deactivate();
 
         if (_blocker != null && _progressSaver.Saves.IsUnlockAbilities == false)
         {
             _activatable.Activate();
-            _button.interactable = false;
+            _button.enabled = false;
+            _shine.Stop();
         }
+
+        TryChangeTypePayment();
     }
 
     private void Start()
@@ -44,12 +60,12 @@ public class PurchaseButton : MonoBehaviour
 
     private void OnEnable()
     {
-        _walletAnimator.Finished += Wait;
+        _walletAnimator.Finished += TurnOnButton;
     }
 
     private void OnDisable()
     {
-        _walletAnimator.Finished -= Wait;
+        _walletAnimator.Finished -= TurnOnButton;
     }
 
     public void Click()
@@ -64,13 +80,66 @@ public class PurchaseButton : MonoBehaviour
 
     private void Buy()
     {
-        if (long.TryParse(_textMeshProUGUI.text, out long result) == false) return;
+        if (_currentPaymentType == PaymentType.Ads)
+        {
+            _button.interactable = false;
 
-        OnPurchased?.Invoke(result);
+            if (_progressSaver.CanShowAd())
+            {
+                _progressSaver.RewardedAdvShow(RewardID, null);
+                Click();
+            }
+            else
+            {
+                _hint.TurnOn();
+            }
+
+            StartCoroutine(WaitTurnOnButton(0.3f));
+            return;
+        }
+
+        if (_result <= 0) return;
+
+        CoinPurchased?.Invoke(_result);
+        TryChangeTypePayment();
     }
 
-    private void Wait()
+    private void TurnOnButton()
     {
+        StartCoroutine(WaitTurnOnButton());
+    }
+
+    private IEnumerator WaitTurnOnButton(float delay = 0)
+    {
+        yield return new WaitForSeconds(delay);
+
         _button.interactable = true;
     }
+
+    private void TryChangeTypePayment()
+    {
+        if(_progressSaver == null) return;
+        if(_paymentCoin == null) return;
+        if(_paymentAdv == null) return;
+        
+        if (_progressSaver.Saves.CurrentCoin >= _result)
+        {
+            _currentPaymentType = PaymentType.Coins;
+
+            _paymentCoin.gameObject.SetActive(true);
+            _paymentAdv.gameObject.SetActive(false);
+            return;
+        }
+
+        _currentPaymentType = PaymentType.Ads;
+
+        _paymentCoin.gameObject.SetActive(false);
+        _paymentAdv.gameObject.SetActive(true);
+    }
+}
+
+public enum PaymentType
+{
+    Coins,
+    Ads
 }

@@ -5,7 +5,8 @@ public class HintSwitcher : MonoBehaviour
     [SerializeField] private Blinker _backlightPause;
     [SerializeField] private Blinker _backlightPurchase;
     [SerializeField] private Blinker _backlightAbility;
-    
+    [SerializeField] private HandMover _handMover;
+
     private HintCounter _hintCounter;
 
     private void Awake()
@@ -13,39 +14,83 @@ public class HintSwitcher : MonoBehaviour
         _hintCounter = GetComponent<HintCounter>();
     }
 
+    private void Start()
+    {
+        _hintCounter.StartTimer();
+    }
+
     private void OnEnable()
     {
-        _backlightAbility.OnCompleted += TurnOnTimer;
+        _hintCounter.Rested += DisableEveryth;
         _hintCounter.OnWorked += TurnOnBacklightPause;
+        _handMover.Destroyed += ResetTimer;
+
+        _backlightAbility.OnCompleted += Complete;
         _backlightPause.OnCompleted += TurnOnBacklightPurchase;
         _backlightPurchase.OnCompleted += TurnOnBacklightAbility;
     }
 
     private void OnDisable()
     {
+        _hintCounter.Rested += DisableEveryth;
         _hintCounter.OnWorked -= TurnOnBacklightPause;
+        _handMover.Destroyed -= ResetTimer;
+
+        _backlightAbility.OnCompleted -= Complete;
         _backlightPause.OnCompleted -= TurnOnBacklightPurchase;
         _backlightPurchase.OnCompleted -= TurnOnBacklightAbility;
-        _backlightAbility.OnCompleted -= TurnOnTimer;
     }
 
     private void TurnOnBacklightPause()
     {
         _backlightPause.Activate();
+        TurnOnHand(_backlightPause.gameObject.transform);
     }
 
     private void TurnOnBacklightPurchase()
     {
         _backlightPurchase.Activate();
+        TurnOnHand(_backlightPurchase.gameObject.transform);
     }
 
     private void TurnOnBacklightAbility()
     {
         _backlightAbility.Activate();
+        TurnOnHand(_backlightAbility.gameObject.transform);
+        ResetTimer();
     }
 
-    private void TurnOnTimer()
+    private void Complete()
     {
-        
+        TurnOffHand();
+    }
+
+    private void TurnOffHand()
+    {
+        _handMover.Stop();
+        _handMover.TurnOff();
+    }
+
+    private void TurnOnHand(Transform transform)
+    {
+        _handMover.TurnOn();
+        _handMover.Stop();
+        _handMover.SetPosition(transform.position);
+        _handMover.EnableScaleAnimation();
+    }
+
+    private void DisableEveryth()
+    {
+        _backlightAbility.Stop();
+        _backlightPause.Stop();
+        _backlightPurchase.Stop();
+
+        TurnOffHand();
+    }
+
+    private void ResetTimer()
+    {
+        DisableEveryth();
+        _hintCounter.StartTimer();
     }
 }

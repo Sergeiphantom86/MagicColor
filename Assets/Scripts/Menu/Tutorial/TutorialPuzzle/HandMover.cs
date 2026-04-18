@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
 
 public class HandMover : MonoBehaviour
@@ -15,6 +16,8 @@ public class HandMover : MonoBehaviour
     private int _scaleMultiplier;
 
     public Pivot Pivot => _pivot;
+
+    public event Action Destroyed;
 
     private void Awake()
     {
@@ -92,11 +95,22 @@ public class HandMover : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void TurnOn()
+    {
+        gameObject.SetActive(true);
+    } 
+
     public void Stop()
     {
         _sequence?.Kill();
 
         transform.localScale = Vector3.one * _startScale.x;
+    }
+
+    public void OnDestroyed()
+    {
+        Destroyed?.Invoke();
+        TurnOff();
     }
 
     private Vector3 GetTargetPosition(float distanceX = 0, float distance = 0)

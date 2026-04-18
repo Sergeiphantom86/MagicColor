@@ -39,7 +39,7 @@ public class TransitionChooser : MonoBehaviour
         _cachedSprite = quest.Sprite;
 
         var result = _transitionService.ProcessQuest(quest);
-
+       
         if (result.ShowOffer)
         {
             if (result.UseMobilePanel)

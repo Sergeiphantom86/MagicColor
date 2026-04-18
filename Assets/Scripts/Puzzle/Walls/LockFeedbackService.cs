@@ -3,34 +3,12 @@ using UnityEngine;
 public class LockFeedbackService : MonoBehaviour, ILockFeedbackService
 {
     private Lock _lock;
-    private HintKey _hint;
+    private Messager _hint;
 
-    public void InitializComponents(Lock @lock, HintKey hint)
+    public void InitializComponents(Lock @lock, Messager hint)
     {
         SetLock(@lock);
         SetKey(hint);
-    }
-
-    private void SetLock(Lock @lock)
-    {
-        if (@lock == null)
-        {
-            Debug.LogError("Lock == null");
-            return;
-        }
-        
-        _lock = @lock;
-    }
-
-    private void SetKey(HintKey hint)
-    {
-        if (hint == null)
-        {
-            Debug.LogError("HintKey == null");
-            return;
-        }
-
-        _hint = hint;
     }
 
     public void Play()
@@ -44,5 +22,27 @@ public class LockFeedbackService : MonoBehaviour, ILockFeedbackService
         {
             _hint.TurnOn();
         }
+    }
+
+    private void SetLock(Lock @lock)
+    {
+        if (@lock == null)
+        {
+            Debug.LogError("Lock == null");
+            return;
+        }
+        
+        _lock = @lock;
+    }
+
+    private void SetKey(Messager hint)
+    {
+        if (hint == null)
+        {
+            Debug.LogError("HintKey == null");
+            return;
+        }
+
+        _hint = hint;
     }
 }

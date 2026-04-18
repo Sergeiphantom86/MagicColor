@@ -70,6 +70,7 @@ public class GridDragMovement : MonoBehaviour
             if (_cellsSinceLastSound >= 5)
             {
                 Moved?.Invoke();
+                
                 _cellsSinceLastSound = 0;
             }
         }

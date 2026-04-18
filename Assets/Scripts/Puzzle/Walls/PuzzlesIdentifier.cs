@@ -5,7 +5,7 @@ public class PuzzlesIdentifier : MonoBehaviour
 {
     [SerializeField] private BagKey _bag;
     [SerializeField] private Lock _lock;
-    [SerializeField] private HintKey _hintKey;
+    [SerializeField] private Messager _hintKey;
     [SerializeField] private AnimatorPuzzle _animator;
     [SerializeField] private ErrorPanel _errorPanel;
     [SerializeField] private Activator _activator;
@@ -18,7 +18,6 @@ public class PuzzlesIdentifier : MonoBehaviour
     private BlockSpawner _blockSpawner;
     private ColorPrecision _colorPrecision;
     private ZoomChanger _zoomChanger;
-    private float _positionX;
 
     public WallsContainer CurrentContainer { get; private set; }
 
@@ -28,7 +27,6 @@ public class PuzzlesIdentifier : MonoBehaviour
         _blockSpawner = GetComponentInChildren<BlockSpawner>();
         _colorPrecision = new ColorPrecision();
         _zoomChanger = new ZoomChanger();
-        _positionX = -0.25f;
 
         if (_wallPrefabs == null || _wallPrefabs.Count == 0)
         {
@@ -77,7 +75,7 @@ public class PuzzlesIdentifier : MonoBehaviour
 
         SetGridSize();
 
-        _rotation.SetPositionPuzzle(_positionX, CurrentContainer.Position.y, CurrentContainer.Position.z);
+        _rotation.SetPositionPuzzle(0, CurrentContainer.Position.y, CurrentContainer.Position.z);
     }
 
     private void DestroyCurrentContainer()

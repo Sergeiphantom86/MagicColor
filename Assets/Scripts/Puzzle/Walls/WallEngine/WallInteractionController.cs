@@ -29,29 +29,17 @@ public class WallInteractionController : MonoBehaviour
         _wall = wall ??
             throw new ArgumentNullException(nameof(wall));
 
-        Subscribe();
+        _inputHandler.OnSelected += OnSelected;
 
         _initialized = true;
     }
 
     private void OnDisable()
     {
-        Unsubscribe();
-    }
-
-    private void Subscribe()
-    {
-        _inputHandler.OnSelected += OnSelected;
-        _colorCollisionHandler.IsTouched += OnBlockTouch;
-    }
-
-    private void Unsubscribe()
-    {
         if (_initialized == false)
             return;
 
         _inputHandler.OnSelected -= OnSelected;
-        _colorCollisionHandler.IsTouched -= OnBlockTouch;
     }
 
     private void OnSelected(Vector2 screenPosition)
@@ -60,12 +48,7 @@ public class WallInteractionController : MonoBehaviour
         {
             _colorCollisionHandler.UnblockWall();
         }
-
-        _wall.PushMovement();
-    }
-
-    private void OnBlockTouch(Block block)
-    {
+    
         _wall.PushMovement();
     }
 }

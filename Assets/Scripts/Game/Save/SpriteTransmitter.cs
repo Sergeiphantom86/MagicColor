@@ -38,7 +38,6 @@ public class SpriteTransmitter : MonoBehaviour
 
         if (_current == sprite)
         {
-            Debug.Log($"[SpriteTransmitter] Спрайт {sprite.name} уже установлен в _current, повторное присваивание пропущено.");
             return;
         }
 

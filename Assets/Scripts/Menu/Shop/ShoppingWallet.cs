@@ -12,12 +12,12 @@ public class ShoppingWallet : MonoBehaviour
 
     private void OnEnable()
     {
-        _purchaseButton.OnPurchased += SpendFunds;
+        _purchaseButton.CoinPurchased += SpendFunds;
     }
 
     private void OnDisable()
     {
-        _purchaseButton.OnPurchased -= SpendFunds;
+        _purchaseButton.CoinPurchased -= SpendFunds;
     }
 
     private void SpendFunds(long pay)

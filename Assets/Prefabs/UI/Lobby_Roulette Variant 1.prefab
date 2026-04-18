@@ -911,12 +911,9 @@ MonoBehaviour:
       hi: 0
     fonts:
       defaultFont: []
-      ru:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      en:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      tr:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
+      ru: []
+      en: []
+      tr: []
       az: []
       be: []
       he: []
@@ -971,9 +968,9 @@ MonoBehaviour:
       de: []
       hi: []
     fontsSizeCorrect:
-      ru: 00000000
-      en: 00000000
-      tr: 00000000
+      ru: 
+      en: 
+      tr: 
       az: 
       be: 
       he: 
@@ -1216,12 +1213,9 @@ MonoBehaviour:
       hi: 0
     fonts:
       defaultFont: []
-      ru:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      en:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      tr:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
+      ru: []
+      en: []
+      tr: []
       az: []
       be: []
       he: []
@@ -1276,9 +1270,9 @@ MonoBehaviour:
       de: []
       hi: []
     fontsSizeCorrect:
-      ru: 00000000
-      en: 00000000
-      tr: 00000000
+      ru: 
+      en: 
+      tr: 
       az: 
       be: 
       he: 
@@ -1600,9 +1594,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d938b1a7a0c62f444a293305d671929b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coinWallet: {fileID: 0}
-  _crystalWallet: {fileID: 0}
-  _rewards: {fileID: 7776242318147634067}
 --- !u!1001 &450104013972067817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2458,9 +2449,6 @@ PrefabInstance:
       addedObject: {fileID: 969664636054715493}
     - targetCorrespondingSourceObject: {fileID: 1025224234826758528, guid: c700cd9b643ea9945ac5d89a4f3ba3ec, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4555094452660697517}
-    - targetCorrespondingSourceObject: {fileID: 1025224234826758528, guid: c700cd9b643ea9945ac5d89a4f3ba3ec, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 8928871602388766182}
     - targetCorrespondingSourceObject: {fileID: 8519459787329979258, guid: c700cd9b643ea9945ac5d89a4f3ba3ec, type: 3}
       insertIndex: -1
@@ -2562,7 +2550,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textMeshPro: {fileID: 6658908909188633738}
-  _counter: {fileID: 4555094452660697517}
 --- !u!114 &1043927444430648531 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3204742188050354391, guid: c700cd9b643ea9945ac5d89a4f3ba3ec, type: 3}
@@ -2626,12 +2613,9 @@ MonoBehaviour:
       hi: 0
     fonts:
       defaultFont: []
-      ru:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      en:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      tr:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
+      ru: []
+      en: []
+      tr: []
       az: []
       be: []
       he: []
@@ -2686,9 +2670,9 @@ MonoBehaviour:
       de: []
       hi: []
     fontsSizeCorrect:
-      ru: 00000000
-      en: 00000000
-      tr: 00000000
+      ru: 
+      en: 
+      tr: 
       az: 
       be: 
       he: 
@@ -2938,19 +2922,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4555094452660697517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3188296141487381892}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29b0e41ab8204d94c8acdbb14b2e0bd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rewardAdForSpins: {fileID: 575417278164466907}
 --- !u!114 &8928871602388766182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3127,7 +3098,7 @@ MonoBehaviour:
   _wheelAnimator: {fileID: 8265554266335193558}
   _spinButtonController: {fileID: 8928871602388766182}
   _itemCollector: {fileID: 4781993816808408789}
-  _counter: {fileID: 4555094452660697517}
+  _counter: {fileID: 0}
   _arrow: {fileID: 5645383395915476671}
   _rewardAnimator: {fileID: 0}
   _buttonHome: {fileID: 4647811295525401382}
@@ -3213,12 +3184,9 @@ MonoBehaviour:
       hi: 0
     fonts:
       defaultFont: []
-      ru:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      en:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      tr:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
+      ru: []
+      en: []
+      tr: []
       az: []
       be: []
       he: []
@@ -3273,9 +3241,9 @@ MonoBehaviour:
       de: []
       hi: []
     fontsSizeCorrect:
-      ru: 00000000
-      en: 00000000
-      tr: 00000000
+      ru: 
+      en: 
+      tr: 
       az: 
       be: 
       he: 
@@ -3580,12 +3548,9 @@ MonoBehaviour:
       hi: 0
     fonts:
       defaultFont: []
-      ru:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      en:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
-      tr:
-      - {fileID: 12800000, guid: c16eb7d7c3953489db00312b8b09df4b, type: 3}
+      ru: []
+      en: []
+      tr: []
       az: []
       be: []
       he: []
@@ -3640,9 +3605,9 @@ MonoBehaviour:
       de: []
       hi: []
     fontsSizeCorrect:
-      ru: 00000000
-      en: 00000000
-      tr: 00000000
+      ru: 
+      en: 
+      tr: 
       az: 
       be: 
       he: 

@@ -127,6 +127,7 @@ namespace CartoonFX
 #endif
 
                 float totalDuration = duration + delay;
+
                 if (time < totalDuration)
                 {
                     if (time < delay)
@@ -140,10 +141,6 @@ namespace CartoonFX
                     }
 
                     ProcessShakeAnimation(time / totalDuration);
-                }
-                else if (IsShaking)
-                {
-                    StopShake();
                 }
             }
 
@@ -191,7 +188,7 @@ namespace CartoonFX
                 if (ShouldSkipDueToDelay())
                     return;
 
-                Vector3 randomVec = new Vector3(Random.value, Random.value, Random.value);
+                Vector3 randomVec = new (Random.value, Random.value, Random.value);
                 Vector3 shakeVec = Vector3.Scale(randomVec, shakeStrength) * (Random.value > 0.5f ? -1 : 1);
                 shakeVector = shakeVec * shakeCurve.Evaluate(delta) * GLOBAL_CAMERA_SHAKE_MULTIPLIER;
             }

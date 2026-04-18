@@ -11,6 +11,7 @@ public class TouchDragInput : MonoBehaviour, ITouchDragInput
     private GridDragMovement _dragMovement;
     private IInputHandler _inputHandler;
     private Voiceover _voiceover;
+    private Outline _outline;
 
     public bool IsSelected => _isSelected;
 
@@ -25,6 +26,7 @@ public class TouchDragInput : MonoBehaviour, ITouchDragInput
         _voiceover = GetComponent<Voiceover>();
         _inputHandler = GetComponent<IInputHandler>();
         _dragMovement = GetComponent<GridDragMovement>();
+        _outline = GetComponent<Outline>();
 
         if (_dragMovement == null)
         {
@@ -64,6 +66,8 @@ public class TouchDragInput : MonoBehaviour, ITouchDragInput
     private void SelectBlock(Vector2 position)
     {
         _isSelected = true;
+        _outline.enabled = true;
+        _colorable.SetRenderQueueSelectedItem();
         _selectable.Select();
         _colorable.AssignOriginal();
         OnTouchClick?.Invoke(position);
@@ -83,8 +87,10 @@ public class TouchDragInput : MonoBehaviour, ITouchDragInput
         if (_isSelected)
         {
             _isSelected = false;
+            _outline.enabled = false;
             _selectable.Deselect();
             _colorable.Disable();
+            _colorable.SetStartRenderQueueSelectedItem();
             OnDropped?.Invoke();
         }
     }

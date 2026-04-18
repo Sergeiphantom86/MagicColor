@@ -25,7 +25,8 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     public Transform Transform => transform;
     public float DelayTime => _delayTime;
 
-    public event Action BlockDestroyed;
+    public event Action EverythDestroyed;
+    public event Action OneDestroyed;
 
     public int ActiveBlocksCount =>
         _blocks.Count(block => block != null && block.gameObject.activeSelf);
@@ -53,7 +54,7 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     {
         _blocks.Add(block);
 
-        block.Initializat(_effectImpact, _effectSmock, _effectDestruct, _soundDestruction, _soundDragg, _soundRaise, _matchSound);
+        block.Initialize(_effectImpact, _effectSmock, _effectDestruct, _soundDestruction, _soundDragg, _soundRaise, _matchSound);
     }
 
     private void CalculateStartTimeGame(Block block)
@@ -88,9 +89,11 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     {
         _initialBlocksCount--;
 
+        OneDestroyed?.Invoke();
+
         if (_initialBlocksCount == 0)
         {
-            BlockDestroyed?.Invoke();
+            EverythDestroyed?.Invoke();
         }
 
         _blocks.Remove(block);

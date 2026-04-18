@@ -30,8 +30,8 @@ public class QuestCollector : MonoBehaviour
         SaveQuestProgress();
         SetupSprites(spriteTransmitter);
 
-        _questSystem.Initialize(_allQuests, progressSaver, spriteTransmitter);
         _questCustomizer.Apply(_allQuests);
+        _questSystem.Initialize(_allQuests, progressSaver, spriteTransmitter);
     }
 
     private void ClearCollections()

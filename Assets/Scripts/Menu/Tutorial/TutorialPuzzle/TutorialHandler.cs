@@ -13,7 +13,7 @@ public class TutorialHandler : TutorialStateMachine
     [SerializeField] private PauseButton _pauseButton;
     [SerializeField] private AbilityButton _bagAbilities;
     [SerializeField] private PurchaseButton _purchaseButton;
-    [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private TextMeshProUGUI _priceText;
     [SerializeField] private StateTutorial _stateTutorial;
     [SerializeField] private HandMover _handMoverUI;
     [SerializeField] private CloseGameButton closeGame;
@@ -35,7 +35,7 @@ public class TutorialHandler : TutorialStateMachine
         if (ValidateReferences() == false)
             return context;
 
-        TutorialAbilities tutorialAbilities = new(tutorialStateMachin, context, inputHandler, _pauseButton, _text, _handMoverUI, _purchaseButton, closeGame, _bagAbilities, _hintsUI);
+        TutorialAbilities tutorialAbilities = new(tutorialStateMachin, context, inputHandler, _pauseButton, _priceText, _handMoverUI, _purchaseButton, closeGame, _bagAbilities, _hintsUI);
 
         context.InitScene(_key, _lock, _hints, _timer, _rotator, _container, _stateTutorial, tutorialAbilities);
 

@@ -3,19 +3,18 @@
     Properties
     {
         _GridSize ("Grid Size (X,Y cells)", Vector) = (10,10,0,0)
-
         _Radius ("Corner Radius", Range(0,0.5)) = 0.08
         _Outline ("Outline Width", Range(0,0.2)) = 0.03
 
         _BaseColor ("Base Color", Color) = (0.85,0.85,0.85,1)
-        _ActiveColor ("Active Color", Color) = (1,0.6,0.2,1)
         _OutlineColor ("Outline Color", Color) = (0,0,0,1)
+        _BackgroundColor ("Background Color", Color) = (0.2,0.2,0.2,1)
 
         _FillAlpha ("Fill Alpha", Range(0,1)) = 1.0
         _OutlineAlpha ("Outline Alpha", Range(0,1)) = 1.0
-        _ActiveAlpha ("Active Alpha Mult", Range(0,1)) = 1.0
+        _BackgroundAlpha ("Background Alpha", Range(0,1)) = 1.0
 
-        _ActiveCell ("Active Cell (x,y)", Vector) = (-1,-1,0,0)
+        _Intensity ("Intensity", Range(0,2)) = 1.0
     }
 
     SubShader
@@ -54,14 +53,13 @@
             float _Outline;
 
             float4 _BaseColor;
-            float4 _ActiveColor;
             float4 _OutlineColor;
+            float4 _BackgroundColor;
 
             float _FillAlpha;
             float _OutlineAlpha;
-            float _ActiveAlpha;
-
-            float4 _ActiveCell;
+            float _BackgroundAlpha;
+            float _Intensity;
 
             v2f vert (appdata v)
             {
@@ -80,8 +78,6 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 float2 grid = i.uv * _GridSize.xy;
-
-                float2 cellId = floor(grid);
                 float2 cellUV = frac(grid) - 0.5;
 
                 float2 boxSize = float2(0.45, 0.45);
@@ -95,24 +91,18 @@
                 float outlineMask = smoothstep(0, aa, dOuter) -
                                     smoothstep(0, aa, dInner);
 
-                float isActive =
-                    (cellId.x == _ActiveCell.x &&
-                     cellId.y == _ActiveCell.y) ? 1.0 : 0.0;
-
-                float3 fillColor =
-                    lerp(_BaseColor.rgb, _ActiveColor.rgb, isActive);
-
-                float fillAlpha =
-                    fillMask * _FillAlpha * lerp(1.0, _ActiveAlpha, isActive);
-
+                float fillAlpha = fillMask * _FillAlpha;
                 float outlineAlpha = outlineMask * _OutlineAlpha;
+                float cellAlpha = max(fillAlpha, outlineAlpha);
 
-                float3 color =
-                    lerp(fillColor, _OutlineColor.rgb, outlineMask);
+                float3 cellColor = lerp(_BaseColor.rgb, _OutlineColor.rgb, outlineMask);
+                cellColor = cellColor * _Intensity;
 
-                float alpha = max(fillAlpha, outlineAlpha);
+                float3 finalColor = lerp(_BackgroundColor.rgb, cellColor, cellAlpha);
 
-                return float4(color, alpha);
+                float finalAlpha = _BackgroundAlpha * (1.0 - cellAlpha) + cellAlpha;
+
+                return float4(finalColor, finalAlpha);
             }
             ENDCG
         }

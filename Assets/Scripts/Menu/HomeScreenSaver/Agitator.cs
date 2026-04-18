@@ -13,32 +13,40 @@ public class Agitator : MonoBehaviour, IAnimatable
     private const float MaxDirectionValue = 1f;
     private const float AxisValueZ = 0f;
 
-    private float _delay;
     private float _interval;
     private float _explosionForce;
     private float _explosionDuration;
     private float _rotationIntensity;
     private float _scaleDownDuration;
     private float _delayBeforeDestroy;
-    private Viewer _viewer;
     private Sequence _sequence;
     private Voiceover _voiceover;
     private Sequence _explosionSequence;
-    private TextureInitializer _textureInitializer;
+    private PixelShine _pixelShine;
+
+    public event System.Action Exploded;
 
     private void Awake()
     {
-        _delay = 1f;
-        _interval = 0.1f;
+        _interval = 1;
         _explosionForce = 50f;
         _explosionDuration = 1f;
         _rotationIntensity = 360f;
         _scaleDownDuration = 0.5f;
         _delayBeforeDestroy = 0.1f;
 
-        _viewer = GetComponent<Viewer>();
         _voiceover = GetComponent<Voiceover>();
-        _textureInitializer = GetComponent<TextureInitializer>();
+        _pixelShine = GetComponent<PixelShine>();
+    }
+
+    private void OnEnable()
+    {
+        _pixelShine.Glistened += TriggerExplosion;
+    }
+
+    private void OnDisable()
+    {
+        _pixelShine.Glistened -= TriggerExplosion;
     }
 
     public void PauseAnimations() =>
@@ -51,7 +59,7 @@ public class Agitator : MonoBehaviour, IAnimatable
     {
         if (pixels == null || pixels.Count == 0) return;
 
-        this.SafeDelayedCall(_delay, () => SafeWaitExplosion(pixels));
+        SafeWaitExplosion(pixels);
     }
 
     private void SafeWaitExplosion(List<Fragment> pixels)
@@ -66,8 +74,15 @@ public class Agitator : MonoBehaviour, IAnimatable
 
         AddPixelToExplosionSequence(pixels);
 
-        CompleteSequence(pixels);
+        CompleteSequence();
 
+        PlayEffects();
+
+        TurnOffParticleSystem();
+    }
+
+    private void PlayEffects()
+    {
         if (_voiceover != null && _destructionSound != null)
         {
             _voiceover.PlayOneShot(_destructionSound);
@@ -75,30 +90,22 @@ public class Agitator : MonoBehaviour, IAnimatable
 
         if (_destruction != null)
         {
-            _destruction.CraeteParticles(_particleSystem.transform.position,Quaternion.identity, transform.localScale.x);
-   
+            _destruction.CraeteParticles(_particleSystem.transform.position, Quaternion.identity, transform.localScale.x);
+
             _explosionSequence.Play();
         }
-
-        TurnOffParticleSystem();
     }
 
-    private void CompleteSequence(List<Fragment> pixels)
+    private void CompleteSequence()
     {
-        _explosionSequence.OnComplete(() =>
+        _explosionSequence.Play()
+            .OnComplete(() =>
         {
-            _textureInitializer.ClearAllFragments();
-
-            this.SafeDelayedCall(_delay, () => {
-                if (_viewer != null && isActiveAndEnabled)
-                {
-                    _viewer.ShowNextSprite();
-                }
-            });
+            Exploded?.Invoke();
         });
-
-        _explosionSequence.Play();
     }
+
+
 
     private void AddPixelToExplosionSequence(List<Fragment> pixels)
     {

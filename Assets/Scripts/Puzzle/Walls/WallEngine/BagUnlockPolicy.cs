@@ -15,10 +15,14 @@ public class BagUnlockPolicy : IUnlockPolicy
     {
         if (_bag.TryApply(_price))
         {
-            _bag.Use();
             return true;
         }
 
         return false;
+    }
+
+    public void Use()
+    {
+        _bag.Use();
     }
 }

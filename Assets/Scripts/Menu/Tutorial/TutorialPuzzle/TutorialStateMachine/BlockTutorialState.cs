@@ -4,10 +4,10 @@ using UnityEngine;
 public class BlockTutorialState : TutorialStater
 {
     private readonly TutorialStateMachine _stateMachine;
+    private readonly StarsCounter _starsCounter;
     private readonly TutorialContext _context;
     private readonly float _yOffset;
 
-    private StarsCounter _starsCounter;
     private const int BLOCK_INDEX = 4;
     private Block _block;
     private ITouchDragInput _input;
@@ -99,7 +99,7 @@ public class BlockTutorialState : TutorialStater
         if (_isAnimationChange == false)
         {
             _isAnimationChange = true;
-
+            
             _stateMachine.ChangeState(new MovementState(_stateMachine, _context, _block, _movement, _input));
         }
     }

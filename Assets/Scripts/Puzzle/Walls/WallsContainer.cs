@@ -13,7 +13,7 @@ public class WallsContainer : MonoBehaviour
 
     public Vector3 Position => _position;
 
-    public void InitializeWalls(IColorPrecision colorPrecision, BagKey bag, Rotator rotator, HintKey hintKey, Lock @lock, ErrorPanel errorPanel, Activator activator, AudioClip audioClip)
+    public void InitializeWalls(IColorPrecision colorPrecision, BagKey bag, Rotator rotator, Messager hintKey, Lock @lock, ErrorPanel errorPanel, Activator activator, AudioClip audioClip)
     {
         if (_walls == null)
             _walls = new List<WallEngine>();
@@ -38,7 +38,7 @@ public class WallsContainer : MonoBehaviour
         }
     }
 
-    private bool ValidateDependencies(IColorPrecision colorPrecision, BagKey bag, Rotator rotator, HintKey hintKey, Lock @lock, ErrorPanel errorPanel, Activator activator)
+    private bool ValidateDependencies(IColorPrecision colorPrecision, BagKey bag, Rotator rotator, Messager hintKey, Lock @lock, ErrorPanel errorPanel, Activator activator)
     {
         if (colorPrecision == null)
             return LogNull(nameof(colorPrecision));

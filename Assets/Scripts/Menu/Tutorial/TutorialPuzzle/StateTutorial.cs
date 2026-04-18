@@ -61,7 +61,7 @@ public class StateTutorial : MonoBehaviour
             SetPositionsEquipment(_key.transform.position);
 
             _visualizer.gameObject.SetActive(true);
-
+            
             _handMover.Stop();
             _handMover.EnableScaleAnimation();
         }

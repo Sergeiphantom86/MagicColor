@@ -27,7 +27,7 @@ public class WallEngine : MonoBehaviour, IWallInteractor
     }
 
     public bool Initialize(IColorPrecision colorPrecision, BagKey bag, Rotator rotator,
-        HintKey hintKey, Lock @lock,
+        Messager hintKey, Lock @lock,
         ErrorPanel errorPanel, Activator activator, AudioClip audioClip)
     {
         if (ValidateDependencies(colorPrecision, bag, rotator, hintKey, @lock) == false)
@@ -59,13 +59,13 @@ public class WallEngine : MonoBehaviour, IWallInteractor
             _voiceover.PlayOneShot(_audioClip);
     }
 
-    private void Move(Block block)
+    private void Move()
     {
         PushMovement();
     }
 
     private void InitSystems(ColorCollisionHandler collisionHandler, WallInteractionController interactionController, 
-        LockFeedbackService lockFeedback, IColorPrecision colorPrecision, BagKey bag, HintKey hintKey, 
+        LockFeedbackService lockFeedback, IColorPrecision colorPrecision, BagKey bag, Messager hintKey, 
         Lock @lock, ErrorPanel errorPanel, Activator activator)
     {
         _layoutUpdater.Initialize(_rotation);
@@ -73,7 +73,7 @@ public class WallEngine : MonoBehaviour, IWallInteractor
         BagUnlockPolicy bagUnlockPolicy =  new(bag, 1);
         lockFeedback.InitializComponents(@lock, hintKey);
         interactionController.Initialize(bagUnlockPolicy, this);
-        collisionHandler.Initialize(colorPrecision, hintKey, errorPanel);
+        collisionHandler.Initialize(colorPrecision, hintKey, errorPanel, bagUnlockPolicy);
 
         _blockDestroySequence.Initialize(activator);
         _blockDestroySequence.IsTouched += Move;
@@ -88,7 +88,7 @@ public class WallEngine : MonoBehaviour, IWallInteractor
         _rotation.OnRotated += _movement.CacheStartPosition;
     }
 
-    private bool ValidateDependencies(IColorPrecision colorPrecision, BagKey bag, Rotator rotator, HintKey hintKey, Lock @lock)
+    private bool ValidateDependencies(IColorPrecision colorPrecision, BagKey bag, Rotator rotator, Messager hintKey, Lock @lock)
     {
         if (colorPrecision == null)
             return LogNull(nameof(colorPrecision));

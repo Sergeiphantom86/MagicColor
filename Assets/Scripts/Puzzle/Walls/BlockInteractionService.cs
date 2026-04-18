@@ -44,9 +44,9 @@ public class BlockInteractionService : IBlockInteractionService
         _errorPanel = errorPanel;
     }
 
-    public void TryHandle(IColorable colorable, Color color)
+    public void TryHandle(IColorable colorable, Color color, IUnlockPolicy unlockPolicy)
     {
-        if ( color == null)
+        if (color == null)
         {
             Debug.LogError("Color == null");
             return;
@@ -58,11 +58,17 @@ public class BlockInteractionService : IBlockInteractionService
             return;
         }
 
-        if (_wall.IsBlocked)
+        if (_wall.IsBlocked && unlockPolicy.TryUnlock() == false)
         {
             _errorPanel.TurnOn();
             _lockFeedbackService.Play();
+
             return;
+        }
+
+        if (_wall.IsBlocked)
+        {
+            unlockPolicy.Use();
         }
 
         _destroySequence.WaitStart(colorable, color);

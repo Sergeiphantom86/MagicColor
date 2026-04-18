@@ -55,12 +55,12 @@ public class Timer : MonoBehaviour
 
     private void OnEnable()
     {
-        _blocksContainer.BlockDestroyed += StopAndSave;
+        _blocksContainer.EverythDestroyed += StopAndSave;
     }
 
     private void OnDisable()
     {
-        _blocksContainer.BlockDestroyed -= StopAndSave;
+        _blocksContainer.EverythDestroyed -= StopAndSave;
     }
 
     public void StartTimer()

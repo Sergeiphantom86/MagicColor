@@ -132,7 +132,12 @@ public class Key : Currency, IActivatable
 
     private void Show(Collider collider)
     {
-        if (collider.TryGetComponent(out Block _) == false) return;
+        if (collider.TryGetComponent(out Block block) == false) return;
+
+        if (block.TryGetComponent(out Outline outline))
+        {
+            outline.enabled = false;
+        }
 
         _isDragging = false;
 

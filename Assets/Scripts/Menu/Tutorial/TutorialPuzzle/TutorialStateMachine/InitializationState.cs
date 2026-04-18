@@ -1,3 +1,4 @@
+
 public class InitializationState : TutorialStater
 {
     private readonly IProgressSaver _progressSaver;

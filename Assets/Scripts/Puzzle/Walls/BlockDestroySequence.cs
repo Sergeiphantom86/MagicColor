@@ -11,7 +11,7 @@ public class BlockDestroySequence : MonoBehaviour, IBlockDestroySequence
     private float _delayShutdown;
     private float _delayActivat;
 
-    public event Action<Block> IsTouched;
+    public event Action IsTouched;
 
     public void Initialize(Activator activator)
     {
@@ -32,13 +32,17 @@ public class BlockDestroySequence : MonoBehaviour, IBlockDestroySequence
         if (colorable is not Block block)
             return;
 
-        IsTouched?.Invoke(block);
+        IsTouched?.Invoke();
 
         StartCoroutine(Run(block, color));
     }
 
     private IEnumerator Run(Block block, Color color)
     {
+        yield return _waitShutdown;
+        yield return _waitShutdown;
+        yield return _waitShutdown;
+
         block.PlayMatchSound();
         yield return _waitShutdown;
 

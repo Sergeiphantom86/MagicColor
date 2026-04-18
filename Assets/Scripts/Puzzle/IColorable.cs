@@ -11,4 +11,6 @@ public interface IColorable
     public void SetAlpha(float alpha);
     public bool IsRepainted { get; }
     public void SetRenderQueue();
+    public void SetStartRenderQueueSelectedItem();
+    public void SetRenderQueueSelectedItem();
 }

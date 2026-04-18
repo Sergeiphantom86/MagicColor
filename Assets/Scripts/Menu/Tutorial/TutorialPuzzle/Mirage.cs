@@ -41,27 +41,13 @@ public class Mirage : MonoBehaviour
         _voiceover = GetComponent<Voiceover>();
         _handMover = GetComponent<HandMover>();
         _rendererBlock = GetComponent<Renderer>();
-
+        
         _waitColorChange = new WaitForSeconds(_timeRepaint);
         _waitBeforeChangingLanes = new WaitForSeconds(_duration);
 
         _rendererBlock.material.color = Color.red;
 
         gameObject.SetActive(false);
-    }
-
-    public void EnableMoveAnimationZ()
-    {
-        _handMover.EnableMoveAnimationZ();
-    }
-    public void EnableMoveAnimationX()
-    {
-        _handMover.EnableMoveAnimationX();
-    }
-
-    public void Stop()
-    {
-        _handMover.Stop();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -153,8 +139,6 @@ public class Mirage : MonoBehaviour
 
     private void ContinueDriving(Renderer renderer)
     {
-        _colorCollisionHandler.TriggerContactEvent(GetComponent<Block>());
-
         ReturnMaterial(renderer, _material, _color);
 
         _pathMover.Move(_wall.MiddlePoint, _wall.EndPoint);

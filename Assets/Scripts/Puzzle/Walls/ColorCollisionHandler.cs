@@ -13,6 +13,7 @@ public class ColorCollisionHandler : MonoBehaviour
     private IBlockDestroySequence _destroySequence;
     private ILockFeedbackService _lockFeedback;
     private ICollisionHandler _collisionHandler;
+    private IUnlockPolicy _unlockPolicy;
 
     public event Action<Block> IsTouched;
 
@@ -31,38 +32,41 @@ public class ColorCollisionHandler : MonoBehaviour
     {
         _collisionHandler.OnEnter += Enter;
         _collisionHandler.OnExit += Exit;
+        _destroySequence.IsTouched += UnblockWall;
     }
 
     private void OnDisable()
     {
         _collisionHandler.OnEnter -= Enter;
         _collisionHandler.OnExit -= Exit;
+        _destroySequence.IsTouched -= UnblockWall;
     }
 
-    public bool Initialize(IColorPrecision colorPrecision, HintKey hintKey, ErrorPanel errorPanel)
+    public bool Initialize(IColorPrecision colorPrecision, Messager hintKey, ErrorPanel errorPanel, IUnlockPolicy unlockPolicy)
     {
-        if (Validate(colorPrecision, hintKey, errorPanel, _lockHandler) == false)
+        if (Validate(colorPrecision, hintKey, errorPanel, _lockHandler, unlockPolicy) == false)
             return false;
 
         _lockHandler.SetHint(hintKey);
         _blockInteraction.SetPanelError(errorPanel);
         _colorMatch.Initialize(colorPrecision);
-
-        _collisionProcessor = new CollisionProcessor(_colorMatch,_blockInteraction);
+        _unlockPolicy = unlockPolicy;
+        _collisionProcessor = new CollisionProcessor(_colorMatch,_blockInteraction, _unlockPolicy);
 
         return true;
     }
 
-    private bool Validate(IColorPrecision colorPrecision, HintKey hintKey, ErrorPanel errorPanel, LockInteractionHandler _lockHandler)
+    private bool Validate(IColorPrecision colorPrecision, Messager hintKey, ErrorPanel errorPanel, LockInteractionHandler _lockHandler, IUnlockPolicy bagUnlockPolicy)
     {
-        if (_colorMatch == null) return Log("ColorMatchService");
-        if (_lockFeedback == null) return Log("LockFeedbackService");
-        if (_collisionHandler == null) return Log("CollisionHandler");
-        if (_destroySequence == null) return Log("IBlockDestroySequence");
+        if (_colorMatch == null) return Log(nameof(_colorMatch));
+        if (_lockFeedback == null) return Log(nameof(_lockFeedback));
+        if (_collisionHandler == null) return Log(nameof(_collisionHandler));
+        if (_destroySequence == null) return Log(nameof(_destroySequence));
         if (colorPrecision == null) return Log(nameof(colorPrecision));
         if (hintKey == null) return Log(nameof(hintKey));
         if (errorPanel == null) return Log(nameof(errorPanel));
         if (_lockHandler == null) return Log(nameof(_lockHandler));
+        if (bagUnlockPolicy == null) return Log(nameof(bagUnlockPolicy));
 
         return true;
     }
@@ -78,6 +82,11 @@ public class ColorCollisionHandler : MonoBehaviour
         _collisionProcessor.ProcessEnter(other);
         
         _lockHandler.Set(other);
+
+        if (other.TryGetComponent(out Block block))
+        {
+            IsTouched?.Invoke(block);
+        }
     }
 
     private void Exit(Collider other)
@@ -87,12 +96,11 @@ public class ColorCollisionHandler : MonoBehaviour
 
     public void UnblockWall()
     {
-        _wall.Unblock();
-        _lockHandler.Unblock();
-    }
-
-    public void TriggerContactEvent(Block block)
-    {
-        IsTouched?.Invoke(block);
+        if (_wall.IsBlocked)
+        {
+            _unlockPolicy.Use();
+            _wall.Unblock();
+            _lockHandler.Unblock();
+        }
     }
 }

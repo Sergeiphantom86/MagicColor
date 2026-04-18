@@ -4,10 +4,12 @@ public class CollisionProcessor : ICollisionProcessor
 {
     private readonly IColorMatchService _colorMatch;
     private readonly IBlockInteractionService _blockInteraction;
+    private readonly IUnlockPolicy _unlockPolicy;
 
-    public CollisionProcessor(IColorMatchService colorMatch, IBlockInteractionService blockInteraction)
+    public CollisionProcessor(IColorMatchService colorMatch, IBlockInteractionService blockInteraction, IUnlockPolicy unlockPolicy)
     {
         _colorMatch = colorMatch;
+        _unlockPolicy = unlockPolicy;
         _blockInteraction = blockInteraction;
     }
 
@@ -28,7 +30,7 @@ public class CollisionProcessor : ICollisionProcessor
         if (_colorMatch.Match(colorable, out Color color) == false) 
             return;
 
-        _blockInteraction.TryHandle(colorable, color);
+        _blockInteraction.TryHandle(colorable, color, _unlockPolicy);
     }
 
     public void ProcessExit(Collider other)

@@ -2,8 +2,9 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
-[RequireComponent(typeof(Agitator), typeof(AppearanceAnimator))]
+[RequireComponent(typeof(AppearanceAnimator))]
 public class PixelShine : MonoBehaviour, IAnimatable
 {
     [SerializeField] private ParticleSystem _particleSystem;
@@ -12,43 +13,41 @@ public class PixelShine : MonoBehaviour, IAnimatable
     private float _pauseBetweenPasses;
     private float _delayBetweenPixels;
     private Sequence _shineSequence;
-    private Agitator _pixelExplosion;
     private List<Fragment> _validFragments;
     private AppearanceAnimator _appearanceAnimator;
     private Dictionary<Fragment, Color> _originalColors;
+
+    public event Action<List<Fragment>> Glistened;
 
     private void Awake()
     {
         _shineDuration = 0.02f;
         _pauseBetweenPasses = 0.5f;
         _delayBetweenPixels = 0.001f;
-        _pixelExplosion = GetComponent<Agitator>();
         _appearanceAnimator = GetComponent<AppearanceAnimator>();
 
         _validFragments = new List<Fragment>();
         _originalColors = new Dictionary<Fragment, Color>();
     }
 
-    private void OnEnable() =>
+    private void OnEnable()
+    {
         _appearanceAnimator.OnAppearanceComplete += StartShineAnimation;
+    }
 
     private void OnDisable()
     {
         _appearanceAnimator.OnAppearanceComplete -= StartShineAnimation;
-        RestoreOriginalColors();
     }
 
     public void PauseAnimations() =>
         DOTweenExtensions.SafePause(_shineSequence);
 
-    public void ResumeAnimations() => 
+    public void ResumeAnimations() =>
         DOTweenExtensions.SafePlay(_shineSequence);
 
     private void StartShineAnimation()
     {
-        _particleSystem.gameObject.SetActive(true);
-        _particleSystem.Play();
-
         if (_appearanceAnimator.Fragments.Count == 0) return;
 
         _validFragments = _appearanceAnimator.Fragments
@@ -57,16 +56,18 @@ public class PixelShine : MonoBehaviour, IAnimatable
 
         if (_validFragments.Count == 0) return;
 
-        StoreOriginalColors();
         CreateShineSequence();
+        StoreOriginalColors();
 
         _shineSequence.OnComplete(() =>
         {
             RestoreOriginalColors();
-            _pixelExplosion.TriggerExplosion(_validFragments);
+
+            Glistened?.Invoke(_validFragments);
         });
 
-        _shineSequence.Play();
+        _particleSystem.gameObject.SetActive(true);
+        _particleSystem.Play();
     }
 
     private void StoreOriginalColors()
@@ -92,7 +93,8 @@ public class PixelShine : MonoBehaviour, IAnimatable
 
     private void CreateShineSequence()
     {
-        DOTweenExtensions.SafeKill(_shineSequence);
+        ResetAnimation();
+
         _shineSequence = DOTween.Sequence();
 
         for (int i = 0; i < _validFragments.Count; i++)
@@ -112,9 +114,19 @@ public class PixelShine : MonoBehaviour, IAnimatable
             .Append(renderer.DOColor(renderer.color, _shineDuration).SetEase(Ease.InQuad));
     }
 
-    private void OnDestroy()
+    private void ResetAnimation()
     {
         DOTweenExtensions.SafeKill(_shineSequence);
-        RestoreOriginalColors();
+
+        if (_validFragments != null)
+        {
+            foreach (var fragment in _validFragments)
+            {
+                if (fragment != null)
+                    fragment.transform.DOKill();
+            }
+        }
+
+        _shineSequence = null;
     }
 }

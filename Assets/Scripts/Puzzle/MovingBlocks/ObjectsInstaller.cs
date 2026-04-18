@@ -6,8 +6,6 @@ public class ObjectsInstaller : MonoBehaviour
 {
     [SerializeField] private Key _key;
     [SerializeField] private Lock _lock;
-    [SerializeField] private Rotator _rotation;
-    [SerializeField] private Canvas _transformParent;
 
     private Repainter _repainter;
     private KeyInstaller _keyInstaller;

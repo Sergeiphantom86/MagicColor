@@ -21,13 +21,11 @@ public class QuestTransitionService : IQuestTransitionService
 
     public TransitionResult ProcessQuest(Quest quest)
     {
-        int obstacleDeactivateIndex = _progressSaver.Saves.ObstacleDeactivatIndex;
-
         if (quest.Index == _transparentIndex)
         {
             _progressSaver.MakeTransparent(true);
         }
-
+        
         if (quest.IsTutorial == false)
         {
             quest.SetTutorial(true);
@@ -41,7 +39,7 @@ public class QuestTransitionService : IQuestTransitionService
 
         _progressSaver.ObstacleSwitch(true);
 
-        if (quest.Index < obstacleDeactivateIndex)
+        if (quest.Index < _progressSaver.Saves.ObstacleDeactivatIndex)
             _progressSaver.ObstacleSwitch(false);
         else
             _progressSaver.ObstacleSwitch(true);

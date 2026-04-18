@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IBlocksContainer
 {
-    public event Action BlockDestroyed;
+    public event Action EverythDestroyed;
 
     public int ActiveBlocksCount { get; }
 
