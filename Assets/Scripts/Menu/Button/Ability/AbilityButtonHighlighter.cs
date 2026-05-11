@@ -38,6 +38,7 @@ public class AbilityButton : MonoBehaviour
         {
             _blocker.gameObject.SetActive(true);
             _button.interactable = false;
+            gameObject.SetActive(false);
         }
         
         AbilitySelectionManager.Instance.OnSelection += Use;

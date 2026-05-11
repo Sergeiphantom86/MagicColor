@@ -8,7 +8,7 @@ public class Exit : MonoBehaviour
 
     private Button _button;
 
-    public event Action<Vector3> OnShow;
+    public event Action<Vector3> Showed;
 
     private void Awake()
     {
@@ -27,7 +27,7 @@ public class Exit : MonoBehaviour
 
     private void Show()
     {
-        OnShow?.Invoke(transform.position);
+        Showed?.Invoke(transform.position);
         _button.interactable = false;
 
         if (_spinButton != null)

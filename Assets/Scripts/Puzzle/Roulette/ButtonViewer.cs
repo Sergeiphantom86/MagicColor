@@ -19,12 +19,12 @@ public class ButtonViewer : MonoBehaviour
 
     private void OnEnable()
     {
-        _exit.OnShow += Show;
+        _exit.Showed += Show;
     }
 
     private void OnDisable()
     {
-        _exit.OnShow -= Show;
+        _exit.Showed -= Show;
     }
 
     private void OnDestroy()

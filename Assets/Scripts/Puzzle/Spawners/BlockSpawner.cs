@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using UnityEngine;
 
 [RequireComponent(typeof(ObjectPooler<Block>))]
@@ -23,7 +24,7 @@ public class BlockSpawner : BaseSpawner<Block>
 
     public event System.Action<Block> BlockSpawned;
     public System.Func<int> IndexProvider;
-    public event System.Action SpawnerReady;
+    public event System.Action SpawnerReadyed;
 
     protected override void Awake()
     {
@@ -48,7 +49,7 @@ public class BlockSpawner : BaseSpawner<Block>
 
     private void Start()
     {
-        SpawnerReady?.Invoke();
+        SpawnerReadyed?.Invoke();
     }
 
     public void SpawnNecessaryBlocks()

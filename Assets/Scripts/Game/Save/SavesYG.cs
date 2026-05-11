@@ -231,19 +231,12 @@ namespace YG
             _currentLanguage = language;
         }
 
-        public int SetIndexExit()
+        public void SetMaxReachedQuestIndex()
         {
-            if (_questIndex > _maxReachedQuestIndex)
+            if (_questIndex >= _maxReachedQuestIndex)
             {
-                _maxReachedQuestIndex = _questIndex;
+                _maxReachedQuestIndex++;
             }
-
-            if (_questIndex == _maxReachedQuestIndex)
-            {
-                _questIndex -= 1;
-            }
-
-            return _maxReachedQuestIndex;
         }
 
         public void SetCountStars(int count)

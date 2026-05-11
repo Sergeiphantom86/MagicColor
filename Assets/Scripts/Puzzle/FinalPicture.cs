@@ -51,16 +51,16 @@ public class FinalPicture : MonoBehaviour
     {
         if (_activator == null) return;
 
-        _activator.OnPuzzleComplete += Demonstrate;
-        _activator.OnApproach += ZoomIn;
+        _activator.PuzzleCompleted += Demonstrate;
+        _activator.Approached += ZoomIn;
     }
 
     private void OnDisable()
     {
         if (_activator != null)
         {
-            _activator.OnPuzzleComplete -= Demonstrate;
-            _activator.OnApproach -= ZoomIn;
+            _activator.PuzzleCompleted -= Demonstrate;
+            _activator.Approached -= ZoomIn;
         }
 
         StopCurrentAnimation();

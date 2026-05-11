@@ -5,13 +5,6 @@ public class MenuLoader : MonoBehaviour
 {
     private const string Menu = nameof(Menu);
 
-    private IProgressSaver _progressSaver;
-
-    private void Awake()
-    {
-        _progressSaver = new ProgressSaver();
-    }
-
     public void TargetScene(string scenName)
     {
         if (SceneLoader.Instance == null)
@@ -21,16 +14,6 @@ public class MenuLoader : MonoBehaviour
             return;
         }
 
-        ReturnIndex();
-
         SceneLoader.Instance.LoadSceneAsyncWithSplash(scenName);
-    }
-
-    private void ReturnIndex()
-    {
-        if (gameObject.TryGetComponent(out Exit _))
-        {
-            _progressSaver.SetIndexExit();
-        }
     }
 }

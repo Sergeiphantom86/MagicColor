@@ -10,6 +10,7 @@ public class BlockDestroySequence : MonoBehaviour, IBlockDestroySequence
     private WaitForSeconds _waitActivat;
     private float _delayShutdown;
     private float _delayActivat;
+    private bool _isCollaps;
 
     public event Action IsTouched;
 
@@ -32,9 +33,14 @@ public class BlockDestroySequence : MonoBehaviour, IBlockDestroySequence
         if (colorable is not Block block)
             return;
 
-        IsTouched?.Invoke();
+        if (_isCollaps == false)
+        {
+            _isCollaps = true;
 
-        StartCoroutine(Run(block, color));
+            IsTouched?.Invoke();
+
+            StartCoroutine(Run(block, color));
+        }
     }
 
     private IEnumerator Run(Block block, Color color)
@@ -51,5 +57,7 @@ public class BlockDestroySequence : MonoBehaviour, IBlockDestroySequence
         yield return _waitActivat;
 
         _activator.EnqueueFragments(color);
+
+        _isCollaps = false;
     }
 }

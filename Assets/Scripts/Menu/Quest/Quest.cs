@@ -24,7 +24,7 @@ public class Quest : MonoBehaviour
 
     public Sprite Sprite => _selector.Sprite;
 
-    public event Action<Quest> OnSelect;
+    public event Action<Quest> Selected;
 
     private void Awake()
     {
@@ -35,7 +35,7 @@ public class Quest : MonoBehaviour
         _activeIndicator = GetComponentInChildren<ActiveIndicator>();
         _progressSaver = new ProgressSaver();
 
-        _questButton.onClick.AddListener(OnClicked);
+        _questButton.onClick.AddListener(OnClick);
         _isTutorial = true;
         ResetState();
     }
@@ -84,13 +84,13 @@ public class Quest : MonoBehaviour
         _questButton.interactable = _isUnlocked && _isCompleted == false;
     }
 
-    public void OnClicked()
+    public void OnClick()
     {
         if (_isUnlocked == false || _isCompleted) return;
 
         _progressSaver.SetReward(_reward);
         _progressSaver.Saves.IndexPuzzle = _indexPuzzle;
 
-        OnSelect?.Invoke(this);
+        Selected?.Invoke(this);
     }
 }

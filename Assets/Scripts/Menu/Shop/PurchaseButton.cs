@@ -25,7 +25,7 @@ public class PurchaseButton : MonoBehaviour
 
     public Button Button => _button;
 
-    public event Action OnClick;
+    public event Action Clicked;
     public event Action<long> CoinPurchased;
 
     private void Awake()
@@ -70,12 +70,13 @@ public class PurchaseButton : MonoBehaviour
 
     public void Click()
     {
-        OnClick?.Invoke();
+        Clicked?.Invoke();
 
         _button.interactable = false;
 
         _voiceover.PlayOneShot(_audioClip);
 
+        StartCoroutine(WaitTurnOnButton(_audioClip.length));
     }
 
     private void Buy()
@@ -94,7 +95,6 @@ public class PurchaseButton : MonoBehaviour
                 _hint.TurnOn();
             }
 
-            StartCoroutine(WaitTurnOnButton(0.3f));
             return;
         }
 
@@ -111,7 +111,7 @@ public class PurchaseButton : MonoBehaviour
 
     private IEnumerator WaitTurnOnButton(float delay = 0)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime(delay);
 
         _button.interactable = true;
     }

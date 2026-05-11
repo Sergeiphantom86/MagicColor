@@ -1,7 +1,6 @@
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 [RequireComponent(typeof(AnimationController), typeof(TextureInitializer))]
 public class Viewer : MonoBehaviour
@@ -85,11 +84,6 @@ public class Viewer : MonoBehaviour
         }
 
         Initialized?.Invoke();
-    }
-
-    public void TurnOff()
-    {
-        gameObject.SetActive(false);
     }
 
     private void CreateTransitionSequence()

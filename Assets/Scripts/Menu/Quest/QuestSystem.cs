@@ -9,21 +9,18 @@ public class QuestSystem : MonoBehaviour
     
     private Quest _next;
     private Quest _active;
-    private Window _window;
     private ZoomChanger _zoomChanger;
     private List<Quest> _subscribedQuests;
     private IReadOnlyList<Quest> _quests;
     private IProgressSaver _progressSaver;
     private TransitionChooser _transitionChooser;
     private SpriteTransmitter _spriteTransmitter;
-    private int _currentQuestIndex;
     private bool _isActivate;
     private bool _isOn;
 
     private void Awake()
     {
         _transitionChooser = GetComponent<TransitionChooser>();
-        _window = GetComponent<Window>();
         _subscribedQuests = new List<Quest>();
         _zoomChanger = new ZoomChanger();
 
@@ -54,7 +51,6 @@ public class QuestSystem : MonoBehaviour
         _progressSaver = progressSaver;
         _quests = quests;
 
-        _currentQuestIndex = _progressSaver.Saves.QuestIndex;
         _isOn = spriteTransmitter.IsAutomaticallyNewLevel;
 
         _transitionChooser.Initialize(progressSaver, _zoomChanger, spriteTransmitter);
@@ -104,12 +100,13 @@ public class QuestSystem : MonoBehaviour
         {
             SetupQuest(i);
         }
+
+        _next = GetNextQuest(lastIndex);
     }
 
     private void SetupQuest(int index)
     {
         _active = _quests[index];
-        _next = GetNextQuest(index);
 
         if (_active.IsUnlocked)
             return;
@@ -127,7 +124,7 @@ public class QuestSystem : MonoBehaviour
 
     private void SubscribeToQuest(Quest quest)
     {
-        quest.OnSelect += OnCompleted;
+        quest.Selected += OnSelect;
         _subscribedQuests.Add(quest);
     }
 
@@ -142,27 +139,25 @@ public class QuestSystem : MonoBehaviour
         if (_isOn == false || _active == null)
             return;
         _isActivate = true;
-        _active.OnClicked();
+        _active.OnClick();
     }
 
     private int GetIndex()
     {
-        return Mathf.Clamp(_currentQuestIndex, 0, _quests.Count - 1);
+        return Mathf.Clamp(_progressSaver.Saves.MaxReachedQuestIndex, 0, _quests.Count - 1);
     }
 
-    private void OnCompleted(Quest quest)
+    private void OnSelect(Quest quest)
     {
         if (_active == quest)
         {
             if (_next != null)
             {
-                _currentQuestIndex++;
-                _progressSaver.SetQuestIndex(_currentQuestIndex);
                 _spriteTransmitter.SetNew(_next.Sprite);
             }
         }
 
-        _progressSaver.SaveProgress();
+        _progressSaver.SetQuestIndex(quest.Index);
 
         if (_transitionChooser != null)
         {
@@ -177,11 +172,12 @@ public class QuestSystem : MonoBehaviour
         {
             if (quest != null)
             {
-                quest.OnSelect -= OnCompleted;
+                quest.Selected -= OnSelect;
             }
         }
 
         _isActivate  = false;
         _subscribedQuests.Clear();
+        _progressSaver.SaveProgress();
     }
 }

@@ -37,7 +37,7 @@ public class OfferPanel : MonoBehaviour
     {
         TurnOnSound(_audioClip);
 
-        _scaling.ChangeSize(_scale, _duration, _delay, _overshoot);
+        _scaling.GetTwinResiz(_scale, _duration, _delay, _overshoot);
 
         _menuButtons.ShowResumeButton();
         _menuButtons.ShowStartButton();

@@ -23,13 +23,13 @@ public class IndexQualifier : MonoBehaviour
             return;
         }
 
-        _spawner.SpawnerReady += OnSpawnerReady;
+        _spawner.SpawnerReadyed += OnSpawnerReady;
     }
 
     private void OnDestroy()
     {
         if (_spawner != null)
-            _spawner.SpawnerReady -= OnSpawnerReady;
+            _spawner.SpawnerReadyed -= OnSpawnerReady;
     }
 
     private void OnSpawnerReady()

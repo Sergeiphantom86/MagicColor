@@ -11,7 +11,7 @@ public class LoadingRotator : MonoBehaviour
     private void Awake()
     {
         _rotationSpeed = 90f;
-        _tweenersCapacity = 4000;
+        _tweenersCapacity = 10000;
         _sequencesCapacity = 1250;
         _clockwise = true;
 

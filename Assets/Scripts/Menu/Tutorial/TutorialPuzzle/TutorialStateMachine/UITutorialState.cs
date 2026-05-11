@@ -14,6 +14,7 @@ public class UITutorialState : TutorialStater
     private TimerFringe _timerFringe;
     private Vector3 _startScale;
     private Timer _timer;
+    private Coroutine _coroutine;
 
     public UITutorialState(TutorialStateMachine stateMachine, TutorialContext context) : base(stateMachine, context)
     {
@@ -33,8 +34,8 @@ public class UITutorialState : TutorialStater
         _timerFringe.SetActive(true);
 
         _startScale = _timer.transform.localScale;
-
-        _tutorialStateMachine.StartCoroutine(WaitForOneStarLost());
+     
+        _coroutine = _tutorialStateMachine.StartCoroutine(WaitForOneStarLost());
         _tutorialStateMachine.StartCoroutine(TutorialFlow());
     }
 
@@ -95,7 +96,20 @@ public class UITutorialState : TutorialStater
 
         _timerFringe = _timer.GetComponentInChildren<TimerFringe>(true);
 
+        _timerFringe.Button.onClick.AddListener(FinishClick);
+
         _starsCounter = _timerFringe.StarsCounter;
+    }
+
+    private void FinishClick()
+    {
+        if (_coroutine != null)
+        {
+            _tutorialStateMachine.StopCoroutine(_coroutine);
+        }
+        
+        _timer.transform.DOScale(_startScale, _duration);
+        _tutorialStateMachine.ChangeState(new BlockTutorialState(_tutorialStateMachine, _context, _starsCounter));
     }
 
     private bool Fail(string message, Object context)

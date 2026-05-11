@@ -5,7 +5,7 @@ using System;
 [RequireComponent(typeof(CanvasGroup))]
 public class PanelFader : MonoBehaviour
 {
-    [SerializeField] private float _fadeDuration = 1f;
+    [SerializeField] private float _fadeDuration = 1;
 
     private CanvasGroup _canvasGroup;
     private Tween _currentTween;
@@ -13,8 +13,12 @@ public class PanelFader : MonoBehaviour
 
     private void Awake()
     {
-        _canvasGroup = GetComponent<CanvasGroup>();
         _blackout = 1;
+    }
+
+    private void OnDisable()
+    {
+        _currentTween?.Kill();
     }
 
     public void FadeIn(Action onComplete = null)
@@ -26,21 +30,28 @@ public class PanelFader : MonoBehaviour
     public void FadeOut(Action onComplete = null)
     {
         Fade(0f, false).
-            OnComplete(() => onComplete?.Invoke());
+            OnComplete(() => 
+            onComplete?.Invoke());
     }
 
     public Tween Fade(float targetAlpha, bool isInteractable)
     {
         _currentTween?.Kill();
 
-        _currentTween = _canvasGroup.DOFade(targetAlpha, _fadeDuration)
+        if (_canvasGroup == null)
+            _canvasGroup = GetComponent<CanvasGroup>();
+
+          _currentTween = _canvasGroup.DOFade(targetAlpha, _fadeDuration)
+            .SetLink(gameObject)
             .OnStart(() =>
             {
-                _canvasGroup.interactable = isInteractable;
-                _canvasGroup.blocksRaycasts = isInteractable;
+                if (_canvasGroup != null)
+                {
+                    _canvasGroup.interactable = isInteractable;
+                    _canvasGroup.blocksRaycasts = isInteractable;
+                }
             });
-
-         return _currentTween;
+        return _currentTween;
     }
 
     private void OnDestroy()

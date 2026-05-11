@@ -32,12 +32,12 @@ public class PixelShine : MonoBehaviour, IAnimatable
 
     private void OnEnable()
     {
-        _appearanceAnimator.OnAppearanceComplete += StartShineAnimation;
+        _appearanceAnimator.AppearanceCompleted += StartShineAnimation;
     }
 
     private void OnDisable()
     {
-        _appearanceAnimator.OnAppearanceComplete -= StartShineAnimation;
+        _appearanceAnimator.AppearanceCompleted -= StartShineAnimation;
     }
 
     public void PauseAnimations() =>

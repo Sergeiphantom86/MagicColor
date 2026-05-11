@@ -72,8 +72,8 @@ public class ProgressSaver : IProgressSaver
     public void SetQuestIndex(int index) =>
         WithSaves(savesYG2 => savesYG2.SetQuestIndex(index));
 
-    public void SetIndexExit() =>
-        WithSaves(savesYG2 => savesYG2.SetIndexExit());
+    public void SetMaxReachedQuestIndex() =>
+        WithSaves(savesYG2 => savesYG2.SetMaxReachedQuestIndex());
 
     public void SetCountStars(int count) =>
         WithSaves(savesYG2 => savesYG2.SetCountStars(count));

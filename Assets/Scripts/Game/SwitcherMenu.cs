@@ -4,8 +4,6 @@ public class SwitcherMenu : ButtonMenu
 
     public override void PressButton()
     {
-        ProgressSaver.Saves.SetIndexExit();
-
         PauseMenu.Load(Menu);
     }
 }

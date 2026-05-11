@@ -89,10 +89,17 @@ public class TextureInitializer : MonoBehaviour
 
     private void EditMobile()
     {
+        if (_zoomChanger.IsMobileWithTallScreen() && SceneManager.GetActiveScene().name == "Menu")
+        {
+            _scaleMultiplier = 25;
+        }
+
         if (_zoomChanger.IsMobileWithTallScreen() && SceneManager.GetActiveScene().name != "Menu")
         {
             transform.position = _mobilePosition;
         }
+
+        //transform.position = _mobilePosition;
     }
 
     private void Group(int width, int height, Vector2 pivot)
@@ -129,7 +136,6 @@ public class TextureInitializer : MonoBehaviour
             if (_isSaveCollections)
             {
                 AddToDictionaries(color, fragment);
-                fragment.TurnOnTransparency();
             }
             else
             {
@@ -144,8 +150,10 @@ public class TextureInitializer : MonoBehaviour
         {
             _fragments[color] = new Queue<Fragment>();
         }
-        
+
         _fragments[color].Enqueue(fragment);
+
+        fragment.TurnOnTransparency();
     }
 
     private Vector3 GetPosition(int x, int y, Vector2 pivot)

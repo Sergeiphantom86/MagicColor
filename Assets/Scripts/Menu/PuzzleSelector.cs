@@ -7,7 +7,6 @@ public class PuzzleSelector : MonoBehaviour
     private Image _puzzleImage;
 
     public Sprite Sprite => _puzzleImage.sprite;
-    public string Name => _puzzleImage.sprite.name;
 
     private void Awake()
     {

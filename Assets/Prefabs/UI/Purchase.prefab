@@ -1361,10 +1361,10 @@ RectTransform:
   m_Children:
   - {fileID: 3299555788195232499}
   - {fileID: 2393058649716006091}
-  - {fileID: 3928939258666947437}
   - {fileID: 254236637953548091}
   - {fileID: 9195191346225022968}
   - {fileID: 311877909597414671}
+  - {fileID: 3928939258666947437}
   - {fileID: 7215098685185780387}
   - {fileID: 486276637190284020}
   m_Father: {fileID: 0}
@@ -1503,6 +1503,10 @@ PrefabInstance:
     - target: {fileID: 1025665394565778738, guid: e8edc26a8f07c49be83500b71c25e43c, type: 3}
       propertyPath: m_Name
       value: Fx_Star_Yellow_Small
+      objectReference: {fileID: 0}
+    - target: {fileID: 1025665394565778742, guid: e8edc26a8f07c49be83500b71c25e43c, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1025665394565778742, guid: e8edc26a8f07c49be83500b71c25e43c, type: 3}
       propertyPath: m_Materials.Array.size

@@ -30,7 +30,7 @@ public class FragmentCollector : MonoBehaviour
         }
     }
 
-    public void Collect(int count)
+    private void Collect(int count)
     {
         OnPixelsRendered.Invoke(_textureInitializer.FragmentsList);
     }

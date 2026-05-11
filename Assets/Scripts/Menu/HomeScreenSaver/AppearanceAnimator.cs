@@ -16,7 +16,7 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
 
     public List<Fragment> Fragments => _fragments;
 
-    public event Action OnAppearanceComplete;
+    public event Action AppearanceCompleted;
 
     private void Awake()
     {
@@ -59,7 +59,7 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
 
         _currentSequence.OnComplete(() =>
         {
-            OnAppearanceComplete?.Invoke();
+            AppearanceCompleted?.Invoke();
         });
     }
 

@@ -25,19 +25,6 @@ public class MenuButtons
         }
     }
 
-    public void CleanUp()
-    {
-        if (_startButton != null)
-        {
-            _startButton.onClick.RemoveAllListeners();
-        }
-
-        if (_resumeButton != null)
-        {
-            _resumeButton.onClick.RemoveAllListeners();
-        }
-    }
-
     public void ShowResumeButton()
     {
         if (_resumeButton != null)
@@ -53,7 +40,4 @@ public class MenuButtons
             _startButton.gameObject.SetActive(true);
         }
     }
-
-    public void HideStartButton() => 
-        _startButton.gameObject.SetActive(false);
 }

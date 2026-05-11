@@ -21,14 +21,14 @@ public class AnimatorPuzzle : MonoBehaviour
         if (_activator == null)
             return;
 
-        _activator.OnPuzzleComplete += LaunchFinal;
-        _activator.OnApproach += Remove;
+        _activator.PuzzleCompleted += LaunchFinal;
+        _activator.Approached += Remove;
     }
 
     private void OnDisable()
     {
-        _activator.OnPuzzleComplete -= LaunchFinal;
-        _activator.OnApproach -= Remove;
+        _activator.PuzzleCompleted -= LaunchFinal;
+        _activator.Approached -= Remove;
     }
 
     public void StartGame()

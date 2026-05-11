@@ -27,8 +27,8 @@ public class Activator : MonoBehaviour, IActivatable
     private PuzzleProgressTracker _progressTracker;
     private FillSpeedController _speedController;
 
-    public event Action OnPuzzleComplete;
-    public event Action<float> OnApproach;
+    public event Action PuzzleCompleted;
+    public event Action<float> Approached;
     public event Action<Color> ColorHasChanged;
 
     private void Awake()
@@ -132,7 +132,7 @@ public class Activator : MonoBehaviour, IActivatable
        
         _speedController.TryAccelerate(
             remainingTime,
-            OnApproach,
+            Approached,
             _queueProcessor.SpeedUpMovement
         );
     }
@@ -140,7 +140,7 @@ public class Activator : MonoBehaviour, IActivatable
     private void OnPuzzleFinished()
     {
         _voiceover.PlayOneShot(_winn);
-        OnPuzzleComplete?.Invoke();
+        PuzzleCompleted?.Invoke();
 
         Deactivate();
     }

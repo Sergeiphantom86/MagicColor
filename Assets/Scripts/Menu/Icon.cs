@@ -26,7 +26,7 @@ public class Icon : MonoBehaviour
     {
         int value = 1;
 
-        value += _progressSaver.Saves.QuestIndex;
+        value += _progressSaver.Saves.MaxReachedQuestIndex;
 
         return value;
     }

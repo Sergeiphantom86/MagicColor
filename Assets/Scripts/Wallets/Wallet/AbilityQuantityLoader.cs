@@ -34,13 +34,13 @@ public class AbilityQuantityLoader : MonoBehaviour
     private void OnEnable()
     {
         _bagAbilities.OnBagChanged += UpdateBalance;
-        _purchaseButton.OnClick += Add;
+        _purchaseButton.Clicked += Add;
     }
 
     private void OnDisable()
     {
         _bagAbilities.OnBagChanged -= UpdateBalance;
-        _purchaseButton.OnClick -= Add; 
+        _purchaseButton.Clicked -= Add; 
     }
 
     private void OnDestroy()

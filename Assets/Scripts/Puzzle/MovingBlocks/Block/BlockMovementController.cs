@@ -44,7 +44,7 @@ public class BlockMovementController
     {
         if (_pathMover == null) return;
 
-        _pathMover.Move(waypoint, endPoint, onComplete);
+        //_pathMover.Move(waypoint, endPoint, onComplete);
     }
 
     public void Dispose()

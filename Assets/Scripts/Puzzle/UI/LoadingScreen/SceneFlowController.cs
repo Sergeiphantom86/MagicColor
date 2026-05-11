@@ -10,8 +10,6 @@ public class SceneFlowController : MonoBehaviour
     [SerializeField] private MenuLoader _menuLoader;
     [SerializeField] private TextureInitializer _textureInitializer;
     [SerializeField] private TutorialPuzzle _tutorialPuzzle;
-    [SerializeField] private Timer _timer;
-    [SerializeField] private PuzzlesIdentifier _puzzlesIdentifier;
 
     private string _sceneName;
     private IProgressSaver _progressSaver;
@@ -21,7 +19,7 @@ public class SceneFlowController : MonoBehaviour
     {
         _sceneName = SceneManager.GetActiveScene().name;
         _adRewardController = GetComponent<AdRewardController>();
-
+ 
         if (_textureInitializer == null)
             Debug.LogError($"[SceneFlowController] TextureInitializer не назначен в инспекторе на объекте {gameObject.name}");
         if (_menuLoader == null)
@@ -62,6 +60,7 @@ public class SceneFlowController : MonoBehaviour
         {
             _adRewardController.ShowRewardAd(LoadRoulette);
             _progressSaver.SaveProgress();
+            
             return;
         }
 

@@ -5,11 +5,15 @@ public class AutomaticTransitionInstaller : MonoBehaviour
 {
     [SerializeField] protected ButtonHome _buttonHome;
 
+    private Sprite _newSprite;
     private Button _nextPuzzle;
     private PuzzleSelector _selector;
     private IProgressSaver _progressSaver;
-    private Sprite _newSprite;
     private SpriteTransmitter _spriteTransmitter;
+    private int _firstTutorial;
+    private int _secondTutorial;
+    private int _thirdTutorial;
+    private int _maxReachedQuestIndex;
 
     private void Awake()
     {
@@ -39,6 +43,11 @@ public class AutomaticTransitionInstaller : MonoBehaviour
         _newSprite = spriteTransmitter.New;
         _progressSaver = progressSaver;
 
+        _firstTutorial = 0;
+        _secondTutorial = _progressSaver.Saves.IndexSecondQuest;
+        _thirdTutorial = _progressSaver.Saves.ObstacleDeactivatIndex;
+        _maxReachedQuestIndex = _progressSaver.Saves.MaxReachedQuestIndex;
+
         if (_nextPuzzle == null)
         {
             Debug.LogError("Button == null");
@@ -51,31 +60,36 @@ public class AutomaticTransitionInstaller : MonoBehaviour
             return;
         }
 
+        if (_newSprite == null)
+        {
+            Debug.LogError("NewSprite == null");
+        }
+
         Show();
     }
 
     private void SetValue()
     {
         _spriteTransmitter.SetAutomaticTransition(true);
-
         _buttonHome.GoMenu();
     }
 
     private void Show()
     {
-        if (_progressSaver.TryEnableFollowingQuest(_progressSaver.Saves.QuestIndex))
+        if (_progressSaver.TryEnableFollowingQuest(_maxReachedQuestIndex) || HasMatchingQuestIndex())
         {
             gameObject.SetActive(false);
         }
+        
+        _selector.SetSprite(_newSprite);
 
-        if (_newSprite == null)
-        {
-            Debug.LogError("NewSprite == null");
-        }
+        _progressSaver.SetMaxReachedQuestIndex();
+    }
 
-        if (_newSprite != null && _selector != null)
-        {
-            _selector.SetSprite(_newSprite);
-        }
+    private bool HasMatchingQuestIndex()
+    {
+        return _firstTutorial == _maxReachedQuestIndex ||
+               _secondTutorial == _maxReachedQuestIndex ||
+               _thirdTutorial == _maxReachedQuestIndex;
     }
 }

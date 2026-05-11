@@ -36,11 +36,4 @@ public class Warner : MonoBehaviour
         _image.gameObject.SetActive(false);
         _textMeshProUGUI.gameObject.SetActive(false);
     }
-
-    public void TurnOn()
-    {
-        _image.gameObject.SetActive(true);
-        _textMeshProUGUI.gameObject.SetActive(true);
-        _errorPanel.TurnOn();
-    }
 }

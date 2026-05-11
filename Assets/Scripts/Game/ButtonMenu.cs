@@ -7,17 +7,13 @@ public class ButtonMenu : MonoBehaviour
     [SerializeField] private PauseMenu _pauseMenu;
 
     private Button _button;
-    private IProgressSaver _progressSaver;
 
     public PauseMenu PauseMenu => _pauseMenu;
     public Button Button => _button;
 
-    public IProgressSaver ProgressSaver => _progressSaver;
-
     private void Awake()
     {
         _button = GetComponent<Button>();
-        _progressSaver = new ProgressSaver();
     }
 
     private void OnEnable()

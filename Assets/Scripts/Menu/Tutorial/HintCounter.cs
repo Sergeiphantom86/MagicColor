@@ -22,11 +22,13 @@ public class HintCounter : MonoBehaviour
     private void OnEnable()
     {
         _container.OneDestroyed += StartTimer;
+        _container.EverythDestroyed += StopTimer;
     }
 
     private void OnDisable()
     {
         _container.OneDestroyed -= StartTimer;
+        _container.EverythDestroyed += StopTimer;
     }
 
     public void StartTimer()
@@ -41,10 +43,7 @@ public class HintCounter : MonoBehaviour
 
     public void ResetTimer()
     {
-        if (_hintCoroutine != null)
-        {
-            StopCoroutine(_hintCoroutine);
-        }
+        StopTimer();
 
         _hintCoroutine = StartCoroutine(ShowHintAfterDelay());
     }
@@ -54,5 +53,14 @@ public class HintCounter : MonoBehaviour
         yield return new WaitForSeconds(_hintDelay);
 
         OnWorked?.Invoke();
+    }
+
+    private void StopTimer()
+    {
+        if (_hintCoroutine != null)
+        {
+            StopCoroutine(_hintCoroutine);
+            _hintCoroutine = null;
+        }
     }
 }

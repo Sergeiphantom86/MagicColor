@@ -16,7 +16,7 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
     private float _scaleImpactEffect;
     private float _scaleDestructEffect;
 
-    private Scaler _scaling;
+    private Scaler _scaler;
     private Collider _collider;
     private PathMover _pathMover;
     private Voiceover _voiceover;
@@ -50,7 +50,7 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
         _scaleSmockEffect = 0.3f;
         _scaleDestructEffect = 1;
 
-        _scaling = GetComponent<Scaler>();
+        _scaler = GetComponent<Scaler>();
         _outline = GetComponent<Outline>();
         _collider = GetComponent<Collider>();
         _voiceover = GetComponent<Voiceover>();
@@ -119,8 +119,9 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
         _touchDragInput.ThrowOff();
 
         AssignOriginal();
-       
+
         _pathMover.Move(waypoint, endPoint, ExecuteDestruction);
+
     }
 
     public void Subscribe()
@@ -169,8 +170,8 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
 
     private void ReduceSize()
     {
-        _scaling.ChangeSize(Vector3.zero, _duration)
-           .SetEase(Ease.InOutBounce);
+        _scaler.GetTwinResiz(Vector3.zero, _duration)
+           .SetEase(Ease.InOutElastic);
     }
 
     private void ShowEffectMovement()
