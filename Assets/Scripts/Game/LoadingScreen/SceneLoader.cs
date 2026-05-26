@@ -84,13 +84,13 @@ public class SceneLoader : MonoBehaviour
         asyncLoad.allowSceneActivation = true;
 
         yield return null;
-
+        _resourcesSceneLoader.GoOver(sceneName);
         yield return _extraLoad;
 
         if (_isInitialize == false)
         {
             YG2.GameReadyAPI();
-            _resourcesSceneLoader.GoOver(sceneName);
+            
             _isInitialize = true;
         }
 
