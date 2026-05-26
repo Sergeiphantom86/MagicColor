@@ -18104,7 +18104,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1149287421}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4121b106934186949ae21986db6c67d9, type: 3}
+  m_Script: {fileID: 11500000, guid: 419e1bfbcfbf07d4aaa3082767f79853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1158613182
@@ -28584,6 +28584,7 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!1 &2054578297
 GameObject:
   m_ObjectHideFlags: 0

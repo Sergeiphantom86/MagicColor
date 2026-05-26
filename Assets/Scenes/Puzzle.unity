@@ -2890,7 +2890,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db62e557ce11e6448ad27e1bcf6e4ff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _referenceAspect: 2
+  _referenceAspect: 1
 --- !u!114 &519420036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7615,10 +7615,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6bcc74fee6c0c541821789080d5d2ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hideSystemCursor: 1
-  _offset: {x: 0, y: 0}
-  _pressedScale: 0.8
-  _animationSpeed: 15
 --- !u!114 &1603183856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10382,6 +10378,7 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!114 &2087892781
 MonoBehaviour:
   m_ObjectHideFlags: 0
