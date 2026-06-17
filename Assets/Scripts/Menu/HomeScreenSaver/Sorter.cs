@@ -8,36 +8,9 @@ public class Sorter : MonoBehaviour
     private FragmentCollector _fragmentCollector;
     private List<Fragment> _fragments;
 
-    public List<Fragment> Fragments => _fragments;
-
     public event Action HasSorted;
 
-    private void Awake()
-    {
-        _fragmentCollector = GetComponent<FragmentCollector>();
-        _fragments = new List<Fragment>();
-    }
-
-    private void OnEnable()
-    {
-        _fragmentCollector.OnPixelsRendered += SortFragments;
-    }
-
-    private void OnDisable()
-    {
-        _fragmentCollector.OnPixelsRendered -= SortFragments;
-    }
-
-    private void SortFragments(List<Fragment> fragments)
-    {
-        if (fragments == null || fragments.Count == 0)
-            return;
-
-        fragments.Sort(CompareFragments);
-
-        _fragments = fragments;
-        HasSorted?.Invoke();
-    }
+    public List<Fragment> Fragments => _fragments;
 
     private static int CompareFragments(Fragment first, Fragment second)
     {
@@ -73,5 +46,32 @@ public class Sorter : MonoBehaviour
     private static int CompareByX(Vector3 positionA, Vector3 positionB)
     {
         return positionB.x.CompareTo(positionA.x);
+    }
+
+    private void Awake()
+    {
+        _fragmentCollector = GetComponent<FragmentCollector>();
+        _fragments = new List<Fragment>();
+    }
+
+    private void OnEnable()
+    {
+        _fragmentCollector.OnPixelsRendered += SortFragments;
+    }
+
+    private void OnDisable()
+    {
+        _fragmentCollector.OnPixelsRendered -= SortFragments;
+    }
+
+    private void SortFragments(List<Fragment> fragments)
+    {
+        if (fragments == null || fragments.Count == 0)
+            return;
+
+        fragments.Sort(CompareFragments);
+
+        _fragments = fragments;
+        HasSorted?.Invoke();
     }
 }

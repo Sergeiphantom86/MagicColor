@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Repainter : MonoBehaviour
 {
@@ -18,6 +18,7 @@ public class Repainter : MonoBehaviour
     private float _delay;
 
     public event Action<List<IColorable>> OnRecoloredWalls;
+
     public event Action<List<IColorable>> OnRecoloredBlock;
 
     private void Awake()
@@ -54,17 +55,17 @@ public class Repainter : MonoBehaviour
         return GetColorables(container, list);
     }
 
-    private List<IColorable> GetColorables(Transform container, List<IColorable> IColorables)
+    private List<IColorable> GetColorables(Transform container, List<IColorable> colorables)
     {
         foreach (Transform child in container)
         {
             if (child.TryGetComponent(out IColorable colorable))
             {
-                IColorables.Add(colorable);
+                colorables.Add(colorable);
             }
         }
 
-        return IColorables;
+        return colorables;
     }
 
     private void UpdateSystem(List<Color> colors)
@@ -84,11 +85,12 @@ public class Repainter : MonoBehaviour
 
     private void ReplaceColors(List<IColorable> colorables)
     {
-        if (ShouldRepaint(colorables) == false) return;
+        if (ShouldRepaint(colorables) == false) 
+            return;
 
-        var (Colors, Objects) = PreparePaintingData(colorables);
+        var (colors, objects) = PreparePaintingData(colorables);
 
-        ExecutePainting(Colors, Objects);
+        ExecutePainting(colors, objects);
     }
 
     private bool ShouldRepaint(List<IColorable> colorables)

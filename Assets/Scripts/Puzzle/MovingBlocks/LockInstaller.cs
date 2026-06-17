@@ -49,6 +49,7 @@ public class LockInstaller : MonoBehaviour
 
         _lock.SetUsed(_isPlaced);
     }
+
     private void AdjustLockRotation(Wall wall)
     {
         Quaternion wallRotation = Quaternion.Euler(0f, wall.GetAngleY(), 0f);

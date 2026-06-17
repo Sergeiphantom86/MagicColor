@@ -1,8 +1,8 @@
 using System.IO;
-using DG.Tweening;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 using YG;
 
 [RequireComponent(typeof(CanvasGroup), typeof(PanelFader))]
@@ -119,7 +119,9 @@ public class SceneLoader : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (Instance == this) Instance = null;
+        if (Instance == this) 
+            Instance = null;
+
         _canvasGroup.DOKill();
     }
 }

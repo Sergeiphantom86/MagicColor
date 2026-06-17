@@ -25,7 +25,7 @@ public class QuestTransitionService : IQuestTransitionService
         {
             _progressSaver.MakeTransparent(true);
         }
-        
+
         if (quest.IsTutorial == false)
         {
             quest.SetTutorial(true);

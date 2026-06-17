@@ -1,6 +1,6 @@
-using DG.Tweening;
 using System;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(Block), typeof(ITouchDragInput))]
 public class GridDragMovement : MonoBehaviour
@@ -46,8 +46,7 @@ public class GridDragMovement : MonoBehaviour
     {
         _currentCenterCell = new Vector2Int(
             _block.GridPosition.x + (_block.SizeInCells.x - 1) / 2,
-            _block.GridPosition.y + (_block.SizeInCells.y - 1) / 2
-        );
+            _block.GridPosition.y + (_block.SizeInCells.y - 1) / 2);
 
         _lastWorldTouch = ScreenToWorld(screenTouchPos);
         _accumulatedDelta = Vector3.zero;
@@ -60,7 +59,7 @@ public class GridDragMovement : MonoBehaviour
 
         _lastWorldTouch = worldTouch;
         _accumulatedDelta += delta;
- 
+
         if (_accumulatedDelta.magnitude >= _grid.CellSize / 2f)
         {
             TryShift();
@@ -70,7 +69,7 @@ public class GridDragMovement : MonoBehaviour
             if (_cellsSinceLastSound >= 5)
             {
                 Moved?.Invoke();
-                
+
                 _cellsSinceLastSound = 0;
             }
         }
@@ -100,7 +99,6 @@ public class GridDragMovement : MonoBehaviour
         _accumulatedDelta = Vector3.zero;
     }
 
-
     private void MoveTo(Vector2Int targetCenter)
     {
         _moveTween?.Kill();
@@ -121,12 +119,10 @@ public class GridDragMovement : MonoBehaviour
         Vector2Int size = _block.SizeInCells;
 
         Vector3 offset = _grid.GetComponent<Grid>().CellToWorld(
-            new Vector3Int(size.x - 1, size.y - 1, 0)
-        ) - _grid.GetComponent<Grid>().CellToWorld(Vector3Int.zero);
+            new Vector3Int(size.x - 1, size.y - 1, 0)) - _grid.GetComponent<Grid>().CellToWorld(Vector3Int.zero);
 
         return basePos + offset * 0.5f;
     }
-
 
     private Vector2Int GetShiftDirection(Vector3 delta)
     {
@@ -141,8 +137,6 @@ public class GridDragMovement : MonoBehaviour
         Ray ray = _camera.ScreenPointToRay(screenPos);
         Plane plane = new(Vector3.up, _transform.position);
 
-        return plane.Raycast(ray, out float dist)
-            ? ray.GetPoint(dist)
-            : _transform.position;
+        return plane.Raycast(ray, out float dist) ? ray.GetPoint(dist) : _transform.position;
     }
 }

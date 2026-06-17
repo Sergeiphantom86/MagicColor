@@ -25,7 +25,7 @@ public class PenTiltController : MonoBehaviour
             transform.localEulerAngles = new Vector3(0, 0, _currentAngle);
         }
     }
-  
+
     private float GetTargetAngle(float distanceFromCenter)
     {
         float angle = distanceFromCenter * _maxTiltAngle;

@@ -35,12 +35,12 @@ public class BlockInteractionService : IBlockInteractionService
 
     public void SetPanelError(ErrorPanel errorPanel)
     {
-        if(errorPanel == null)
+        if (errorPanel == null)
         {
             Debug.LogError("ErrorPanel == null");
             return;
         }
-        
+
         _errorPanel = errorPanel;
     }
 

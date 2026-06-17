@@ -12,8 +12,7 @@ public class ColorPrecision : IColorPrecision
             Round(color.r),
             Round(color.g),
             Round(color.b),
-            color.a
-        );
+            color.a);
     }
 
     public bool Match(Color firstColor, Color secondColor)

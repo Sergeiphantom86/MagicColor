@@ -69,8 +69,7 @@ public class Demonstrator : MonoBehaviour
                 SetAlpha(_startMaterial, alpha);
             },
             AnimationEndValue,
-            _duration
-        )
+            _duration)
         .SetEase(Ease.Linear)
         .OnComplete(() =>
         {

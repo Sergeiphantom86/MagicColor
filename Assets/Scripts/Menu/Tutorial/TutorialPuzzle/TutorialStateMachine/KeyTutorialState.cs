@@ -11,7 +11,8 @@ public class KeyTutorialState : TutorialStater
     private readonly Key _key;
     private readonly IProgressSaver _progressSaver;
 
-    public KeyTutorialState(TutorialStateMachine stateMachine, TutorialContext context): base(stateMachine, context)
+    public KeyTutorialState(TutorialStateMachine stateMachine, TutorialContext context)
+        : base(stateMachine, context)
     {
         _context = context;
         _stateMachine = stateMachine;
@@ -30,7 +31,7 @@ public class KeyTutorialState : TutorialStater
         _handMover.Pivot.transform.position = _key.transform.position;
 
         _stateTutorial.Initialization(_handMover, _visualizer, _key, _lock);
-   
+
         _stateTutorial.OnCompleted += OnTutorialCompleted;
     }
 

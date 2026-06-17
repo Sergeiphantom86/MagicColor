@@ -9,16 +9,17 @@ public class TutorialAbilities : TutorialStater
     private readonly Hints _hintsUI;
     private readonly IInputHandler _input;
     private readonly TextMeshProUGUI _text;
-    private readonly HandMover _handMoverUI; 
+    private readonly HandMover _handMoverUI;
     private readonly TutorialContext _context;
     private readonly PauseButton _pauseButton;
-    private readonly CloseGameButton _closeGame; 
-    private readonly AbilityButton _bagAbilities; 
-    private readonly PurchaseButton _purchaseButton; 
+    private readonly CloseGameButton _closeGame;
+    private readonly AbilityButton _bagAbilities;
+    private readonly PurchaseButton _purchaseButton;
     private readonly TutorialStateMachine _stateMachine;
     private readonly IProgressSaver _progressSaver;
 
-    public TutorialAbilities(TutorialStateMachine stateMachine, TutorialContext context, IInputHandler input, PauseButton pauseButton, TextMeshProUGUI text, HandMover handMoverUI, PurchaseButton purchaseButton, CloseGameButton closeGame, AbilityButton bagAbilities, Hints hintsUI) : base(stateMachine, context)
+    public TutorialAbilities(TutorialStateMachine stateMachine, TutorialContext context, IInputHandler input, PauseButton pauseButton, TextMeshProUGUI text, HandMover handMoverUI, PurchaseButton purchaseButton, CloseGameButton closeGame, AbilityButton bagAbilities, Hints hintsUI)
+        : base(stateMachine, context)
     {
         _input = input;
         _text = text;
@@ -31,7 +32,6 @@ public class TutorialAbilities : TutorialStater
         _bagAbilities = bagAbilities;
         _purchaseButton = purchaseButton;
         _progressSaver = new ProgressSaver();
-       
     }
 
     public override void Enter()

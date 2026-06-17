@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(DropPooler))]
 public class InkSpawner : BaseSpawner<Drop>
@@ -37,7 +37,7 @@ public class InkSpawner : BaseSpawner<Drop>
         {
             Debug.LogError($"{nameof(ActivateInkDrops)}: Duration < 0!", this);
         }
-        
+
         if (_spawnRoutine != null)
             StopCoroutine(_spawnRoutine);
 

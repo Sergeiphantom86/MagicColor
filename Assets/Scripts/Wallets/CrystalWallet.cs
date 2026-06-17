@@ -1,4 +1,3 @@
 public class CrystalWallet : Wallet
 {
-   
 }

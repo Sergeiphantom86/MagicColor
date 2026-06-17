@@ -45,7 +45,8 @@ public class EngineTutorialMenu : MonoBehaviour
 
     public void StartAnimationClicks()
     {
-        if (_isSetPosition) return;
+        if (_isSetPosition) 
+            return;
 
         StopAnimation();
 
@@ -64,6 +65,7 @@ public class EngineTutorialMenu : MonoBehaviour
         {
             _animationSequence.Kill();
         }
+
         if (_scaleTween != null && _scaleTween.IsActive())
         {
             _scaleTween.Kill();

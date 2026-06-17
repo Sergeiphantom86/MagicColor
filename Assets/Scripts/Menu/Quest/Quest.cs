@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Quest : MonoBehaviour
 {
     [SerializeField] private int _indexPuzzle;
-    
+
     private LockImage _lockImage;
     private ActiveIndicator _activeIndicator;
     private int _reward;
@@ -16,6 +16,8 @@ public class Quest : MonoBehaviour
     private PuzzleSelector _selector;
     private IProgressSaver _progressSaver;
 
+    public event Action<Quest> Selected;
+
     public int Index { get; private set; }
 
     public bool IsUnlocked => _isUnlocked;
@@ -23,8 +25,6 @@ public class Quest : MonoBehaviour
     public bool IsTutorial => _isTutorial;
 
     public Sprite Sprite => _selector.Sprite;
-
-    public event Action<Quest> Selected;
 
     private void Awake()
     {
@@ -86,7 +86,8 @@ public class Quest : MonoBehaviour
 
     public void OnClick()
     {
-        if (_isUnlocked == false || _isCompleted) return;
+        if (_isUnlocked == false || _isCompleted)
+            return;
 
         _progressSaver.SetReward(_reward);
         _progressSaver.Saves.IndexPuzzle = _indexPuzzle;

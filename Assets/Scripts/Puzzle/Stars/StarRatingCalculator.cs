@@ -23,7 +23,6 @@ public class StarRatingCalculator : MonoBehaviour
     {
         _stepSeconds = 1;
         _heightDivider = 2;
-        //_positionMobile = -56;
         _starCounter = GetComponent<StarsCounter>();
         _linePrefab = GetComponentInChildren<TextMeshProUGUI>();
         _starsToTimes = new Dictionary<int, List<int>>();
@@ -40,7 +39,6 @@ public class StarRatingCalculator : MonoBehaviour
             _rectTransform.anchoredPosition = new Vector2(_positionMobile, _rectTransform.anchoredPosition.y);
         }
     }
-
 
     private void PrintAllStarRatings()
     {
@@ -84,7 +82,7 @@ public class StarRatingCalculator : MonoBehaviour
 
             CreateStars(pair.Key, rect.anchoredPosition);
 
-             index++;
+            index++;
         }
     }
 
@@ -104,7 +102,6 @@ public class StarRatingCalculator : MonoBehaviour
     {
         return height /= _heightDivider;
     }
-
 
     private string FormatLine(int from, int to)
     {

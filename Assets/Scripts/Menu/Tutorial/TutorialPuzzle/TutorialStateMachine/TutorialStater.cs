@@ -10,5 +10,6 @@ public abstract class TutorialStater : ITutorialState
     }
 
     public abstract void Enter();
+
     public abstract void Exit();
 }

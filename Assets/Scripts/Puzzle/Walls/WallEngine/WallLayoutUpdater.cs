@@ -15,8 +15,9 @@ public class WallLayoutUpdater : MonoBehaviour, IWallLayout
 
     public void Initialize(Rotator rotator)
     {
-        if (ValidateDependencies(rotator) == false) return;
-        
+        if (ValidateDependencies(rotator) == false)
+            return;
+
         _rotator = rotator;
         _rotator.OnRotated += OnRotated;
     }

@@ -14,7 +14,8 @@ public class Bag : MonoBehaviour
 
     public void Add(int amount = 1)
     {
-        if (amount <= 0) return;
+        if (amount <= 0) 
+            return;
 
         _balance += amount;
 
@@ -23,7 +24,8 @@ public class Bag : MonoBehaviour
 
     public bool TryApply(int amount = 1)
     {
-        if (amount <= 0 || _balance < amount) return false;
+        if (amount <= 0 || _balance < amount) 
+            return false;
 
         if (ProcessTransaction(amount, _balance) == false)
             return false;
@@ -33,7 +35,8 @@ public class Bag : MonoBehaviour
 
     public void Use(int amount = 1)
     {
-        if (amount <= 0 || _balance < amount) return;
+        if (amount <= 0 || _balance < amount) 
+            return;
 
         _balance -= amount;
 
@@ -42,7 +45,8 @@ public class Bag : MonoBehaviour
 
     private bool ProcessTransaction(long amount, long balance)
     {
-        if (amount == 0) return false;
+        if (amount == 0) 
+            return false;
 
         if (amount < 0)
         {

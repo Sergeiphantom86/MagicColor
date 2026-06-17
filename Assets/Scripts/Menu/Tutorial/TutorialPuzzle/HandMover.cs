@@ -1,6 +1,6 @@
-using DG.Tweening;
 using System;
 using UnityEngine;
+using DG.Tweening;
 
 public class HandMover : MonoBehaviour
 {
@@ -15,13 +15,13 @@ public class HandMover : MonoBehaviour
     private float _overshoot;
     private int _scaleMultiplier;
 
-    public Pivot Pivot => _pivot;
-
     public event Action Destroyed;
+
+    public Pivot Pivot => _pivot;
 
     private void Awake()
     {
-        _distanceZ = 2; 
+        _distanceZ = 2;
         _distanceX = 3;
         _overshoot = 5;
         _duration = 0.7f;
@@ -52,7 +52,7 @@ public class HandMover : MonoBehaviour
     {
         _sequence?.Kill();
         _sequence = DOTween.Sequence();
-        
+
         _sequence.Append(transform
             .DOScale(_targetScale, _duration)
             .SetEase(Ease.OutBack, _overshoot))
@@ -98,7 +98,7 @@ public class HandMover : MonoBehaviour
     public void TurnOn()
     {
         gameObject.SetActive(true);
-    } 
+    }
 
     public void Stop()
     {
@@ -115,7 +115,7 @@ public class HandMover : MonoBehaviour
 
     private Vector3 GetTargetPosition(float distanceX = 0, float distance = 0)
     {
-        Vector3 position  = transform.position;
+        Vector3 position = transform.position;
 
         position.x -= distanceX;
         position.z -= distance;

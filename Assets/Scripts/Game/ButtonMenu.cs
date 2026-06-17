@@ -9,6 +9,7 @@ public class ButtonMenu : MonoBehaviour
     private Button _button;
 
     public PauseMenu PauseMenu => _pauseMenu;
+
     public Button Button => _button;
 
     private void Awake()
@@ -26,5 +27,7 @@ public class ButtonMenu : MonoBehaviour
         _button.onClick.RemoveListener(PressButton);
     }
 
-    public virtual void PressButton() { }
+    public virtual void PressButton() 
+    {
+    }
 }

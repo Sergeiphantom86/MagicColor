@@ -51,22 +51,39 @@ public class ColorCollisionHandler : MonoBehaviour
         _blockInteraction.SetPanelError(errorPanel);
         _colorMatch.Initialize(colorPrecision);
         _unlockPolicy = unlockPolicy;
-        _collisionProcessor = new CollisionProcessor(_colorMatch,_blockInteraction, _unlockPolicy);
+        _collisionProcessor = new CollisionProcessor(_colorMatch, _blockInteraction, _unlockPolicy);
 
         return true;
     }
 
-    private bool Validate(IColorPrecision colorPrecision, Messager hintKey, ErrorPanel errorPanel, LockInteractionHandler _lockHandler, IUnlockPolicy bagUnlockPolicy)
+    private bool Validate(IColorPrecision colorPrecision, Messager hintKey, ErrorPanel errorPanel, LockInteractionHandler lockHandler, IUnlockPolicy bagUnlockPolicy)
     {
-        if (_colorMatch == null) return Log(nameof(_colorMatch));
-        if (_lockFeedback == null) return Log(nameof(_lockFeedback));
-        if (_collisionHandler == null) return Log(nameof(_collisionHandler));
-        if (_destroySequence == null) return Log(nameof(_destroySequence));
-        if (colorPrecision == null) return Log(nameof(colorPrecision));
-        if (hintKey == null) return Log(nameof(hintKey));
-        if (errorPanel == null) return Log(nameof(errorPanel));
-        if (_lockHandler == null) return Log(nameof(_lockHandler));
-        if (bagUnlockPolicy == null) return Log(nameof(bagUnlockPolicy));
+        if (_colorMatch == null)
+            return Log(nameof(_colorMatch));
+
+        if (_lockFeedback == null)
+            return Log(nameof(_lockFeedback));
+
+        if (_collisionHandler == null)
+            return Log(nameof(_collisionHandler));
+
+        if (_destroySequence == null)
+            return Log(nameof(_destroySequence));
+
+        if (colorPrecision == null)
+            return Log(nameof(colorPrecision));
+
+        if (hintKey == null)
+            return Log(nameof(hintKey));
+
+        if (errorPanel == null)
+            return Log(nameof(errorPanel));
+
+        if (lockHandler == null)
+            return Log(nameof(lockHandler));
+
+        if (bagUnlockPolicy == null)
+            return Log(nameof(bagUnlockPolicy));
 
         return true;
     }
@@ -80,7 +97,7 @@ public class ColorCollisionHandler : MonoBehaviour
     private void Enter(Collider other)
     {
         _collisionProcessor.ProcessEnter(other);
-        
+
         _lockHandler.Set(other);
 
         if (other.TryGetComponent(out Block block))

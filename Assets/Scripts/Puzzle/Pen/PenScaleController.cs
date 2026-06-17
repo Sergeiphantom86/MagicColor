@@ -44,6 +44,7 @@ public class PenScaleController : MonoBehaviour
         {
             _currentTween.Kill();
         }
+
         _currentTween = null;
     }
 }

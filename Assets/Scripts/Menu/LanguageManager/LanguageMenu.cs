@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(Image))]
 public class LanguageMenu : MonoBehaviour, IActivatable
@@ -58,6 +58,7 @@ public class LanguageMenu : MonoBehaviour, IActivatable
 
     public void Activate() =>
        gameObject.SetActive(true);
+
     public void Deactivate() =>
         gameObject.SetActive(false);
 
@@ -91,11 +92,13 @@ public class LanguageMenu : MonoBehaviour, IActivatable
 
     private void ClickOnSelectionButton()
     {
-        if (_buttons.Count <= 0 && _buttons[0] == null) return;
+        if (_buttons.Count <= 0 && _buttons[0] == null) 
+            return;
 
         foreach (LanguageButton button in _buttons)
         {
-            if (button == null) continue;
+            if (button == null) 
+                continue;
 
             string lang = button.name.ToLower();
 
@@ -109,7 +112,8 @@ public class LanguageMenu : MonoBehaviour, IActivatable
 
     private void ChangeLanguage(string langCode)
     {
-        if (_title == langCode) return;
+        if (_title == langCode) 
+            return;
 
         _progressSaver.SwitchLanguage(langCode);
 

@@ -60,7 +60,9 @@ public class MenuController : MonoBehaviour
         _puzzleFlow.OnPuzzleCompleted -= OnPuzzleCompleted;
     }
 
-    private void OnAnyButton() { }
+    private void OnAnyButton()
+    {
+    }
 
     private void OnPuzzleCompleted()
     {

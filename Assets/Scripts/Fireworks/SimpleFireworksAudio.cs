@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(ParticleSystem))]
 public class SimpleFireworksAudio : MonoBehaviour
@@ -36,7 +36,8 @@ public class SimpleFireworksAudio : MonoBehaviour
 
     public void StartFireworks()
     {
-        if (_isRunning) return;
+        if (_isRunning) 
+            return;
 
         _isRunning = true;
 
@@ -45,7 +46,6 @@ public class SimpleFireworksAudio : MonoBehaviour
         TryStopCoroutine(_launchCoroutine);
 
         _launchCoroutine = StartCoroutine(FireworksRoutine());
-
     }
 
     public void Stop()
@@ -80,7 +80,6 @@ public class SimpleFireworksAudio : MonoBehaviour
             TryStopCoroutine(_explosioCoroutine);
 
             yield return _explosioCoroutine = StartCoroutine(PlaySingleFirework());
-            
             yield return new WaitForSeconds(GetAccidentalDelay());
         }
     }
@@ -92,24 +91,25 @@ public class SimpleFireworksAudio : MonoBehaviour
 
     private IEnumerator PlaySingleFirework()
     {
-        if (_soundPack == null) yield break;
+        if (_soundPack == null) 
+            yield break;
 
         yield return _waitSoundGlow;
         yield return _waitSoundGlow;
 
-        PlaySoundWithRandomPitch(_soundPack.explosionSound);
+        PlaySoundWithRandomPitch(_soundPack.ExplosionSound);
 
         yield return _waitSoundExplosion;
 
         for (int i = 0; i < SparkleCount; i++)
         {
-            PlaySoundWithRandomPitch(_soundPack.sparkleSound);
+            PlaySoundWithRandomPitch(_soundPack.SparkleSound);
             yield return new WaitForSeconds(Random.Range(SparkleMinDelay, SparkleMaxDelay));
         }
 
         yield return _waitSoundGlow;
 
-        PlaySoundWithRandomPitch(_soundPack.glowSound);
+        PlaySoundWithRandomPitch(_soundPack.GlowSound);
     }
 
     private void PlaySoundWithRandomPitch(AudioClip clip)

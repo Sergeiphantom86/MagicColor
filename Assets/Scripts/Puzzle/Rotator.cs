@@ -1,6 +1,6 @@
-using DG.Tweening;
 using System;
 using UnityEngine;
+using DG.Tweening;
 
 public class Rotator : MonoBehaviour
 {
@@ -44,7 +44,7 @@ public class Rotator : MonoBehaviour
 
         sequence.Join(GetTweenMove(_targetX, _targetY));
 
-        sequence.OnComplete(() => 
+        sequence.OnComplete(() =>
         OnRotated?.Invoke());
 
         return sequence;
@@ -57,7 +57,7 @@ public class Rotator : MonoBehaviour
 
     private Tween GetTweenRotation(float targetAngleX)
     {
-        return transform.DORotate(GetTargetAngleX(targetAngleX), _duration,_rotateMode)
+        return transform.DORotate(GetTargetAngleX(targetAngleX), _duration, _rotateMode)
             .SetEase(_easeType);
     }
 

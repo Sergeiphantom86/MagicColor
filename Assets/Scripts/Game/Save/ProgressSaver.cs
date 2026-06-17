@@ -37,6 +37,7 @@ public class ProgressSaver : IProgressSaver
 
     public void SaveSpinsCount(int spins) =>
         WithSaves(savesYG2 => savesYG2.SaveSpinsCount(spins));
+
     public void SetQuantityAbilities(int spins) =>
         WithSaves(savesYG2 => savesYG2.SetQuantityAbilities(spins));
 
@@ -54,6 +55,7 @@ public class ProgressSaver : IProgressSaver
 
     public void DisableTutorialMenu() =>
         WithSaves(savesYG2 => savesYG2.DisableTutorialMenu());
+
     public void SaveBalanceAfterPurchase(long balans) =>
         WithSaves(savesYG2 => savesYG2.SaveBalanceAfterPurchase(balans));
 
@@ -142,7 +144,8 @@ public class ProgressSaver : IProgressSaver
 
     private void WithSaves(Action<SavesYG> action)
     {
-        if (Saves == null) return;
+        if (Saves == null) 
+            return;
 
         action.Invoke(Saves);
     }
@@ -154,17 +157,31 @@ public class ProgressSaver : IProgressSaver
 
     private void Subscribe(Action<string> onReward, Action onOpen, Action onClose, Action onError)
     {
-        if (onReward != null) YG2.onRewardAdv += onReward;
-        if (onOpen != null) YG2.onOpenRewardedAdv += onOpen;
-        if (onClose != null) YG2.onCloseRewardedAdv += onClose;
-        if (onError != null) YG2.onErrorRewardedAdv += onError;
+        if (onReward != null) 
+            YG2.onRewardAdv += onReward;
+
+        if (onOpen != null) 
+            YG2.onOpenRewardedAdv += onOpen;
+
+        if (onClose != null) 
+            YG2.onCloseRewardedAdv += onClose;
+
+        if (onError != null) 
+            YG2.onErrorRewardedAdv += onError;
     }
 
     private void Unsubscribe(Action<string> onReward, Action onOpen, Action onClose, Action onError)
     {
-        if (onReward != null) YG2.onRewardAdv -= onReward;
-        if (onOpen != null) YG2.onOpenRewardedAdv -= onOpen;
-        if (onClose != null) YG2.onCloseRewardedAdv -= onClose;
-        if (onError != null) YG2.onErrorRewardedAdv -= onError;
+        if (onReward != null) 
+            YG2.onRewardAdv -= onReward;
+
+        if (onOpen != null) 
+            YG2.onOpenRewardedAdv -= onOpen;
+
+        if (onClose != null) 
+            YG2.onCloseRewardedAdv -= onClose;
+
+        if (onError != null) 
+            YG2.onErrorRewardedAdv -= onError;
     }
 }

@@ -1,17 +1,17 @@
-using DG.Tweening;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 [RequireComponent(typeof(Viewer), typeof(TextureInitializer))]
 public class Agitator : MonoBehaviour, IAnimatable
 {
-    [SerializeField] private ParticleSystem _particleSystem;
-    [SerializeField] private Effecter _destruction;
-    [SerializeField] private AudioClip _destructionSound;
-
     private const float MinDirectionValue = -1f;
     private const float MaxDirectionValue = 1f;
     private const float AxisValueZ = 0f;
+
+    [SerializeField] private ParticleSystem _particleSystem;
+    [SerializeField] private Effecter _destruction;
+    [SerializeField] private AudioClip _destructionSound;
 
     private float _interval;
     private float _explosionForce;
@@ -57,14 +57,16 @@ public class Agitator : MonoBehaviour, IAnimatable
 
     public void TriggerExplosion(List<Fragment> pixels)
     {
-        if (pixels == null || pixels.Count == 0) return;
+        if (pixels == null || pixels.Count == 0) 
+            return;
 
         SafeWaitExplosion(pixels);
     }
 
     private void SafeWaitExplosion(List<Fragment> pixels)
     {
-        if (isActiveAndEnabled == false) return;
+        if (isActiveAndEnabled == false) 
+            return;
 
         DOTweenExtensions.SafeKill(_explosionSequence);
 
@@ -105,13 +107,12 @@ public class Agitator : MonoBehaviour, IAnimatable
         });
     }
 
-
-
     private void AddPixelToExplosionSequence(List<Fragment> pixels)
     {
         foreach (Fragment pixel in pixels)
         {
-            if (pixel == null || pixel.gameObject.activeInHierarchy == false) continue;
+            if (pixel == null || pixel.gameObject.activeInHierarchy == false) 
+                continue;
 
             _explosionSequence.Join(CreatePixelExplosionSequence(pixel));
         }

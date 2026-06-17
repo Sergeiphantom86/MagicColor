@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TextureInitializer : MonoBehaviour
@@ -24,12 +24,15 @@ public class TextureInitializer : MonoBehaviour
     private List<Fragment> _fragmentsList;
     private Dictionary<Color, Queue<Fragment>> _fragments;
 
-    public Dictionary<Color, Queue<Fragment>> Fragments => _fragments;
-    public List<Fragment> FragmentsList => _fragmentsList;
-    public int TotalCount => _totalCount;
-
     public event Action<int> OnInitialize;
+
     public event Action<List<Color>> CanPaint;
+
+    public Dictionary<Color, Queue<Fragment>> Fragments => _fragments;
+
+    public List<Fragment> FragmentsList => _fragmentsList;
+
+    public int TotalCount => _totalCount;
 
     private void Awake()
     {
@@ -98,8 +101,6 @@ public class TextureInitializer : MonoBehaviour
         {
             transform.position = _mobilePosition;
         }
-
-        //transform.position = _mobilePosition;
     }
 
     private void Group(int width, int height, Vector2 pivot)

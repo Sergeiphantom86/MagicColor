@@ -46,14 +46,16 @@ public class ObjectsInstaller : MonoBehaviour
 
     private void PlaceLockOnRepaintedWalls(List<IColorable> colorables)
     {
-        if (_isTutorial == false) return;
+        if (_isTutorial == false) 
+            return;
 
         _lockInstaller.TryPlaceLock(colorables);
     }
 
     private void PlaceKeyOnUnrepaintedBlock(List<IColorable> colorables)
     {
-        if (_isTutorial == false) return;
+        if (_isTutorial == false) 
+            return;
 
         _keyInstaller.TryPlaceKey(colorables);
     }

@@ -21,23 +21,30 @@ public class WallEngine : MonoBehaviour, IWallInteractor
     {
         _blockDestroySequence.IsTouched -= Move;
 
-
         if (_rotation != null)
             _rotation.OnRotated -= _movement.CacheStartPosition;
     }
 
-    public bool Initialize(IColorPrecision colorPrecision, BagKey bag, Rotator rotator,
-        Messager hintKey, Lock @lock,
-        ErrorPanel errorPanel, Activator activator, AudioClip audioClip)
+    public bool Initialize(IColorPrecision colorPrecision,
+        BagKey bag,
+        Rotator rotator,
+        Messager hintKey,
+        Lock @lock,
+        ErrorPanel errorPanel,
+        Activator activator,
+        AudioClip audioClip)
     {
         if (ValidateDependencies(colorPrecision, bag, rotator, hintKey, @lock) == false)
             return false;
 
-        if (ValidateComponents(out ColorCollisionHandler collisionHandler,
-                                out WallInteractionController interactionController,
-                                out LockFeedbackService lockFeedback,
-                                out BlockDestroySequence blockDestroySequence) == false)
+        if (ValidateComponents(
+            out ColorCollisionHandler collisionHandler,
+            out WallInteractionController interactionController,
+            out LockFeedbackService lockFeedback,
+            out BlockDestroySequence blockDestroySequence) == false)
+        {
             return false;
+        }
 
         _rotation = rotator;
 
@@ -64,13 +71,20 @@ public class WallEngine : MonoBehaviour, IWallInteractor
         PushMovement();
     }
 
-    private void InitSystems(ColorCollisionHandler collisionHandler, WallInteractionController interactionController, 
-        LockFeedbackService lockFeedback, IColorPrecision colorPrecision, BagKey bag, Messager hintKey, 
-        Lock @lock, ErrorPanel errorPanel, Activator activator)
+    private void InitSystems(
+        ColorCollisionHandler collisionHandler,
+        WallInteractionController interactionController,
+        LockFeedbackService lockFeedback,
+        IColorPrecision colorPrecision,
+        BagKey bag,
+        Messager hintKey,
+        Lock @lock,
+        ErrorPanel errorPanel,
+        Activator activator)
     {
         _layoutUpdater.Initialize(_rotation);
 
-        BagUnlockPolicy bagUnlockPolicy =  new(bag, 1);
+        BagUnlockPolicy bagUnlockPolicy = new(bag, 1);
         lockFeedback.InitializComponents(@lock, hintKey);
         interactionController.Initialize(bagUnlockPolicy, this);
         collisionHandler.Initialize(colorPrecision, hintKey, errorPanel, bagUnlockPolicy);
@@ -136,7 +150,6 @@ public class WallEngine : MonoBehaviour, IWallInteractor
 
         return true;
     }
-
 
     private bool LogNull(string dependencyName)
     {

@@ -1,5 +1,5 @@
-using DG.Tweening;
 using UnityEngine;
+using DG.Tweening;
 using TMPro;
 
 public class TextAnimator : MonoBehaviour
@@ -33,23 +33,23 @@ public class TextAnimator : MonoBehaviour
 
     public void AnimateToValue(long newValue, float customDuration = -1)
     {
-        if (customDuration < 0) customDuration = _animationDuration;
+        if (customDuration < 0)
+            customDuration = _animationDuration;
 
         _balanceTween?.Kill();
         _targetValue = newValue;
 
         if (_useSmoothAnimation)
         {
-            _balanceTween = DOTween.To(() => 
-            _currentValue,
+            _balanceTween = DOTween.To(() => _currentValue,
                 animatedValue =>
                 {
                     _currentValue = animatedValue;
                     UpdateText();
                 },
                 _targetValue,
-                customDuration
-            ).SetEase(Ease.OutQuad);
+                customDuration)
+                .SetEase(Ease.OutQuad);
         }
         else
         {

@@ -4,11 +4,11 @@ using UnityEngine;
 public class GridPlaneFiller : MonoBehaviour
 {
     [SerializeField] private GameObject _planePrefab;
-    [SerializeField, Min(0.1f)] private float _planeHeight;
-    [SerializeField, Min(1)] private int _scaleDivider;
-    [SerializeField, Min(1)] private int _positionDivider;
-    [SerializeField, Range(1f, 1.2f)] private float _scaleMultiplierX;
-    [SerializeField, Range(1f, 1.2f)] private float _scaleMultiplierZ;
+    [SerializeField][Min(0.1f)] private float _planeHeight;
+    [SerializeField][Min(1)] private int _scaleDivider;
+    [SerializeField][Min(1)] private int _positionDivider;
+    [SerializeField][Range(1f, 1.2f)] private float _scaleMultiplierX;
+    [SerializeField][Range(1f, 1.2f)] private float _scaleMultiplierZ;
 
     private GameObject _planeInstance;
     private GridSystem _grid;
@@ -17,12 +17,12 @@ public class GridPlaneFiller : MonoBehaviour
     private int _multiplierPositions;
     private float _positionY;
 
+    public event Action<Material, int, int, float> HasChanged;
+
     private void Awake()
     {
         _grid = GetComponent<GridSystem>();
     }
-
-    public event Action<Material, int, int, float> HasChanged;
 
     private void OnEnable()
     {
@@ -148,8 +148,7 @@ public class GridPlaneFiller : MonoBehaviour
             _planeInstance.transform.localScale = new Vector3(
                 scaleX,
                 _positionY,
-                scaleZ
-            );
+                scaleZ);
         }
         catch (Exception exception)
         {
@@ -168,8 +167,7 @@ public class GridPlaneFiller : MonoBehaviour
             _planeInstance.transform.localPosition = new Vector3(
                 posX,
                 _positionY,
-                posZ
-            );
+                posZ);
         }
         catch (Exception exception)
         {
@@ -190,6 +188,7 @@ public class GridPlaneFiller : MonoBehaviour
             {
                 DestroyImmediate(_planeInstance);
             }
+
             _planeInstance = null;
         }
     }

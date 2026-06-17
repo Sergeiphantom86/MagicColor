@@ -23,10 +23,11 @@ public class PurchaseButton : MonoBehaviour
     private PaymentType _currentPaymentType;
     private long _result;
 
-    public Button Button => _button;
-
     public event Action Clicked;
+
     public event Action<long> CoinPurchased;
+
+    public Button Button => _button;
 
     private void Awake()
     {
@@ -98,7 +99,8 @@ public class PurchaseButton : MonoBehaviour
             return;
         }
 
-        if (_result <= 0) return;
+        if (_result <= 0)
+            return;
 
         CoinPurchased?.Invoke(_result);
         TryChangeTypePayment();
@@ -118,10 +120,15 @@ public class PurchaseButton : MonoBehaviour
 
     private void TryChangeTypePayment()
     {
-        if(_progressSaver == null) return;
-        if(_paymentCoin == null) return;
-        if(_paymentAdv == null) return;
-        
+        if (_progressSaver == null)
+            return;
+
+        if (_paymentCoin == null)
+            return;
+
+        if (_paymentAdv == null)
+            return;
+
         if (_progressSaver.Saves.CurrentCoin >= _result)
         {
             _currentPaymentType = PaymentType.Coins;
@@ -141,5 +148,5 @@ public class PurchaseButton : MonoBehaviour
 public enum PaymentType
 {
     Coins,
-    Ads
+    Ads,
 }

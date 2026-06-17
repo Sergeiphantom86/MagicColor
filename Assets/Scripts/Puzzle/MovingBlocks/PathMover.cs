@@ -1,6 +1,6 @@
+using System;
 using UnityEngine;
 using DG.Tweening;
-using System;
 
 public class PathMover : MonoBehaviour
 {
@@ -13,8 +13,8 @@ public class PathMover : MonoBehaviour
     private float _scaleDownDuration = 0.05f;
     private float _scaleUpDuration = 0.05f;
     private float _scaleReturnDuration = 0.1f;
-   private float _scaleDownFactor = 0.8f; 
-    private float _scaleUpFactor = 1.2f; 
+    private float _scaleDownFactor = 0.8f;
+    private float _scaleUpFactor = 1.2f;
     private Sequence _pathSequence;
     private Vector3 _originalScale;
 
@@ -26,7 +26,9 @@ public class PathMover : MonoBehaviour
     public void Move(Vector3 waypoint, Vector3 endPoint, Action onComplete = null)
     {
         _originalScale = transform.localScale;
-        if (_pathSequence != null && _pathSequence.IsActive()) _pathSequence.Kill();
+
+        if (_pathSequence != null && _pathSequence.IsActive())
+            _pathSequence.Kill();
 
         _pathSequence = DOTween.Sequence();
         _pathSequence.Append(transform.DOScale(_originalScale * _scaleDownFactor, _scaleDownDuration).SetEase(Ease.OutQuad));

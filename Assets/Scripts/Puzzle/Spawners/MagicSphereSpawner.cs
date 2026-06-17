@@ -3,7 +3,7 @@
 public class MagicSphereSpawner : BaseSpawner<MagicSphere>
 {
     [SerializeField] private AudioClip _audioClip;
-    
+
     private GridSystem _grid;
     private IInputHandler _input;
     private Voiceover _voiceover;
@@ -52,7 +52,7 @@ public class MagicSphereSpawner : BaseSpawner<MagicSphere>
             center: WorldToGrid(_input.Point),
             size: Vector2Int.one);
 
-        if (_input.Point == Vector3.zero) 
+        if (_input.Point == Vector3.zero)
             return;
 
         AbilitySelectionManager.Instance.Use();
@@ -77,9 +77,9 @@ public class MagicSphereSpawner : BaseSpawner<MagicSphere>
 
     public void DespawnAll()
     {
-        for (int i = _spawnedObjects.Count - 1; i >= 0; i--)
+        for (int i = SpawnedObjects.Count - 1; i >= 0; i--)
         {
-            Despawn(_spawnedObjects[i]);
+            Despawn(SpawnedObjects[i]);
         }
     }
 }

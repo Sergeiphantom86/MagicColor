@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RouletteGameStarter : MonoBehaviour
 {
-    [SerializeField] AutomaticTransitionInstaller _automaticTransitionInstaller;
+    [SerializeField] private AutomaticTransitionInstaller _automaticTransitionInstaller;
 
     public void SetProgressSaver(IProgressSaver progressSaver, SpriteTransmitter spriteTransmitter)
     {

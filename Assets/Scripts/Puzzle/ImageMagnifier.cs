@@ -11,7 +11,7 @@ public class ImageMagnifier : MonoBehaviour
     private bool _isStandardSize;
     private Camera _camera;
     private Vector3 _startPositoonZ;
-    private ZoomChanger  _zoomChanger;
+    private ZoomChanger _zoomChanger;
     private RectTransform _rectTransform;
 
     private void Awake()

@@ -11,6 +11,7 @@ public class HintCounter : MonoBehaviour
     private IProgressSaver _progressSaver;
 
     public event Action OnWorked;
+
     public event Action Rested;
 
     private void Awake()

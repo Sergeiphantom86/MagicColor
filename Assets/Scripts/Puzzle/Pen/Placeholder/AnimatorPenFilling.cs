@@ -1,6 +1,6 @@
-using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(DustSizeCalculator))]
 public class AnimatorPenFilling : MonoBehaviour
@@ -25,13 +25,15 @@ public class AnimatorPenFilling : MonoBehaviour
     public void FillPen(Color color, Placeholder placeholder)
     {
         int fragmentCount = GetFragmentCount(color);
+
         UpdatePenSize(fragmentCount, placeholder);
     }
 
     private void UpdatePenSize(int quantity, Placeholder placeholder)
     {
-        if (placeholder == null || quantity < 0) return;
-        
+        if (placeholder == null || quantity < 0)
+            return;
+
         Size = quantity;
         _currentOccupancy = GetQuantityOccupancy(quantity);
 
@@ -46,7 +48,7 @@ public class AnimatorPenFilling : MonoBehaviour
             Debug.LogError("FragmentSpawner or Fragments dictionary is null!", this);
             return 0;
         }
-        
+
         if (_fragmentCollector.Fragments.TryGetValue(color, out Queue<Fragment> fragments))
         {
             return fragments?.Count ?? 0;
@@ -59,35 +61,24 @@ public class AnimatorPenFilling : MonoBehaviour
 
     public void ChangeSize(Placeholder placeholder, float occupancy)
     {
-        placeholder.transform.DOScale(
-           GetNewScaleY(occupancy), _duration)
+        placeholder.transform.DOScale(GetNewScaleY(occupancy), _duration)
            .SetEase(Ease.OutQuad);
     }
 
     private void ChangePosition(Placeholder placeholder, float occupancy)
     {
-        placeholder.transform.DOLocalMove(
-           GetPosition(placeholder.transform.localPosition,
-           GetHeightIncrease(occupancy)), _duration)
+        placeholder.transform.DOLocalMove(GetPosition(placeholder.transform.localPosition, GetHeightIncrease(occupancy)), _duration)
            .SetEase(Ease.OutQuad);
     }
 
     private Vector3 GetNewScaleY(float occupancy)
     {
-        return new(
-            _initialScale.x,
-            _initialScale.y + occupancy,
-            _initialScale.z
-        );
+        return new(_initialScale.x, _initialScale.y + occupancy, _initialScale.z);
     }
 
     private Vector3 GetPosition(Vector3 initialPosition, float heightIncrease)
     {
-        return new(
-            initialPosition.x,
-            initialPosition.y + heightIncrease,
-            initialPosition.z
-        );
+        return new(initialPosition.x, initialPosition.y + heightIncrease, initialPosition.z);
     }
 
     private float GetHeightIncrease(float occupancy)

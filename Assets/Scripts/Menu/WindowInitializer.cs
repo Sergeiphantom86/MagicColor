@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WindowInitializer : MonoBehaviour
-{  
+{
     [SerializeField] private Window _gameSelection;
     [SerializeField] private Window _settingsWindow;
     [SerializeField] private Window _leaderboardWindow;
@@ -15,7 +15,8 @@ public class WindowInitializer : MonoBehaviour
 
     public void Initialize()
     {
-        if (_isInitialized) return;
+        if (_isInitialized)
+            return;
 
         _windowActions = new Dictionary<string, Action>();
 
@@ -26,13 +27,13 @@ public class WindowInitializer : MonoBehaviour
 
     private void RegisterActions()
     {
-        RegisterAction(ButtonFactory.Play, () => 
+        RegisterAction(ButtonFactory.Play, () =>
         ToggleWindow(_gameSelection));
 
-        RegisterAction(ButtonFactory.Settings, () => 
+        RegisterAction(ButtonFactory.Settings, () =>
         ToggleWindow(_settingsWindow));
 
-        RegisterAction(ButtonFactory.Leaderboard, () => 
+        RegisterAction(ButtonFactory.Leaderboard, () =>
         ToggleWindow(_leaderboardWindow));
     }
 

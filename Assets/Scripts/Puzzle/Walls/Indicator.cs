@@ -11,12 +11,16 @@ public class Indicator : MonoBehaviour
 
     public void TurnOffSpriteRenderer()
     {
-        if (_spriteRenderer == null) return;
+        if (_spriteRenderer == null) 
+            return;
+
         _spriteRenderer.enabled = false;
     }
     public void TurnOnSpriteRenderer()
     {
-        if (_spriteRenderer == null) return;
+        if (_spriteRenderer == null) 
+            return;
+
         _spriteRenderer.enabled = true;
     }
 }

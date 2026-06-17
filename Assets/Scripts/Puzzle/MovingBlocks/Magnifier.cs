@@ -1,6 +1,6 @@
+using System;
 using UnityEngine;
 using DG.Tweening;
-using System;
 
 public class Magnifier : MonoBehaviour
 {
@@ -12,6 +12,7 @@ public class Magnifier : MonoBehaviour
     private Transform _transform;
 
     public event Action OnRaised;
+
     public event Action OnDropped;
 
     private void Awake()
@@ -30,14 +31,13 @@ public class Magnifier : MonoBehaviour
     public Tween Deselect()
     {
         _scaleTween = ChangeSize(_originalScale);
-        OnDropped?.Invoke();  
+        OnDropped?.Invoke();
         return _scaleTween;
     }
 
     public Tween ChangeSize(Vector3 scale)
     {
         return _transform.DOScale(scale, _animationDuration);
-
     }
 
     private void OnDestroy()

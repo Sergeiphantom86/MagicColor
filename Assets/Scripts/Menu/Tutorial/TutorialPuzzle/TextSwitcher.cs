@@ -25,7 +25,7 @@ public class TextSwitcher : MonoBehaviour
             return;
         }
 
-        _image.enabled = true; 
+        _image.enabled = true;
         _awardText.gameObject.SetActive(false);
         _notificationText.gameObject.SetActive(true);
     }

@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class RewardAnimator : MonoBehaviour
 {
     [SerializeField] private GameObject _spritePrefab;
@@ -45,7 +44,7 @@ public class RewardAnimator : MonoBehaviour
         {
             CreateParticle(item);
         }
-        
+
         HandleParticleComplete(item);
     }
 
@@ -68,13 +67,11 @@ public class RewardAnimator : MonoBehaviour
         }
 
         ParticleAnimation anim = particle.AddComponent<ParticleAnimation>();
-        
+
         anim.Initialize(
             randomPosition: CalculateRandomPosition(),
             targetPosition: _rewards.transform.position,
             settings: GetParticleAnimation());
-
-
     }
 
     private ParticleAnimation.Settings GetParticleAnimation()

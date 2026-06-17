@@ -26,7 +26,9 @@ public class WallsContainer : MonoBehaviour
         foreach (Transform child in transform)
         {
             _wall = child.GetComponent<WallEngine>();
-            if (_wall == null) continue;
+
+            if (_wall == null) 
+                continue;
 
             if (_wall.Initialize(colorPrecision, bag, rotator, hintKey, @lock, errorPanel, activator, audioClip) == false)
             {
@@ -60,7 +62,6 @@ public class WallsContainer : MonoBehaviour
 
         if (activator == null)
             return LogNull(nameof(activator));
-
 
         return true;
     }

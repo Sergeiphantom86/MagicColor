@@ -2,20 +2,21 @@ using System;
 
 public class NumberFormatter
 {
-    private readonly string[] _suffixesEN = { "", "K", "M", "B", "T", "Q" };
-    private readonly string[] _suffixesRU = { "", "Ò", "Ì", "Ìð", "Ò", "Ê" };
-    private readonly string[] _suffixesTR = { "", "B", "M", "Mr", "Tr", "Kn" };
-
-    private readonly IProgressSaver _progressSaver = new ProgressSaver();
-
     private const double ScalingFactor = 1000.0;
     private const int ScalingThreshold = 100000;
     private const int MaxFractionDigits = 1;
     private const double RoundingEpsilon = 0.0001;
 
+    private readonly string[] _suffixesEN = { string.Empty, "K", "M", "B", "T", "Q" };
+    private readonly string[] _suffixesRU = { string.Empty, "Ò", "Ì", "Ìð", "Ò", "Ê" };
+    private readonly string[] _suffixesTR = { string.Empty, "B", "M", "Mr", "Tr", "Kn" };
+
+    private readonly IProgressSaver _progressSaver = new ProgressSaver();
+
     public string FormatNumber(long number)
     {
-        if (number == 0) return "0";
+        if (number == 0)
+            return "0";
 
         bool isNegative = number < 0;
         double absNumber = Math.Abs(number);
@@ -45,7 +46,7 @@ public class NumberFormatter
         return absNumber < ScalingThreshold;
     }
 
-    private  string FormatDirect(double absNumber, bool isNegative)
+    private string FormatDirect(double absNumber, bool isNegative)
     {
         return isNegative ? $"-{absNumber:0}" : absNumber.ToString("0");
     }
@@ -81,15 +82,11 @@ public class NumberFormatter
 
     private string FormatRoundedValue(double value)
     {
-        return Math.Abs(value - Math.Round(value, 0)) < RoundingEpsilon ?
-            value.ToString("0") :
-            value.ToString("0.0");
+        return Math.Abs(value - Math.Round(value, 0)) < RoundingEpsilon ? value.ToString("0") : value.ToString("0.0");
     }
 
     private string AddSignAndSuffix(string value, int suffixIndex, bool isNegative, string[] suffixes)
     {
-        return isNegative ?
-            $"-{value} {suffixes[suffixIndex]}" :
-            $"{value} {suffixes[suffixIndex]}";
+        return isNegative ? $"-{value} {suffixes[suffixIndex]}" : $"{value} {suffixes[suffixIndex]}";
     }
 }

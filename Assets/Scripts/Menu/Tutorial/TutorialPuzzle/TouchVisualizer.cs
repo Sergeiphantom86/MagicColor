@@ -34,7 +34,7 @@ public class TouchVisualizer : MonoBehaviour
     public void SetPosition(Vector3 position)
     {
         position.y += 0.5f;
-        
+
         transform.position = position;
     }
 

@@ -1,6 +1,6 @@
-using DG.Tweening;
 using System;
 using UnityEngine;
+using DG.Tweening;
 
 public class WheelAnimator : MonoBehaviour
 {
@@ -18,7 +18,7 @@ public class WheelAnimator : MonoBehaviour
     private float _nextThreshold;
     private bool _firstThresholdPassed;
 
-    public event Action OnThresholdPassed; 
+    public event Action OnThresholdPassed;
 
     private void Awake()
     {
@@ -37,7 +37,7 @@ public class WheelAnimator : MonoBehaviour
         _transform = transform;
     }
 
-    void Start()
+    private void Start()
     {
         DOTween.Init();
         _accumulatedRotation = transform.eulerAngles.z;
@@ -45,7 +45,8 @@ public class WheelAnimator : MonoBehaviour
 
     public void SpinToTarget(float sectorAngle, Action onComplete)
     {
-        if (_isSpinning) return;
+        if (_isSpinning)
+            return;
 
         _isSpinning = true;
         _spinSequence?.Kill();
@@ -103,8 +104,8 @@ public class WheelAnimator : MonoBehaviour
             getter: GetCurrentRotation,
             setter: UpdateRotation,
             endValue: GetTotalRotation(CalculateRequiredRotation(sectorAngle)),
-            duration: _spinDuration
-        ).SetEase(Ease.OutCubic);
+            duration: _spinDuration)
+            .SetEase(Ease.OutCubic);
     }
 
     private void UpdateRotation(float currentRotation)
@@ -136,13 +137,16 @@ public class WheelAnimator : MonoBehaviour
     {
         float angleDifference = _pointerAngle - (_accumulatedRotation + sectorAngle) % 360f;
 
-        if (angleDifference > 180f) angleDifference -= 360f;
-        if (angleDifference < -180f) angleDifference += 360f;
+        if (angleDifference > 180f)
+            angleDifference -= 360f;
+
+        if (angleDifference < -180f)
+            angleDifference += 360f;
 
         return angleDifference;
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         _spinSequence?.Kill();
     }

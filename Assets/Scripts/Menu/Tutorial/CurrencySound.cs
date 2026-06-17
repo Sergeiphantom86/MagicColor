@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CurrencySound : MonoBehaviour
 {
-    [SerializeField] AudioClip _audioClip;
+    [SerializeField] private AudioClip _audioClip;
 
     private Voiceover _voiceover;
 

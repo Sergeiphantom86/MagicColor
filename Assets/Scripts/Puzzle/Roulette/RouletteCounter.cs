@@ -1,7 +1,7 @@
-using TMPro;
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using TMPro;
 
 [RequireComponent(typeof(ButtonController))]
 public class RouletteCounter : MonoBehaviour
@@ -50,8 +50,7 @@ public class RouletteCounter : MonoBehaviour
         {
             _buttonController.Initialize(
                 globalInteractableCondition: () => true,
-                onClickAction: DecreaseCount
-            );
+                onClickAction: DecreaseCount);
 
             _buttonController.UpdateState();
         }
@@ -101,7 +100,8 @@ public class RouletteCounter : MonoBehaviour
 
     public void DecreaseCount()
     {
-        if (_currentCount <= 0) return;
+        if (_currentCount <= 0)
+            return;
 
         _currentCount--;
         AnimateCounterChange();
@@ -126,14 +126,14 @@ public class RouletteCounter : MonoBehaviour
         _countTween?.Kill();
 
         _countTween = DOTween.To(() => _displayedCount,
-            currentValue => 
+            currentValue =>
             {
                 _displayedCount = currentValue;
                 UpdateText();
             },
             _currentCount,
-            _animationDuration
-        ).SetEase(Ease.OutQuad);
+            _animationDuration)
+            .SetEase(Ease.OutQuad);
     }
 
     private void UpdateText()

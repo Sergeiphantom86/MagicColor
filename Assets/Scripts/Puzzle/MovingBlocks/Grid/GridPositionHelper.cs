@@ -10,7 +10,7 @@ public class GridPositionHelper
         _gridSystem = gridSystem;
     }
 
-    public List<Vector2Int> GetAvailableCenters(Vector2Int blockSize,int marginFromBorder = 0)
+    public List<Vector2Int> GetAvailableCenters(Vector2Int blockSize, int marginFromBorder = 0)
     {
         List<Vector2Int> available = new();
 
@@ -56,7 +56,7 @@ public class GridPositionHelper
             for (int y = margin; y <= GridSystem.Instance.GridSizeY - blockSize.y - margin; y++)
             {
                 Vector2Int origin = new Vector2Int(x, y);
-                
+
                 if (GridSystem.Instance.CanPlaceBlock(origin, blockSize))
                     available.Add(origin);
             }
@@ -64,7 +64,6 @@ public class GridPositionHelper
 
         return available;
     }
-
 
     private Vector2Int GetCenterOffset(Vector2Int size)
     {

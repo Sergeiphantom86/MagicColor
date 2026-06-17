@@ -24,7 +24,7 @@ public class Assigner : MonoBehaviour
         if (collider.TryGetComponent(out Lock @lock))
         {
             Debug.Log(10);
-            
+
             @lock.transform.SetParent(transform);
         }
     }

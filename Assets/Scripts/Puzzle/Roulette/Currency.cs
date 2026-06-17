@@ -53,7 +53,7 @@ public class Currency : MonoBehaviour
         _weight = _weightCalculator.GetWeight(_value);
     }
 
-    public void Initialize( int index, int totalItems)
+    public void Initialize(int index, int totalItems)
     {
         _indexInRoulette = index;
         _sectorSize = _quantityDegrees / totalItems;

@@ -23,7 +23,9 @@ public class UnifiedSwipeController : MonoBehaviour, IBeginDragHandler, IDragHan
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (ShouldBlockInput()) return;
+        if (ShouldBlockInput())
+            return;
+
         _buttonSound.PlayButtonSound(_swipeSound);
         _isDragging = true;
         _startDragPosition = eventData.position;
@@ -31,17 +33,21 @@ public class UnifiedSwipeController : MonoBehaviour, IBeginDragHandler, IDragHan
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (_isDragging == false || ShouldBlockInput()) return;
+        if (_isDragging == false || ShouldBlockInput())
+            return;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (_isDragging == false || ShouldBlockInput()) return;
+        if (_isDragging == false || ShouldBlockInput())
+            return;
+
         _isDragging = false;
 
         Vector2 direction = eventData.position - _startDragPosition;
 
-        if (Mathf.Abs(direction.x) < _swipeThreshold) return;
+        if (Mathf.Abs(direction.x) < _swipeThreshold)
+            return;
 
         _carousel.ShowRelative((int)Mathf.Sign(-direction.x));
 
@@ -52,14 +58,18 @@ public class UnifiedSwipeController : MonoBehaviour, IBeginDragHandler, IDragHan
 
         Vector2 delta = eventData.position - _startDragPosition;
 
-        if (Mathf.Abs(delta.x) < 80f) return;
+        if (Mathf.Abs(delta.x) < 80f)
+            return;
     }
 
     private bool ShouldBlockInput()
     {
-        if (_blockInputWhenTutorialActive == false) return false;
-        if (_tutorial == null) return false;
+        if (_blockInputWhenTutorialActive == false)
+            return false;
 
-        return _tutorial.IsTutorialActive &&(_tutorial.IsSwipeAllowed && _isDragging) == false &&_tutorial.IsClickAllowed == false;
+        if (_tutorial == null)
+            return false;
+
+        return _tutorial.IsTutorialActive && (_tutorial.IsSwipeAllowed && _isDragging) == false && _tutorial.IsClickAllowed == false;
     }
 }

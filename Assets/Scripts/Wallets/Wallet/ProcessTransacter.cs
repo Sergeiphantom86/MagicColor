@@ -4,7 +4,8 @@ public class ProcessTransacter : IProcessTransacter
 {
     public bool ProcessTransaction(long amount, long balance)
     {
-        if (amount == 0) return false;
+        if (amount == 0) 
+            return false;
 
         if (amount < 0)
         {

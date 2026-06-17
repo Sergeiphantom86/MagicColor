@@ -4,7 +4,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(HandMover))]
 public class HandIndicator : MonoBehaviour
 {
-    [SerializeField] Button _buttonBack;
+    [SerializeField] private Button _buttonBack;
 
     private HandMover _handMover;
 

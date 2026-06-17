@@ -1,6 +1,6 @@
-using DG.Tweening;
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public class MovementState : TutorialStater
 {
@@ -36,14 +36,13 @@ public class MovementState : TutorialStater
 
     public override void Enter()
     {
-        if (ValidateReferences() == false) return;
+        if (ValidateReferences() == false)
+            return;
 
         _context.Visualizer.TurnOff();
 
         _context.AdjustPositions(
-           miragePosition: _context.HandMover.transform.position,
-           yOffset: _yOffset
-       );
+           yOffset: _yOffset);
 
         _context.HandMover.EnableMoveAnimationZ();
         _gridDragMovement.Moved += OnMirageMovement;
@@ -57,7 +56,7 @@ public class MovementState : TutorialStater
         _gridDragMovement.Moved -= OnMirageMovement;
         _block.OnDestroyed -= OnMirageCompleted;
         _input.OnTouchClick -= StopPulsation;
-        _input.OnDropped -= StartPulsation; 
+        _input.OnDropped -= StartPulsation;
     }
 
     private void OnMirageMovement()
@@ -98,7 +97,7 @@ public class MovementState : TutorialStater
             _block.transform.DOScale(_startScale * _scaleMultiplier, _duration);
 
             yield return _context.WaitForSeconds;
-          
+
             _block.transform.DOScale(_startScale, _duration);
 
             yield return _context.WaitForSeconds;

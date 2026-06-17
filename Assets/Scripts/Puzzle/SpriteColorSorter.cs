@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SpriteColorSorter : MonoBehaviour
 {
-    [SerializeField] private Sprite[] _sprites;
-
     private const float IgnoredTransparency = 0.1f;
+
+    [SerializeField] private Sprite[] _sprites;
 
     private void Start()
     {
@@ -24,8 +24,6 @@ public class SpriteColorSorter : MonoBehaviour
             })
             .OrderBy(data => data.ColorCount)
             .ToList();
-
-        Debug.Log("=== Sprite Color Count ===");
 
         foreach (var item in result)
         {

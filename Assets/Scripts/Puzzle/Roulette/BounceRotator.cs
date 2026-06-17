@@ -43,12 +43,16 @@ public class BounceRotator : MonoBehaviour
 
     public void PlayRotation()
     {
-        if (_isRotating) return;
-        if (_useCooldown && Time.time - _lastRotationTime < _cooldownTime) return;
+        if (_isRotating)
+            return;
+
+        if (_useCooldown && Time.time - _lastRotationTime < _cooldownTime)
+            return;
+
         _voiceover.PlayOneShot(_audioClip);
         _isRotating = true;
         _lastRotationTime = Time.time;
-        
+
         ResetRotation();
 
         _rotationSequence = DOTween.Sequence();

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class KeyCollector : MonoBehaviour
 {
-    [SerializeField] BagKey bagKey;
-    
+    [SerializeField] private BagKey bagKey;
+
     private ICollisionHandler _collisionHandler;
 
     private void Awake()
@@ -25,7 +25,8 @@ public class KeyCollector : MonoBehaviour
     {
         if (collider.TryGetComponent(out Key key))
         {
-            if (key == null) return;
+            if (key == null)
+                return;
 
             bagKey.Add();
             key.gameObject.SetActive(false);

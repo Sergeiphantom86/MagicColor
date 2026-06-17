@@ -178,7 +178,8 @@ namespace YG
                 return;
             }
 
-            if (balance == 0) return;
+            if (balance == 0) 
+                return;
 
             if (currency is Coin)
             {

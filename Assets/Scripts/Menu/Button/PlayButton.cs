@@ -1,11 +1,12 @@
-using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayButton : MenuButtonBase
 {
     public override void Configure(Button button,
-       HandlerButtonWindowInteraction handlerButtonWindowInteraction,
-       ButtonSoundHandler buttonSound, AudioClip audioClip)
+        HandlerButtonWindowInteraction handlerButtonWindowInteraction,
+        ButtonSoundHandler buttonSound,
+        AudioClip audioClip)
     {
         button.onClick.RemoveAllListeners();
 
@@ -19,9 +20,10 @@ public class PlayButton : MenuButtonBase
            Press(button, handlerButtonWindowInteraction, buttonSound, audioClip));
     }
 
-    public override void Press(Button button, 
-        HandlerButtonWindowInteraction handlerButtonWindowInteraction, 
-        ButtonSoundHandler buttonSound, AudioClip audioClip)
+    public override void Press(Button button,
+        HandlerButtonWindowInteraction handlerButtonWindowInteraction,
+        ButtonSoundHandler buttonSound, 
+        AudioClip audioClip)
     {
         handlerButtonWindowInteraction.OnButtonClicked(button);
         buttonSound.PlayButtonSound(audioClip);

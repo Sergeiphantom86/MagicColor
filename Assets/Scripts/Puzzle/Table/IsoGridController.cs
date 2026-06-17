@@ -4,24 +4,23 @@ public class IsoGridController : MonoBehaviour
 {
     private Renderer _renderer;
     private Material _material;
-    private float _cellSize = 64f;
-
+    private float _cellSize;
 
     private void Awake()
     {
+        _cellSize = 64f;
         _renderer = GetComponent<Renderer>();
         _material = _renderer.material;
     }
 
-    void Start()
+    private void Start()
     {
         _material.SetVector(
             "_Resolution",
-            new Vector4(Screen.width, Screen.height, 0, 0)
-        );
+            new Vector4(Screen.width, Screen.height, 0, 0));
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -30,16 +29,14 @@ public class IsoGridController : MonoBehaviour
         }
     }
 
-    Vector2 ScreenToCell(Vector2 mouse)
+    private Vector2 ScreenToCell(Vector2 mouse)
     {
         Vector2 uv = new (
             mouse.x / Screen.width,
-            mouse.y / Screen.height
-        );
+            mouse.y / Screen.height);
 
         Vector2 world = uv * new Vector2(Screen.width, Screen.height) / _cellSize;
 
-        // inverse iso
         float x = (world.x + world.y * 2f) * 0.5f;
         float y = (world.y * 2f - world.x) * 0.5f;
 

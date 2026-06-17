@@ -1,6 +1,6 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public class ButtonController : MonoBehaviour
 {
@@ -9,10 +9,12 @@ public class ButtonController : MonoBehaviour
 
     private bool _localBlock;
     private bool _isSpin;
-    public event Func<bool> GlobalInteractableCondition;
-    public event Action OnTurned;
 
     public bool IsSpin => _isSpin;
+
+    public event Func<bool> GlobalInteractableCondition;
+
+    public event Action OnTurned;
 
     private void Awake()
     {
@@ -28,7 +30,7 @@ public class ButtonController : MonoBehaviour
     {
         GlobalInteractableCondition = globalInteractableCondition;
         OnTurned = onClickAction;
-        
+
         UpdateState();
     }
 

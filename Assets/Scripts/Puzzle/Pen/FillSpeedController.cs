@@ -6,7 +6,8 @@ public class FillSpeedController
 
     public void TryAccelerate(float remainingTime, Action<float> notify, Action applySpeed)
     {
-        if (_isAccelerated) return;
+        if (_isAccelerated) 
+            return;
 
         _isAccelerated = true;
 

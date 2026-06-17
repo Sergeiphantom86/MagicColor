@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Reset : MonoBehaviour
 {
-   private Button _button;
+    private Button _button;
     private IProgressSaver _progressSaver;
 
     private void Awake()

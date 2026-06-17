@@ -79,7 +79,6 @@ public class HandlerButtonWindowInteraction : MonoBehaviour
         action.Invoke();
     }
 
-
     private int GetButtonIndex(Button button)
     {
         for (int i = 0; i < _buttonKeeper.Buttons.Length; i++)

@@ -30,7 +30,8 @@ public class AbilitySelectionManager : MonoBehaviour
 
     public void ClearSelection()
     {
-        if (_currentButton == null) return;
+        if (_currentButton == null)
+            return;
 
         _currentButton.SetHighlight(false);
         _currentButton = null;

@@ -6,7 +6,7 @@ public class LockInteractionHandler
     private Messager _hintKey;
     private bool _initialized;
 
-    public void SetHint(Messager hintKey) => 
+    public void SetHint(Messager hintKey) =>
         _hintKey = hintKey;
 
     public void Set(Collider other)
@@ -23,7 +23,8 @@ public class LockInteractionHandler
 
     public void ShowBlockedFeedback()
     {
-        if (_lock == null) return;
+        if (_lock == null)
+            return;
 
         _lock.ShakeUp();
         _hintKey.TurnOn();

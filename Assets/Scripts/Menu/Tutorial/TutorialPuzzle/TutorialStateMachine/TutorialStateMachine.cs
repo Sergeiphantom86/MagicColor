@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class TutorialStateMachine : MonoBehaviour
 {
-    protected TutorialContext _context;
+    protected TutorialContext Context;
     private ITutorialState _currentState;
 
     private void Awake()
     {
-        _context = CreateContext();
-        ChangeState(new InitializationState(this, _context));
+        Context = CreateContext();
+        ChangeState(new InitializationState(this, Context));
     }
 
     protected virtual TutorialContext CreateContext()
@@ -18,8 +18,7 @@ public class TutorialStateMachine : MonoBehaviour
 
         context.InitBase(
             handMover: GetComponentInChildren<HandMover>(true),
-            visualizer: GetComponentInChildren<TouchVisualizer>(true)
-        );
+            visualizer: GetComponentInChildren<TouchVisualizer>(true));
 
         return context;
     }

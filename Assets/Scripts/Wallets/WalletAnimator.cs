@@ -1,7 +1,7 @@
-using TMPro;
 using System;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 [RequireComponent(typeof(Wallet), typeof(TextMeshProUGUI), typeof(Voiceover))]
 public class WalletAnimator : MonoBehaviour
@@ -70,27 +70,28 @@ public class WalletAnimator : MonoBehaviour
     {
         _balanceTween?.Kill();
 
-        _balanceTween = DOTween.To(() => _displayedBalance, balance =>
-        {
-          _soundTimer += Time.unscaledDeltaTime;
-
-            if (_soundTimer >= 0.05f)
+        _balanceTween = DOTween.To(
+            () => _displayedBalance,
+            balance =>
             {
-                _voiceover.PlayOneShot(_audioClip);
-                _soundTimer = 0f;
-            }
+                _soundTimer += Time.unscaledDeltaTime;
 
-            _displayedBalance = balance;
+                if (_soundTimer >= 0.05f)
+                {
+                    _voiceover.PlayOneShot(_audioClip);
+                    _soundTimer = 0f;
+                }
 
-          UpdateBalanceText();
-        },
-        newBalance,_animationDuration)
+                _displayedBalance = balance;
+                UpdateBalanceText();
+            },
+            newBalance,
+            _animationDuration)
             .SetEase(Ease.OutQuad)
             .SetUpdate(true)
             .OnComplete(() =>
             {
                 _soundTimer = 0f;
-
                 Finished?.Invoke();
             });
     }

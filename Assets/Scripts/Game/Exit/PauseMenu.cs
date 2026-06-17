@@ -19,7 +19,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-        _isPaused = false; 
+        _isPaused = false;
 
         SwitchTime(false, _speedTimePassing);
     }

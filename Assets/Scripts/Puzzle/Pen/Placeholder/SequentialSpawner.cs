@@ -26,7 +26,7 @@ public class SequentialSpawner : MonoBehaviour
     {
         if (other.TryGetComponent(out Drop drop))
         {
-            if(drop.TryGetComponent(out IColorable component))
+            if (drop.TryGetComponent(out IColorable component))
             {
                 Color color = component.GetColor();
 
@@ -71,10 +71,9 @@ public class SequentialSpawner : MonoBehaviour
             _placeholder = _placeholders[0];
             _placeholders.RemoveAt(0);
         }
-       
+
         _placeholder.ReduceSize();
     }
-
 
     private IEnumerator UpdatePointInCreatedObject(Placeholder spawnedObject, Color color)
     {
@@ -93,7 +92,6 @@ public class SequentialSpawner : MonoBehaviour
         return duration > 0 ? duration : _defaultDuration;
     }
 
-
     private void AssignNextSpawnPosition(Vector3 position)
     {
         _nextSpawnYPosition = _transform.InverseTransformPoint(position).y;
@@ -104,7 +102,7 @@ public class SequentialSpawner : MonoBehaviour
         Placeholder placeholder = Instantiate(_objectToSpawn, _transform);
 
         _placeholders.Add(placeholder);
-        
+
         return placeholder;
     }
 }

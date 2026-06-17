@@ -37,7 +37,7 @@ public class Puzzle : MonoBehaviour
         _moveTween?.Kill();
         _moveTween = transform.DOMoveX(GetPositionX(), GetDuration(duration))
             .SetEase(Ease.Linear)
-            .OnComplete(() => 
+            .OnComplete(() =>
             gameObject.SetActive(false));
     }
 

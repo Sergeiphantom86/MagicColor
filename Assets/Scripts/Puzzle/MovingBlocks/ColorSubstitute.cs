@@ -28,20 +28,19 @@ public class ColorSubstitute : ColorableObject
         if (useSaturationRange || useValueRange)
         {
             randomColor = Random.ColorHSV(
-                0f, 1f,
+                0f, 
+                1f,
                 useSaturationRange ? minSaturation : 0f,
                 useSaturationRange ? maxSaturation : 1f,
                 useValueRange ? minValue : 0f,
-                useValueRange ? maxValue : 1f
-            );
+                useValueRange ? maxValue : 1f);
         }
         else
         {
             randomColor = new Color(
                 Random.Range(0f, 1f),
                 Random.Range(0f, 1f),
-                Random.Range(0f, 1f)
-            );
+                Random.Range(0f, 1f));
         }
 
         SetColor(randomColor);

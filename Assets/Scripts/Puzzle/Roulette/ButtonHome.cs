@@ -33,13 +33,11 @@ public class ButtonHome : MonoBehaviour
             return;
         }
 
-
         if (_voiceover == null)
         {
             Debug.LogError("Voiceover == null");
             return;
         }
-
 
         if (_menuLoader == null)
         {

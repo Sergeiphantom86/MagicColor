@@ -18,13 +18,15 @@ public class BlockSpawner : BaseSpawner<Block>
     private float _transparency;
     private float _delayAppearance;
 
-    public List<Block> SpawnedBlocks => _spawnedObjects;
+    public event System.Action<Block> BlockSpawned;
+
+    public System.Func<int> IndexProvider;
+
+    public event System.Action SpawnerReadyed;
+
+    public List<Block> SpawnedBlocks => SpawnedObjects;
 
     public int Count => _count;
-
-    public event System.Action<Block> BlockSpawned;
-    public System.Func<int> IndexProvider;
-    public event System.Action SpawnerReadyed;
 
     protected override void Awake()
     {
@@ -36,7 +38,7 @@ public class BlockSpawner : BaseSpawner<Block>
         _waitBeforePuttPlace = new WaitForSeconds(_delayAppearance);
         _timeInterval = new WaitForSeconds(_delay);
 
-        _currentPrefabIndex = _index;
+        CurrentPrefabIndex = _index;
 
         if (_gridSystem == null)
         {
@@ -75,8 +77,9 @@ public class BlockSpawner : BaseSpawner<Block>
     private void TrySpawnSingleBlock()
     {
         Block block = SpawnObject(Vector3.zero, transform, _index);
-        
-        if (block == null) return;
+
+        if (block == null)
+            return;
 
         Vector2Int? origin = GetRandomAvailableOrigin(block);
 
@@ -123,7 +126,7 @@ public class BlockSpawner : BaseSpawner<Block>
     {
         yield return _waitBeforePuttPlace;
 
-        foreach (Block block in _spawnedObjects)
+        foreach (Block block in SpawnedObjects)
         {
             if (block.TryGetComponent(out SpawnDropAnimation anim))
             {
@@ -136,7 +139,7 @@ public class BlockSpawner : BaseSpawner<Block>
 
     private IEnumerator PutBackPlace()
     {
-        foreach (Block block in _spawnedObjects)
+        foreach (Block block in SpawnedObjects)
         {
             yield return _timeInterval;
 

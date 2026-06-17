@@ -10,13 +10,13 @@ public class WeightCalculator
 
     private readonly Dictionary<int, int> _weightMap = new()
     {
-        [1] = HighProbability,    
-        [2] = HighProbability,     
-        [3] = MediumProbability,    
-        [50] = MediumProbability,   
-        [4] = ReducedProbability,  
-        [100] = ReducedProbability, 
-        [150] = LowProbability     
+        [1] = HighProbability,
+        [2] = HighProbability,
+        [3] = MediumProbability,
+        [50] = MediumProbability,
+        [4] = ReducedProbability,
+        [100] = ReducedProbability,
+        [150] = LowProbability,
     };
 
     public int GetWeight(int value)

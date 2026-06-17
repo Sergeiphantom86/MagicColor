@@ -48,7 +48,8 @@ public class BackgroundMusicPuzzle : MonoBehaviour
 
     private void PlayBackgroundMusic(float time)
     {
-        if (_backgroundMusic == null || _musicSource.isPlaying) return;
+        if (_backgroundMusic == null || _musicSource.isPlaying) 
+            return;
 
         _musicSource.clip = _backgroundMusic;
         _musicSource.time = time;

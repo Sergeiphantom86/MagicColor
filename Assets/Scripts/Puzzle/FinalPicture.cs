@@ -49,7 +49,8 @@ public class FinalPicture : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_activator == null) return;
+        if (_activator == null) 
+            return;
 
         _activator.PuzzleCompleted += Demonstrate;
         _activator.Approached += ZoomIn;

@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(Sorter))]
 public class AppearanceAnimator : MonoBehaviour, IAnimatable
@@ -14,9 +14,9 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
     private Sequence _currentSequence;
     private List<Fragment> _fragments;
 
-    public List<Fragment> Fragments => _fragments;
-
     public event Action AppearanceCompleted;
+
+    public List<Fragment> Fragments => _fragments;
 
     private void Awake()
     {
@@ -38,10 +38,10 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
         _sorter.HasSorted -= AnimateAppearance;
     }
 
-    public void PauseAnimations() => 
+    public void PauseAnimations() =>
         DOTweenExtensions.SafePause(_currentSequence);
 
-    public void ResumeAnimations() => 
+    public void ResumeAnimations() =>
         DOTweenExtensions.SafePlay(_currentSequence);
 
     private void AnimateAppearance()
@@ -89,8 +89,7 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
             fragment.transform
                 .DOScale(_endScale, _animationDuration)
                 .SetEase(Ease.OutBack)
-                .SetLink(fragment.gameObject)
-        );
+                .SetLink(fragment.gameObject));
     }
 
     private void ResetAnimation()

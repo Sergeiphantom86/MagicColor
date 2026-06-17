@@ -7,30 +7,46 @@ public class Explosion : MonoBehaviour
     [SerializeField] private float _upwardModifier = 1f;
     [SerializeField] private LayerMask _affectedLayers;
 
-    public void Explode()
+    private Collider[] _colliderBuffer;
+
+    private void Awake()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position,
-                                                     _radius,
-                                                     _affectedLayers);
-        Wait(colliders);
+        _colliderBuffer = new Collider[100];
     }
 
-    private void Wait(Collider[] collider)
+    public void Explode()
     {
-        foreach (Collider col in collider)
+        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, _radius, _colliderBuffer, _affectedLayers);
+
+        for (int i = 0; i < hitCount; i++)
         {
-            if (col.TryGetComponent(out Partition partition))
+            Collider collider = _colliderBuffer[i];
+            ProcessCollider(collider);
+        }
+    }
+
+    private void ProcessCollider(Collider collider)
+    {
+        Rigidbody rigidbody = collider.attachedRigidbody;
+
+        if (collider.TryGetComponent(out Partition partition))
+        {
+            rigidbody = partition.Rigidbody;
+
+            if (rigidbody != null)
             {
-                Rigidbody rigidbody = partition.Rigidbody;
                 rigidbody.useGravity = true;
                 rigidbody.isKinematic = false;
             }
+        }
 
-            if (col.attachedRigidbody == null)
-                continue;
+        if (rigidbody != null)
+        {
+            rigidbody.AddExplosionForce(_force, transform.position, _radius, _upwardModifier, ForceMode.Impulse);
+        }
 
-            col.attachedRigidbody.AddExplosionForce(_force, transform.position, _radius, _upwardModifier, ForceMode.Impulse);
-
+        if (partition != null)
+        {
             partition.DestroyPartition();
         }
     }

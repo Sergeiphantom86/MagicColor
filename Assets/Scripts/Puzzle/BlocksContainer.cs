@@ -20,13 +20,14 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     private BlockSpawner _blockSpawner;
     private bool _isInitialize;
     private float _delayTime;
-    private HintCounter _hintCoroutine;
-
-    public Transform Transform => transform;
-    public float DelayTime => _delayTime;
 
     public event Action EverythDestroyed;
+
     public event Action OneDestroyed;
+
+    public Transform Transform => transform;
+
+    public float DelayTime => _delayTime;
 
     public int ActiveBlocksCount =>
         _blocks.Count(block => block != null && block.gameObject.activeSelf);
@@ -35,7 +36,6 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
     {
         _blocks = new List<Block>();
         _blockSpawner = GetComponent<BlockSpawner>();
-        _hintCoroutine = GetComponent<HintCounter>();
     }
 
     private void OnEnable()
@@ -72,7 +72,6 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
 
     private void Subscribe(List<IColorable> colorableObjects)
     {
-
         foreach (var block in _blocks)
         {
             CalculateStartTimeGame(block);

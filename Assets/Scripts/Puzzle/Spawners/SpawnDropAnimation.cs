@@ -49,7 +49,7 @@ public class SpawnDropAnimation : MonoBehaviour
             .OnComplete(() =>
             {
                 effecter.CraeteParticles(transform.position, Quaternion.identity, 0.5f);
-                
+
                 _targetColor.SetAlpha(_valueTransparency);
             })
             .SetEase(_ease)

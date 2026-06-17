@@ -4,6 +4,7 @@ using UnityEngine;
 public class CollisionHandler : MonoBehaviour, ICollisionHandler
 {
     public event Action<Collider> OnEnter;
+
     public event Action<Collider> OnExit;
 
     private void OnTriggerEnter(Collider other)

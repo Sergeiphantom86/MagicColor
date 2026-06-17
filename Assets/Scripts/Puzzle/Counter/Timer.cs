@@ -16,12 +16,13 @@ public class Timer : MonoBehaviour
     private TimeSpan _span;
     private float _delayCompensation;
 
+    public event Action HasBegun;
+
     public int CurrentTimeSeconds { get; private set; }
 
     public TMP_Text TimerText => _timerText;
-    public bool IsRunning => _isRunning;
 
-    public event Action HasBegun;
+    public bool IsRunning => _isRunning;
 
     private void Awake()
     {
@@ -65,7 +66,9 @@ public class Timer : MonoBehaviour
 
     public void StartTimer()
     {
-        if (_isRunning) return;
+        if (_isRunning) 
+            return;
+
         _isRunning = true;
         _value = 0f;
     }
@@ -78,7 +81,6 @@ public class Timer : MonoBehaviour
             return;
         }
 
-
         Stop();
 
         _starCounter.SavePlayerTime(_value);
@@ -86,7 +88,9 @@ public class Timer : MonoBehaviour
 
     public void Stop()
     {
-        if (_isRunning == false) return;
+        if (_isRunning == false) 
+            return;
+
         _isRunning = false;
     }
 }

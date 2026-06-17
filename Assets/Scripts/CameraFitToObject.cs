@@ -28,7 +28,9 @@ public class CameraFitToObject : MonoBehaviour
         _shiftExitFov = 110f;
         _shiftEnterFov = 115f;
 
-        _camera = _camera != null ? _camera : Camera.main;
+        _camera = _camera != null
+           ? _camera
+           : Camera.main;
 
         _zoomChanger = new ZoomChanger();
 
@@ -37,7 +39,8 @@ public class CameraFitToObject : MonoBehaviour
 
     private void Start()
     {
-        if (_zoomChanger.IsMobileWithTallScreen()) return;
+        if (_zoomChanger.IsMobileWithTallScreen())
+            return;
 
         _baseFov = 33;
 
@@ -75,7 +78,7 @@ public class CameraFitToObject : MonoBehaviour
     {
         if (_currentAspect >= _referenceAspect)
             return _baseFov;
-        
+
         return Mathf.Clamp(GetVerticalFov(_currentAspect) * Mathf.Rad2Deg, _baseFov, _maxFov);
     }
 

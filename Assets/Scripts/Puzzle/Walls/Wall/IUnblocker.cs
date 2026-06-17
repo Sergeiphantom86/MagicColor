@@ -1,5 +1,6 @@
 public interface IUnblocker
 {
+    public bool IsBlocked { get; }
+
     public void Unblock();
-    public bool IsBlocked {  get; }
 }

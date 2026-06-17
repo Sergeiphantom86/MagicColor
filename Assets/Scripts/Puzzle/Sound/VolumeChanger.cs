@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Slider))]
-public class VolumeChanger: MonoBehaviour
+public class VolumeChanger : MonoBehaviour
 {
     private IProgressSaver _progressSaver;
     private ToggleBase _toggleBase;
@@ -59,7 +59,7 @@ public class VolumeChanger: MonoBehaviour
         {
             _toggleBase.TurnOn(true);
         }
-        
+
         OnVolumeChange?.Invoke(this, volume);
 
         _progressSaver.SetVolume(this, volume);
@@ -68,7 +68,7 @@ public class VolumeChanger: MonoBehaviour
     public void ToggleSoundsMute(bool isOn)
     {
         _isOn = isOn;
-        
+
         if (isOn == false)
         {
             _temporaryVolume = _volumeSlider.value;

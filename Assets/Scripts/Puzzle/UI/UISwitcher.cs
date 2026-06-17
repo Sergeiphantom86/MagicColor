@@ -16,7 +16,8 @@ public class UISwitcher : MonoBehaviour
         _pauseButton = GetComponentInChildren<PauseButton>();
         _abilityButton = GetComponentInChildren<AbilityButton>();
 
-        if (Validate() == false) return;
+        if (Validate() == false)
+            return;
     }
 
     private void OnEnable()
@@ -42,7 +43,7 @@ public class UISwitcher : MonoBehaviour
         if (_timer == null)
         {
             Debug.LogError("Timer == null");
-            return false ;
+            return false;
         }
 
         if (_bagKey == null)

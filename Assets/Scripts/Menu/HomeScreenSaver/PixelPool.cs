@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
-using System.Collections.Generic;
 
 public class PixelPool : MonoBehaviour
 {
@@ -34,8 +34,7 @@ public class PixelPool : MonoBehaviour
             actionOnDestroy: OnDestroyPoolObject,
             collectionCheck: _collectionCheck,
             defaultCapacity: _defaultPoolSize,
-            maxSize: _maxPoolSize
-        );
+            maxSize: _maxPoolSize);
     }
 
     private Fragment CreatePooledItem()
@@ -71,7 +70,8 @@ public class PixelPool : MonoBehaviour
 
     public void ReturnAllFragments(List<Fragment> fragments)
     {
-        if (fragments == null) return;
+        if (fragments == null)
+            return;
 
         foreach (Fragment fragment in fragments)
         {

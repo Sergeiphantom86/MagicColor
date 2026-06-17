@@ -90,7 +90,6 @@ public class FitToCameraBottomAndWidth : MonoBehaviour
     private IEnumerator RecalculateDelayed()
     {
         yield return new WaitForEndOfFrame();
-  
         UpdateCameraOrthoSize();
     }
 }

@@ -11,7 +11,9 @@ public class Tutorial : MonoBehaviour
     private IProgressSaver _progressSaver;
 
     public bool IsSwipeAllowed { get; private set; }
+
     public bool IsClickAllowed { get; private set; }
+
     public bool IsTutorialActive => gameObject.activeSelf;
 
     private void Awake()

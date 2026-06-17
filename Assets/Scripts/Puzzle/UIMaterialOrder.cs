@@ -11,7 +11,7 @@ public class UIMaterialOrder : MonoBehaviour
     private Material _clonedMaterial;
     private Renderer _renderer;
 
-    void Start()
+    private void Start()
     {
         _uiGraphic = GetComponent<Graphic>();
         _renderer = GetComponent<Renderer>();
@@ -40,7 +40,7 @@ public class UIMaterialOrder : MonoBehaviour
         }
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         if (_uiGraphic != null && _originalMaterial != null)
             _uiGraphic.material = _originalMaterial;

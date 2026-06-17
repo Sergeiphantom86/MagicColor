@@ -1,7 +1,7 @@
-﻿using DG.Tweening;
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(GridDragMovement))]
 [RequireComponent(typeof(Collider), typeof(Voiceover), typeof(Scaler))]
@@ -34,14 +34,15 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
     private ITouchDragInput _touchDragInput;
     private Outline _outline;
 
+    public event Action<Block> OnDestroyed;
+
+    public event Action BlockSpawned;
+
     public Vector2Int SizeInCells => _sizeInCells;
 
     public Vector2Int GridPosition => _gridPosition;
 
     public GameObject GameObject => gameObject;
-
-    public event Action<Block> OnDestroyed;
-    public event Action BlockSpawned;
 
     private void Awake()
     {
@@ -121,7 +122,6 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
         AssignOriginal();
 
         _pathMover.Move(waypoint, endPoint, ExecuteDestruction);
-
     }
 
     public void Subscribe()
@@ -150,7 +150,7 @@ public class Block : ColorableObject, IDestroyable, IGridOccupant
             Debug.LogError("InkSpawner == null");
             return;
         }
-        
+
         StartCoroutine(WaitBeforeDisablingVisualization());
     }
 

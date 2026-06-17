@@ -28,7 +28,9 @@ public class Mirage : MonoBehaviour
     private ColorCollisionHandler _colorCollisionHandler;
 
     public event Action OnMovement;
+
     public event Action OnCompleted;
+
     public event Action OnTouch;
 
     private void Awake()
@@ -41,7 +43,7 @@ public class Mirage : MonoBehaviour
         _voiceover = GetComponent<Voiceover>();
         _handMover = GetComponent<HandMover>();
         _rendererBlock = GetComponent<Renderer>();
-        
+
         _waitColorChange = new WaitForSeconds(_timeRepaint);
         _waitBeforeChangingLanes = new WaitForSeconds(_duration);
 
@@ -52,7 +54,8 @@ public class Mirage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Wall wall) == false) return;
+        if (other.TryGetComponent(out Wall wall) == false)
+            return;
 
         if (_firstTouch == false)
         {
@@ -67,7 +70,8 @@ public class Mirage : MonoBehaviour
 
     private void Move(Wall wall)
     {
-        if (_isMoved == false) return;
+        if (_isMoved == false)
+            return;
 
         _voiceover.PlayOneShot(_audioClip);
 
@@ -80,10 +84,11 @@ public class Mirage : MonoBehaviour
 
     private void Repaint(Wall wall)
     {
-        if (_isColored == false) return;
+        if (_isColored == false)
+            return;
 
         _voiceover.PlayOneShot(_audioClip);
-       
+
         _wall = wall;
 
         _collider.enabled = false;
@@ -91,14 +96,15 @@ public class Mirage : MonoBehaviour
         InitializingComponents();
 
         StartCoroutine(WaitColorChange(_rendererBlock, _rendererWall));
-
     }
 
     private void InitializingComponents()
     {
-        if (_wall.TryGetComponent(out ColorCollisionHandler colorCollisionHandler) == false) return;
+        if (_wall.TryGetComponent(out ColorCollisionHandler colorCollisionHandler) == false)
+            return;
 
-        if (_wall.TryGetComponent(out Renderer renderer) == false) return;
+        if (_wall.TryGetComponent(out Renderer renderer) == false)
+            return;
 
         _colorCollisionHandler = colorCollisionHandler;
         _rendererWall = renderer;

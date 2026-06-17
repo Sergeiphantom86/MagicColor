@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PartitionSpawner : BaseSpawner<Partition>
@@ -56,7 +55,8 @@ public class PartitionSpawner : BaseSpawner<Partition>
             Debug.LogError("GridSystem: GridHelper is null");
         }
 
-        if (_progressSaver.Saves.IsUnlockAbilities == false) return;
+        if (_progressSaver.Saves.IsUnlockAbilities == false)
+            return;
 
         for (int i = 0; i < _chainCount; i++)
         {
@@ -74,10 +74,10 @@ public class PartitionSpawner : BaseSpawner<Partition>
         if (TryGetAvailableCenters(partition.SizeInCells, out var centers) == false)
         {
             Despawn(partition);
-     
+
             return;
         }
-        
+
         Vector2Int center = GetCentr(centers);
         Vector2Int origin = _gridSystem.GetOriginFromCenter(center, partition.SizeInCells);
 
@@ -89,9 +89,9 @@ public class PartitionSpawner : BaseSpawner<Partition>
             Size = partition.SizeInCells,
             Direction = _chainDirection,
             Count = _chainCount,
-            Spacing = _chainSpacing
+            Spacing = _chainSpacing,
         };
-        
+
         _chainSpawner.TrySpawnChain(_chainSpawnData, () =>
         SpawnObjectWithCurrentIndex(Vector3.zero, transform), PlacePartition);
     }
@@ -113,12 +113,10 @@ public class PartitionSpawner : BaseSpawner<Partition>
 
     private bool TryGetAvailableCenters(Vector2Int size, out List<Vector2Int> availableCenters)
     {
-        
         availableCenters = _gridHelper.GetAvailableOrigins(size, _marginFromBorder);
-        
+
         return availableCenters != null && availableCenters.Count > 0;
     }
-
 
     private void PlacePartition(Partition partition, Vector2Int origin)
     {

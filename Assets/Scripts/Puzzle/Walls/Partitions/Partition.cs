@@ -10,6 +10,8 @@ public class Partition : MonoBehaviour, IGridOccupant
     private Rigidbody _rigidbody;
     private bool _isDestroyed;
 
+    public event Action<Partition> Destroyed;
+
     public Rigidbody Rigidbody => _rigidbody;
 
     public Vector2Int SizeInCells => _sizeInCells;
@@ -17,8 +19,6 @@ public class Partition : MonoBehaviour, IGridOccupant
     public Vector2Int GridPosition { get; private set; }
 
     public GameObject GameObject => gameObject;
-
-    public event Action<Partition> Destroyed;
 
     private void Awake()
     {

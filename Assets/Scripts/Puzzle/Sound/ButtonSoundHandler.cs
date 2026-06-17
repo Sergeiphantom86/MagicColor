@@ -9,7 +9,7 @@ public class ButtonSoundHandler : MonoBehaviour
 
     private void Awake()
     {
-       _carouselController = GetComponent<ButtonCarouselController>();
+        _carouselController = GetComponent<ButtonCarouselController>();
     }
 
     private void Start()
@@ -27,7 +27,7 @@ public class ButtonSoundHandler : MonoBehaviour
         }
     }
 
-    public void PlayButtonSound(AudioClip audioClip) 
+    public void PlayButtonSound(AudioClip audioClip)
     {
         _menuSoundManager.PlayButtonClick(audioClip);
     }

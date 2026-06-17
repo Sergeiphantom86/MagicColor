@@ -2,10 +2,6 @@ using UnityEngine;
 
 public class CarouselData
 {
-    public RectTransform[] Buttons { get; }
-    public CanvasGroup[] CanvasGroups { get; }
-    public Vector2[] OriginalPositions { get; }
-
     public CarouselData(ButtonKeeper keeper)
     {
         int count = keeper.Buttons.Length;
@@ -21,4 +17,10 @@ public class CarouselData
             OriginalPositions[i] = Buttons[i].anchoredPosition;
         }
     }
+
+    public RectTransform[] Buttons { get; }
+
+    public CanvasGroup[] CanvasGroups { get; }
+
+    public Vector2[] OriginalPositions { get; }
 }

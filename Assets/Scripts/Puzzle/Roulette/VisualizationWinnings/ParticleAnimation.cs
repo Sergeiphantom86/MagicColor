@@ -1,5 +1,5 @@
-using DG.Tweening;
 using System;
+using DG.Tweening;
 using UnityEngine;
 
 public class ParticleAnimation : MonoBehaviour
@@ -11,26 +11,6 @@ public class ParticleAnimation : MonoBehaviour
     private Sequence _secondSequence;
 
     private event Action OnCompleteCallback;
-
-    public readonly struct Settings
-    {
-        public readonly float MinScale;
-        public readonly float MaxScale;
-        public readonly float ScaleUpDuration;
-        public readonly float MoveToRandomDuration;
-        public readonly float MoveToTargetDuration;
-        public readonly float FirstPhaseRatio;
-
-        public Settings(float minScale, float maxScale, float scaleUpDuration, float moveToRandomDuration, float moveToTargetDuration, float firstPhaseRatio)
-        {
-            MinScale = minScale;
-            MaxScale = maxScale;
-            ScaleUpDuration = scaleUpDuration;
-            MoveToRandomDuration = moveToRandomDuration;
-            MoveToTargetDuration = moveToTargetDuration;
-            FirstPhaseRatio = firstPhaseRatio;
-        }
-    }
 
     private void OnDestroy()
     {
@@ -87,5 +67,25 @@ public class ParticleAnimation : MonoBehaviour
     private float GetDuration()
     {
         return _settings.MoveToTargetDuration * _settings.FirstPhaseRatio;
+    }
+
+    public readonly struct Settings
+    {
+        public readonly float MinScale;
+        public readonly float MaxScale;
+        public readonly float ScaleUpDuration;
+        public readonly float MoveToRandomDuration;
+        public readonly float MoveToTargetDuration;
+        public readonly float FirstPhaseRatio;
+
+        public Settings(float minScale, float maxScale, float scaleUpDuration, float moveToRandomDuration, float moveToTargetDuration, float firstPhaseRatio)
+        {
+            MinScale = minScale;
+            MaxScale = maxScale;
+            ScaleUpDuration = scaleUpDuration;
+            MoveToRandomDuration = moveToRandomDuration;
+            MoveToTargetDuration = moveToTargetDuration;
+            FirstPhaseRatio = firstPhaseRatio;
+        }
     }
 }

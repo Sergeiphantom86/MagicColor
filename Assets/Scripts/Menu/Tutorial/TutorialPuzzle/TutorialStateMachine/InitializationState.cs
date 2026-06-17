@@ -1,11 +1,11 @@
-
 public class InitializationState : TutorialStater
 {
     private readonly IProgressSaver _progressSaver;
     private readonly TutorialStateMachine _stateMachine;
     private readonly TutorialContext _context;
 
-    public InitializationState(TutorialStateMachine stateMachine, TutorialContext context) : base(stateMachine, context)
+    public InitializationState(TutorialStateMachine stateMachine, TutorialContext context)
+        : base(stateMachine, context)
     {
         _progressSaver = new ProgressSaver();
 
@@ -32,7 +32,7 @@ public class InitializationState : TutorialStater
         {
             _stateMachine.ChangeState(new UITutorialState(_stateMachine, _context));
         }
-        else if(_progressSaver.Saves.IsUnblockingTutorial == false)
+        else if (_progressSaver.Saves.IsUnblockingTutorial == false)
         {
             _stateMachine.ChangeState(new KeyTutorialState(_stateMachine, _context));
         }

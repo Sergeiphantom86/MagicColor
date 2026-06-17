@@ -6,9 +6,13 @@ public class Wall : ColorableObject, IUnblocker, IPointer
     private float _height;
 
     public Vector3 EndPoint { get; private set; }
+
     public Vector3 MiddlePoint { get; private set; }
+
     public Transform CenterFence => transform;
+
     public bool IsBlocked => _isBlocked;
+
     public float Height => _height;
 
     private void Awake()

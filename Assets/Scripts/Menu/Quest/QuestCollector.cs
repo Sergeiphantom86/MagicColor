@@ -84,5 +84,4 @@ public class QuestCollector : MonoBehaviour
         if (_contender == null)
             Debug.LogError("Contender is not assigned!");
     }
-
 }

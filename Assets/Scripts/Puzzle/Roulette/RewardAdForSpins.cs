@@ -7,10 +7,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class RewardAdForSpins : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private TextMeshProUGUI _textMeshPro;
-
     private readonly string _rewardID = "add_spins";
+
+    [SerializeField] private TextMeshProUGUI _textMeshPro;
 
     private Button _button;
     private IProgressSaver _progressSaver;
@@ -90,7 +89,6 @@ public class RewardAdForSpins : MonoBehaviour
     private void OnDestroy()
     {
         _progressSaver.UnsubscribeADSReward(OnRewardReceived, OnAdOpened, OnAdClosed, OnAdError);
-
 
         if (_button != null)
             _button.onClick.RemoveListener(ShowRewardedAd);

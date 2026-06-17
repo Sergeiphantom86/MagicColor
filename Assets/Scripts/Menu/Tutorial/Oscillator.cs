@@ -4,7 +4,7 @@ using UnityEngine;
 public class Oscillator : MonoBehaviour
 {
     [SerializeField] private Rotator _rotation;
-    
+
     private float _duration;
     private float _amplitude;
     private int _quantityCycles;

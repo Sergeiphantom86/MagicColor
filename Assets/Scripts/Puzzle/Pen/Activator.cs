@@ -28,7 +28,9 @@ public class Activator : MonoBehaviour, IActivatable
     private FillSpeedController _speedController;
 
     public event Action PuzzleCompleted;
+
     public event Action<float> Approached;
+
     public event Action<Color> ColorHasChanged;
 
     private void Awake()
@@ -115,9 +117,8 @@ public class Activator : MonoBehaviour, IActivatable
         yield return new WaitForSeconds(_duration * 4);
         yield return _queueProcessor.ProcessQueueRoutine(
             _duration,
-            _transitionReducing
-        );
-        
+            _transitionReducing);
+
         _isProcessing = false;
     }
 
@@ -129,12 +130,11 @@ public class Activator : MonoBehaviour, IActivatable
     private IEnumerator SpeedRoutine(float remainingTime)
     {
         yield return _delayWait;
-       
+
         _speedController.TryAccelerate(
             remainingTime,
             Approached,
-            _queueProcessor.SpeedUpMovement
-        );
+            _queueProcessor.SpeedUpMovement);
     }
 
     private void OnPuzzleFinished()

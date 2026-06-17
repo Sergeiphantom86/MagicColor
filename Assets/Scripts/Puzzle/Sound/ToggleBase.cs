@@ -22,14 +22,16 @@ public class ToggleBase : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_toggle == null) return;
+        if (_toggle == null) 
+            return;
 
         _toggle.onValueChanged.AddListener(TurnOff);
     }
 
     private void OnDisable()
     {
-        if (_toggle == null) return;
+        if (_toggle == null) 
+            return;
 
         _toggle.onValueChanged.RemoveListener(TurnOff);
     }

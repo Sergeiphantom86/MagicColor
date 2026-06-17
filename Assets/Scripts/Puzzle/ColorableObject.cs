@@ -1,6 +1,6 @@
-using DG.Tweening;
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(Renderer))]
 public class ColorableObject : MonoBehaviour, IColorable
@@ -74,12 +74,13 @@ public class ColorableObject : MonoBehaviour, IColorable
 
     public void SetStartRenderQueueSelectedItem()
     {
-         _material.renderQueue = _startRenderQueue;
+        _material.renderQueue = _startRenderQueue;
     }
 
     public void SetColor(Color color)
     {
-        if (_renderer.material == null) return;
+        if (_renderer.material == null)
+            return;
 
         SetOriginalColor(color);
 
@@ -88,7 +89,8 @@ public class ColorableObject : MonoBehaviour, IColorable
             _indicator.TurnOnSpriteRenderer();
         }
 
-        if (this is not Drop) return;
+        if (this is not Drop)
+            return;
 
         if (_material == null)
         {
@@ -102,7 +104,8 @@ public class ColorableObject : MonoBehaviour, IColorable
 
     private void InitializeRenderer()
     {
-        if (_renderer != null) return;
+        if (_renderer != null)
+            return;
 
         _renderer = GetComponent<Renderer>();
     }
@@ -132,10 +135,8 @@ public class ColorableObject : MonoBehaviour, IColorable
 
     public void SetAlpha(float alpha)
     {
-        _ = new Color();
         Color color = Color.white;
         color.a = alpha;
-
         _material.color = color;
     }
 
@@ -157,7 +158,8 @@ public class ColorableObject : MonoBehaviour, IColorable
 
     public void EnableEmission(Color emissionColor, float intensity = 0.01f, float brightness = 0.5f)
     {
-        if (_material == null && _material == null) return;
+        if (_material == null && _material == null)
+            return;
 
         _material.EnableKeyword(Emission);
 
@@ -191,8 +193,7 @@ public class ColorableObject : MonoBehaviour, IColorable
                 () => _material.color,
                 color => _material.color = color,
                 new Color(_originalColor.r, _originalColor.g, _originalColor.b, _valueTransparency),
-                _fadeDuration
-            )
+                _fadeDuration)
             .SetEase(Ease.Linear);
     }
 

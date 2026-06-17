@@ -1,6 +1,6 @@
 using System;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(Unblocker), typeof(Oscillator), typeof(Voiceover))]
 public class Lock : MonoBehaviour
@@ -16,9 +16,9 @@ public class Lock : MonoBehaviour
     private Collider _collider;
     private bool _isUsed;
 
-    public bool IsUsed => _isUsed;
-
     public event Action OnUnblocking;
+
+    public bool IsUsed => _isUsed;
 
     private void Awake()
     {

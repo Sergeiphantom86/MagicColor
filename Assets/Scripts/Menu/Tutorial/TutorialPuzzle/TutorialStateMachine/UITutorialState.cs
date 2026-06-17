@@ -1,6 +1,6 @@
-using DG.Tweening;
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public class UITutorialState : TutorialStater
 {
@@ -16,7 +16,8 @@ public class UITutorialState : TutorialStater
     private Timer _timer;
     private Coroutine _coroutine;
 
-    public UITutorialState(TutorialStateMachine stateMachine, TutorialContext context) : base(stateMachine, context)
+    public UITutorialState(TutorialStateMachine stateMachine, TutorialContext context)
+        : base(stateMachine, context)
     {
         _scaleMultiplier = 1.2f;
         _duration = 0.3f;
@@ -27,14 +28,15 @@ public class UITutorialState : TutorialStater
 
     public override void Enter()
     {
-        if (TryInitializeComponents() == false) return;
+        if (TryInitializeComponents() == false)
+            return;
 
         _currentCountStars = _starsCounter.MaxStars;
 
         _timerFringe.SetActive(true);
 
         _startScale = _timer.transform.localScale;
-     
+
         _coroutine = _tutorialStateMachine.StartCoroutine(WaitForOneStarLost());
         _tutorialStateMachine.StartCoroutine(TutorialFlow());
     }
@@ -107,7 +109,7 @@ public class UITutorialState : TutorialStater
         {
             _tutorialStateMachine.StopCoroutine(_coroutine);
         }
-        
+
         _timer.transform.DOScale(_startScale, _duration);
         _tutorialStateMachine.ChangeState(new BlockTutorialState(_tutorialStateMachine, _context, _starsCounter));
     }

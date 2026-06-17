@@ -49,7 +49,9 @@ public class MenuSoundManager : MonoBehaviour
 
     public void PlayButtonClickSound(AudioClip audioClip)
     {
-        if (audioClip == null) return;
+        if (audioClip == null)
+            return;
+
         _soundSource.PlayOneShot(audioClip);
 
         if (_coroutine != null)
@@ -78,7 +80,6 @@ public class MenuSoundManager : MonoBehaviour
         SetAudioSource(_soundSource, isOnLoop: false, _soundMixerGroup, _currentSounVolume);
 
         SetAudioSource(_musicSource, isOnLoop: true, _musicMixerGroup, _currentMusicVolume);
-
     }
 
     private void SetAudioSource(AudioSource audioSource, bool isOnLoop, AudioMixerGroup audioMixerGroup, float volume)
@@ -100,7 +101,8 @@ public class MenuSoundManager : MonoBehaviour
 
     public void PlayBackgroundMusic()
     {
-        if (_backgroundMusic == null || _musicSource.isPlaying) return;
+        if (_backgroundMusic == null || _musicSource.isPlaying)
+            return;
 
         _musicSource.clip = _backgroundMusic;
         _musicSource.Play();
@@ -109,7 +111,7 @@ public class MenuSoundManager : MonoBehaviour
     private void SetVolume(VolumeChanger volumeChanger, float volume)
     {
         Debug.Log(volume);
-        
+
         UpdateMixerVolume(volumeChanger.name, volume);
         _progressSaver.SetVolume(volumeChanger, volume);
         SaveVolumeSettings();

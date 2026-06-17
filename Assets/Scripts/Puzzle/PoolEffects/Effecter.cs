@@ -1,6 +1,6 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
-using System.Collections;
 
 public class Effecter : MonoBehaviour
 {
@@ -51,8 +51,7 @@ public class Effecter : MonoBehaviour
             actionOnDestroy: OnDestroyPoolObject,
             collectionCheck: _collectionCheck,
             defaultCapacity: _defaultPoolSize,
-            maxSize: _maxPoolSize
-        );
+            maxSize: _maxPoolSize);
     }
 
     private void Return(ParticleSystem particles)

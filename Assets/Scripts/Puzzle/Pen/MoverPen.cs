@@ -1,6 +1,6 @@
-﻿using DG.Tweening;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(PenScaleController))]
 public class MoverPen : MonoBehaviour, IMover
@@ -164,7 +164,6 @@ public class MoverPen : MonoBehaviour, IMover
         return new Vector3(
             center.x + randomPoint.x,
             center.y,
-            center.z + randomPoint.y
-        );
+            center.z + randomPoint.y);
     }
 }

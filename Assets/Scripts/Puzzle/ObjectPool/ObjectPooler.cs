@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class ObjectPooler<T> : MonoBehaviour where T : Component
+public class ObjectPooler<T> : MonoBehaviour 
+    where T : Component
 {
     [SerializeField] private T _prefab;
     [SerializeField] private List<T> _fallbackPrefabs;
@@ -18,8 +19,6 @@ public class ObjectPooler<T> : MonoBehaviour where T : Component
     {
         CreatePool();
     }
-
-    public T Get(int prefabIndex = 0) => GetFromPrefab(prefabIndex);
 
     public T GetFromPrefab(int prefabIndex)
     {
@@ -56,8 +55,7 @@ public class ObjectPooler<T> : MonoBehaviour where T : Component
             actionOnDestroy: OnDestroyPoolObject,
             collectionCheck: _collectionCheck,
             defaultCapacity: _defaultPoolSize,
-            maxSize: _maxPoolSize
-        );
+            maxSize: _maxPoolSize);
 
         if (_fallbackPrefabs != null && _fallbackPrefabs.Count > 1)
         {
@@ -74,8 +72,7 @@ public class ObjectPooler<T> : MonoBehaviour where T : Component
                     actionOnDestroy: OnDestroyPoolObject,
                     collectionCheck: _collectionCheck,
                     defaultCapacity: _defaultPoolSize,
-                    maxSize: _maxPoolSize
-                );
+                    maxSize: _maxPoolSize);
                 _prefabPools[i] = pool;
             }
         }
@@ -131,7 +128,8 @@ public class ObjectPooler<T> : MonoBehaviour where T : Component
 
     private void OnDestroyPoolObject(T item)
     {
-        if (item == null) return;
+        if (item == null) 
+            return;
 
         _objectToPrefabIndex?.Remove(item);
 

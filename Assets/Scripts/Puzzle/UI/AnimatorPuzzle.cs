@@ -13,7 +13,8 @@ public class AnimatorPuzzle : MonoBehaviour
 
     private void Awake()
     {
-        if (_activator == null) Debug.LogError("Activator component not found on Pen object!", this);
+        if (_activator == null) 
+            Debug.LogError("Activator component not found on Pen object!", this);
     }
 
     private void OnEnable()

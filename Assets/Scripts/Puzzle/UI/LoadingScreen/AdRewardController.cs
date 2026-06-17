@@ -25,9 +25,9 @@ public class AdRewardController : MonoBehaviour
         }
 
         _progressSaver.SubscribeADSReward(
-            onRewardReceived: null, 
-            onAdOpened: null, 
-            onAdClosed: Complete, 
+            onRewardReceived: null,
+            onAdOpened: null,
+            onAdClosed: Complete,
             onAdError: Complete);
     }
 
@@ -50,7 +50,8 @@ public class AdRewardController : MonoBehaviour
     {
         OnComplete = onComplete;
 
-        if (_offerPanel == null) return;
+        if (_offerPanel == null)
+            return;
 
         _offerPanel.TurnOn();
     }

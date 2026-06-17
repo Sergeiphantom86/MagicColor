@@ -1,7 +1,7 @@
-using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(IInputHandler), typeof(ICollisionHandler), typeof(Voiceover))]
 public class Key : Currency, IActivatable
@@ -24,6 +24,7 @@ public class Key : Currency, IActivatable
     private SpriteRenderer _spriteRenderer;
 
     public event Action OnShift;
+
     public event Action OnSelected;
 
     private void Awake()
@@ -93,7 +94,8 @@ public class Key : Currency, IActivatable
 
     private void Play(Vector2 vector)
     {
-        if (_isDragging) return;
+        if (_isDragging) 
+            return;
 
         _isDragging = true;
 
@@ -102,19 +104,21 @@ public class Key : Currency, IActivatable
         StartCoroutine(WaitAudioPlayback(_flight));
 
         OnSelected?.Invoke();
-
     }
 
     private IEnumerator WaitAudioPlayback(AudioClip clip)
     {
         _voiceover.PlayOneShot(clip);
+
         yield return new WaitForSeconds(clip.length);
+
         _voiceover.PlayOneShot(clip);
     }
 
     private void Hide(Collider collider)
     {
-        if (collider.TryGetComponent(out Block _) == false) return;
+        if (collider.TryGetComponent(out Block _) == false) 
+            return;
 
         TurnOffDisplay();
         _voiceover.PlayOneShot(_hiding);
@@ -132,7 +136,8 @@ public class Key : Currency, IActivatable
 
     private void Show(Collider collider)
     {
-        if (collider.TryGetComponent(out Block block) == false) return;
+        if (collider.TryGetComponent(out Block block) == false) 
+            return;
 
         if (block.TryGetComponent(out Outline outline))
         {
@@ -159,14 +164,12 @@ public class Key : Currency, IActivatable
                 _startPoint.transform.position,
                 _movementDuration,
                 transform.localScale.x * _zoomIn,
-                Ease.OutBounce
-            ))
+                Ease.OutBounce))
             .Append(BuildMove(
                 _endPoint.transform.position,
                 _movementDuration * 4,
                 transform.localScale.x * _zoomOut,
-                Ease.InOutBack
-            ));
+                Ease.InOutBack));
 
         _movementSequence.Pause();
     }

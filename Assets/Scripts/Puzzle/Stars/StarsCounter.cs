@@ -8,7 +8,9 @@ public class StarsCounter : MonoBehaviour
     private int _maxTimeSeconds;
 
     public int MinStars => _minStars;
+
     public int MaxStars => _currentMaxStars;
+
     public int MaxTimeSeconds => _maxTimeSeconds;
 
     private void Awake()
@@ -41,15 +43,13 @@ public class StarsCounter : MonoBehaviour
         return Mathf.Clamp(
             GetStars(timeInSeconds, _maxTimeSeconds),
             _minStars,
-            _currentMaxStars
-        );
+            _currentMaxStars);
     }
 
     private int GetStars(int timeInSeconds, int maxTimeSeconds)
     {
         return Mathf.RoundToInt(
-            _minStars + GetProgress(timeInSeconds, maxTimeSeconds) * (_currentMaxStars - _minStars)
-        );
+            _minStars + GetProgress(timeInSeconds, maxTimeSeconds) * (_currentMaxStars - _minStars));
     }
 
     private float GetProgress(int timeInSeconds, int maxTimeSeconds)

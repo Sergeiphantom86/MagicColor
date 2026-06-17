@@ -19,6 +19,7 @@ public class OfferPanel : MonoBehaviour
     private Voiceover _voiceover;
 
     public event Action OnConsent;
+
     public event Action OnCancelled;
 
     private void Awake()

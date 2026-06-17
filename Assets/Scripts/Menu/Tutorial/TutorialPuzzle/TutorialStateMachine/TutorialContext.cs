@@ -6,6 +6,22 @@ public class TutorialContext
     private readonly float _starShutdownDelay = 4;
     private readonly float _delayDisablingUI = 7;
 
+    public TutorialContext()
+    {
+        WaitForSeconds = new WaitForSeconds(_delay);
+        WaitFirstStop = new WaitForSeconds(_delay / _delay * 2);
+        WaitStarTurnOff = new WaitForSeconds(_starShutdownDelay);
+        WaitUIDisabled = new WaitForSeconds(_delayDisablingUI);
+    }
+
+    public WaitForSeconds WaitFirstStop { get; }
+
+    public WaitForSeconds WaitForSeconds { get; }
+
+    public WaitForSeconds WaitUIDisabled { get; }
+
+    public WaitForSeconds WaitStarTurnOff { get; }
+
     public Key Key { get; private set; }
 
     public Lock Lock { get; private set; }
@@ -15,14 +31,6 @@ public class TutorialContext
     public Timer Timer { get; private set; }
 
     public Rotator Rotator { get; private set; }
-
-    public WaitForSeconds WaitFirstStop { get; }
-
-    public WaitForSeconds WaitForSeconds { get; }
-
-    public WaitForSeconds WaitUIDisabled { get; }
-
-    public WaitForSeconds WaitStarTurnOff { get; }
 
     public HandMover HandMover { get; private set; }
 
@@ -34,21 +42,13 @@ public class TutorialContext
 
     public TutorialAbilities TutorialAbilities { get; private set; }
 
-    public TutorialContext()
-    {
-        WaitForSeconds = new WaitForSeconds(_delay);
-        WaitFirstStop = new WaitForSeconds(_delay / _delay * 2);
-        WaitStarTurnOff = new WaitForSeconds(_starShutdownDelay);
-        WaitUIDisabled = new WaitForSeconds(_delayDisablingUI);
-    }
-
     public void InitBase(HandMover handMover, TouchVisualizer visualizer)
     {
         HandMover = handMover;
         Visualizer = visualizer;
     }
 
-    public void InitScene(Key key, Lock @lock, Hints hints, Timer timer, Rotator rotator, BlockSpawner container, StateTutorial stateTutorial , TutorialAbilities tutorialAbilities)
+    public void InitScene(Key key, Lock @lock, Hints hints, Timer timer, Rotator rotator, BlockSpawner container, StateTutorial stateTutorial, TutorialAbilities tutorialAbilities)
     {
         Key = key;
         Lock = @lock;
@@ -60,7 +60,7 @@ public class TutorialContext
         TutorialAbilities = tutorialAbilities;
     }
 
-    public void AdjustPositions(Vector3? handPosition = null, Vector3? visualizerPosition = null, Vector3? miragePosition = null, float yOffset = 0f)
+    public void AdjustPositions(Vector3? handPosition = null, Vector3? visualizerPosition = null, float yOffset = 0f)
     {
         SetObjectPosition(GetTransform(HandMover), handPosition, 0, yOffset, 0);
         SetObjectPosition(GetTransform(Visualizer), visualizerPosition, 0, yOffset, 0);
@@ -85,10 +85,5 @@ public class TutorialContext
         position.y += yOffset;
         position.z += zOffset;
         return position;
-    }
-
-    public void DebugS(string name)
-    {
-        Debug.Log(name);
     }
 }

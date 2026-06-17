@@ -75,15 +75,13 @@ public class ButtonViewer : MonoBehaviour
     {
         _sequence.Join(
            _transform.DOMove(_targetPosition, _duration)
-               .SetEase(Ease.Linear)
-       );
+               .SetEase(Ease.Linear));
     }
 
     private void Scale()
     {
         _sequence.Join(
            _transform.DOScale(_endScale, _duration)
-               .SetEase(Ease.OutBack)
-       );
+               .SetEase(Ease.OutBack));
     }
 }

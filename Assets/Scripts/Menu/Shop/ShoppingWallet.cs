@@ -22,7 +22,8 @@ public class ShoppingWallet : MonoBehaviour
 
     private void SpendFunds(long pay)
     {
-        if (_wallet.SpendFunds(pay) == false) return;
+        if (_wallet.SpendFunds(pay) == false) 
+            return;
         
         _purchaseButton.Click();
     }

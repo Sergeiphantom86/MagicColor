@@ -8,16 +8,18 @@ public class GridSystem : MonoBehaviour
 
     private int _gridSizeX;
     private int _gridSizeY;
-
     private Grid _unityGrid;
     private GameObject[,] _grid;
 
-    public float CellSize => _unityGrid.cellSize.x;
-    public int GridSizeX => _gridSizeX;
-    public int GridSizeY => _gridSizeY;
-    public bool IsInitialized { get; private set; }
-
     public event Action OnInitialized;
+
+    public float CellSize => _unityGrid.cellSize.x;
+
+    public int GridSizeX => _gridSizeX;
+
+    public int GridSizeY => _gridSizeY;
+
+    public bool IsInitialized { get; private set; }
 
     private void Awake()
     {
@@ -53,8 +55,7 @@ public class GridSystem : MonoBehaviour
     public Vector3 GridToWorldPosition(Vector2Int gridPosition)
     {
         return _unityGrid.GetCellCenterWorld(
-            new Vector3Int(gridPosition.x, gridPosition.y, 0)
-        );
+            new Vector3Int(gridPosition.x, gridPosition.y, 0));
     }
 
     public bool IsValidGridPosition(Vector2Int pos)
@@ -72,18 +73,12 @@ public class GridSystem : MonoBehaviour
 
     private Vector2Int GetCenterToOriginOffset(Vector2Int size)
     {
-        return new Vector2Int(
-            GetHalfSize(size.x),
-            GetHalfSize(size.y)
-        );
+        return new Vector2Int(GetHalfSize(size.x), GetHalfSize(size.y));
     }
 
     public Vector3 GetWorldPosition(Vector2Int origin, Vector2Int size)
     {
-        Vector2Int centerCell = new(
-            origin.x + (size.x - 1) / 2,
-            origin.y + (size.y - 1) / 2
-        );
+        Vector2Int centerCell = new(origin.x + (size.x - 1) / 2, origin.y + (size.y - 1) / 2);
 
         return GridToWorldPosition(centerCell);
     }
@@ -92,7 +87,6 @@ public class GridSystem : MonoBehaviour
     {
         return Mathf.FloorToInt((size - 1) / 2f);
     }
-
 
     public bool CanPlaceBlock(Vector2Int origin, Vector2Int size)
     {
@@ -103,8 +97,7 @@ public class GridSystem : MonoBehaviour
         }
 
         return ForEachCell(origin, size, pos =>
-            IsValidGridPosition(pos) && _grid[pos.x, pos.y] == null
-        );
+            IsValidGridPosition(pos) && _grid[pos.x, pos.y] == null);
     }
 
     public void PlaceObject(Vector2Int origin, IGridOccupant occupant)
@@ -128,7 +121,7 @@ public class GridSystem : MonoBehaviour
     {
         Vector2Int origin = occupant.GridPosition;
 
-        ForEachCell(origin, occupant.SizeInCells, pos => 
+        ForEachCell(origin, occupant.SizeInCells, pos =>
         {
             if (IsValidGridPosition(pos))
                 _grid[pos.x, pos.y] = null;
@@ -138,7 +131,6 @@ public class GridSystem : MonoBehaviour
 
     private bool ForEachCell(Vector2Int origin, Vector2Int size, Func<Vector2Int, bool> check)
     {
-
         for (int i = 0; i < GetTotalCells(size); i++)
         {
             if (check(GetPosition(origin, size, i)) == false)
@@ -155,12 +147,10 @@ public class GridSystem : MonoBehaviour
 
     private Vector2Int GetPosition(Vector2Int origin, Vector2Int size, int index)
     {
-        return origin + new Vector2Int(
-            GetCellX(index, size.x),
-            GetCellY(index, size.x)
-        );
+        return origin + new Vector2Int(GetCellX(index, size.x), GetCellY(index, size.x));
     }
 
     private int GetCellX(int index, int width) => index % width;
+
     private int GetCellY(int index, int width) => index / width;
 }

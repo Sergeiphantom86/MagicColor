@@ -6,7 +6,7 @@ public class StarsDeactivator : MonoBehaviour
 {
     [SerializeField] private AudioClip _audioClip;
     [SerializeField] private Timer _timer;
-    
+
     private StarIndicator[] _stars;
     private StarsCounter _starsCounter;
     private Voiceover _voiceover;
@@ -32,8 +32,8 @@ public class StarsDeactivator : MonoBehaviour
     private IEnumerator Start()
     {
         yield return null;
-        
-        StartCoroutine( StartCountdown());
+
+        StartCoroutine(StartCountdown());
     }
 
     private void OnEnable()
@@ -51,7 +51,7 @@ public class StarsDeactivator : MonoBehaviour
         foreach (var star in _stars)
         {
             yield return _waitForSeconds;
-         
+
             star.TurnOn();
         }
     }

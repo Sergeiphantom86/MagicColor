@@ -24,10 +24,10 @@ public class CollisionProcessor : ICollisionProcessor
         if (block.TryGetComponent(out IColorable colorable) == false)
             return;
 
-        if (touchDragInput.IsSelected == false) 
+        if (touchDragInput.IsSelected == false)
             return;
 
-        if (_colorMatch.Match(colorable, out Color color) == false) 
+        if (_colorMatch.Match(colorable, out Color color) == false)
             return;
 
         _blockInteraction.TryHandle(colorable, color, _unlockPolicy);

@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class FireworksController : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class FireworksController : MonoBehaviour
 
     public void Play()
     {
-        foreach(var fireworks in _allFireworksAudio)
+        foreach (var fireworks in _allFireworksAudio)
         {
             fireworks.StartFireworks();
         }

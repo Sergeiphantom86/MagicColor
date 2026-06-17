@@ -1,8 +1,8 @@
-using DG.Tweening;
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
-using System;
+using DG.Tweening;
 
 [RequireComponent(typeof(AppearanceAnimator))]
 public class PixelShine : MonoBehaviour, IAnimatable
@@ -48,13 +48,15 @@ public class PixelShine : MonoBehaviour, IAnimatable
 
     private void StartShineAnimation()
     {
-        if (_appearanceAnimator.Fragments.Count == 0) return;
+        if (_appearanceAnimator.Fragments.Count == 0) 
+            return;
 
         _validFragments = _appearanceAnimator.Fragments
             .Where(f => f != null && f.Renderer != null)
             .ToList();
 
-        if (_validFragments.Count == 0) return;
+        if (_validFragments.Count == 0) 
+            return;
 
         CreateShineSequence();
         StoreOriginalColors();
@@ -76,8 +78,7 @@ public class PixelShine : MonoBehaviour, IAnimatable
 
         _originalColors = _validFragments.ToDictionary(
             fragment => fragment,
-            fragment => fragment.Renderer.color
-        );
+            fragment => fragment.Renderer.color);
     }
 
     private void RestoreOriginalColors()

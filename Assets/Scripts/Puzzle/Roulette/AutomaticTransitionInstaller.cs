@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class AutomaticTransitionInstaller : MonoBehaviour
 {
-    [SerializeField] protected ButtonHome _buttonHome;
+    [SerializeField] protected ButtonHome ButtonHome;
 
     private Sprite _newSprite;
     private Button _nextPuzzle;
@@ -71,7 +71,7 @@ public class AutomaticTransitionInstaller : MonoBehaviour
     private void SetValue()
     {
         _spriteTransmitter.SetAutomaticTransition(true);
-        _buttonHome.GoMenu();
+        ButtonHome.GoMenu();
     }
 
     private void Show()
@@ -80,7 +80,7 @@ public class AutomaticTransitionInstaller : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-        
+
         _selector.SetSprite(_newSprite);
 
         _progressSaver.SetMaxReachedQuestIndex();

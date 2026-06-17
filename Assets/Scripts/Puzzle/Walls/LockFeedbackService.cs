@@ -31,7 +31,7 @@ public class LockFeedbackService : MonoBehaviour, ILockFeedbackService
             Debug.LogError("Lock == null");
             return;
         }
-        
+
         _lock = @lock;
     }
 

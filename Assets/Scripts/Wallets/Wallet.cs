@@ -1,6 +1,6 @@
 using System;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 public class Wallet : MonoBehaviour
 {
@@ -15,12 +15,11 @@ public class Wallet : MonoBehaviour
     private IProgressSaver _progressSaver;
     private IProcessTransacter _transacter;
 
+    public event Action<long, string> OnBalanceChanged;
+
     public long Balance => _balance;
-    public float Duration => _duration;
 
     public string Name => GetType().Name;
-
-    public event Action<long, string> OnBalanceChanged;
 
     private void Awake()
     {
@@ -56,20 +55,10 @@ public class Wallet : MonoBehaviour
         }
     }
 
-    public void AddFunds(long amount)
-    {
-        if (amount <= 0) return;
-
-        if (_transacter.ProcessTransaction(amount, _balance) == false) return;
-
-        _balance += amount;
-
-        OnBalanceChanged?.Invoke(_balance, Name);
-    }
-
     public bool SpendFunds(long amount)
     {
-        if (CanSpend(amount) == false) return false;
+        if (CanSpend(amount) == false) 
+            return false;
 
         bool success = _transacter.ProcessTransaction(amount, _balance);
 
@@ -98,7 +87,8 @@ public class Wallet : MonoBehaviour
 
     private void LoadFromSave()
     {
-        if (_progressSaver.Saves == null) return;
+        if (_progressSaver.Saves == null) 
+            return;
 
         if (this is CoinWallet)
         {

@@ -7,8 +7,8 @@ public class ColorChanger : MonoBehaviour
     private const float FullyOpaque = 1f;
     private const float FullyTransparent = 0f;
 
-    [SerializeField] ParticleSystem[] _monochrome;
-    [SerializeField] TrailRenderer _gradient;
+    [SerializeField] private ParticleSystem[] _monochrome;
+    [SerializeField] private TrailRenderer _gradient;
 
     private void Start()
     {
@@ -29,7 +29,8 @@ public class ColorChanger : MonoBehaviour
 
     private void ChangeParticleColor(Color newColor)
     {
-        if (_monochrome == null) return;
+        if (_monochrome == null)
+            return;
 
         Gradient gradient = CreateColorToWhiteGradient(newColor);
 
@@ -58,16 +59,15 @@ public class ColorChanger : MonoBehaviour
             CreateColorKey(color, GradientStart),
             CreateColorKey(Color.white, GradientEnd),
             CreateAlphaKey(color.a, GradientStart),
-            CreateAlphaKey(FullyTransparent, FullyOpaque)
-        );
+            CreateAlphaKey(FullyTransparent, FullyOpaque));
     }
 
-    private Gradient CreateGradient(GradientColorKey startColorKey, GradientColorKey endColorKey,GradientAlphaKey startAlphaKey, GradientAlphaKey endAlphaKey)
+    private Gradient CreateGradient(GradientColorKey startColorKey, GradientColorKey endColorKey, GradientAlphaKey startAlphaKey, GradientAlphaKey endAlphaKey)
     {
         Gradient gradient = new()
         {
             colorKeys = new GradientColorKey[] { startColorKey, endColorKey },
-            alphaKeys = new GradientAlphaKey[] { startAlphaKey, endAlphaKey }
+            alphaKeys = new GradientAlphaKey[] { startAlphaKey, endAlphaKey },
         };
 
         return gradient;

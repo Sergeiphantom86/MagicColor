@@ -49,7 +49,7 @@ public class Rewards : MonoBehaviour
 
     private List<Reward> GetSortedList(Currency currency)
     {
-        return  _rewards
+        return _rewards
             .Where(reward => reward.Currency != null &&
                    reward.Currency.GetType() == currency.GetType())
             .ToList();

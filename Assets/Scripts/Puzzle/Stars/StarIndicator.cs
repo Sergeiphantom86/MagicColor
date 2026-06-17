@@ -1,6 +1,6 @@
 using UnityEngine;
-using DG.Tweening;
 using UnityEngine.UI;
+using DG.Tweening;
 
 [RequireComponent(typeof(Image))]
 public class StarIndicator : MonoBehaviour
@@ -14,7 +14,7 @@ public class StarIndicator : MonoBehaviour
 
     private Tweener _currentTween;
 
-    public bool IsActive {  get; private set; }
+    public bool IsActive { get; private set; }
 
     private void Awake()
     {
@@ -52,7 +52,7 @@ public class StarIndicator : MonoBehaviour
 
         _currentTween?.Kill();
 
-        _star.SetActive (true);
+        _star.SetActive(true);
 
         _star.transform.localScale = Vector3.one * _minScale;
 
@@ -65,9 +65,11 @@ public class StarIndicator : MonoBehaviour
     {
         _currentTween?.Kill();
 
-        if(_inactivePart == null) return;
+        if (_inactivePart == null)
+            return;
 
         IsActive = false;
+
         if (_star != null)
         {
             _currentTween?.Kill();

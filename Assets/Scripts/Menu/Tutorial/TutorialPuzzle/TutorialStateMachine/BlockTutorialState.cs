@@ -3,19 +3,21 @@ using UnityEngine;
 
 public class BlockTutorialState : TutorialStater
 {
+    private const int BlockIndex = 4;
+
     private readonly TutorialStateMachine _stateMachine;
     private readonly StarsCounter _starsCounter;
     private readonly TutorialContext _context;
     private readonly float _yOffset;
 
-    private const int BLOCK_INDEX = 4;
     private Block _block;
     private ITouchDragInput _input;
     private GridDragMovement _movement;
     private bool _isAnimationChange;
     private IProgressSaver _progressSaver;
 
-    public BlockTutorialState(TutorialStateMachine stateMachine, TutorialContext context, StarsCounter starsCounter) : base(stateMachine, context)
+    public BlockTutorialState(TutorialStateMachine stateMachine, TutorialContext context, StarsCounter starsCounter)
+        : base(stateMachine, context)
     {
         _stateMachine = stateMachine;
         _context = context;
@@ -99,14 +101,14 @@ public class BlockTutorialState : TutorialStater
         if (_isAnimationChange == false)
         {
             _isAnimationChange = true;
-            
+
             _stateMachine.ChangeState(new MovementState(_stateMachine, _context, _block, _movement, _input));
         }
     }
 
     private void ShowHintsAndContinue()
     {
-        SetBlock(BLOCK_INDEX);
+        SetBlock(BlockIndex);
 
         _context.Visualizer.gameObject.SetActive(true);
 

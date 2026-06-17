@@ -16,7 +16,9 @@ public class TouchDragInput : MonoBehaviour, ITouchDragInput
     public bool IsSelected => _isSelected;
 
     public event Action<Vector2> OnTouchClick;
+
     public event Action<Vector2> OnTouchDrag;
+
     public event Action OnDropped;
 
     private void Awake()
@@ -71,7 +73,6 @@ public class TouchDragInput : MonoBehaviour, ITouchDragInput
         _selectable.Select();
         _colorable.AssignOriginal();
         OnTouchClick?.Invoke(position);
-
     }
 
     private void Move(Vector2 position)

@@ -28,7 +28,8 @@ public class Voiceover : MonoBehaviour
 
     public void PlayOneShot(AudioClip clip)
     {
-        if (clip == false || _sfxSource == false || _sfxSource.enabled == false || gameObject.activeInHierarchy == false) return;
+        if (clip == false || _sfxSource == false || _sfxSource.enabled == false || gameObject.activeInHierarchy == false) 
+            return;
 
         _sfxSource.PlayOneShot(clip);
     }

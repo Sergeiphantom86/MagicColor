@@ -26,7 +26,7 @@ public class FloorSpawner : BaseSpawner<FloorBlock>
             {
                 Vector2Int origin = new(x, y);
 
-                if (!grid.CanPlaceBlock(origin, _floorSize))
+                if (grid.CanPlaceBlock(origin, _floorSize) == false)
                     continue;
 
                 Vector2Int center = origin + _floorSize / 2;

@@ -1,7 +1,7 @@
-using DG.Tweening;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Blinker : MonoBehaviour, IActivatable
 {

@@ -8,6 +8,7 @@ public class Placeholder : ColorableObject
     private int _size;
 
     public Vector3 PositionEndPoint => _endPoint.transform.position;
+
     public float Duration => _animatorPenFilling.GetDuration();
 
     private void Awake()
@@ -32,7 +33,7 @@ public class Placeholder : ColorableObject
     public void ReduceSize()
     {
         _size -= 1;
-        
+
         if (_size == 0)
         {
             Destroy(this);

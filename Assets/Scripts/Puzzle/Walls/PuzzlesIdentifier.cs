@@ -60,7 +60,7 @@ public class PuzzlesIdentifier : MonoBehaviour
         {
             _index = 3;
         }
-        
+
         if (_wallPrefabs[_index] == null)
         {
             Debug.LogError($"Wall prefab is NULL at index {_index}", this);

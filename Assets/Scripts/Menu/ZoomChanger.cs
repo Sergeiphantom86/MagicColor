@@ -30,7 +30,7 @@ public class ZoomChanger
         {
             screenSizeMultiplier = _height / _referenceResolution.y * _currentAspect;
         }
-        
+
         return screenSizeMultiplier;
     }
 

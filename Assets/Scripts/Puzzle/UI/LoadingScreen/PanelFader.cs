@@ -1,6 +1,6 @@
-using DG.Tweening;
-using UnityEngine;
 using System;
+using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class PanelFader : MonoBehaviour
@@ -30,7 +30,7 @@ public class PanelFader : MonoBehaviour
     public void FadeOut(Action onComplete = null)
     {
         Fade(0f, false).
-            OnComplete(() => 
+            OnComplete(() =>
             onComplete?.Invoke());
     }
 
@@ -41,16 +41,16 @@ public class PanelFader : MonoBehaviour
         if (_canvasGroup == null)
             _canvasGroup = GetComponent<CanvasGroup>();
 
-          _currentTween = _canvasGroup.DOFade(targetAlpha, _fadeDuration)
-            .SetLink(gameObject)
-            .OnStart(() =>
-            {
-                if (_canvasGroup != null)
-                {
-                    _canvasGroup.interactable = isInteractable;
-                    _canvasGroup.blocksRaycasts = isInteractable;
-                }
-            });
+        _currentTween = _canvasGroup.DOFade(targetAlpha, _fadeDuration)
+          .SetLink(gameObject)
+          .OnStart(() =>
+          {
+              if (_canvasGroup != null)
+              {
+                  _canvasGroup.interactable = isInteractable;
+                  _canvasGroup.blocksRaycasts = isInteractable;
+              }
+          });
         return _currentTween;
     }
 

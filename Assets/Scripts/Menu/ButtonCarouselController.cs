@@ -10,13 +10,6 @@ public class ButtonCarouselController : MonoBehaviour, ICarousel
     [SerializeField] private float _sideAlpha;
     [SerializeField] private float _distanceFromCenter;
 
-    private struct ButtonVisualState
-    {
-        public float PositionX;
-        public float Scale;
-        public float Alpha;
-    }
-
     private int _currentIndex;
     private bool _isInitialized;
     private CarouselData _data;
@@ -34,15 +27,22 @@ public class ButtonCarouselController : MonoBehaviour, ICarousel
 
     public void ShowRelative(int direction)
     {
-        if (_isInitialized == false) return;
+        if (_isInitialized == false)
+            return;
+
         ScrollToButton(_currentIndex + direction);
     }
 
     public void ScrollToButton(int targetIndex)
     {
-        if (_isInitialized == false) return;
-        if (targetIndex < 0 || targetIndex >= _data.Buttons.Length) return;
-        if (targetIndex == _currentIndex) return;
+        if (_isInitialized == false)
+            return;
+
+        if (targetIndex < 0 || targetIndex >= _data.Buttons.Length)
+            return;
+
+        if (targetIndex == _currentIndex)
+            return;
 
         _currentIndex = targetIndex;
         UpdateAllButtons(false);
@@ -80,11 +80,11 @@ public class ButtonCarouselController : MonoBehaviour, ICarousel
     private void UpdateButton(int index, bool instant)
     {
         ButtonVisualState state = CalculateVisualState(index);
+
         ApplyVisualState(index, state, instant);
     }
 
-
-    private void ApplyVisualState(int index,ButtonVisualState state,bool instant)
+    private void ApplyVisualState(int index, ButtonVisualState state, bool instant)
     {
         if (instant)
         {
@@ -93,8 +93,7 @@ public class ButtonCarouselController : MonoBehaviour, ICarousel
                 _data.CanvasGroups[index],
                 state.PositionX,
                 state.Scale,
-                state.Alpha
-            );
+                state.Alpha);
 
             return;
         }
@@ -104,8 +103,7 @@ public class ButtonCarouselController : MonoBehaviour, ICarousel
                  _data.CanvasGroups[index],
                  state.PositionX,
                  state.Scale,
-                 state.Alpha
-             );
+                 state.Alpha);
     }
 
     private ButtonVisualState CalculateVisualState(int index)
@@ -116,7 +114,14 @@ public class ButtonCarouselController : MonoBehaviour, ICarousel
         {
             PositionX = _layout.GetTargetPositionX(index, _currentIndex),
             Scale = isCenter ? _centerScale : _sideScale,
-            Alpha = isCenter ? _centerAlpha : _sideAlpha
+            Alpha = isCenter ? _centerAlpha : _sideAlpha,
         };
+    }
+
+    private struct ButtonVisualState
+    {
+        public float PositionX;
+        public float Scale;
+        public float Alpha;
     }
 }

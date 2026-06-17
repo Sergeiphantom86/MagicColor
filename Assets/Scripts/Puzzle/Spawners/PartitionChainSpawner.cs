@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ChainSpawnDirection
+{
+    X,
+    Y,
+    Diagonal,
+    Both,
+    All,
+}
+
 public class PartitionChainSpawner
 {
     private readonly GridSystem _grid;
@@ -57,24 +66,24 @@ public class PartitionChainSpawner
         {
             ChainSpawnDirection.X => new()
             {
-                Vector2Int.right
+                Vector2Int.right,
             },
 
             ChainSpawnDirection.Y => new()
             {
-                Vector2Int.up
+                Vector2Int.up,
             },
 
             ChainSpawnDirection.Diagonal => new()
             {
                 new Vector2Int(1, 1),
-                new Vector2Int(1, -1)
+                new Vector2Int(1, -1),
             },
 
             ChainSpawnDirection.Both => new()
             {
                 Vector2Int.right,
-                Vector2Int.up
+                Vector2Int.up,
             },
 
             ChainSpawnDirection.All => new()
@@ -82,19 +91,10 @@ public class PartitionChainSpawner
                 Vector2Int.right,
                 Vector2Int.up,
                 new Vector2Int(1, 1),
-                new Vector2Int(1, -1)
+                new Vector2Int(1, -1),
             },
 
             _ => new()
         };
     }
-}
-
-public enum ChainSpawnDirection
-{
-    X,
-    Y,
-    Diagonal,
-    Both,
-    All
 }

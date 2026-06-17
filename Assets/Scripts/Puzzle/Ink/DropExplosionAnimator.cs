@@ -32,8 +32,7 @@ public class DropExplosionAnimator : MonoBehaviour, IDropAnimation
 
         sequence.Append(
             transform.DOJump(target, jumpPower, 1, _duration)
-                .SetEase(Ease.OutBounce)
-        );
+                .SetEase(Ease.OutBounce));
     }
 
     private Vector3 GetTargetPosition(Vector3 origin)

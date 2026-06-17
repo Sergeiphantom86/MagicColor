@@ -57,13 +57,13 @@ public class Unblocker : MonoBehaviour
     {
         _movementSequence?.Kill();
         _movementSequence = DOTween.Sequence();
-        
+
         Move(_firstPointTarget, _moveDuration * _durationMultiplier);
 
         SetLiftingHeight();
 
         AddWaypointToSequence(_firstPointTarget, GetAngleRotation(), _moveDuration, _rotationDuration);
-        AddWaypointToSequence(_endPoint.transform.position, GetAngleRotation(_angleX), _moveDuration, _rotationDuration); 
+        AddWaypointToSequence(_endPoint.transform.position, GetAngleRotation(_angleX), _moveDuration, _rotationDuration);
 
         _movementSequence.Pause();
     }

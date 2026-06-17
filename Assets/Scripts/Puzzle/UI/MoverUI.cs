@@ -5,13 +5,13 @@ public class MoverUI
 {
     private Sequence _sequence;
 
-    public Sequence EnableMotionAnimation(RectTransform elementRect, float duration, RectTransform canvasRect, float normalizedX, float normalizedY, float positionZ = 0)
+    public Sequence EnableMotionAnimation(RectTransform elementRect, float duration, RectTransform canvasRect, float normalizedX, float normalizedY, float _ = 0)
     {
         if (ValidateInput(elementRect, canvasRect, duration) == false)
             return CreateEmptySequence();
 
         CreateSequence();
-        
+
         Vector2 targetPosition = GetTargetPosition(canvasRect, normalizedX, normalizedY);
         _sequence.Join(elementRect.DOAnchorPos(targetPosition, duration).SetEase(Ease.OutBack));
 
@@ -84,8 +84,7 @@ public class MoverUI
 
         return new Vector2(
             canvasRect.sizeDelta.x * (normalizedX - 0.5f),
-            canvasRect.sizeDelta.y * (normalizedY - 0.5f)
-        );
+            canvasRect.sizeDelta.y * (normalizedY - 0.5f));
     }
 
     private Vector3 GetTargetScale(RectTransform elementRect, float normalizedScaleX, float normalizedScaleY, float normalizedScaleZ)
@@ -97,8 +96,7 @@ public class MoverUI
         return new Vector3(
            elementRect.localScale.x * normalizedScaleX,
            elementRect.localScale.y * normalizedScaleY,
-           elementRect.localScale.z * normalizedScaleZ
-       );
+           elementRect.localScale.z * normalizedScaleZ);
     }
 
     private void CreateSequence()

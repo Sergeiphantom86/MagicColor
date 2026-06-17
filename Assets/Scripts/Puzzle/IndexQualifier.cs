@@ -39,7 +39,6 @@ public class IndexQualifier : MonoBehaviour
         _spawner.IndexProvider = GetFilteredIndex;
     }
 
-
     private void Start()
     {
         StartCoroutine(InitAfterPuzzleCreated());

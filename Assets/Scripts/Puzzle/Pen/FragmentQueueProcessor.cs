@@ -20,10 +20,6 @@ public class FragmentQueueProcessor
     private Color _currentColor;
     private Fragment _currentFragment;
 
-    public event Action OnFragmentActivated;
-    public event Action<float> OnIncreaseSpeed;
-    public event Action<Color> ColorHasChanged;
-
     public FragmentQueueProcessor(Voiceover voiceover, AudioClip pixelActivation, IMover mover, IFragmentAnimator fragmentAnimator, IBlocksContainer blocksContainer)
     {
         _mover = mover;
@@ -40,6 +36,12 @@ public class FragmentQueueProcessor
             _blocksContainer.EverythDestroyed += RequestSpeedBoost;
         }
     }
+
+    public event Action OnFragmentActivated;
+
+    public event Action<float> OnIncreaseSpeed;
+
+    public event Action<Color> ColorHasChanged;
 
     public void Cleanup()
     {
@@ -76,8 +78,7 @@ public class FragmentQueueProcessor
 
             yield return _mover.MoveToPosition(
                 _currentFragment.transform.position,
-                _currentDuration
-            );
+                _currentDuration);
 
             _fragmentAnimator.ActivateFragment(_currentFragment);
 
@@ -93,8 +94,7 @@ public class FragmentQueueProcessor
     {
         _currentDuration = Mathf.Max(
             _minDuration,
-            _currentDuration - _durationStep
-        );
+            _currentDuration - _durationStep);
     }
 
     private void RequestSpeedBoost()

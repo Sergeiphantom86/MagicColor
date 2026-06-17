@@ -35,10 +35,10 @@ public class RouletteSystem : MonoBehaviour
     {
         _spinButtonController.Initialize(
            globalInteractableCondition: () => _counter.HasAttempts,
-           onClickAction: Spin
-       );
+           onClickAction: Spin);
 
-        if (_itemCollector == null) return;
+        if (_itemCollector == null)
+            return;
 
         _items = _itemCollector.Items;
 
@@ -50,7 +50,7 @@ public class RouletteSystem : MonoBehaviour
         UpdateButtonState();
     }
 
-    private bool HasValidItems() => 
+    private bool HasValidItems() =>
         _items?.Count > 0;
 
     private void Spin()
@@ -59,7 +59,7 @@ public class RouletteSystem : MonoBehaviour
         {
             return;
         }
-  
+
         _isSpinning = true;
         _counter.DecreaseCount();
         _spinButtonController.SetLocalBlock(true);
@@ -84,7 +84,8 @@ public class RouletteSystem : MonoBehaviour
         {
             cumulative += item.Weight;
 
-            if (GetRandomValue(GetTotalWeight()) <= cumulative) return item;
+            if (GetRandomValue(GetTotalWeight()) <= cumulative)
+                return item;
         }
 
         Debug.LogWarning("Prize selection failed, returning first item");

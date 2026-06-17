@@ -1,5 +1,5 @@
-using UnityEngine;
 using System;
+using UnityEngine;
 
 [RequireComponent(typeof(IInputHandler), typeof(ColorCollisionHandler))]
 public class WallInteractionController : MonoBehaviour
@@ -48,7 +48,7 @@ public class WallInteractionController : MonoBehaviour
         {
             _colorCollisionHandler.UnblockWall();
         }
-    
+
         _wall.PushMovement();
     }
 }

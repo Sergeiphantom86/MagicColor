@@ -5,7 +5,7 @@ public class InputHandler : MonoBehaviour, IInputHandler
 {
     private Touch _touch;
 
-    public Vector3 Point {  get; private set; }
+    public Vector3 Point { get; private set; }
 
     public event Action<Vector2> OnSelected;
     public event Action<Vector2> OnMoved;

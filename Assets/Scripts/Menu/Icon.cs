@@ -1,6 +1,6 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using Unity.VisualScripting;
 
 public class Icon : MonoBehaviour
 {
@@ -17,7 +17,8 @@ public class Icon : MonoBehaviour
 
     public void SetRank(string rank)
     {
-        if (_textMeshProUGUI == null) return;
+        if (_textMeshProUGUI == null) 
+            return;
        
         _textMeshProUGUI.text = rank;
     }

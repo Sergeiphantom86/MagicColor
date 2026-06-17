@@ -4,19 +4,26 @@ using UnityEngine.UI;
 
 public abstract class MenuButtonBase : IMenuButton
 {
-    protected ButtonSoundHandler _soundHandler;
-    protected AudioClip _audioClip;
+    protected ButtonSoundHandler SoundHandler;
+    protected AudioClip AudioClip;
 
-    public virtual void Configure( Button button, HandlerButtonWindowInteraction handlerButtonWindowInteraction, ButtonSoundHandler buttonSound, AudioClip audioClip)
+    public virtual void Configure(Button button,
+        HandlerButtonWindowInteraction handlerButtonWindowInteraction,
+        ButtonSoundHandler buttonSound,
+        AudioClip audioClip)
     {
-        if (button == null) 
+        if (button == null)
+        {
             throw new ArgumentNullException(nameof(button));
+        }
 
-        if (handlerButtonWindowInteraction == null) 
+        if (handlerButtonWindowInteraction == null)
+        {
             throw new ArgumentNullException(nameof(handlerButtonWindowInteraction));
+        }
 
-        _soundHandler = buttonSound != null ? buttonSound : throw new ArgumentNullException(nameof(buttonSound));
-        _audioClip = audioClip != null ? audioClip : throw new ArgumentNullException(nameof(audioClip));
+        SoundHandler = buttonSound != null ? buttonSound : throw new ArgumentNullException(nameof(buttonSound));
+        AudioClip = audioClip != null ? audioClip : throw new ArgumentNullException(nameof(audioClip));
 
         button.onClick.AddListener(() =>
           Press(button, handlerButtonWindowInteraction, buttonSound, audioClip));
@@ -26,11 +33,14 @@ public abstract class MenuButtonBase : IMenuButton
     }
 
     public virtual void Press(Button button,
-       HandlerButtonWindowInteraction handlerButtonWindowInteraction,
-       ButtonSoundHandler buttonSound, AudioClip audioClip){ }
-
-    private  void OnButtonClicked()
+        HandlerButtonWindowInteraction handlerButtonWindowInteraction,
+        ButtonSoundHandler buttonSound,
+        AudioClip audioClip)
     {
-        _soundHandler.PlayButtonSound(_audioClip);
+    }
+
+    private void OnButtonClicked()
+    {
+        SoundHandler.PlayButtonSound(AudioClip);
     }
 }

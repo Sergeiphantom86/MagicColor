@@ -39,7 +39,6 @@ public class DustSizeCalculator : MonoBehaviour
         if (upperLimit <= 0)
         {
             Debug.LogError($"ћаксимальное значение запыленности должно быть положительным. ѕолучено: {upperLimit}. ”становлено значение по умолчанию: 500.");
-            upperLimit = 500;
         }
     }
 

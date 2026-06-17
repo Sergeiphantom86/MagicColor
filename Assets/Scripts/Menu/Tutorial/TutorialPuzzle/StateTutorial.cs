@@ -8,15 +8,18 @@ public class StateTutorial : MonoBehaviour
     private Key _key;
     private Lock _lock;
     private HandMover _handMover;
-    private TouchVisualizer  _visualizer;
+    private TouchVisualizer _visualizer;
     private bool _isClick;
 
     public event Action OnCompleted;
 
     private void OnDisable()
     {
-        if (_key == null) return;
-        if (_lock == null) return;
+        if (_key == null)
+            return;
+
+        if (_lock == null)
+            return;
 
         _key.OnShift -= MovePointer;
         _key.OnSelected -= MovePointer—lick;
@@ -29,7 +32,7 @@ public class StateTutorial : MonoBehaviour
         _lock = @lock;
         _handMover = handMover;
         _visualizer = touchVisualizer;
-        
+
         SubscribeEvents();
 
         Begin();
@@ -61,7 +64,7 @@ public class StateTutorial : MonoBehaviour
             SetPositionsEquipment(_key.transform.position);
 
             _visualizer.gameObject.SetActive(true);
-            
+
             _handMover.Stop();
             _handMover.EnableScaleAnimation();
         }

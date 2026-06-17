@@ -36,17 +36,20 @@ public class SmoothMoveToTarget : MonoBehaviour
 
     private void Update()
     {
-        if (IsMoving == false) return;
+        if (IsMoving == false) 
+            return;
 
         ProcessMovementDelay();
 
         StartCoroutine(Wait());
 
-        if (_isMoving == false || _target == null) return;
+        if (_isMoving == false || _target == null) 
+            return;
 
         UpdatePosition();
 
-        if (CheckWaypointArrival()) return;
+        if (CheckWaypointArrival()) 
+            return;
     }
 
     public void BeginMovement()
@@ -105,7 +108,8 @@ public class SmoothMoveToTarget : MonoBehaviour
 
     private void ProcessMovementDelay()
     {
-        if (_isMoving) return;
+        if (_isMoving) 
+            return;
 
         _delayTimer -= Time.deltaTime;
 
@@ -118,6 +122,7 @@ public class SmoothMoveToTarget : MonoBehaviour
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(1f);
+
         _materialOrder.SetOrder();
     }
 }

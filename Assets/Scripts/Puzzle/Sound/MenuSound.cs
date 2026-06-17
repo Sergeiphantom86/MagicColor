@@ -61,7 +61,8 @@ public class MenuSound : MonoBehaviour
 
     public void PlayButtonClick(AudioClip audioClip)
     {
-        if (audioClip == null) return;
+        if (audioClip == null)
+            return;
 
         SetAudioClip(audioClip);
 
@@ -102,7 +103,6 @@ public class MenuSound : MonoBehaviour
         SetAudioSource(_soundSource, isOn: false, _soundMixerGroup, _currentSounVolume);
 
         SetAudioSource(_musicSource, isOn: true, _musicMixerGroup, _currentMusicVolume);
-
     }
 
     private void SetAudioSource(AudioSource audioSource, bool isOn, AudioMixerGroup audioMixerGroup, float volume)
@@ -124,7 +124,8 @@ public class MenuSound : MonoBehaviour
 
     private void PlayBackgroundMusic(float time)
     {
-        if (_backgroundMusic == null || _musicSource.isPlaying) return;
+        if (_backgroundMusic == null || _musicSource.isPlaying)
+            return;
 
         _musicSource.clip = _backgroundMusic;
         _musicSource.time = time;
@@ -140,10 +141,10 @@ public class MenuSound : MonoBehaviour
 
     private void SaveVolumeSettings()
     {
-        if (_coroutineSaving != null) return;
+        if (_coroutineSaving != null)
+            return;
 
         _coroutineSaving = StartCoroutine(WaitChangeCompleted());
-
     }
 
     private void UpdateMixerVolume(string nameSlider, float volume)
@@ -160,7 +161,7 @@ public class MenuSound : MonoBehaviour
         if (volumeChanger is VolumeSoundsController)
         {
             _soundSource.volume = volume;
-            
+
             return;
         }
 

@@ -1,6 +1,6 @@
-using DG.Tweening;
 using System;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(SmoothMoveToTarget), typeof(Drop))]
 public class SmoothAppearance : MonoBehaviour
@@ -45,31 +45,30 @@ public class SmoothAppearance : MonoBehaviour
         CreateSizeChangeSequence(
             Vector3.zero,
             _durationDeletion,
-            () => gameObject.SetActive(false)
-        );
+            () => gameObject.SetActive(false));
     }
 
     private void Show()
     {
         gameObject.SetActive(true);
-        
+
         CreateSizeChangeSequence(
             _originalScale,
             _duration,
-            () => _smoothMoveToTarget.BeginMovement()
-        );
+            () => _smoothMoveToTarget.BeginMovement());
     }
 
     private void CreateSizeChangeSequence(Vector3 scale, float duration, Action action = null)
     {
-        if (_useScale == false) return;
+        if (_useScale == false)
+            return;
 
         _sequence?.Kill();
 
         _sequence = DOTween.Sequence();
         _sequence.Join(
             transform.DOScale(scale, duration)
-                     .SetEase(Ease.InOutBack)
-        ).OnComplete(() => action?.Invoke());
+                     .SetEase(Ease.InOutBack))
+            .OnComplete(() => action?.Invoke());
     }
 }

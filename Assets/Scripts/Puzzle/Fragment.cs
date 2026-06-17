@@ -61,6 +61,7 @@ public class Fragment : MonoBehaviour
     {
         _transform.localScale = Vector3.one * scale;
     }
+
     public void SetRotation(Quaternion quaternion)
     {
         _transform.rotation = quaternion;

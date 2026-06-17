@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button),typeof(Image))]
+[RequireComponent(typeof(Button), typeof(Image))]
 public class AbilityButton : MonoBehaviour
 {
     [SerializeField] private Ability ability;
@@ -15,6 +15,8 @@ public class AbilityButton : MonoBehaviour
     private IProgressSaver _progressSaver;
 
     public Button Button => _button;
+
+    public Ability Ability => ability;
 
     private void Awake()
     {
@@ -40,7 +42,7 @@ public class AbilityButton : MonoBehaviour
             _button.interactable = false;
             gameObject.SetActive(false);
         }
-        
+
         AbilitySelectionManager.Instance.OnSelection += Use;
     }
 
@@ -55,23 +57,23 @@ public class AbilityButton : MonoBehaviour
         AbilitySelectionManager.Instance.OnSelection -= Use;
     }
 
-    private void OnClick()
-    {
-        if(_isUsed) return;
-        
-        if (_bag.TryApply() == false) return;
-        
-        _isUsed = true;
-
-        AbilitySelectionManager.Instance.Select(this);
-    }
-
-    public Ability Ability => ability;
-
     public void SetHighlight(bool value)
     {
         _highlightImage.enabled = value;
         _isUsed = value;
+    }
+
+    private void OnClick()
+    {
+        if (_isUsed)
+            return;
+
+        if (_bag.TryApply() == false)
+            return;
+
+        _isUsed = true;
+
+        AbilitySelectionManager.Instance.Select(this);
     }
 
     private void Use()

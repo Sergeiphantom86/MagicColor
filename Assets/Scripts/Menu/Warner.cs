@@ -7,10 +7,10 @@ public class Warner : MonoBehaviour
 {
     [SerializeField] private ErrorPanel _errorPanel;
     [SerializeField] private ButtonController _buttonController;
-    
+
     private Image _image;
     private TextMeshProUGUI _textMeshProUGUI;
-    
+
     private void Awake()
     {
         _image = GetComponent<Image>();

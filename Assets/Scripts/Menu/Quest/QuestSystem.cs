@@ -5,8 +5,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(TransitionChooser))]
 public class QuestSystem : MonoBehaviour
 {
-    [SerializeField] private Button _button; 
-    
+    [SerializeField] private Button _button;
+
     private Quest _next;
     private Quest _active;
     private ZoomChanger _zoomChanger;
@@ -33,7 +33,8 @@ public class QuestSystem : MonoBehaviour
 
     public void Initialize(IReadOnlyList<Quest> quests, IProgressSaver progressSaver, SpriteTransmitter spriteTransmitter)
     {
-        if (quests == null || quests.Count == 0) return;
+        if (quests == null || quests.Count == 0)
+            return;
 
         if (progressSaver.Saves == null)
         {
@@ -176,7 +177,7 @@ public class QuestSystem : MonoBehaviour
             }
         }
 
-        _isActivate  = false;
+        _isActivate = false;
         _subscribedQuests.Clear();
         _progressSaver.SaveProgress();
     }
