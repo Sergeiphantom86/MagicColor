@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+namespace PuzzleEditor.MovingBlocks.GridEditor
+{
 
 public class GridPositionHelper
 {
@@ -69,4 +71,5 @@ public class GridPositionHelper
     {
         return new Vector2Int(Mathf.FloorToInt((size.x - 1) / 2f), Mathf.FloorToInt((size.y - 1) / 2f));
     }
+}
 }

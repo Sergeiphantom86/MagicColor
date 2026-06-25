@@ -1,4 +1,7 @@
+using PuzzleEditor;
 using UnityEngine;
+namespace Menu.HomeScreenSaver
+{
 
 [RequireComponent(typeof(Viewer), typeof(Agitator), typeof(TextureInitializer))]
 public class AnimationFinalizer : MonoBehaviour
@@ -38,4 +41,5 @@ public class AnimationFinalizer : MonoBehaviour
             }
         });
     }
+}
 }

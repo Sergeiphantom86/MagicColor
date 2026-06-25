@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using PuzzleEditor;
+namespace Menu.HomeScreenSaver
+{
 
 [RequireComponent(typeof(Sorter))]
 public class AppearanceAnimator : MonoBehaviour, IAnimatable
@@ -107,4 +110,5 @@ public class AppearanceAnimator : MonoBehaviour, IAnimatable
 
         _currentSequence = null;
     }
+}
 }

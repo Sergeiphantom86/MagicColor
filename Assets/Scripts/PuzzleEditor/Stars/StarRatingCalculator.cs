@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+using Menu;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+namespace PuzzleEditor.Stars
+{
 
 [RequireComponent(typeof(StarsCounter))]
 public class StarRatingCalculator : MonoBehaviour
@@ -113,4 +116,6 @@ public class StarRatingCalculator : MonoBehaviour
         for (int i = transform.childCount - 1; i >= 0; i--)
             Destroy(transform.GetChild(i).gameObject);
     }
+}
+
 }

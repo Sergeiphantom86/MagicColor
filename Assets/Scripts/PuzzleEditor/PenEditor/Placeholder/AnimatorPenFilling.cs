@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+namespace PuzzleEditor.PenEditor.Placeholder
+{
 
 [RequireComponent(typeof(DustSizeCalculator))]
 public class AnimatorPenFilling : MonoBehaviour
@@ -102,10 +104,11 @@ public class AnimatorPenFilling : MonoBehaviour
 
         if (quantity < 0)
         {
-            Debug.LogError("quantity меньше 0!");
+            Debug.LogError("quantity пїЅпїЅпїЅпїЅпїЅпїЅ 0!");
             return 0f;
         }
 
         return _dustSizeCalculator.CalculateSize(quantity, _fragmentCollector.TotalCount);
     }
+}
 }

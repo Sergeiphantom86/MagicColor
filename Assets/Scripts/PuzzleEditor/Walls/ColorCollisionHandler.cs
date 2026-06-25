@@ -1,5 +1,13 @@
-﻿using System;
+using Menu.TutorialEditor;
+using Menu.TutorialEditor.TutorialPuzzle;
+using PuzzleEditor.MovingBlocks.BlockEditor;
+using PuzzleEditor.RouletteEditor;
+using PuzzleEditor.Walls.WallEditor;
+using PuzzleEditor.Walls.WallEngineEditor;
+using System;
 using UnityEngine;
+namespace PuzzleEditor.Walls
+{
 
 [RequireComponent(typeof(Wall), typeof(IColorMatchService), typeof(ILockFeedbackService))]
 [RequireComponent(typeof(IColorMatchService), typeof(ICollisionHandler), typeof(IBlockDestroySequence))]
@@ -120,4 +128,5 @@ public class ColorCollisionHandler : MonoBehaviour
             _lockHandler.Unblock();
         }
     }
+}
 }

@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+namespace PuzzleEditor
+{
 
 public class Rotator : MonoBehaviour
 {
@@ -65,4 +67,5 @@ public class Rotator : MonoBehaviour
     {
         return new Vector3(targetAngleX, 0, 0);
     }
+}
 }

@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor
+{
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class Fragment : MonoBehaviour
@@ -83,4 +85,5 @@ public class Fragment : MonoBehaviour
         _newColor.a = alpha;
         _renderer.color = _newColor;
     }
+}
 }

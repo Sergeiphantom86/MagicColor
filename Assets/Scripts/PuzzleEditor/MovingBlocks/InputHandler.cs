@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+namespace PuzzleEditor.MovingBlocks
+{
 
 public class InputHandler : MonoBehaviour, IInputHandler
 {
@@ -85,4 +87,5 @@ public class InputHandler : MonoBehaviour, IInputHandler
         Point = Vector2.zero;
         return false;
     }
+}
 }

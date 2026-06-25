@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace Menu.ButtonEditor.Ability
+{
 
 [CreateAssetMenu(menuName = "Abilities/Ability")]
 public class Ability : ScriptableObject
@@ -7,4 +9,5 @@ public class Ability : ScriptableObject
     [SerializeField] private Sprite _icon;
 
     public Sprite Icon => _icon;
+}
 }

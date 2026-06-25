@@ -1,4 +1,8 @@
+using Menu.TutorialEditor.TutorialPuzzle;
 using UnityEngine;
+using PuzzleEditor.PenEditor;
+namespace Menu.TutorialEditor
+{
 
 public class HintSwitcher : MonoBehaviour
 {
@@ -96,4 +100,5 @@ public class HintSwitcher : MonoBehaviour
         DisableEveryth();
         _hintCounter.StartTimer();
     }
+}
 }

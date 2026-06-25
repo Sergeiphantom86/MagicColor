@@ -1,5 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
+namespace PuzzleEditor.PenEditor
+{
 
 public class PenScaleController : MonoBehaviour
 {
@@ -47,4 +49,5 @@ public class PenScaleController : MonoBehaviour
 
         _currentTween = null;
     }
+}
 }

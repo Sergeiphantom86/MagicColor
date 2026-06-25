@@ -1,5 +1,12 @@
+using Game;
+using Game.SaveEditor;
+using Menu.ButtonEditor.Ability;
+using Menu.Shop;
+using PuzzleEditor.MovingBlocks;
 using TMPro;
 using UnityEngine;
+namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
+{
 
 public class TutorialAbilities : TutorialStater
 {
@@ -15,10 +22,10 @@ public class TutorialAbilities : TutorialStater
     private readonly CloseGameButton _closeGame;
     private readonly AbilityButton _bagAbilities;
     private readonly PurchaseButton _purchaseButton;
-    private readonly TutorialStateMachine _stateMachine;
+    private readonly StateMachine _stateMachine;
     private readonly IProgressSaver _progressSaver;
 
-    public TutorialAbilities(TutorialStateMachine stateMachine, TutorialContext context, IInputHandler input, PauseButton pauseButton, TextMeshProUGUI text, HandMover handMoverUI, PurchaseButton purchaseButton, CloseGameButton closeGame, AbilityButton bagAbilities, Hints hintsUI)
+    public TutorialAbilities(StateMachine stateMachine, TutorialContext context, IInputHandler input, PauseButton pauseButton, TextMeshProUGUI text, HandMover handMoverUI, PurchaseButton purchaseButton, CloseGameButton closeGame, AbilityButton bagAbilities, Hints hintsUI)
         : base(stateMachine, context)
     {
         _input = input;
@@ -100,4 +107,5 @@ public class TutorialAbilities : TutorialStater
     {
         _stateMachine.ChangeState(new CompletionState(_stateMachine, _context));
     }
+}
 }

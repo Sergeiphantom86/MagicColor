@@ -1,4 +1,7 @@
+using Game.LoadingScreen;
 using UnityEngine;
+namespace Game.Exit
+{
 
 public class PauseMenu : MonoBehaviour
 {
@@ -47,4 +50,5 @@ public class PauseMenu : MonoBehaviour
 
         Time.timeScale = speedTimePassing;
     }
+}
 }

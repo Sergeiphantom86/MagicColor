@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.Walls
+{
 
 [CreateAssetMenu(fileName = "PuzzleConfig", menuName = "Puzzles/Puzzle Config")]
 public class PuzzleConfig : ScriptableObject
@@ -12,4 +14,5 @@ public class PuzzleConfig : ScriptableObject
 
     [Header("Puzzle Object")]
     public WallsContainer WallsContainerPrefab;
+}
 }

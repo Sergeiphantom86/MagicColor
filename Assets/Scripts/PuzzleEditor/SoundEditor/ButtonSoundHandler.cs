@@ -1,4 +1,7 @@
+using Menu;
 using UnityEngine;
+namespace PuzzleEditor.SoundEditor
+{
 
 [RequireComponent(typeof(ButtonCarouselController))]
 public class ButtonSoundHandler : MonoBehaviour
@@ -31,4 +34,5 @@ public class ButtonSoundHandler : MonoBehaviour
     {
         _menuSoundManager.PlayButtonClick(audioClip);
     }
+}
 }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+namespace PuzzleEditor
+{
 
 public class PuzzleKeeper : MonoBehaviour
 {
@@ -9,4 +11,5 @@ public class PuzzleKeeper : MonoBehaviour
     {
         BestTimes = new Dictionary<string, float>();
     }
+}
 }

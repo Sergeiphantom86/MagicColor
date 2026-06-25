@@ -1,4 +1,9 @@
+using PuzzleEditor.RouletteEditor;
+using PuzzleEditor.Walls.WallEditor;
+using PuzzleEditor.Walls.WallEngineEditor;
 using UnityEngine;
+namespace PuzzleEditor.Walls
+{
 
 public class BlockInteractionService : IBlockInteractionService
 {
@@ -73,4 +78,5 @@ public class BlockInteractionService : IBlockInteractionService
 
         _destroySequence.WaitStart(colorable, color);
     }
+}
 }

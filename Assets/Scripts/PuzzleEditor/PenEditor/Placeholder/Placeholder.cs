@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.PenEditor.Placeholder
+{
 
 public class Placeholder : ColorableObject
 {
@@ -61,4 +63,5 @@ public class Placeholder : ColorableObject
     {
         transform.localPosition = new Vector3(0, nextSpawnYPosition, 0);
     }
+}
 }

@@ -26,24 +26,24 @@ namespace TMPro.Examples
         {
             TMP_FontAsset fontAsset = null;
 
-            // Create Dynamic Font Asset for the given font file.
-            switch (Benchmark)
-            {
-                case BenchmarkType.TMP_SDF_MOBILE:
-                    fontAsset = TMP_FontAsset.CreateFontAsset(SourceFont, 90, 9, GlyphRenderMode.SDFAA, 256, 256, AtlasPopulationMode.Dynamic);
-                    break;
-                case BenchmarkType.TMP_SDF__MOBILE_SSD:
-                    fontAsset = TMP_FontAsset.CreateFontAsset(SourceFont, 90, 9, GlyphRenderMode.SDFAA, 256, 256, AtlasPopulationMode.Dynamic);
-                    fontAsset.material.shader = Shader.Find("TextMeshPro/Mobile/Distance Field SSD");
-                    break;
-                case BenchmarkType.TMP_SDF:
-                    fontAsset = TMP_FontAsset.CreateFontAsset(SourceFont, 90, 9, GlyphRenderMode.SDFAA, 256, 256, AtlasPopulationMode.Dynamic);
-                    fontAsset.material.shader = Shader.Find("TextMeshPro/Distance Field");
-                    break;
-                case BenchmarkType.TMP_BITMAP_MOBILE:
-                    fontAsset = TMP_FontAsset.CreateFontAsset(SourceFont, 90, 9, GlyphRenderMode.SMOOTH, 256, 256, AtlasPopulationMode.Dynamic);
-                    break;
-            }
+            //// Create Dynamic Font Asset for the given font file.
+            //switch (Benchmark)
+            //{
+            //    case BenchmarkType.TMP_SDF_MOBILE:
+            //        fontAsset = TMP_FontAsset.CreateFontAsset(SourceFont, 90, 9, GlyphRenderMode.SDFAA, 256, 256, AtlasPopulationMode.Dynamic);
+            //        break;
+            //    case BenchmarkType.TMP_SDF__MOBILE_SSD:
+            //        fontAsset = TMP_FontAsset.CreateFontAsset(SourceFont, 90, 9, GlyphRenderMode.SDFAA, 256, 256, AtlasPopulationMode.Dynamic);
+            //        fontAsset.material.shader = Shader.Find("TextMeshPro/Mobile/Distance Field SSD");
+            //        break;
+            //    case BenchmarkType.TMP_SDF:
+            //        fontAsset = TMP_FontAsset.CreateFontAsset(SourceFont, 90, 9, GlyphRenderMode.SDFAA, 256, 256, AtlasPopulationMode.Dynamic);
+            //        fontAsset.material.shader = Shader.Find("TextMeshPro/Distance Field");
+            //        break;
+            //    case BenchmarkType.TMP_BITMAP_MOBILE:
+            //        fontAsset = TMP_FontAsset.CreateFontAsset(SourceFont, 90, 9, GlyphRenderMode.SMOOTH, 256, 256, AtlasPopulationMode.Dynamic);
+            //        break;
+            //}
 
             for (int i = 0; i < NumberOfSamples; i++)
             {

@@ -1,7 +1,11 @@
+using Menu.TutorialEditor;
+using PuzzleEditor.MovingBlocks.BlockEditor;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+namespace PuzzleEditor.MovingBlocks
+{
 
 public class KeyInstaller : MonoBehaviour
 {
@@ -57,4 +61,5 @@ public class KeyInstaller : MonoBehaviour
                _key != null &&
                _isPlaced == false;
     }
+}
 }

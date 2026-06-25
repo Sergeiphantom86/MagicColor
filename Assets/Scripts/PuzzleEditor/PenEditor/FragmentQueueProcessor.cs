@@ -1,7 +1,10 @@
+using PuzzleEditor.SoundEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+namespace PuzzleEditor.PenEditor
+{
 
 public class FragmentQueueProcessor
 {
@@ -137,4 +140,5 @@ public class FragmentQueueProcessor
             _voiceover.PlayOneShot(_pixelActivation);
         }
     }
+}
 }

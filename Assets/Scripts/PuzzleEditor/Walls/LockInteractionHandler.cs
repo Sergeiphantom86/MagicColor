@@ -1,4 +1,8 @@
+using Menu.TutorialEditor.TutorialPuzzle;
+using PuzzleEditor.LockEditor;
 using UnityEngine;
+namespace PuzzleEditor.Walls
+{
 
 public class LockInteractionHandler
 {
@@ -37,4 +41,5 @@ public class LockInteractionHandler
             _lock.Unblock();
         }
     }
+}
 }

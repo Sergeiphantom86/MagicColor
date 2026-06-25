@@ -1,4 +1,6 @@
 using System;
+namespace PuzzleEditor.PenEditor
+{
 
 public class PuzzleProgressTracker
 {
@@ -20,4 +22,5 @@ public class PuzzleProgressTracker
             PuzzleCompleted?.Invoke();
         }
     }
+}
 }

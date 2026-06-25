@@ -1,4 +1,6 @@
 using System;
+namespace PuzzleEditor.PenEditor
+{
 
 public class FillSpeedController
 {
@@ -15,4 +17,5 @@ public class FillSpeedController
 
         applySpeed?.Invoke();
     }
+}
 }

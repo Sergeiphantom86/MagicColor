@@ -1,12 +1,11 @@
-namespace Puzzle.Spawners
+namespace PuzzleEditor.Spawners
 {
-
-public enum ChainSpawnDirection
-{
-    X,
-    Y,
-    Diagonal,
-    Both,
-    All,
-}
+    public enum ChainSpawnDirection
+    {
+        X,
+        Y,
+        Diagonal,
+        Both,
+        All,
+    }
 }

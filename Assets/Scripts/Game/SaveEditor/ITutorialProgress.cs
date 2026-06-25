@@ -1,3 +1,5 @@
+namespace Game.SaveEditor
+{
 public interface ITutorialProgress
 {
     public void SetTutorial(int index);
@@ -11,4 +13,5 @@ public interface ITutorialProgress
     public void SetUnblockingTutorial();
 
     public void SetAbilityTutorial();
+}
 }

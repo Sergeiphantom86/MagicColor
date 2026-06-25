@@ -1,8 +1,12 @@
 using DG.Tweening;
+using Game.SaveEditor;
+using PuzzleEditor.LockEditor;
+namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
+{
 
 public class KeyTutorialState : TutorialStater
 {
-    private readonly TutorialStateMachine _stateMachine;
+    private readonly StateMachine _stateMachine;
     private readonly StateTutorial _stateTutorial;
     private readonly TouchVisualizer _visualizer;
     private readonly TutorialContext _context;
@@ -11,7 +15,7 @@ public class KeyTutorialState : TutorialStater
     private readonly Key _key;
     private readonly IProgressSaver _progressSaver;
 
-    public KeyTutorialState(TutorialStateMachine stateMachine, TutorialContext context)
+    public KeyTutorialState(StateMachine stateMachine, TutorialContext context)
         : base(stateMachine, context)
     {
         _context = context;
@@ -45,4 +49,5 @@ public class KeyTutorialState : TutorialStater
     {
         _stateMachine.ChangeState(new CompletionState(StateMachine, Context));
     }
+}
 }

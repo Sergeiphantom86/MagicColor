@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
+namespace PuzzleEditor.PoolEffects
+{
 
 public class Effecter : MonoBehaviour
 {
@@ -109,4 +111,5 @@ public class Effecter : MonoBehaviour
 
         _pool.Release(particles);
     }
+}
 }

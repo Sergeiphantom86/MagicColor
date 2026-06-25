@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
+namespace Menu
+{
 
 public class ButtonCarouselController : MonoBehaviour, ICarousel
 {
@@ -124,4 +126,5 @@ public class ButtonCarouselController : MonoBehaviour, ICarousel
         public float Scale;
         public float Alpha;
     }
+}
 }

@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace Wallets.WalletEditor
+{
 
 public class ProcessTransacter : IProcessTransacter
 {
@@ -22,4 +24,5 @@ public class ProcessTransacter : IProcessTransacter
 
         return false;
     }
+}
 }

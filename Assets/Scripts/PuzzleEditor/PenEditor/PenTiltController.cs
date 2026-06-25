@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
+namespace PuzzleEditor.PenEditor
+{
 
 public class PenTiltController : MonoBehaviour
 {
@@ -32,4 +34,5 @@ public class PenTiltController : MonoBehaviour
         angle = Mathf.Clamp(angle, -_maxTiltAngle, _maxTiltAngle);
         return -angle;
     }
+}
 }

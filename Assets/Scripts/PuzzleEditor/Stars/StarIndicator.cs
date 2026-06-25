@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+namespace PuzzleEditor.Stars
+{
 
 [RequireComponent(typeof(Image))]
 public class StarIndicator : MonoBehaviour
@@ -79,4 +81,5 @@ public class StarIndicator : MonoBehaviour
                 .SetEase(Ease.OutBack, overshoot: _overshoot);
         }
     }
+}
 }

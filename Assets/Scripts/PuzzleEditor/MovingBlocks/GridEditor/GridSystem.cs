@@ -1,5 +1,7 @@
-﻿using System;
+using System;
 using UnityEngine;
+namespace PuzzleEditor.MovingBlocks.GridEditor
+{
 
 [RequireComponent(typeof(Grid))]
 public class GridSystem : MonoBehaviour
@@ -153,4 +155,5 @@ public class GridSystem : MonoBehaviour
     private int GetCellX(int index, int width) => index % width;
 
     private int GetCellY(int index, int width) => index / width;
+}
 }

@@ -1,6 +1,9 @@
+using PuzzleEditor.RouletteEditor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu
+{
 
 [RequireComponent(typeof(Image))]
 public class Warner : MonoBehaviour
@@ -18,13 +21,13 @@ public class Warner : MonoBehaviour
 
         if (_image == null)
         {
-            Debug.LogError("Image отсутствует!!!");
+            Debug.LogError("Image пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!!!");
             return;
         }
 
         if (_textMeshProUGUI == null)
         {
-            Debug.LogError("TextMeshProUGUI отсутствует!!!");
+            Debug.LogError("TextMeshProUGUI пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!!!");
             return;
         }
 
@@ -36,4 +39,5 @@ public class Warner : MonoBehaviour
         _image.gameObject.SetActive(false);
         _textMeshProUGUI.gameObject.SetActive(false);
     }
+}
 }

@@ -1,7 +1,10 @@
+using Game.SaveEditor;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+namespace PuzzleEditor.RouletteEditor
+{
 
 public class Currency : MonoBehaviour
 {
@@ -83,4 +86,5 @@ public class Currency : MonoBehaviour
             .Where(c => char.IsDigit(c) || c == '-')
             .ToArray());
     }
+}
 }

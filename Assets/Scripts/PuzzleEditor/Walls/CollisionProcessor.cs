@@ -1,4 +1,9 @@
+using PuzzleEditor.MovingBlocks;
+using PuzzleEditor.MovingBlocks.BlockEditor;
+using PuzzleEditor.Walls.WallEngineEditor;
 using UnityEngine;
+namespace PuzzleEditor.Walls
+{
 
 public class CollisionProcessor : ICollisionProcessor
 {
@@ -40,4 +45,5 @@ public class CollisionProcessor : ICollisionProcessor
 
         _colorMatch.Reset();
     }
+}
 }

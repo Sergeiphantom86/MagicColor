@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu
+{
 
 [RequireComponent(typeof(Image))]
 public class PuzzleSelector : MonoBehaviour
@@ -14,7 +16,7 @@ public class PuzzleSelector : MonoBehaviour
 
         if (_puzzleImage == null)
         {
-            Debug.LogError("Image не назначен");
+            Debug.LogError("Image пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
             return;
         }
     }
@@ -23,4 +25,5 @@ public class PuzzleSelector : MonoBehaviour
     {
         _puzzleImage.sprite = sprite;
     }
+}
 }

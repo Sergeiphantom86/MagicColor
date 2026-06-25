@@ -1,4 +1,6 @@
 using System;
+namespace Game
+{
 
 public class PauseButton : ButtonMenu
 {
@@ -11,4 +13,5 @@ public class PauseButton : ButtonMenu
         PauseMenu.Stop();
         OnClick?.Invoke();
     }
+}
 }

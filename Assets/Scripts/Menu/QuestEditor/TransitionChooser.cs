@@ -1,4 +1,9 @@
+using Game.LoadingScreen;
+using Game.SaveEditor;
+using Menu.TutorialEditor;
 using UnityEngine;
+namespace Menu.QuestEditor
+{
 
 public class TransitionChooser : MonoBehaviour
 {
@@ -72,4 +77,5 @@ public class TransitionChooser : MonoBehaviour
 
         SceneLoader.Instance.LoadSceneAsyncWithSplash(sceneName, extraTime);
     }
+}
 }

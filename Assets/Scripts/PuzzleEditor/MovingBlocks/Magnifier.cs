@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+namespace PuzzleEditor.MovingBlocks
+{
 
 public class Magnifier : MonoBehaviour
 {
@@ -44,4 +46,5 @@ public class Magnifier : MonoBehaviour
     {
         _scaleTween?.Kill();
     }
+}
 }

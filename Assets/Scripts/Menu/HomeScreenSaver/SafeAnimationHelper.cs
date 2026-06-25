@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+namespace Menu.HomeScreenSaver
+{
 
 public static class SafeAnimationHelper
 {
@@ -15,4 +17,5 @@ public static class SafeAnimationHelper
                 action?.Invoke();
         });
     }
+}
 }

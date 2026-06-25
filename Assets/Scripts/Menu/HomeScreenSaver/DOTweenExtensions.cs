@@ -1,4 +1,6 @@
 using DG.Tweening;
+namespace Menu.HomeScreenSaver
+{
 
 public static class DOTweenExtensions
 {
@@ -25,4 +27,5 @@ public static class DOTweenExtensions
             tween.Kill(complete);
         }
     }
+}
 }

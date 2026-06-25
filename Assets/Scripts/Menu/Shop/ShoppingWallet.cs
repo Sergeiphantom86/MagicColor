@@ -1,4 +1,7 @@
 using UnityEngine;
+using Wallets;
+namespace Menu.Shop
+{
 
 public class ShoppingWallet : MonoBehaviour
 {
@@ -27,4 +30,5 @@ public class ShoppingWallet : MonoBehaviour
         
         _purchaseButton.Click();
     }
+}
 }

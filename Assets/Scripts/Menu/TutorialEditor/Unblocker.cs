@@ -1,5 +1,10 @@
 using DG.Tweening;
+using PuzzleEditor;
+using PuzzleEditor.Walls;
+using PuzzleEditor.Walls.WallEditor;
 using UnityEngine;
+namespace Menu.TutorialEditor
+{
 
 public class Unblocker : MonoBehaviour
 {
@@ -106,4 +111,5 @@ public class Unblocker : MonoBehaviour
     {
         _movementSequence?.Kill();
     }
+}
 }

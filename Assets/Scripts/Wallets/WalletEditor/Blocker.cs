@@ -1,4 +1,7 @@
+using PuzzleEditor;
 using UnityEngine;
+namespace Wallets.WalletEditor
+{
 
 public class Blocker : MonoBehaviour, IActivatable
 {
@@ -11,4 +14,5 @@ public class Blocker : MonoBehaviour, IActivatable
     {
         gameObject.SetActive(false);
     }
+}
 }

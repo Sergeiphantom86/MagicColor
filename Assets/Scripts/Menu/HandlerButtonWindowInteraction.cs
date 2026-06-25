@@ -1,7 +1,13 @@
-﻿using System;
+using Game.SaveEditor;
+using Menu.ButtonEditor;
+using Menu.TutorialEditor;
+using PuzzleEditor.SoundEditor;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu
+{
 
 [RequireComponent(typeof(ButtonKeeper), typeof(ButtonSoundHandler), typeof(WindowInitializer))]
 public class HandlerButtonWindowInteraction : MonoBehaviour
@@ -108,4 +114,5 @@ public class HandlerButtonWindowInteraction : MonoBehaviour
 
         _tutorial.SetPositionButton(_buttonKeeper.Buttons[0].transform.position);
     }
+}
 }

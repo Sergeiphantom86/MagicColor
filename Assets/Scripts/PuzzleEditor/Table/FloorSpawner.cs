@@ -1,4 +1,8 @@
+using PuzzleEditor.MovingBlocks.GridEditor;
+using PuzzleEditor.Spawners;
 using UnityEngine;
+namespace PuzzleEditor.Table
+{
 
 public class FloorSpawner : BaseSpawner<FloorBlock>
 {
@@ -38,4 +42,5 @@ public class FloorSpawner : BaseSpawner<FloorBlock>
             }
         }
     }
+}
 }

@@ -1,4 +1,10 @@
+using PuzzleEditor;
+using PuzzleEditor.Counter;
+using PuzzleEditor.LockEditor;
+using PuzzleEditor.Spawners;
 using UnityEngine;
+namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
+{
 
 public class TutorialContext
 {
@@ -86,4 +92,5 @@ public class TutorialContext
         position.z += zOffset;
         return position;
     }
+}
 }

@@ -2,6 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using PuzzleEditor;
+namespace Menu.TutorialEditor
+{
 
 public class Blinker : MonoBehaviour, IActivatable
 {
@@ -26,7 +29,7 @@ public class Blinker : MonoBehaviour, IActivatable
 
         if (_targetImage == null)
         {
-            Debug.LogError("Blinker: Нет компонента Image на объекте " + gameObject.name);
+            Debug.LogError("Blinker: пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Image пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ " + gameObject.name);
             enabled = false;
             return;
         }
@@ -90,4 +93,5 @@ public class Blinker : MonoBehaviour, IActivatable
     {
         gameObject.SetActive(false);
     }
+}
 }

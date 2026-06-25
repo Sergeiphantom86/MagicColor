@@ -1,6 +1,9 @@
+using PuzzleEditor.MovingBlocks.GridEditor;
 using System;
 using System.Collections;
 using UnityEngine;
+namespace PuzzleEditor.Walls.Partitions
+{
 
 [RequireComponent(typeof(Rigidbody))]
 public class Partition : MonoBehaviour, IGridOccupant
@@ -52,4 +55,5 @@ public class Partition : MonoBehaviour, IGridOccupant
 
         gameObject.SetActive(false);
     }
+}
 }

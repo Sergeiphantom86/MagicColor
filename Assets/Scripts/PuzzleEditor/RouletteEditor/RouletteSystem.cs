@@ -1,6 +1,9 @@
+using PuzzleEditor.RouletteEditor.VisualizationWinnings;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+namespace PuzzleEditor.RouletteEditor
+{
 
 public class RouletteSystem : MonoBehaviour
 {
@@ -19,16 +22,16 @@ public class RouletteSystem : MonoBehaviour
     private void Awake()
     {
         if (_wheelAnimator == null)
-            Debug.LogError($"{nameof(WheelAnimator)} ссылка не установлена!", this);
+            Debug.LogError($"{nameof(WheelAnimator)} пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", this);
 
         if (_spinButtonController == null)
-            Debug.LogError($"{nameof(ButtonController)} ссылка не установлена!", this);
+            Debug.LogError($"{nameof(ButtonController)} пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", this);
 
         if (_itemCollector == null)
-            Debug.LogError($"{nameof(ItemCollector)} ссылка не установлена!", this);
+            Debug.LogError($"{nameof(ItemCollector)} пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", this);
 
         if (_counter == null)
-            Debug.LogError($"{nameof(RouletteCounter)} ссылка не установлена!", this);
+            Debug.LogError($"{nameof(RouletteCounter)} пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", this);
     }
 
     private void Start()
@@ -107,4 +110,5 @@ public class RouletteSystem : MonoBehaviour
     {
         return _items.Sum(item => item.Weight);
     }
+}
 }

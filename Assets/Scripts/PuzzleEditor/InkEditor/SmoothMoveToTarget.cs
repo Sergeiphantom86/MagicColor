@@ -1,5 +1,8 @@
-﻿using System.Collections;
+using PuzzleEditor.PenEditor;
+using System.Collections;
 using UnityEngine;
+namespace PuzzleEditor.InkEditor
+{
 
 [RequireComponent(typeof(SmoothAppearance), typeof(UIMaterialOrder))]
 public class SmoothMoveToTarget : MonoBehaviour
@@ -125,4 +128,5 @@ public class SmoothMoveToTarget : MonoBehaviour
 
         _materialOrder.SetOrder();
     }
+}
 }

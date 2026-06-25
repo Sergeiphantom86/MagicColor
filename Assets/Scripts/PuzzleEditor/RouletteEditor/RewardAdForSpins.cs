@@ -1,8 +1,11 @@
+using Game.SaveEditor;
 using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+namespace PuzzleEditor.RouletteEditor
+{
 
 [RequireComponent(typeof(Button))]
 public class RewardAdForSpins : MonoBehaviour
@@ -23,7 +26,7 @@ public class RewardAdForSpins : MonoBehaviour
 
         if (_button == null)
         {
-            Debug.LogError("Button не назначен!!!");
+            Debug.LogError("Button пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!!!");
             return;
         }
 
@@ -93,4 +96,5 @@ public class RewardAdForSpins : MonoBehaviour
         if (_button != null)
             _button.onClick.RemoveListener(ShowRewardedAd);
     }
+}
 }

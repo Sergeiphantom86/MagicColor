@@ -1,5 +1,8 @@
 using DG.Tweening;
+using PuzzleEditor.SoundEditor;
 using UnityEngine;
+namespace PuzzleEditor.RouletteEditor
+{
 
 [RequireComponent(typeof(Voiceover))]
 public class BounceRotator : MonoBehaviour
@@ -87,4 +90,5 @@ public class BounceRotator : MonoBehaviour
     {
         ResetRotation();
     }
+}
 }

@@ -1,5 +1,8 @@
 using DG.Tweening;
+using Game.SaveEditor;
 using UnityEngine;
+namespace PuzzleEditor
+{
 
 public class Puzzle1 : MonoBehaviour
 {
@@ -55,4 +58,5 @@ public class Puzzle1 : MonoBehaviour
     {
         _moveTween?.Kill();
     }
+}
 }

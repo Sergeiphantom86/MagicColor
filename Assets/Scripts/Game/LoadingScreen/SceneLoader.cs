@@ -4,124 +4,129 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using YG;
+using PuzzleEditor.UI.LoadingScreen;
+using Game.SaveEditor;
 
-[RequireComponent(typeof(CanvasGroup), typeof(PanelFader))]
-public class SceneLoader : MonoBehaviour
+namespace Game.LoadingScreen
 {
-    private const string Loading = nameof(Loading);
-    private const string Menu = nameof(Menu);
-
-    [SerializeField] private float _fadeDuration;
-    [SerializeField] private float _minLoadTime;
-
-    private float _maxLoad;
-    private bool _isFirstLoad;
-    private bool _isInitialize;
-    private PanelFader _panelFader;
-    private CanvasGroup _canvasGroup;
-    private Coroutine _loadingCoroutine;
-    private WaitForSeconds _extraLoad;
-    private ResourcesSceneLoader _resourcesSceneLoader;
-
-    public static SceneLoader Instance { get; private set; }
-
-    private void Awake()
+    [RequireComponent(typeof(CanvasGroup), typeof(PanelFader))]
+    public class SceneLoader : MonoBehaviour
     {
-        if (Instance != null && Instance != this)
+        private const string Loading = nameof(Loading);
+        private const string Menu = nameof(Menu);
+
+        [SerializeField] private float _fadeDuration;
+        [SerializeField] private float _minLoadTime;
+
+        private float _maxLoad;
+        private bool _isFirstLoad;
+        private bool _isInitialize;
+        private PanelFader _panelFader;
+        private CanvasGroup _canvasGroup;
+        private Coroutine _loadingCoroutine;
+        private WaitForSeconds _extraLoad;
+        private ResourcesSceneLoader _resourcesSceneLoader;
+
+        public static SceneLoader Instance { get; private set; }
+
+        private void Awake()
         {
-            Destroy(gameObject);
-            return;
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            _maxLoad = 0.9f;
+            _isFirstLoad = true;
+            _canvasGroup = GetComponent<CanvasGroup>();
+            _panelFader = GetComponent<PanelFader>();
+            _resourcesSceneLoader = GetComponent<ResourcesSceneLoader>();
+            _canvasGroup.alpha = _isFirstLoad ? 1f : 0f;
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
+
+            LoadSceneAsyncWithSplash(Menu);
         }
 
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-
-        _maxLoad = 0.9f;
-        _isFirstLoad = true;
-        _canvasGroup = GetComponent<CanvasGroup>();
-        _panelFader = GetComponent<PanelFader>();
-        _resourcesSceneLoader = GetComponent<ResourcesSceneLoader>();
-        _canvasGroup.alpha = _isFirstLoad ? 1f : 0f;
-        _canvasGroup.interactable = false;
-        _canvasGroup.blocksRaycasts = false;
-
-        LoadSceneAsyncWithSplash(Menu);
-    }
-
-    public void LoadSceneAsyncWithSplash(string sceneName, float extraTime = 0)
-    {
-        if (_loadingCoroutine != null)
+        public void LoadSceneAsyncWithSplash(string sceneName, float extraTime = 0)
         {
-            StopCoroutine(_loadingCoroutine);
+            if (_loadingCoroutine != null)
+            {
+                StopCoroutine(_loadingCoroutine);
+            }
+
+            _extraLoad = new WaitForSeconds(extraTime);
+            _loadingCoroutine = StartCoroutine(LoadAsyncSceneProcess(sceneName));
         }
 
-        _extraLoad = new WaitForSeconds(extraTime);
-        _loadingCoroutine = StartCoroutine(LoadAsyncSceneProcess(sceneName));
-    }
-
-    private IEnumerator LoadAsyncSceneProcess(string sceneName)
-    {
-        if (_panelFader != null)
-            yield return _panelFader.Fade(1f, true).WaitForCompletion();
-
-        float loadStartTime = Time.realtimeSinceStartup;
-
-        if (ValidateSceneExists(sceneName) == false)
+        private IEnumerator LoadAsyncSceneProcess(string sceneName)
         {
             if (_panelFader != null)
-                yield return _panelFader.Fade(0, false).WaitForCompletion();
-        }
+                yield return _panelFader.Fade(1f, true).WaitForCompletion();
 
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+            float loadStartTime = Time.realtimeSinceStartup;
 
-        asyncLoad.allowSceneActivation = false;
-
-        while (asyncLoad.progress < _maxLoad || (Time.realtimeSinceStartup - loadStartTime) < _minLoadTime)
-        {
-            yield return null;
-        }
-
-        asyncLoad.allowSceneActivation = true;
-
-        yield return null;
-        _resourcesSceneLoader.GoOver(sceneName);
-        yield return _extraLoad;
-
-        if (_isInitialize == false)
-        {
-            YG2.GameReadyAPI();
-            
-            _isInitialize = true;
-        }
-
-        if (_panelFader != null)
-            yield return _panelFader.Fade(0, false).WaitForCompletion();
-
-        _isFirstLoad = false;
-    }
-
-    private bool ValidateSceneExists(string sceneName)
-    {
-        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
-        {
-            string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
-
-            if (Path.GetFileNameWithoutExtension(scenePath) == sceneName)
+            if (ValidateSceneExists(sceneName) == false)
             {
-                return true;
+                if (_panelFader != null)
+                    yield return _panelFader.Fade(0, false).WaitForCompletion();
             }
+
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+
+            asyncLoad.allowSceneActivation = false;
+
+            while (asyncLoad.progress < _maxLoad || (Time.realtimeSinceStartup - loadStartTime) < _minLoadTime)
+            {
+                yield return null;
+            }
+
+            asyncLoad.allowSceneActivation = true;
+
+            yield return null;
+            _resourcesSceneLoader.GoOver(sceneName);
+            yield return _extraLoad;
+
+            if (_isInitialize == false)
+            {
+                YG2.GameReadyAPI();
+
+                _isInitialize = true;
+            }
+
+            if (_panelFader != null)
+                yield return _panelFader.Fade(0, false).WaitForCompletion();
+
+            _isFirstLoad = false;
         }
 
-        SceneManager.LoadSceneAsync(Menu);
-        Debug.LogError($"Сцена '{sceneName}' не найдена в настройках сборки!");
-        return false;
-    }
+        private bool ValidateSceneExists(string sceneName)
+        {
+            for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+            {
+                string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
 
-    private void OnDestroy()
-    {
-        if (Instance == this) 
-            Instance = null;
+                if (Path.GetFileNameWithoutExtension(scenePath) == sceneName)
+                {
+                    return true;
+                }
+            }
 
-        _canvasGroup.DOKill();
+            SceneManager.LoadSceneAsync(Menu);
+            Debug.LogError($"пїЅпїЅпїЅпїЅпїЅ '{sceneName}' пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!");
+            return false;
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this)
+                Instance = null;
+
+            _canvasGroup.DOKill();
+        }
     }
 }

@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+namespace PuzzleEditor
+{
 
 public interface IBlocksContainer
 {
@@ -8,4 +10,5 @@ public interface IBlocksContainer
     public int ActiveBlocksCount { get; }
 
     public Transform Transform { get; }
+}
 }

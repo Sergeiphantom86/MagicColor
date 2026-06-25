@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.Walls.WallEditor
+{
 
 public class Wall : ColorableObject, IUnblocker, IPointer
 {
@@ -41,4 +43,5 @@ public class Wall : ColorableObject, IUnblocker, IPointer
     {
         _isBlocked = true;
     }
+}
 }

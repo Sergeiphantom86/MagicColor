@@ -1,5 +1,9 @@
+using Menu.HomeScreenSaver;
+using PuzzleEditor.SoundEditor;
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu.ButtonEditor
+{
 
 [RequireComponent(typeof(Button))]
 public class SettingsClosure : MonoBehaviour
@@ -28,4 +32,5 @@ public class SettingsClosure : MonoBehaviour
         _settingWindow.gameObject.SetActive(false);
         _viewer.SetActive(true);
     }
+}
 }

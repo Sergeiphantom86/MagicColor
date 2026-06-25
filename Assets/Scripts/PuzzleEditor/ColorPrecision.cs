@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
+namespace PuzzleEditor
+{
 
 public class ColorPrecision : IColorPrecision
 {
@@ -32,4 +34,5 @@ public class ColorPrecision : IColorPrecision
     {
         return Mathf.Round(value * PrecisionSteps) / PrecisionSteps;
     }
+}
 }

@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace Menu
+{
 
 public class Window : MonoBehaviour
 {
@@ -24,4 +26,5 @@ public class Window : MonoBehaviour
     {
         gameObject.SetActive(!gameObject.activeSelf);
     }
+}
 }

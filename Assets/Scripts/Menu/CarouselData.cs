@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace Menu
+{
 
 public class CarouselData
 {
@@ -23,4 +25,5 @@ public class CarouselData
     public CanvasGroup[] CanvasGroups { get; }
 
     public Vector2[] OriginalPositions { get; }
+}
 }

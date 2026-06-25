@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+namespace PuzzleEditor.RouletteEditor
+{
 
 public class ButtonController : MonoBehaviour
 {
@@ -20,7 +22,7 @@ public class ButtonController : MonoBehaviour
     {
         if (_button == null)
         {
-            Debug.LogError("Button не назначен!!!");
+            Debug.LogError("Button пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!!!");
         }
 
         _button.onClick.AddListener(HandleClick);
@@ -56,4 +58,5 @@ public class ButtonController : MonoBehaviour
             _isSpin = true;
         }
     }
+}
 }

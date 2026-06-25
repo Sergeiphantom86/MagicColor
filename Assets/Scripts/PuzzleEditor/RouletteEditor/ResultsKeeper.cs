@@ -1,4 +1,7 @@
+using Menu.TutorialEditor.TutorialPuzzle;
 using UnityEngine;
+namespace PuzzleEditor.RouletteEditor
+{
 
 public class ResultsKeeper : MonoBehaviour
 {
@@ -13,4 +16,5 @@ public class ResultsKeeper : MonoBehaviour
     {
         _rewards.Save();
     }
+}
 }

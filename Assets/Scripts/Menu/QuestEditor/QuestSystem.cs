@@ -1,6 +1,9 @@
+using Game.SaveEditor;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu.QuestEditor
+{
 
 [RequireComponent(typeof(TransitionChooser))]
 public class QuestSystem : MonoBehaviour
@@ -181,4 +184,5 @@ public class QuestSystem : MonoBehaviour
         _subscribedQuests.Clear();
         _progressSaver.SaveProgress();
     }
+}
 }

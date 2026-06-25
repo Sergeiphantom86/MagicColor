@@ -1,5 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
+namespace PuzzleEditor.InkEditor
+{
 
 public class DropExplosionAnimator : MonoBehaviour, IDropAnimation
 {
@@ -69,4 +71,5 @@ public class DropExplosionAnimator : MonoBehaviour, IDropAnimation
     {
         return Random.Range(0f, _stagger);
     }
+}
 }

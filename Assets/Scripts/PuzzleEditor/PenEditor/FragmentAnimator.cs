@@ -1,5 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
+namespace PuzzleEditor.PenEditor
+{
 
 public class FragmentAnimator : MonoBehaviour, IFragmentAnimator
 {
@@ -19,4 +21,5 @@ public class FragmentAnimator : MonoBehaviour, IFragmentAnimator
         fragmentTransform.localScale = Vector3.zero;
         fragmentTransform.DOScale(originalScale, 0.5f).SetEase(Ease.OutElastic);
     }
+}
 }

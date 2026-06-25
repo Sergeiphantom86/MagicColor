@@ -1,4 +1,7 @@
 using System;
+using Wallets.WalletEditor;
+namespace PuzzleEditor.Walls.WallEngineEditor
+{
 
 public class BagUnlockPolicy : IUnlockPolicy
 {
@@ -25,4 +28,5 @@ public class BagUnlockPolicy : IUnlockPolicy
     {
         _bag.Use();
     }
+}
 }

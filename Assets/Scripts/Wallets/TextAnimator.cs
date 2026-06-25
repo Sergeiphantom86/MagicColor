@@ -1,6 +1,8 @@
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+namespace Wallets
+{
 
 public class TextAnimator : MonoBehaviour
 {
@@ -65,4 +67,5 @@ public class TextAnimator : MonoBehaviour
             _textMeshPro.text = $"{_numberFormatter.FormatNumber(_currentValue)}";
         }
     }
+}
 }

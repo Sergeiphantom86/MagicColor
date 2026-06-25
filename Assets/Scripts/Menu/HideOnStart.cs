@@ -1,32 +1,36 @@
+using Menu.LanguageManager;
 using UnityEngine;
 
-public class HideOnStart : MonoBehaviour
+namespace Menu
 {
-    private LanguageMenu _languageMenu;
-
-    private void Awake()
+    public class HideOnStart : MonoBehaviour
     {
-        _languageMenu = GetComponentInChildren<LanguageMenu>();
+        private LanguageMenu _languageMenu;
 
-        if (_languageMenu == null)
+        private void Awake()
         {
-            Debug.LogError($"{nameof(LanguageMenu)} == null", this);
-            return;
+            _languageMenu = GetComponentInChildren<LanguageMenu>();
+
+            if (_languageMenu == null)
+            {
+                Debug.LogError($"{nameof(LanguageMenu)} == null", this);
+                return;
+            }
         }
-    }
 
-    private void OnEnable()
-    {
-        _languageMenu.Initialized += TurnOff;
-    }
+        private void OnEnable()
+        {
+            _languageMenu.Initialized += TurnOff;
+        }
 
-    private void OnDisable()
-    {
-        _languageMenu.Initialized -= TurnOff;
-    }
+        private void OnDisable()
+        {
+            _languageMenu.Initialized -= TurnOff;
+        }
 
-    private void TurnOff()
-    {
-        gameObject.SetActive(false);
+        private void TurnOff()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

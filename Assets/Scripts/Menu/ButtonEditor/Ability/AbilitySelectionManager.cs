@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+namespace Menu.ButtonEditor.Ability
+{
 
 public class AbilitySelectionManager : MonoBehaviour
 {
@@ -42,4 +44,5 @@ public class AbilitySelectionManager : MonoBehaviour
     {
         OnSelection?.Invoke();
     }
+}
 }

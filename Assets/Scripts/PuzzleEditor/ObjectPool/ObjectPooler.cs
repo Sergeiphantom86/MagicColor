@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+namespace PuzzleEditor.ObjectPool
+{
 
 public class ObjectPooler<T> : MonoBehaviour 
     where T : Component
@@ -148,4 +150,5 @@ public class ObjectPooler<T> : MonoBehaviour
             }
         }
     }
+}
 }

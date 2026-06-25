@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.Table
+{
 
 public class IsoGridController : MonoBehaviour
 {
@@ -42,4 +44,5 @@ public class IsoGridController : MonoBehaviour
 
         return new Vector2(Mathf.Floor(x), Mathf.Floor(y));
     }
+}
 }

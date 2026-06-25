@@ -1,4 +1,7 @@
+using PuzzleEditor.SoundEditor;
 using UnityEngine;
+namespace Menu.TutorialEditor
+{
 
 public class CurrencySound : MonoBehaviour
 {
@@ -18,4 +21,5 @@ public class CurrencySound : MonoBehaviour
             _voiceover.PlayOneShot(_audioClip);
         }
     }
+}
 }

@@ -1,3 +1,5 @@
+namespace Game
+{
 public class SwitcherMenu : ButtonMenu
 {
     private const string Menu = nameof(Menu);
@@ -6,4 +8,5 @@ public class SwitcherMenu : ButtonMenu
     {
         PauseMenu.Load(Menu);
     }
+}
 }

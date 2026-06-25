@@ -1,5 +1,16 @@
+using Menu;
+using Menu.TutorialEditor.TutorialPuzzle;
+using PuzzleEditor.LockEditor;
+using PuzzleEditor.MovingBlocks.GridEditor;
+using PuzzleEditor.PenEditor;
+using PuzzleEditor.RouletteEditor;
+using PuzzleEditor.Spawners;
+using PuzzleEditor.UI;
 using System.Collections.Generic;
 using UnityEngine;
+using Wallets.WalletEditor;
+namespace PuzzleEditor.Walls
+{
 
 public class PuzzlesIdentifier : MonoBehaviour
 {
@@ -101,4 +112,5 @@ public class PuzzlesIdentifier : MonoBehaviour
     {
         _gridSystem.SetGridSize(CurrentContainer.GridSize.x, CurrentContainer.GridSize.y);
     }
+}
 }

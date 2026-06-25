@@ -1,5 +1,8 @@
+using Game.SaveEditor;
 using UnityEngine;
 using UnityEngine.Audio;
+namespace PuzzleEditor.SoundEditor
+{
 
 [RequireComponent(typeof(AudioSource))]
 public class BackgroundMusicPuzzle : MonoBehaviour
@@ -70,4 +73,5 @@ public class BackgroundMusicPuzzle : MonoBehaviour
         if (_musicGroup != null && _musicSource != null)
             _musicSource.outputAudioMixerGroup = _musicGroup;
     }
+}
 }

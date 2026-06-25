@@ -104,10 +104,10 @@ public class VolumetricLight : MonoBehaviour
         else
             _light.AddCommandBuffer(LightEvent.AfterShadowMap, _commandBuffer);
 
-        Shader shader = Shader.Find("Sandbox/VolumetricLight");
-        if (shader == null)
-            throw new Exception("Critical Error: \"Sandbox/VolumetricLight\" shader is missing. Make sure it is included in \"Always Included Shaders\" in ProjectSettings/Graphics.");
-        _material = new Material(shader); // new Material(VolumetricLightRenderer.GetLightMaterial());
+        //ShaderTagId shader = Shader.Find("Sandbox/VolumetricLight");
+        //if (shader == null)
+        //    throw new Exception("Critical Error: \"Sandbox/VolumetricLight\" shader is missing. Make sure it is included in \"Always Included Shaders\" in ProjectSettings/Graphics.");
+        //_material = new Material(shader); // new Material(VolumetricLightRenderer.GetLightMaterial());
     }
 
     /// <summary>

@@ -1,4 +1,7 @@
+using PuzzleEditor.SoundEditor;
 using UnityEngine;
+namespace PuzzleEditor.InkEditor
+{
 
 [RequireComponent(typeof(Voiceover))]
 public class Drop : ColorableObject
@@ -23,4 +26,5 @@ public class Drop : ColorableObject
     {
         _voiceover.PlayOneShot(_moving);
     }
+}
 }

@@ -1,4 +1,6 @@
 using System;
+namespace Game.SaveEditor
+{
 
 public interface IAdsService
 {
@@ -17,4 +19,5 @@ public interface IAdsService
         Action onAdOpened,
         Action onAdClosed,
         Action onAdError);
+}
 }

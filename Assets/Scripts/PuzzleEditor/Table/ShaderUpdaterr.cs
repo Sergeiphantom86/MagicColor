@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.Table
+{
 
 public class ShaderUpdaterr : MonoBehaviour
 {
@@ -25,4 +27,5 @@ public class ShaderUpdaterr : MonoBehaviour
     {
         material.SetVector("_GridSize", new Vector4(cellSize * gridSizeX / _multiplier, cellSize * gridSizeY / _multiplier, 0, 0));
     }
+}
 }

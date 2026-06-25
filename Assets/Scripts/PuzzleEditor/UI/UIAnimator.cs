@@ -1,5 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
+namespace PuzzleEditor.UI
+{
 
 [RequireComponent(typeof(RectTransform))]
 public class UIAnimator : MonoBehaviour, IUIAnimator
@@ -52,4 +54,5 @@ public class UIAnimator : MonoBehaviour, IUIAnimator
             _sequence.Kill();
         }
     }
+}
 }

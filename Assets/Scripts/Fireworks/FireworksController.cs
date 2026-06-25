@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+namespace Fireworks
+{
 
 public class FireworksController : MonoBehaviour
 {
@@ -33,4 +35,5 @@ public class FireworksController : MonoBehaviour
         _allFireworksAudio.Clear();
         _allFireworksAudio.AddRange(GetComponentsInChildren<SimpleFireworksAudio>());
     }
+}
 }

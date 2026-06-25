@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using PuzzleEditor;
+namespace Menu.HomeScreenSaver
+{
 
 [RequireComponent(typeof(AnimationController), typeof(TextureInitializer))]
 public class Viewer : MonoBehaviour
@@ -119,4 +122,5 @@ public class Viewer : MonoBehaviour
     {
         StopAllAnimations();
     }
+}
 }

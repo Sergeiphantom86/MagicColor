@@ -1,4 +1,8 @@
+using Menu.TutorialEditor.TutorialPuzzle;
+using PuzzleEditor.LockEditor;
 using UnityEngine;
+namespace PuzzleEditor.Walls
+{
 
 public class LockFeedbackService : MonoBehaviour, ILockFeedbackService
 {
@@ -44,5 +48,6 @@ public class LockFeedbackService : MonoBehaviour, ILockFeedbackService
         }
 
         _hint = hint;
+    }
     }
 }

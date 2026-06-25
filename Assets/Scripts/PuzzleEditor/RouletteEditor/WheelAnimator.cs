@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+namespace PuzzleEditor.RouletteEditor
+{
 
 public class WheelAnimator : MonoBehaviour
 {
@@ -26,7 +28,7 @@ public class WheelAnimator : MonoBehaviour
 
         if (_particleSystem == null)
         {
-            Debug.LogError("ParticleSystem не найден!!!");
+            Debug.LogError("ParticleSystem пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!!!");
             return;
         }
 
@@ -150,4 +152,5 @@ public class WheelAnimator : MonoBehaviour
     {
         _spinSequence?.Kill();
     }
+}
 }

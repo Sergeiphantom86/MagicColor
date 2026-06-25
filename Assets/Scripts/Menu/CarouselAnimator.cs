@@ -1,5 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
+namespace Menu
+{
 
 public class CarouselAnimator
 {
@@ -26,4 +28,5 @@ public class CarouselAnimator
         rect.DOScale(scale, _duration).SetEase(Ease.OutBack);
         canvas.DOFade(alpha, _duration);
     }
+}
 }

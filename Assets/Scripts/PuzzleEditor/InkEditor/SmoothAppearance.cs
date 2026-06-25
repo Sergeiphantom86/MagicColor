@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+namespace PuzzleEditor.InkEditor
+{
 
 [RequireComponent(typeof(SmoothMoveToTarget), typeof(Drop))]
 public class SmoothAppearance : MonoBehaviour
@@ -71,4 +73,6 @@ public class SmoothAppearance : MonoBehaviour
                      .SetEase(Ease.InOutBack))
             .OnComplete(() => action?.Invoke());
     }
+}
+
 }

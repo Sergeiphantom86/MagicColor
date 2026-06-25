@@ -1,63 +1,67 @@
+using Game.SaveEditor;
 using UnityEngine;
 
-public class QuestTransitionService : IQuestTransitionService
+namespace Menu.QuestEditor
 {
-    private const string Puzzle = nameof(Puzzle);
-
-    private readonly SpriteTransmitter _spriteTransmitter;
-    private readonly IProgressSaver _progressSaver;
-    private readonly ZoomChanger _zoomChanger;
-    private readonly int _transparentIndex = 2;
-
-    private TransitionResult _result;
-
-    public QuestTransitionService(IProgressSaver progressSaver, ZoomChanger zoomChanger, SpriteTransmitter spriteTransmitter)
+    public class QuestTransitionService : IQuestTransitionService
     {
-        _spriteTransmitter = spriteTransmitter;
-        _progressSaver = progressSaver;
-        _zoomChanger = zoomChanger;
-        _result = new();
-    }
+        private const string Puzzle = nameof(Puzzle);
 
-    public TransitionResult ProcessQuest(Quest quest)
-    {
-        if (quest.Index == _transparentIndex)
+        private readonly SpriteTransmitter _spriteTransmitter;
+        private readonly IProgressSaver _progressSaver;
+        private readonly ZoomChanger _zoomChanger;
+        private readonly int _transparentIndex = 2;
+
+        private TransitionResult _result;
+
+        public QuestTransitionService(IProgressSaver progressSaver, ZoomChanger zoomChanger, SpriteTransmitter spriteTransmitter)
         {
-            _progressSaver.MakeTransparent(true);
+            _spriteTransmitter = spriteTransmitter;
+            _progressSaver = progressSaver;
+            _zoomChanger = zoomChanger;
+            _result = new();
         }
 
-        if (quest.IsTutorial == false)
+        public TransitionResult ProcessQuest(Quest quest)
         {
-            quest.SetTutorial(true);
-            _progressSaver.SetTutorial(quest.Index);
+            if (quest.Index == _transparentIndex)
+            {
+                _progressSaver.MakeTransparent(true);
+            }
 
-            _result.ShowOffer = true;
-            _result.UseMobilePanel = _zoomChanger.IsMobileWithTallScreen();
+            if (quest.IsTutorial == false)
+            {
+                quest.SetTutorial(true);
+                _progressSaver.SetTutorial(quest.Index);
+
+                _result.ShowOffer = true;
+                _result.UseMobilePanel = _zoomChanger.IsMobileWithTallScreen();
+
+                return _result;
+            }
+
+            _progressSaver.ObstacleSwitch(true);
+
+            if (quest.Index < _progressSaver.Saves.ObstacleDeactivatIndex)
+                _progressSaver.ObstacleSwitch(false);
+            else
+                _progressSaver.ObstacleSwitch(true);
+
+            _result.SceneName = Puzzle;
 
             return _result;
         }
 
-        _progressSaver.ObstacleSwitch(true);
-
-        if (quest.Index < _progressSaver.Saves.ObstacleDeactivatIndex)
-            _progressSaver.ObstacleSwitch(false);
-        else
-            _progressSaver.ObstacleSwitch(true);
-
-        _result.SceneName = Puzzle;
-
-        return _result;
-    }
-
-    public void SaveSprite(Sprite sprite)
-    {
-        if (sprite != null)
+        public void SaveSprite(Sprite sprite)
         {
-            _spriteTransmitter.SetCurrent(sprite);
-        }
-        else
-        {
-            Debug.LogWarning("Cached sprite is null during transition.");
+            if (sprite != null)
+            {
+                _spriteTransmitter.SetCurrent(sprite);
+            }
+            else
+            {
+                Debug.LogWarning("Cached sprite is null during transition.");
+            }
         }
     }
 }

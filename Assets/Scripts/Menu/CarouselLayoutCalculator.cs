@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+namespace Menu
+{
 
 public class CarouselLayoutCalculator
 {
@@ -80,4 +82,5 @@ public class CarouselLayoutCalculator
     {
         return Mathf.Sign(buttonIndex - centerIndex);
     }
+}
 }

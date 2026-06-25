@@ -1,8 +1,10 @@
 using UnityEngine;
+namespace PuzzleEditor.MovingBlocks
+{
 
 public class ColorSubstitute : ColorableObject
 {
-    [Header("Настройки цвета")]
+    [Header("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ")]
     [SerializeField] private bool changeOnAwake = true;
     [SerializeField] private bool useSaturationRange = false;
     [SerializeField][Range(0f, 1f)] private float minSaturation = 0.5f;
@@ -47,4 +49,5 @@ public class ColorSubstitute : ColorableObject
         InstallRepainted();
         AssignOriginal();
     }
+}
 }

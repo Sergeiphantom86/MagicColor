@@ -1,4 +1,7 @@
+using Game.SaveEditor;
 using UnityEngine;
+namespace Menu
+{
 
 public class ZoomChanger
 {
@@ -48,4 +51,5 @@ public class ZoomChanger
     {
         return (float)Screen.height / Screen.width;
     }
+}
 }

@@ -1,31 +1,37 @@
+using Menu.TutorialEditor;
+using PuzzleEditor.LockEditor;
 using UnityEngine;
 
-public class Assigner : MonoBehaviour
+namespace PuzzleEditor
 {
-    private ICollisionHandler _collisionHandler;
-
-    private void Awake()
+    public class Assigner : MonoBehaviour
     {
-        _collisionHandler = GetComponent<ICollisionHandler>();
-    }
+        private ICollisionHandler _collisionHandler;
 
-    private void OnEnable()
-    {
-        _collisionHandler.OnEnter += SetParent;
-    }
-
-    private void OnDisable()
-    {
-        _collisionHandler.OnEnter -= SetParent;
-    }
-
-    private void SetParent(Collider collider)
-    {
-        if (collider.TryGetComponent(out Lock @lock))
+        private void Awake()
         {
-            Debug.Log(10);
+            _collisionHandler = GetComponent<ICollisionHandler>();
+        }
 
-            @lock.transform.SetParent(transform);
+        private void OnEnable()
+        {
+            _collisionHandler.OnEnter += SetParent;
+        }
+
+        private void OnDisable()
+        {
+            _collisionHandler.OnEnter -= SetParent;
+        }
+
+        private void SetParent(Collider collider)
+        {
+            if (collider.TryGetComponent(out Lock @lock))
+            {
+                Debug.Log(10);
+
+                @lock.transform.SetParent(transform);
+            }
         }
     }
+
 }

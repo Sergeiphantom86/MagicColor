@@ -138,57 +138,57 @@ public class VolumetricLightRenderer : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    void Awake()
-    {
-        _camera = GetComponent<Camera>();
-        if (_camera.actualRenderingPath == RenderingPath.Forward)
-            _camera.depthTextureMode = DepthTextureMode.Depth;
+    //void Awake()
+    //{
+    //    _camera = GetComponent<Camera>();
+    //    if (_camera.actualRenderingPath == RenderingPath.Forward)
+    //        _camera.depthTextureMode = DepthTextureMode.Depth;
 
-        _currentResolution = Resolution;
+    //    _currentResolution = Resolution;
 
-        Shader shader = Shader.Find("Hidden/BlitAdd");
-        if (shader == null)
-            throw new Exception("Critical Error: \"Hidden/BlitAdd\" shader is missing. Make sure it is included in \"Always Included Shaders\" in ProjectSettings/Graphics.");
-        _blitAddMaterial = new Material(shader);
+    //    Shader shader = Shader.Find("Hidden/BlitAdd");
+    //    if (shader == null)
+    //        throw new Exception("Critical Error: \"Hidden/BlitAdd\" shader is missing. Make sure it is included in \"Always Included Shaders\" in ProjectSettings/Graphics.");
+    //    _blitAddMaterial = new Material(shader);
 
-        shader = Shader.Find("Hidden/BilateralBlur");
-        if (shader == null)
-            throw new Exception("Critical Error: \"Hidden/BilateralBlur\" shader is missing. Make sure it is included in \"Always Included Shaders\" in ProjectSettings/Graphics.");
-        _bilateralBlurMaterial = new Material(shader);
+    //    shader = Shader.Find("Hidden/BilateralBlur");
+    //    if (shader == null)
+    //        throw new Exception("Critical Error: \"Hidden/BilateralBlur\" shader is missing. Make sure it is included in \"Always Included Shaders\" in ProjectSettings/Graphics.");
+    //    _bilateralBlurMaterial = new Material(shader);
 
-        _preLightPass = new CommandBuffer();
-        _preLightPass.name = "PreLight";
+    //    _preLightPass = new CommandBuffer();
+    //    _preLightPass.name = "PreLight";
 
-        ChangeResolution();
+    //    ChangeResolution();
 
-        if (_pointLightMesh == null)
-        {
-            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            _pointLightMesh = go.GetComponent<MeshFilter>().sharedMesh;
-            Destroy(go);
-        }
+    //    if (_pointLightMesh == null)
+    //    {
+    //        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+    //        _pointLightMesh = go.GetComponent<MeshFilter>().sharedMesh;
+    //        Destroy(go);
+    //    }
 
-        if (_spotLightMesh == null)
-        {
-            _spotLightMesh = CreateSpotLightMesh();
-        }
+    //    if (_spotLightMesh == null)
+    //    {
+    //        _spotLightMesh = CreateSpotLightMesh();
+    //    }
 
-        if (_lightMaterial == null)
-        {
-            shader = Shader.Find("Sandbox/VolumetricLight");
-            if (shader == null)
-                throw new Exception("Critical Error: \"Sandbox/VolumetricLight\" shader is missing. Make sure it is included in \"Always Included Shaders\" in ProjectSettings/Graphics.");
-            _lightMaterial = new Material(shader);
-        }
+    //    if (_lightMaterial == null)
+    //    {
+    //        shader = Shader.Find("Sandbox/VolumetricLight");
+    //        if (shader == null)
+    //            throw new Exception("Critical Error: \"Sandbox/VolumetricLight\" shader is missing. Make sure it is included in \"Always Included Shaders\" in ProjectSettings/Graphics.");
+    //        _lightMaterial = new Material(shader);
+    //    }
 
-        if (_defaultSpotCookie == null)
-        {
-            _defaultSpotCookie = DefaultSpotCookie;
-        }
+    //    if (_defaultSpotCookie == null)
+    //    {
+    //        _defaultSpotCookie = DefaultSpotCookie;
+    //    }
 
-        LoadNoise3dTexture();
-        GenerateDitherTexture();
-    }
+    //    LoadNoise3dTexture();
+    //    GenerateDitherTexture();
+    //}
 
     /// <summary>
     /// 
@@ -367,8 +367,8 @@ public class VolumetricLightRenderer : MonoBehaviour
         _bilateralBlurMaterial.SetTexture("_QuarterResDepthBuffer", _quarterDepthBuffer);
         _bilateralBlurMaterial.SetTexture("_QuarterResColor", _quarterVolumeLightTexture);
 
-        Shader.SetGlobalTexture("_DitherTexture", _ditheringTexture);
-        Shader.SetGlobalTexture("_NoiseTexture", _noiseTexture);
+        //Shader.SetGlobalTexture("_DitherTexture", _ditheringTexture);
+        //Shader.SetGlobalTexture("_NoiseTexture", _noiseTexture);
     }
 
     /// <summary>

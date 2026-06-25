@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.UI
+{
 
 public class VictoryPlaque : MonoBehaviour
 {
@@ -16,4 +18,5 @@ public class VictoryPlaque : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+}
 }

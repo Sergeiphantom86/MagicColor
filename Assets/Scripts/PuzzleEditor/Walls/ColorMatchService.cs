@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.Walls
+{
 
 public class ColorMatchService : MonoBehaviour, IColorMatchService
 {
@@ -33,4 +35,6 @@ public class ColorMatchService : MonoBehaviour, IColorMatchService
     {
         _colorable.Disable();
     }
+}
+
 }

@@ -1,6 +1,9 @@
+using Game.SaveEditor;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+namespace PuzzleEditor.SoundEditor
+{
 
 [RequireComponent(typeof(Slider))]
 public class VolumeChanger : MonoBehaviour
@@ -21,13 +24,13 @@ public class VolumeChanger : MonoBehaviour
 
         if (_toggleBase == null)
         {
-            Debug.LogError("Slider не назначен!");
+            Debug.LogError("Slider пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
             return;
         }
 
         if (_volumeSlider == null)
         {
-            Debug.LogError("Slider не назначен!");
+            Debug.LogError("Slider пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
             return;
         }
 
@@ -78,4 +81,5 @@ public class VolumeChanger : MonoBehaviour
 
         _volumeSlider.value = _temporaryVolume;
     }
+}
 }

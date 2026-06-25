@@ -1,4 +1,6 @@
 using YG;
+namespace Game.SaveEditor
+{
 
 public interface IProgressRecord
 {
@@ -7,4 +9,5 @@ public interface IProgressRecord
     public void SaveProgress();
 
     public void SetDefaultValues();
+}
 }

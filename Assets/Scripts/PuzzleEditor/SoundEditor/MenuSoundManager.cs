@@ -1,6 +1,9 @@
+using Game.SaveEditor;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
+namespace PuzzleEditor.SoundEditor
+{
 
 [RequireComponent(typeof(AudioSource))]
 public class MenuSoundManager : MonoBehaviour
@@ -148,4 +151,5 @@ public class MenuSoundManager : MonoBehaviour
     {
         yield return new WaitForSeconds(audioClip.length);
     }
+}
 }

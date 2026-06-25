@@ -1,5 +1,9 @@
+using PuzzleEditor.MovingBlocks.GridEditor;
+using PuzzleEditor.SoundEditor;
 using System;
 using UnityEngine;
+namespace PuzzleEditor.MovingBlocks
+{
 
 [RequireComponent(typeof(GridDragMovement), typeof(Magnifier), typeof(IInputHandler))]
 [RequireComponent(typeof(IColorable), typeof(Voiceover))]
@@ -95,4 +99,5 @@ public class TouchDragInput : MonoBehaviour, ITouchDragInput
             OnDropped?.Invoke();
         }
     }
+}
 }

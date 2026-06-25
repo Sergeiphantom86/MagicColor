@@ -1,5 +1,9 @@
+using Game.SaveEditor;
+using Menu.TutorialEditor;
 using System;
 using UnityEngine;
+namespace PuzzleEditor.UI.LoadingScreen
+{
 
 public class AdRewardController : MonoBehaviour
 {
@@ -72,4 +76,5 @@ public class AdRewardController : MonoBehaviour
     {
         OnComplete?.Invoke();
     }
+}
 }

@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+namespace PuzzleEditor.Spawners
+{
 
 [Serializable]
 public struct ChainSpawnData
@@ -9,4 +11,5 @@ public struct ChainSpawnData
     public ChainSpawnDirection Direction;
     public int Count;
     public int Spacing;
+}
 }

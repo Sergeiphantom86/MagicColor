@@ -1,5 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
+namespace Menu.TutorialEditor
+{
 
 public class EngineTutorialMenu : MonoBehaviour
 {
@@ -119,4 +121,5 @@ public class EngineTutorialMenu : MonoBehaviour
     {
         _animationSequence?.Kill();
     }
+}
 }

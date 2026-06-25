@@ -1,5 +1,8 @@
+using Menu.TutorialEditor.TutorialPuzzle;
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu.TutorialEditor
+{
 
 [RequireComponent(typeof(HandMover))]
 public class HandIndicator : MonoBehaviour
@@ -22,4 +25,5 @@ public class HandIndicator : MonoBehaviour
     {
         _handMover.OnDestroyed();
     }
+}
 }

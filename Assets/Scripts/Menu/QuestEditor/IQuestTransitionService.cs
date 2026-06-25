@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public interface IQuestTransitionService
+namespace Menu.QuestEditor
 {
-    public TransitionResult ProcessQuest(Quest quest);
+    public interface IQuestTransitionService
+    {
+        public TransitionResult ProcessQuest(Quest quest);
 
-    public void SaveSprite(Sprite sprite);
+        public void SaveSprite(Sprite sprite);
+    }
 }

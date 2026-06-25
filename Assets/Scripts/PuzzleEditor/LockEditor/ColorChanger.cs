@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.LockEditor
+{
 
 public class ColorChanger : MonoBehaviour
 {
@@ -82,4 +84,5 @@ public class ColorChanger : MonoBehaviour
     {
         return new GradientAlphaKey(alpha, time);
     }
+}
 }

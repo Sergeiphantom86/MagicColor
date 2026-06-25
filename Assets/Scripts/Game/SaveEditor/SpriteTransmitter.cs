@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace Game.SaveEditor
+{
 
 public class SpriteTransmitter : MonoBehaviour
 {
@@ -16,7 +18,7 @@ public class SpriteTransmitter : MonoBehaviour
     {
         if (sprite == null)
         {
-            Debug.LogWarning($"[SpriteTransmitter] Попытка установить null в _new на объекте {gameObject.name}");
+            Debug.LogWarning($"[SpriteTransmitter] пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ null пїЅ _new пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ {gameObject.name}");
             return;
         }
 
@@ -32,7 +34,7 @@ public class SpriteTransmitter : MonoBehaviour
     {
         if (sprite == null)
         {
-            Debug.LogWarning($"[SpriteTransmitter] Попытка установить null в _current на объекте {gameObject.name}");
+            Debug.LogWarning($"[SpriteTransmitter] пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ null пїЅ _current пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ {gameObject.name}");
             return;
         }
 
@@ -48,4 +50,5 @@ public class SpriteTransmitter : MonoBehaviour
     {
         _isAutomaticallyNewLevel = isAutomaticallyNewLevel;
     }
+}
 }

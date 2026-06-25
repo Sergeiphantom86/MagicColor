@@ -1,8 +1,10 @@
 using System.Collections;
+namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
+{
 
 public class CompletionState : TutorialStater
 {
-    public CompletionState(TutorialStateMachine stateMachine, TutorialContext context)
+    public CompletionState(StateMachine stateMachine, TutorialContext context)
         : base(stateMachine, context)
     {
     }
@@ -27,4 +29,5 @@ public class CompletionState : TutorialStater
 
         Context.Hints.TurnOff();
     }
+}
 }

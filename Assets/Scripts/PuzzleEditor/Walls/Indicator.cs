@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.Walls
+{
 
 public class Indicator : MonoBehaviour
 {
@@ -23,4 +25,5 @@ public class Indicator : MonoBehaviour
 
         _spriteRenderer.enabled = true;
     }
+}
 }

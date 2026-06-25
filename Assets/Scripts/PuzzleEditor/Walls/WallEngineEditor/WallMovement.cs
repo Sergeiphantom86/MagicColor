@@ -1,5 +1,8 @@
 using UnityEngine;
 using DG.Tweening;
+using PuzzleEditor.Walls.WallEditor;
+namespace PuzzleEditor.Walls.WallEngineEditor
+{
 
 public class WallMovement : MonoBehaviour
 {
@@ -53,4 +56,5 @@ public class WallMovement : MonoBehaviour
             .SetEase(Ease.InOutQuad)
             .OnComplete(() => _isMoving = false);
     }
+}
 }

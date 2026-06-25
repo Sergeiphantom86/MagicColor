@@ -1,6 +1,9 @@
+using PuzzleEditor;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+namespace Menu.HomeScreenSaver
+{
 
 [RequireComponent(typeof(FragmentCollector))]
 public class Sorter : MonoBehaviour
@@ -74,4 +77,5 @@ public class Sorter : MonoBehaviour
         _fragments = fragments;
         HasSorted?.Invoke();
     }
+}
 }

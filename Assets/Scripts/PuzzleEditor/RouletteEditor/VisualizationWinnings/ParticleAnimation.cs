@@ -1,6 +1,8 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
+{
 
 public class ParticleAnimation : MonoBehaviour
 {
@@ -88,4 +90,5 @@ public class ParticleAnimation : MonoBehaviour
             FirstPhaseRatio = firstPhaseRatio;
         }
     }
+}
 }

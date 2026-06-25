@@ -1,9 +1,11 @@
 using System.Collections;
 using UnityEngine;
+namespace Shader
+{
 
 public class SpriteGlowToggle : MonoBehaviour
 {
-    private static readonly int GlowPowerID = Shader.PropertyToID("_GlowPower");
+    //private static readonly int GlowPowerID = Shader.PropertyToID("_GlowPower");
 
     [SerializeField] private GameObject _spriteObject;
 
@@ -55,13 +57,15 @@ public class SpriteGlowToggle : MonoBehaviour
 
     private void Apply()
     {
-        if (runtimeMat == null)
-            return;
-        runtimeMat.SetFloat(GlowPowerID, GlowEnabled ? GlowPowerOn : GlowPowerOff);
+        //if (runtimeMat == null)
+        //    return;
+        //runtimeMat.SetFloat(GlowPowerID, GlowEnabled ? GlowPowerOn : GlowPowerOff);
     }
 
     private void OnDestroy()
     {
         if (runtimeMat != null) Destroy(runtimeMat);
     }
+}
+
 }

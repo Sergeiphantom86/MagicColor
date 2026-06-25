@@ -1,5 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
+namespace PuzzleEditor.UI
+{
 
 public class MoverUI
 {
@@ -115,4 +117,5 @@ public class MoverUI
         emptySequence.Complete();
         return emptySequence;
     }
+}
 }

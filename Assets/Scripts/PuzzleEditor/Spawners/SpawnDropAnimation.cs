@@ -1,68 +1,73 @@
 using DG.Tweening;
+using PuzzleEditor.PoolEffects;
+using PuzzleEditor.SoundEditor;
 using UnityEngine;
 
-public class SpawnDropAnimation : MonoBehaviour
+namespace PuzzleEditor.Spawners
 {
-    [SerializeField] private float _startYOffset;
-    [SerializeField] private float _duration;
-    [SerializeField] private Ease _ease = Ease.OutCubic;
-    [SerializeField] private AudioClip _fall;
-
-    private Tween _tween;
-    private Vector3 _targetWorldPosition;
-    private ColorableObject _targetColor;
-    private Collider _collider;
-    private Voiceover _voiceover;
-    private float _valueTransparency;
-
-    public float Duration => _duration;
-
-    private void Awake()
+    public class SpawnDropAnimation : MonoBehaviour
     {
-        _targetColor = GetComponent<ColorableObject>();
-        _collider = GetComponent<Collider>();
-        _voiceover = GetComponent<Voiceover>();
-        _valueTransparency = 0.6f;
-        gameObject.SetActive(false);
-    }
+        [SerializeField] private float _startYOffset;
+        [SerializeField] private float _duration;
+        [SerializeField] private Ease _ease = Ease.OutCubic;
+        [SerializeField] private AudioClip _fall;
 
-    private void OnEnable()
-    {
-        _tween?.Play();
+        private Tween _tween;
+        private Vector3 _targetWorldPosition;
+        private ColorableObject _targetColor;
+        private Collider _collider;
+        private Voiceover _voiceover;
+        private float _valueTransparency;
 
-        if (_voiceover != null && _fall != null)
-            _voiceover.PlayOneShot(_fall);
-    }
+        public float Duration => _duration;
 
-    public void Create(Effecter effecter)
-    {
-        SetTargetPosition();
+        private void Awake()
+        {
+            _targetColor = GetComponent<ColorableObject>();
+            _collider = GetComponent<Collider>();
+            _voiceover = GetComponent<Voiceover>();
+            _valueTransparency = 0.6f;
+            gameObject.SetActive(false);
+        }
 
-        SetStartPosition();
+        private void OnEnable()
+        {
+            _tween?.Play();
 
-        _tween?.Kill();
+            if (_voiceover != null && _fall != null)
+                _voiceover.PlayOneShot(_fall);
+        }
 
-        _collider.enabled = true;
+        public void Create(Effecter effecter)
+        {
+            SetTargetPosition();
 
-        _tween = transform
-            .DOMove(_targetWorldPosition, _duration)
-            .OnComplete(() =>
-            {
-                effecter.CraeteParticles(transform.position, Quaternion.identity, 0.5f);
+            SetStartPosition();
 
-                _targetColor.SetAlpha(_valueTransparency);
-            })
-            .SetEase(_ease)
-            .Pause();
-    }
+            _tween?.Kill();
 
-    private void SetStartPosition()
-    {
-        transform.position = _targetWorldPosition + Vector3.up * _startYOffset;
-    }
+            _collider.enabled = true;
 
-    private void SetTargetPosition()
-    {
-        _targetWorldPosition = transform.position;
+            _tween = transform
+                .DOMove(_targetWorldPosition, _duration)
+                .OnComplete(() =>
+                {
+                    effecter.CraeteParticles(transform.position, Quaternion.identity, 0.5f);
+
+                    _targetColor.SetAlpha(_valueTransparency);
+                })
+                .SetEase(_ease)
+                .Pause();
+        }
+
+        private void SetStartPosition()
+        {
+            transform.position = _targetWorldPosition + Vector3.up * _startYOffset;
+        }
+
+        private void SetTargetPosition()
+        {
+            _targetWorldPosition = transform.position;
+        }
     }
 }

@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+namespace Menu.TutorialEditor
+{
 
 public class CollisionHandler : MonoBehaviour, ICollisionHandler
 {
@@ -16,4 +18,5 @@ public class CollisionHandler : MonoBehaviour, ICollisionHandler
     {
         OnExit?.Invoke(other);
     }
+}
 }

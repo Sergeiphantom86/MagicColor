@@ -1,6 +1,12 @@
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using PuzzleEditor.MovingBlocks.BlockEditor;
+using PuzzleEditor.MovingBlocks;
+using Game.SaveEditor;
+using PuzzleEditor.MovingBlocks.GridEditor;
+namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
+{
 
 public class MovementState : TutorialStater
 {
@@ -8,7 +14,7 @@ public class MovementState : TutorialStater
     private readonly ITouchDragInput _input;
     private readonly IProgressSaver _progressSaver;
     private readonly TutorialContext _context;
-    private readonly TutorialStateMachine _stateMachine;
+    private readonly StateMachine _stateMachine;
     private readonly GridDragMovement _gridDragMovement;
     private readonly float _scaleMultiplier;
     private readonly float _duration;
@@ -18,7 +24,7 @@ public class MovementState : TutorialStater
     private Vector3 _startScale;
     private bool _isMoving;
 
-    public MovementState(TutorialStateMachine stateMachine, TutorialContext context, Block block, GridDragMovement gridDragMovement, ITouchDragInput input)
+    public MovementState(StateMachine stateMachine, TutorialContext context, Block block, GridDragMovement gridDragMovement, ITouchDragInput input)
         : base(stateMachine, context)
     {
         _block = block;
@@ -141,4 +147,5 @@ public class MovementState : TutorialStater
     {
         Debug.LogError($"{name} is not assigned in");
     }
+}
 }

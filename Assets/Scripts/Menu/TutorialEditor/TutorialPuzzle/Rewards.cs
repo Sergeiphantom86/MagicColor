@@ -1,7 +1,10 @@
+using PuzzleEditor.RouletteEditor;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+namespace Menu.TutorialEditor.TutorialPuzzle
+{
 
 public class Rewards : MonoBehaviour
 {
@@ -81,4 +84,5 @@ public class Rewards : MonoBehaviour
             Save();
         }
     }
+}
 }

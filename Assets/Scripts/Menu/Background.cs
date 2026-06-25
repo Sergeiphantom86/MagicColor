@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace Menu
+{
 
 public class Background : MonoBehaviour
 {
@@ -11,4 +13,5 @@ public class Background : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+}
 }

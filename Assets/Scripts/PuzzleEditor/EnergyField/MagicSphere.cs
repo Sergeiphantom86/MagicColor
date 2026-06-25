@@ -1,66 +1,71 @@
+using PuzzleEditor.MovingBlocks.GridEditor;
+using PuzzleEditor.PoolEffects;
 using System.Collections;
 using UnityEngine;
 
-public class MagicSphere : MonoBehaviour, IGridOccupant
+namespace PuzzleEditor.EnergyField
 {
-    [SerializeField] private Effecter _electricDischarge;
-    [SerializeField] private Effecter _explosionEffect;
-    [SerializeField] private Vector2Int _sizeInCells;
-
-    private Vector2Int _gridPosition;
-    private ParticleSystem _particleSystem;
-    private Explosion _explosion;
-    private float _scaleMultiplier;
-
-    public Vector2Int SizeInCells => _sizeInCells;
-
-    public GameObject GameObject => gameObject;
-
-    public Vector2Int GridPosition => _gridPosition;
-
-    private void Awake()
+    public class MagicSphere : MonoBehaviour, IGridOccupant
     {
-        _scaleMultiplier = 2;
-        _explosion = GetComponent<Explosion>();
-    }
+        [SerializeField] private Effecter _electricDischarge;
+        [SerializeField] private Effecter _explosionEffect;
+        [SerializeField] private Vector2Int _sizeInCells;
 
-    private void Start()
-    {
-        GetEffect(_electricDischarge, _scaleMultiplier);
-    }
+        private Vector2Int _gridPosition;
+        private ParticleSystem _particleSystem;
+        private Explosion _explosion;
+        private float _scaleMultiplier;
 
-    public void SetGridPosition(Vector2Int origin)
-    {
-        _gridPosition = origin;
-    }
+        public Vector2Int SizeInCells => _sizeInCells;
 
-    public void EnableEndEffect()
-    {
-        StartCoroutine(WaitForParticles());
-    }
+        public GameObject GameObject => gameObject;
 
-    private IEnumerator WaitForParticles()
-    {
-        ParticleSystem particleSystem = GetEffect(_explosionEffect, 1);
-        _explosion.Explode();
-        yield return new WaitWhile(() => particleSystem.IsAlive(true));
+        public Vector2Int GridPosition => _gridPosition;
 
-        TurnOff();
-    }
+        private void Awake()
+        {
+            _scaleMultiplier = 2;
+            _explosion = GetComponent<Explosion>();
+        }
 
-    private void TurnOff()
-    {
-        gameObject.SetActive(false);
-    }
+        private void Start()
+        {
+            GetEffect(_electricDischarge, _scaleMultiplier);
+        }
 
-    private ParticleSystem GetEffect(Effecter effecter, float scaleMultiplier)
-    {
-        _particleSystem = effecter.CreatePooledItem();
-        _particleSystem.transform.SetParent(transform);
-        _particleSystem.transform.localPosition = Vector3.zero;
-        _particleSystem.transform.localScale = Vector3.one / scaleMultiplier;
-        _particleSystem.gameObject.SetActive(true);
+        public void SetGridPosition(Vector2Int origin)
+        {
+            _gridPosition = origin;
+        }
 
-        return _particleSystem;
+        public void EnableEndEffect()
+        {
+            StartCoroutine(WaitForParticles());
+        }
+
+        private IEnumerator WaitForParticles()
+        {
+            ParticleSystem particleSystem = GetEffect(_explosionEffect, 1);
+            _explosion.Explode();
+            yield return new WaitWhile(() => particleSystem.IsAlive(true));
+
+            TurnOff();
+        }
+
+        private void TurnOff()
+        {
+            gameObject.SetActive(false);
+        }
+
+        private ParticleSystem GetEffect(Effecter effecter, float scaleMultiplier)
+        {
+            _particleSystem = effecter.CreatePooledItem();
+            _particleSystem.transform.SetParent(transform);
+            _particleSystem.transform.localPosition = Vector3.zero;
+            _particleSystem.transform.localScale = Vector3.one / scaleMultiplier;
+            _particleSystem.gameObject.SetActive(true);
+
+            return _particleSystem;
+        }
     }
 }

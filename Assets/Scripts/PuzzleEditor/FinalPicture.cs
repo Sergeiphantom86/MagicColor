@@ -1,6 +1,11 @@
 using DG.Tweening;
+using Menu;
+using PuzzleEditor.SoundEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+namespace PuzzleEditor
+{
 
 public class FinalPicture : MonoBehaviour
 {
@@ -9,7 +14,7 @@ public class FinalPicture : MonoBehaviour
     [SerializeField] private float _targetZPosition;
     [SerializeField] private float _scaleDuration;
     [SerializeField] private float _scaleMultiplier;
-    [SerializeField] private Activator _activator;
+    [SerializeField] private PenEditor.Activator _activator;
     [SerializeField] private AudioClip _clip;
 
     private Vector3 _targetScale;
@@ -135,4 +140,5 @@ public class FinalPicture : MonoBehaviour
     {
         StopCurrentAnimation();
     }
+}
 }

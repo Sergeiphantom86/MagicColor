@@ -1,4 +1,7 @@
+using Game.SaveEditor;
 using UnityEngine;
+namespace PuzzleEditor.RouletteEditor
+{
 
 public class RouletteGameStarter : MonoBehaviour
 {
@@ -8,4 +11,5 @@ public class RouletteGameStarter : MonoBehaviour
     {
         _automaticTransitionInstaller.SetProgressSaver(progressSaver, spriteTransmitter);
     }
+}
 }

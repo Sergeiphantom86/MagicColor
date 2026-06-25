@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+namespace Menu
+{
 
 public class UIScaleModifier : MonoBehaviour
 {
@@ -55,4 +57,5 @@ public class UIScaleModifier : MonoBehaviour
             _isStandardSize = true;
         }
     }
+}
 }

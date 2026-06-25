@@ -1,4 +1,7 @@
+using PuzzleEditor.UI;
 using UnityEngine;
+namespace PuzzleEditor.Stars
+{
 
 public class StarActivator : MonoBehaviour
 {
@@ -19,4 +22,5 @@ public class StarActivator : MonoBehaviour
     {
         _controller.SetActive(true);
     }
+}
 }

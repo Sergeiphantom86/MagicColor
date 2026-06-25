@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace Menu.ButtonEditor
+{
 
 public class ButtonFactory
 {
@@ -19,4 +21,5 @@ public class ButtonFactory
                 return null;
         }
     }
+}
 }

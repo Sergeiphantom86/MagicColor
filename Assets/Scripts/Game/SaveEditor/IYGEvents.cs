@@ -1,4 +1,6 @@
 using System;
+namespace Game.SaveEditor
+{
 
 public interface IYGEvents
 {
@@ -9,4 +11,5 @@ public interface IYGEvents
     public void SubscribeSwitchLang(Action<string> onLanguageChanged);
 
     public void UnsubscribeSwitchLang(Action<string> onLanguageChanged);
+}
 }

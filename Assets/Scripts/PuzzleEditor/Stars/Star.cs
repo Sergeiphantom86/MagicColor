@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+namespace PuzzleEditor.Stars
+{
 
 [RequireComponent(typeof(Image))]
 public class Star : MonoBehaviour
@@ -24,4 +26,5 @@ public class Star : MonoBehaviour
         _image.enabled = isOn;
         IsActive = isOn;
     }
+}
 }

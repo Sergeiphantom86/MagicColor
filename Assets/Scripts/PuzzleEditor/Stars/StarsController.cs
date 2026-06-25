@@ -1,5 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
+namespace PuzzleEditor.Stars
+{
 
 public class StarsController : MonoBehaviour
 {
@@ -74,4 +76,5 @@ public class StarsController : MonoBehaviour
             star.SetInactive();
         }
     }
+}
 }

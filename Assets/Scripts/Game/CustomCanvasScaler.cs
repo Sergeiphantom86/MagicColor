@@ -1,66 +1,70 @@
+using Menu;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Canvas))]
-public class CustomCanvasScaler : MonoBehaviour
+namespace Game
 {
-    [Header("Mobile")]
-    [SerializeField] private float _mobileScaleMultiplier;
-
-    private Canvas _canvas;
-    private Camera _camera;
-    private ZoomChanger _zoomChanger;
-
-    private float _lastWidth;
-    private float _lastHeight;
-    private Coroutine _recalculateRoutine;
-
-    private void Awake()
+    [RequireComponent(typeof(Canvas))]
+    public class CustomCanvasScaler : MonoBehaviour
     {
-        _canvas = GetComponent<Canvas>();
-        _zoomChanger = new ZoomChanger();
-        _camera = _camera != null ? _camera : Camera.main;
-    }
+        [Header("Mobile")]
+        [SerializeField] private float _mobileScaleMultiplier;
 
-    private IEnumerator Start()
-    {
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfFrame();
+        private Canvas _canvas;
+        private Camera _camera;
+        private ZoomChanger _zoomChanger;
 
-        StartRecalculate();
-    }
+        private float _lastWidth;
+        private float _lastHeight;
+        private Coroutine _recalculateRoutine;
 
-    private void Update()
-    {
-        if (Screen.width != _lastWidth || Screen.height != _lastHeight)
+        private void Awake()
         {
-            _lastWidth = Screen.width;
-            _lastHeight = Screen.height;
+            _canvas = GetComponent<Canvas>();
+            _zoomChanger = new ZoomChanger();
+            _camera = _camera != null ? _camera : Camera.main;
+        }
+
+        private IEnumerator Start()
+        {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+
             StartRecalculate();
         }
-    }
 
-    private void StartRecalculate()
-    {
-        if (_recalculateRoutine != null)
-            StopCoroutine(_recalculateRoutine);
+        private void Update()
+        {
+            if (Screen.width != _lastWidth || Screen.height != _lastHeight)
+            {
+                _lastWidth = Screen.width;
+                _lastHeight = Screen.height;
+                StartRecalculate();
+            }
+        }
 
-        _recalculateRoutine = StartCoroutine(RecalculateDelayed());
-    }
+        private void StartRecalculate()
+        {
+            if (_recalculateRoutine != null)
+                StopCoroutine(_recalculateRoutine);
 
-    private IEnumerator RecalculateDelayed()
-    {
-        yield return null;
-        yield return null;
+            _recalculateRoutine = StartCoroutine(RecalculateDelayed());
+        }
 
-        float scale = _zoomChanger.GetScreenSize(_camera);
+        private IEnumerator RecalculateDelayed()
+        {
+            yield return null;
+            yield return null;
 
-        if (scale <= 0f)
-            yield break;
+            float scale = _zoomChanger.GetScreenSize(_camera);
 
-        if (_zoomChanger.IsMobileWithTallScreen() == false)
-            yield break;
+            if (scale <= 0f)
+                yield break;
 
-        _canvas.scaleFactor = scale * _mobileScaleMultiplier;
+            if (_zoomChanger.IsMobileWithTallScreen() == false)
+                yield break;
+
+            _canvas.scaleFactor = scale * _mobileScaleMultiplier;
+        }
     }
 }

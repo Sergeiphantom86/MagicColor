@@ -1,5 +1,8 @@
-using System;
+using Fireworks;
+using PuzzleEditor.PenEditor;
 using UnityEngine;
+namespace PuzzleEditor.UI
+{
 
 [RequireComponent(typeof(Canvas))]
 public class AnimatorPuzzle : MonoBehaviour
@@ -9,7 +12,7 @@ public class AnimatorPuzzle : MonoBehaviour
     [SerializeField] private VictoryPlaque _victoryPlaque;
     [SerializeField] private FireworksController _fireworks;
 
-    public event Action OnAnimationComplete;
+    public event System.Action OnAnimationComplete;
 
     private void Awake()
     {
@@ -48,4 +51,5 @@ public class AnimatorPuzzle : MonoBehaviour
         _victoryPlaque.TurnOn();
         _fireworks.Play();
     }
+}
 }

@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+using PuzzleEditor.MovingBlocks.BlockEditor;
+namespace PuzzleEditor.MovingBlocks.GridEditor
+{
 
 [RequireComponent(typeof(Block), typeof(ITouchDragInput))]
 public class GridDragMovement : MonoBehaviour
@@ -139,4 +142,5 @@ public class GridDragMovement : MonoBehaviour
 
         return plane.Raycast(ray, out float dist) ? ray.GetPoint(dist) : _transform.position;
     }
+}
 }

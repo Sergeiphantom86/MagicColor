@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using Game.SaveEditor;
+namespace PuzzleEditor.RouletteEditor
+{
 
 [RequireComponent(typeof(ButtonController))]
 public class RouletteCounter : MonoBehaviour
@@ -42,7 +45,7 @@ public class RouletteCounter : MonoBehaviour
 
         if (_counterText == null)
         {
-            Debug.LogError("TextMeshProUGUI нет у детей!!!");
+            Debug.LogError("TextMeshProUGUI пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ!!!");
             return;
         }
 
@@ -56,7 +59,7 @@ public class RouletteCounter : MonoBehaviour
         }
         else
         {
-            Debug.LogError("ButtonController не назначен!", this);
+            Debug.LogError("ButtonController пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!", this);
         }
 
         if (_progressSaver == null)
@@ -146,4 +149,5 @@ public class RouletteCounter : MonoBehaviour
         _progressSaver.SaveSpinsCount(_currentCount);
         _countTween?.Kill();
     }
+}
 }

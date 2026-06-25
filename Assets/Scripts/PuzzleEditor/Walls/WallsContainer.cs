@@ -1,5 +1,13 @@
-﻿using System.Collections.Generic;
+using Menu.TutorialEditor.TutorialPuzzle;
+using PuzzleEditor.LockEditor;
+using PuzzleEditor.PenEditor;
+using PuzzleEditor.RouletteEditor;
+using PuzzleEditor.Walls.WallEngineEditor;
+using System.Collections.Generic;
 using UnityEngine;
+using Wallets.WalletEditor;
+namespace PuzzleEditor.Walls
+{
 
 public class WallsContainer : MonoBehaviour
 {
@@ -72,4 +80,5 @@ public class WallsContainer : MonoBehaviour
 
         return false;
     }
+}
 }

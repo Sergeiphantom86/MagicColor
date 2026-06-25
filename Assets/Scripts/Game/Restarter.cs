@@ -1,4 +1,6 @@
 using UnityEngine.SceneManagement;
+namespace Game
+{
 
 public class Restarter : ButtonMenu
 {
@@ -7,4 +9,5 @@ public class Restarter : ButtonMenu
         base.PressButton();
         PauseMenu.Load(SceneManager.GetActiveScene().name);
     }
+}
 }

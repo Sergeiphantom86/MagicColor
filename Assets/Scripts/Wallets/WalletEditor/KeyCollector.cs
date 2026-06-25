@@ -1,4 +1,7 @@
+using Menu.TutorialEditor;
 using UnityEngine;
+namespace Wallets.WalletEditor
+{
 
 public class KeyCollector : MonoBehaviour
 {
@@ -32,4 +35,5 @@ public class KeyCollector : MonoBehaviour
             key.gameObject.SetActive(false);
         }
     }
+}
 }

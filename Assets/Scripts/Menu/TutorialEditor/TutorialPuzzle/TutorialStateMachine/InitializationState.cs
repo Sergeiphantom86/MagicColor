@@ -1,10 +1,14 @@
+using Game.SaveEditor;
+
+namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
+{
 public class InitializationState : TutorialStater
 {
     private readonly IProgressSaver _progressSaver;
-    private readonly TutorialStateMachine _stateMachine;
+    private readonly StateMachine _stateMachine;
     private readonly TutorialContext _context;
 
-    public InitializationState(TutorialStateMachine stateMachine, TutorialContext context)
+    public InitializationState(StateMachine stateMachine, TutorialContext context)
         : base(stateMachine, context)
     {
         _progressSaver = new ProgressSaver();
@@ -41,4 +45,5 @@ public class InitializationState : TutorialStater
             _stateMachine.ChangeState(_context.TutorialAbilities);
         }
     }
+}
 }

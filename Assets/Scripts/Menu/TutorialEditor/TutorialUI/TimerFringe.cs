@@ -1,4 +1,7 @@
+using PuzzleEditor.Stars;
 using UnityEngine;
+namespace Menu.TutorialEditor.TutorialUI
+{
 
 public class TimerFringe : Fring
 {
@@ -16,4 +19,5 @@ public class TimerFringe : Fring
     {
         _panel.SetActive(false);
     }
+}
 }

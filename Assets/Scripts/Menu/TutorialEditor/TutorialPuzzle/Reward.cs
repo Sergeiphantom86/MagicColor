@@ -1,4 +1,9 @@
+using Game.SaveEditor;
+using PuzzleEditor.RouletteEditor;
 using UnityEngine;
+using Wallets;
+namespace Menu.TutorialEditor.TutorialPuzzle
+{
 
 [RequireComponent(typeof(Currency))]
 public class Reward : MonoBehaviour
@@ -38,4 +43,5 @@ public class Reward : MonoBehaviour
             _progressSaver.SetCurrency(_currency, _textAnimator.Value);
         }
     }
+}
 }

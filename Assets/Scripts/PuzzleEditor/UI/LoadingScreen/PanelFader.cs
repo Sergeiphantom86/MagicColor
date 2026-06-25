@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+namespace PuzzleEditor.UI.LoadingScreen
+{
 
 [RequireComponent(typeof(CanvasGroup))]
 public class PanelFader : MonoBehaviour
@@ -58,4 +60,5 @@ public class PanelFader : MonoBehaviour
     {
         _currentTween?.Kill();
     }
+}
 }

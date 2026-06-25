@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu.TutorialEditor.TutorialUI
+{
 
 public class Fring : MonoBehaviour
 {
@@ -11,4 +13,5 @@ public class Fring : MonoBehaviour
     {
         gameObject.SetActive(isOn);
     }
+}
 }

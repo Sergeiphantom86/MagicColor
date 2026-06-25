@@ -1,4 +1,10 @@
+using Game;
+using Menu.ButtonEditor.Ability;
+using PuzzleEditor.Counter;
 using UnityEngine;
+using Wallets.WalletEditor;
+namespace PuzzleEditor.UI
+{
 
 public class UISwitcher : MonoBehaviour
 {
@@ -66,4 +72,5 @@ public class UISwitcher : MonoBehaviour
 
         return true;
     }
+}
 }

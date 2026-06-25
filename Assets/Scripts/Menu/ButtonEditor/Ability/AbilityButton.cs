@@ -1,83 +1,88 @@
+using Game.SaveEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using Wallets.WalletEditor;
 
-[RequireComponent(typeof(Button), typeof(Image))]
-public class AbilityButton : MonoBehaviour
+namespace Menu.ButtonEditor.Ability
 {
-    [SerializeField] private Ability ability;
-    [SerializeField] private Image _highlightImage;
-
-    private Button _button;
-    private Image _image;
-    private BagAbilities _bag;
-    private bool _isUsed;
-    private Blocker _blocker;
-    private IProgressSaver _progressSaver;
-
-    public Button Button => _button;
-
-    public Ability Ability => ability;
-
-    private void Awake()
+    [RequireComponent(typeof(Button), typeof(Image))]
+    public class AbilityButton : MonoBehaviour
     {
-        _button = GetComponent<Button>();
-        _image = GetComponent<Image>();
-        _bag = GetComponentInChildren<BagAbilities>();
-        _blocker = GetComponentInChildren<Blocker>();
-        _progressSaver = new ProgressSaver();
+        [SerializeField] private Ability ability;
+        [SerializeField] private Image _highlightImage;
 
-        _highlightImage.enabled = false;
+        private Button _button;
+        private Image _image;
+        private BagAbilities _bag;
+        private bool _isUsed;
+        private Blocker _blocker;
+        private IProgressSaver _progressSaver;
 
-        _image.sprite = ability.Icon;
+        public Button Button => _button;
 
-        _blocker.gameObject.SetActive(false);
-        _button.interactable = true;
-    }
+        public Ability Ability => ability;
 
-    private void Start()
-    {
-        if (_blocker != null && _progressSaver.Saves.IsUnlockAbilities == false)
+        private void Awake()
         {
-            _blocker.gameObject.SetActive(true);
-            _button.interactable = false;
-            gameObject.SetActive(false);
+            _button = GetComponent<Button>();
+            _image = GetComponent<Image>();
+            _bag = GetComponentInChildren<BagAbilities>();
+            _blocker = GetComponentInChildren<Blocker>();
+            _progressSaver = new ProgressSaver();
+
+            _highlightImage.enabled = false;
+
+            _image.sprite = ability.Icon;
+
+            _blocker.gameObject.SetActive(false);
+            _button.interactable = true;
         }
 
-        AbilitySelectionManager.Instance.OnSelection += Use;
-    }
+        private void Start()
+        {
+            if (_blocker != null && _progressSaver.Saves.IsUnlockAbilities == false)
+            {
+                _blocker.gameObject.SetActive(true);
+                _button.interactable = false;
+                gameObject.SetActive(false);
+            }
 
-    private void OnEnable()
-    {
-        _button.onClick.AddListener(OnClick);
-    }
+            AbilitySelectionManager.Instance.OnSelection += Use;
+        }
 
-    private void OnDisable()
-    {
-        _button.onClick.RemoveListener(OnClick);
-        AbilitySelectionManager.Instance.OnSelection -= Use;
-    }
+        private void OnEnable()
+        {
+            _button.onClick.AddListener(OnClick);
+        }
 
-    public void SetHighlight(bool value)
-    {
-        _highlightImage.enabled = value;
-        _isUsed = value;
-    }
+        private void OnDisable()
+        {
+            _button.onClick.RemoveListener(OnClick);
+            AbilitySelectionManager.Instance.OnSelection -= Use;
+        }
 
-    private void OnClick()
-    {
-        if (_isUsed)
-            return;
+        public void SetHighlight(bool value)
+        {
+            _highlightImage.enabled = value;
+            _isUsed = value;
+        }
 
-        if (_bag.TryApply() == false)
-            return;
+        private void OnClick()
+        {
+            if (_isUsed)
+                return;
 
-        _isUsed = true;
+            if (_bag.TryApply() == false)
+                return;
 
-        AbilitySelectionManager.Instance.Select(this);
-    }
+            _isUsed = true;
 
-    private void Use()
-    {
-        _bag.Use();
+            AbilitySelectionManager.Instance.Select(this);
+        }
+
+        private void Use()
+        {
+            _bag.Use();
+        }
     }
 }

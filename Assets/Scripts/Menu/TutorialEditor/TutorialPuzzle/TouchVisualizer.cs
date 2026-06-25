@@ -1,5 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
+namespace Menu.TutorialEditor.TutorialPuzzle
+{
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class TouchVisualizer : MonoBehaviour
@@ -65,4 +67,5 @@ public class TouchVisualizer : MonoBehaviour
         _spriteRenderer.enabled = false;
         _sequence.Kill();
     }
+}
 }

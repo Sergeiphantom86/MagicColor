@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+namespace Menu.ButtonEditor.Ability
+{
 
 public class BackgroundClickCatcher : MonoBehaviour, IPointerClickHandler
 {
@@ -7,4 +9,5 @@ public class BackgroundClickCatcher : MonoBehaviour, IPointerClickHandler
     {
         AbilitySelectionManager.Instance.ClearSelection();
     }
+}
 }

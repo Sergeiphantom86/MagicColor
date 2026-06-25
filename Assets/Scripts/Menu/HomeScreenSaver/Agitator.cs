@@ -1,6 +1,11 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using PuzzleEditor;
+using PuzzleEditor.PoolEffects;
+using PuzzleEditor.SoundEditor;
 using UnityEngine;
+namespace Menu.HomeScreenSaver
+{
 
 [RequireComponent(typeof(Viewer), typeof(TextureInitializer))]
 public class Agitator : MonoBehaviour, IAnimatable
@@ -202,4 +207,5 @@ public class Agitator : MonoBehaviour, IAnimatable
     {
         DOTweenExtensions.SafeKill(_explosionSequence);
     }
+}
 }

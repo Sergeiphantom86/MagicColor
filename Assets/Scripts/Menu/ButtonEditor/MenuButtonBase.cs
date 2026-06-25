@@ -1,6 +1,9 @@
+using PuzzleEditor.SoundEditor;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu.ButtonEditor
+{
 
 public abstract class MenuButtonBase : IMenuButton
 {
@@ -43,4 +46,5 @@ public abstract class MenuButtonBase : IMenuButton
     {
         SoundHandler.PlayButtonSound(AudioClip);
     }
+}
 }

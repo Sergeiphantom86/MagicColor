@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+namespace PuzzleEditor.UI.LoadingScreen
+{
 
 [Serializable]
 public class MenuButtons
@@ -40,4 +42,5 @@ public class MenuButtons
             _startButton.gameObject.SetActive(true);
         }
     }
+}
 }

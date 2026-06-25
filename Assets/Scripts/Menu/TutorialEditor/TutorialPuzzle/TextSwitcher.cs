@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu.TutorialEditor.TutorialPuzzle
+{
 
 public class TextSwitcher : MonoBehaviour
 {
@@ -29,4 +31,5 @@ public class TextSwitcher : MonoBehaviour
         _awardText.gameObject.SetActive(false);
         _notificationText.gameObject.SetActive(true);
     }
+}
 }

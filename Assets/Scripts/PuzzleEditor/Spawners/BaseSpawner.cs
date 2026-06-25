@@ -1,5 +1,8 @@
+using PuzzleEditor.ObjectPool;
 using System.Collections.Generic;
 using UnityEngine;
+namespace PuzzleEditor.Spawners
+{
 
 public abstract class BaseSpawner<T> : MonoBehaviour 
     where T : MonoBehaviour
@@ -55,4 +58,5 @@ public abstract class BaseSpawner<T> : MonoBehaviour
     }
 
     public int GetCurrentPrefabIndex() => CurrentPrefabIndex;
+}
 }

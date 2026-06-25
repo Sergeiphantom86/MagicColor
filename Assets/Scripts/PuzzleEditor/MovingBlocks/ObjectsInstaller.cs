@@ -1,5 +1,10 @@
+using Game.SaveEditor;
+using Menu.TutorialEditor;
+using PuzzleEditor.LockEditor;
 using System.Collections.Generic;
 using UnityEngine;
+namespace PuzzleEditor.MovingBlocks
+{
 
 [RequireComponent(typeof(Repainter), typeof(KeyInstaller), typeof(LockInstaller))]
 public class ObjectsInstaller : MonoBehaviour
@@ -59,4 +64,5 @@ public class ObjectsInstaller : MonoBehaviour
 
         _keyInstaller.TryPlaceKey(colorables);
     }
+}
 }

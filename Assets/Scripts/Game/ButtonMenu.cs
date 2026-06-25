@@ -1,33 +1,37 @@
+using Game.Exit;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button))]
-public class ButtonMenu : MonoBehaviour
+namespace Game
 {
-    [SerializeField] private PauseMenu _pauseMenu;
-
-    private Button _button;
-
-    public PauseMenu PauseMenu => _pauseMenu;
-
-    public Button Button => _button;
-
-    private void Awake()
+    [RequireComponent(typeof(Button))]
+    public class ButtonMenu : MonoBehaviour
     {
-        _button = GetComponent<Button>();
-    }
+        [SerializeField] private PauseMenu _pauseMenu;
 
-    private void OnEnable()
-    {
-        _button.onClick.AddListener(PressButton);
-    }
+        private Button _button;
 
-    private void OnDisable()
-    {
-        _button.onClick.RemoveListener(PressButton);
-    }
+        public PauseMenu PauseMenu => _pauseMenu;
 
-    public virtual void PressButton() 
-    {
+        public Button Button => _button;
+
+        private void Awake()
+        {
+            _button = GetComponent<Button>();
+        }
+
+        private void OnEnable()
+        {
+            _button.onClick.AddListener(PressButton);
+        }
+
+        private void OnDisable()
+        {
+            _button.onClick.RemoveListener(PressButton);
+        }
+
+        public virtual void PressButton()
+        {
+        }
     }
 }

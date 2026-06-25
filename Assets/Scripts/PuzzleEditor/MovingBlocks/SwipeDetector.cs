@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.MovingBlocks
+{
 
 public class SwipeDetector
 {
@@ -33,4 +35,5 @@ public class SwipeDetector
     }
 
     public void Reset() => _active = false;
+}
 }

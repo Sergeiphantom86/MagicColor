@@ -1,4 +1,13 @@
-﻿using UnityEngine;
+using Menu.TutorialEditor.TutorialPuzzle;
+using PuzzleEditor.LockEditor;
+using PuzzleEditor.PenEditor;
+using PuzzleEditor.RouletteEditor;
+using PuzzleEditor.SoundEditor;
+using PuzzleEditor.Walls.WallEditor;
+using UnityEngine;
+using Wallets.WalletEditor;
+namespace PuzzleEditor.Walls.WallEngineEditor
+{
 
 [RequireComponent(typeof(Wall), typeof(WallMovement))]
 public class WallEngine : MonoBehaviour, IWallInteractor
@@ -158,4 +167,5 @@ public class WallEngine : MonoBehaviour, IWallInteractor
 
         return false;
     }
+}
 }

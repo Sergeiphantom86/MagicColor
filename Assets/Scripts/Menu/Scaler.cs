@@ -1,5 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
+namespace Menu
+{
 
 public class Scaler : MonoBehaviour
 {
@@ -20,4 +22,5 @@ public class Scaler : MonoBehaviour
         gameObject.SetActive(false);
         transform.localScale = Vector3.one * minScale;
     }
+}
 }

@@ -1,6 +1,9 @@
+using PuzzleEditor;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+namespace Menu.HomeScreenSaver
+{
 
 [RequireComponent(typeof(TextureInitializer))]
 public class FragmentCollector : MonoBehaviour
@@ -34,4 +37,5 @@ public class FragmentCollector : MonoBehaviour
     {
         OnPixelsRendered.Invoke(_textureInitializer.FragmentsList);
     }
+}
 }

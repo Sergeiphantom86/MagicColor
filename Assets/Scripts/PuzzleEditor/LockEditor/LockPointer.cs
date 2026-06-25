@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.LockEditor
+{
 
 public class LockPointer : MonoBehaviour
 {
@@ -19,4 +21,5 @@ public class LockPointer : MonoBehaviour
     {
         _colorChanger.SetGreenColor();
     }
+}
 }

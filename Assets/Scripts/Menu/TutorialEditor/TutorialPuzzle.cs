@@ -1,14 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TutorialPuzzle : MonoBehaviour
+namespace Menu.TutorialEditor
 {
-    private Image _image;
-
-    public Sprite Sprite => _image.sprite;
-
-    private void Awake()
+    public class TutorialPuzzle1 : MonoBehaviour
     {
-        _image = GetComponent<Image>();
+        private Image _image;
+
+        public Sprite Sprite => _image.sprite;
+
+        private void Awake()
+        {
+            _image = GetComponent<Image>();
+        }
     }
 }

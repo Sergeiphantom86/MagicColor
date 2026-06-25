@@ -1,4 +1,8 @@
+using Game.SaveEditor;
 using UnityEngine;
+using Wallets;
+namespace PuzzleEditor.RouletteEditor
+{
 
 public class Ticket : MonoBehaviour
 {
@@ -37,4 +41,6 @@ public class Ticket : MonoBehaviour
 
         _textAnimator.AnimateToValue(_fullReward);
     }
+}
+
 }

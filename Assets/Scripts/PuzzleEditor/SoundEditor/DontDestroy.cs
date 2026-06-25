@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.SoundEditor
+{
 
 public class DontDestroy : MonoBehaviour
 {
@@ -16,4 +18,5 @@ public class DontDestroy : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
+}
 }

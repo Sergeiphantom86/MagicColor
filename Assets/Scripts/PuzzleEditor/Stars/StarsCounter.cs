@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
+namespace PuzzleEditor.Stars
+{
 
 public class StarsCounter : MonoBehaviour
 {
@@ -56,4 +58,5 @@ public class StarsCounter : MonoBehaviour
     {
         return 1f - Mathf.Clamp01((float)timeInSeconds / maxTimeSeconds);
     }
+}
 }

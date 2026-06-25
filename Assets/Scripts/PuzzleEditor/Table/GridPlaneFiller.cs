@@ -1,5 +1,8 @@
-﻿using System;
+using PuzzleEditor.MovingBlocks.GridEditor;
+using System;
 using UnityEngine;
+namespace PuzzleEditor.Table
+{
 
 public class GridPlaneFiller : MonoBehaviour
 {
@@ -206,4 +209,5 @@ public class GridPlaneFiller : MonoBehaviour
     {
         CleanupInstance();
     }
+}
 }

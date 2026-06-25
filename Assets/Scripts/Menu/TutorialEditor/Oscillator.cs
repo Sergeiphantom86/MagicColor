@@ -1,5 +1,8 @@
 using DG.Tweening;
+using PuzzleEditor;
 using UnityEngine;
+namespace Menu.TutorialEditor
+{
 
 public class Oscillator : MonoBehaviour
 {
@@ -66,4 +69,5 @@ public class Oscillator : MonoBehaviour
     {
         _sequence?.Kill();
     }
+}
 }

@@ -1,6 +1,10 @@
+using Game.SaveEditor;
+using PuzzleEditor;
 using System;
 using System.Collections;
 using UnityEngine;
+namespace Menu.TutorialEditor
+{
 
 public class HintCounter : MonoBehaviour
 {
@@ -64,4 +68,5 @@ public class HintCounter : MonoBehaviour
             _hintCoroutine = null;
         }
     }
+}
 }

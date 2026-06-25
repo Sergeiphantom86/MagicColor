@@ -1,6 +1,9 @@
+using Menu.ButtonEditor;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+namespace Menu
+{
 
 public class WindowInitializer : MonoBehaviour
 {
@@ -58,4 +61,5 @@ public class WindowInitializer : MonoBehaviour
 
         window.Toggle();
     }
+}
 }

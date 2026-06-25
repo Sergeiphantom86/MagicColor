@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+namespace PuzzleEditor.MovingBlocks
+{
 
 public interface ITouchDragInput
 {
@@ -12,4 +14,5 @@ public interface ITouchDragInput
     public bool IsSelected { get; }
 
     public void ThrowOff();
+}
 }

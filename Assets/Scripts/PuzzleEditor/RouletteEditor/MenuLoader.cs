@@ -1,5 +1,8 @@
+using Game.LoadingScreen;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+namespace PuzzleEditor.RouletteEditor
+{
 
 public class MenuLoader : MonoBehaviour
 {
@@ -16,4 +19,5 @@ public class MenuLoader : MonoBehaviour
 
         SceneLoader.Instance.LoadSceneAsyncWithSplash(scenName);
     }
+}
 }

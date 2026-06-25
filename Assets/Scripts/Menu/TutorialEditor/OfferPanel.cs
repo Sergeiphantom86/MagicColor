@@ -1,5 +1,10 @@
+using Menu.TutorialEditor.TutorialPuzzle;
+using PuzzleEditor.SoundEditor;
+using PuzzleEditor.UI.LoadingScreen;
 using System;
 using UnityEngine;
+namespace Menu.TutorialEditor
+{
 
 [RequireComponent(typeof(Scaler), typeof(Voiceover))]
 public class OfferPanel : MonoBehaviour
@@ -89,4 +94,5 @@ public class OfferPanel : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+}
 }

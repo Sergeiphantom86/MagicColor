@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+namespace PuzzleEditor.MovingBlocks
+{
 
 public class PathMover : MonoBehaviour
 {
@@ -55,4 +57,5 @@ public class PathMover : MonoBehaviour
             _pathSequence.Kill();
         }
     }
+}
 }

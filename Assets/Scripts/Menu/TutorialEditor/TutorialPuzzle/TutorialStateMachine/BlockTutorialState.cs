@@ -1,11 +1,19 @@
+using Game.SaveEditor;
+using PuzzleEditor;
+using PuzzleEditor.MovingBlocks;
+using PuzzleEditor.MovingBlocks.BlockEditor;
+using PuzzleEditor.MovingBlocks.GridEditor;
+using PuzzleEditor.Stars;
 using System.Linq;
 using UnityEngine;
+namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
+{
 
 public class BlockTutorialState : TutorialStater
 {
     private const int BlockIndex = 4;
 
-    private readonly TutorialStateMachine _stateMachine;
+    private readonly StateMachine _stateMachine;
     private readonly StarsCounter _starsCounter;
     private readonly TutorialContext _context;
     private readonly float _yOffset;
@@ -16,7 +24,7 @@ public class BlockTutorialState : TutorialStater
     private bool _isAnimationChange;
     private IProgressSaver _progressSaver;
 
-    public BlockTutorialState(TutorialStateMachine stateMachine, TutorialContext context, StarsCounter starsCounter)
+    public BlockTutorialState(StateMachine stateMachine, TutorialContext context, StarsCounter starsCounter)
         : base(stateMachine, context)
     {
         _stateMachine = stateMachine;
@@ -120,4 +128,5 @@ public class BlockTutorialState : TutorialStater
 
         _input.OnTouchClick += OnClick;
     }
+}
 }

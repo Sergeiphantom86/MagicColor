@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+namespace PuzzleEditor.RouletteEditor
+{
 
 public class WeightCalculator
 {
@@ -23,4 +25,5 @@ public class WeightCalculator
     {
         return _weightMap.TryGetValue(value, out int weight) ? weight : MinimalProbability;
     }
+}
 }

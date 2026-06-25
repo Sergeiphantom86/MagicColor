@@ -1,7 +1,12 @@
+using PuzzleEditor.MovingBlocks.BlockEditor;
+using PuzzleEditor.PoolEffects;
+using PuzzleEditor.Spawners;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+namespace PuzzleEditor
+{
 
 public class BlocksContainer : MonoBehaviour, IBlocksContainer
 {
@@ -99,4 +104,5 @@ public class BlocksContainer : MonoBehaviour, IBlocksContainer
 
         block.OnDestroyed -= HandleBlockDestroyed;
     }
+}
 }

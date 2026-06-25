@@ -1,7 +1,9 @@
 using System.Collections;
 using UnityEngine;
+namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
+{
 
-public class TutorialStateMachine : MonoBehaviour
+public class StateMachine : MonoBehaviour
 {
     protected TutorialContext Context;
     private ITutorialState _currentState;
@@ -39,4 +41,5 @@ public class TutorialStateMachine : MonoBehaviour
     {
         StopCoroutine(routine);
     }
+}
 }

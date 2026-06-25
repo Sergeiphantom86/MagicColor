@@ -1,7 +1,11 @@
+using PuzzleEditor.Spawners;
+using PuzzleEditor.Walls;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+namespace PuzzleEditor
+{
 
 public class IndexQualifier : MonoBehaviour
 {
@@ -80,4 +84,6 @@ public class IndexQualifier : MonoBehaviour
     {
         return _allowedIndexes[Random.Range(0, _allowedIndexes.Count)];
     }
+}
+
 }

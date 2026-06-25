@@ -1,6 +1,10 @@
+using PuzzleEditor.LockEditor;
+using PuzzleEditor.Walls.WallEditor;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+namespace PuzzleEditor.MovingBlocks
+{
 
 public class LockInstaller : MonoBehaviour
 {
@@ -68,4 +72,5 @@ public class LockInstaller : MonoBehaviour
     {
         return _isTutorial && _lock != null && _isPlaced == false && _lock.IsUsed == false;
     }
+}
 }

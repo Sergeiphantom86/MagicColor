@@ -1,5 +1,8 @@
+using PuzzleEditor.SoundEditor;
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu.ButtonEditor
+{
 
 public class PlayButton : MenuButtonBase
 {
@@ -12,7 +15,7 @@ public class PlayButton : MenuButtonBase
 
         if (handlerButtonWindowInteraction == null)
         {
-            Debug.LogError("HandlerButtonWindowInteraction is отсутствует в конфигурации!");
+            Debug.LogError("HandlerButtonWindowInteraction is пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
             return;
         }
 
@@ -28,4 +31,5 @@ public class PlayButton : MenuButtonBase
         handlerButtonWindowInteraction.OnButtonClicked(button);
         buttonSound.PlayButtonSound(audioClip);
     }
+}
 }

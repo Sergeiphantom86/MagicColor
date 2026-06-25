@@ -1,6 +1,11 @@
+using Menu.TutorialEditor;
+using PuzzleEditor.RouletteEditor;
+using PuzzleEditor.SoundEditor;
 using System;
 using System.Collections;
 using UnityEngine;
+namespace PuzzleEditor.LockEditor
+{
 
 [RequireComponent(typeof(Unblocker), typeof(Oscillator), typeof(Voiceover))]
 public class Lock : MonoBehaviour
@@ -108,4 +113,5 @@ public class Lock : MonoBehaviour
 
         gameObject.SetActive(false);
     }
+}
 }

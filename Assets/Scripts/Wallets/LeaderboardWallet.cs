@@ -1,54 +1,58 @@
+using Game.SaveEditor;
 using UnityEngine;
 
-[RequireComponent(typeof(Wallet))]
-public class LeaderboardWallet : MonoBehaviour
+namespace Wallets
 {
-    private const string Suffix = "Wallet";
-    private const string Default = nameof(Default);
-
-    private Wallet _wallet;
-    private string _leaderboardName;
-    private IProgressSaver _progressSaver;
-
-    private void Awake()
+    [RequireComponent(typeof(Wallet))]
+    public class LeaderboardWallet : MonoBehaviour
     {
-        _wallet = GetComponent<Wallet>();
-        _progressSaver = new ProgressSaver();
+        private const string Suffix = "Wallet";
+        private const string Default = nameof(Default);
 
-        _leaderboardName = ConvertName(_wallet.Name);
-    }
+        private Wallet _wallet;
+        private string _leaderboardName;
+        private IProgressSaver _progressSaver;
 
-    private void OnEnable()
-    {
-        _wallet.OnBalanceChanged += SavePlayerBalance;
-    }
-
-    private void OnDisable()
-    {
-        _wallet.OnBalanceChanged -= SavePlayerBalance;
-    }
-
-    private void SavePlayerBalance(long balance, string walletName)
-    {
-        _leaderboardName = ConvertName(walletName);
-
-        if (_leaderboardName == Default)
+        private void Awake()
         {
-            Debug.LogError($"Не удалось преобразовать имя кошелька: {walletName}");
-            return;
+            _wallet = GetComponent<Wallet>();
+            _progressSaver = new ProgressSaver();
+
+            _leaderboardName = ConvertName(_wallet.Name);
         }
 
-        _progressSaver.SetLeaderboard(_leaderboardName, (int)balance);
-    }
+        private void OnEnable()
+        {
+            _wallet.OnBalanceChanged += SavePlayerBalance;
+        }
 
-    private string ConvertName(string original)
-    {
-        if (string.IsNullOrEmpty(original))
-            return Default;
+        private void OnDisable()
+        {
+            _wallet.OnBalanceChanged -= SavePlayerBalance;
+        }
 
-        if (original.EndsWith(Suffix))
-            return original[..^Suffix.Length];
+        private void SavePlayerBalance(long balance, string walletName)
+        {
+            _leaderboardName = ConvertName(walletName);
 
-        return original;
+            if (_leaderboardName == Default)
+            {
+                Debug.LogError($"пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {walletName}");
+                return;
+            }
+
+            _progressSaver.SetLeaderboard(_leaderboardName, (int)balance);
+        }
+
+        private string ConvertName(string original)
+        {
+            if (string.IsNullOrEmpty(original))
+                return Default;
+
+            if (original.EndsWith(Suffix))
+                return original[..^Suffix.Length];
+
+            return original;
+        }
     }
 }

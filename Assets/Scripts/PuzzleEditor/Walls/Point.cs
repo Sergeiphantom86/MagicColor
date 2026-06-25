@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class Point : MonoBehaviour
+namespace PuzzleEditor.Walls
 {
+    public class Point : MonoBehaviour
+    {
+    }
 }

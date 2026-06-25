@@ -1,5 +1,8 @@
+using Fireworks;
 using System.Collections;
 using UnityEngine;
+namespace PuzzleEditor.UI.LoadingScreen
+{
 
 public class MenuController : MonoBehaviour
 {
@@ -78,4 +81,5 @@ public class MenuController : MonoBehaviour
             _sceneFlow.LoadNext();
         });
     }
+}
 }

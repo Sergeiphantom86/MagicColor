@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+using Game.SaveEditor;
+using PuzzleEditor.MovingBlocks.GridEditor;
+using PuzzleEditor.Walls.Partitions;
+using System.Collections.Generic;
 using UnityEngine;
+namespace PuzzleEditor.Spawners
+{
 
 public class PartitionSpawner : BaseSpawner<Partition>
 {
@@ -135,4 +140,5 @@ public class PartitionSpawner : BaseSpawner<Partition>
 
         partition.Destroyed += ClearCell;
     }
+}
 }

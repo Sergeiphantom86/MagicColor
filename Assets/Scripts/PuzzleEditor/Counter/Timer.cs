@@ -1,7 +1,11 @@
+using Game.Exit;
+using PuzzleEditor.Stars;
 using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+namespace PuzzleEditor.Counter
+{
 
 public class Timer : MonoBehaviour
 {
@@ -93,4 +97,5 @@ public class Timer : MonoBehaviour
 
         _isRunning = false;
     }
+}
 }

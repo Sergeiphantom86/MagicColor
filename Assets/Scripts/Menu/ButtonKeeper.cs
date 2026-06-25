@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu
+{
 
 public class ButtonKeeper : MonoBehaviour
 {
@@ -7,4 +9,5 @@ public class ButtonKeeper : MonoBehaviour
     [SerializeField] private int _currentIndex;
 
     public Button[] Buttons => _buttons;
+}
 }

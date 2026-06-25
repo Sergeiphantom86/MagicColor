@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+namespace PuzzleEditor
+{
 
 public class UIMaterialOrder : MonoBehaviour
 {
@@ -45,4 +47,5 @@ public class UIMaterialOrder : MonoBehaviour
         if (_uiGraphic != null && _originalMaterial != null)
             _uiGraphic.material = _originalMaterial;
     }
+}
 }

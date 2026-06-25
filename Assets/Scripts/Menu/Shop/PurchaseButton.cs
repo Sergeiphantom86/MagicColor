@@ -1,8 +1,16 @@
+using Game.SaveEditor;
+using Menu.TutorialEditor.TutorialPuzzle;
+using PuzzleEditor;
+using PuzzleEditor.SoundEditor;
 using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Wallets;
+using Wallets.WalletEditor;
+namespace Menu.Shop
+{
 
 public class PurchaseButton : MonoBehaviour
 {
@@ -149,4 +157,5 @@ public enum PaymentType
 {
     Coins,
     Ads,
+}
 }

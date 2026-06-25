@@ -1,5 +1,7 @@
-﻿using DG.Tweening;
+using DG.Tweening;
 using UnityEngine;
+namespace PuzzleEditor.EnergyField
+{
 
 [RequireComponent(typeof(Renderer))]
 public class Demonstrator : MonoBehaviour
@@ -104,4 +106,5 @@ public class Demonstrator : MonoBehaviour
         mat.EnableKeyword("_ALPHABLEND_ON");
         mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
     }
+}
 }

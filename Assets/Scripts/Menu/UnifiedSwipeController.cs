@@ -1,5 +1,9 @@
+using Menu.TutorialEditor;
+using PuzzleEditor.SoundEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+namespace Menu
+{
 
 [RequireComponent(typeof(ButtonCarouselController), typeof(ButtonSoundHandler))]
 public class UnifiedSwipeController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -72,4 +76,5 @@ public class UnifiedSwipeController : MonoBehaviour, IBeginDragHandler, IDragHan
 
         return _tutorial.IsTutorialActive && (_tutorial.IsSwipeAllowed && _isDragging) == false && _tutorial.IsClickAllowed == false;
     }
+}
 }

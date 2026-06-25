@@ -1,5 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
+namespace PuzzleEditor
+{
 public interface IUIAnimator
 {
     public Sequence Move(RectTransform canvasRect);
@@ -7,4 +9,5 @@ public interface IUIAnimator
     public void Return(RectTransform canvasRect);
 
     public void Increase();
+}
 }

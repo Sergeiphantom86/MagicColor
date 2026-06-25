@@ -1,125 +1,129 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+using PuzzleEditor.MovingBlocks;
 
-public class HandMover : MonoBehaviour
+namespace Menu.TutorialEditor.TutorialPuzzle
 {
-    [SerializeField] private Pivot _pivot;
-
-    private Vector3 _startScale;
-    private Vector3 _targetScale;
-    private Sequence _sequence;
-    private float _distanceZ;
-    private float _distanceX;
-    private float _duration;
-    private float _overshoot;
-    private int _scaleMultiplier;
-
-    public event Action Destroyed;
-
-    public Pivot Pivot => _pivot;
-
-    private void Awake()
+    public class HandMover : MonoBehaviour
     {
-        _distanceZ = 2;
-        _distanceX = 3;
-        _overshoot = 5;
-        _duration = 0.7f;
-        _scaleMultiplier = 20;
+        [SerializeField] private Pivot _pivot;
 
-        _targetScale = Vector3.one * _scaleMultiplier;
-        _startScale = transform.localScale;
-    }
+        private Vector3 _startScale;
+        private Vector3 _targetScale;
+        private Sequence _sequence;
+        private float _distanceZ;
+        private float _distanceX;
+        private float _duration;
+        private float _overshoot;
+        private int _scaleMultiplier;
 
-    private void Start()
-    {
-        SetPosition(transform.position);
-    }
+        public event Action Destroyed;
 
-    private void OnDisable()
-    {
-        Stop();
-    }
+        public Pivot Pivot => _pivot;
 
-    public void SetPosition(Vector3 position)
-    {
-        position.y += 0.5f;
+        private void Awake()
+        {
+            _distanceZ = 2;
+            _distanceX = 3;
+            _overshoot = 5;
+            _duration = 0.7f;
+            _scaleMultiplier = 20;
 
-        transform.position = position;
-    }
+            _targetScale = Vector3.one * _scaleMultiplier;
+            _startScale = transform.localScale;
+        }
 
-    public void EnableScaleAnimation()
-    {
-        _sequence?.Kill();
-        _sequence = DOTween.Sequence();
+        private void Start()
+        {
+            SetPosition(transform.position);
+        }
 
-        _sequence.Append(transform
-            .DOScale(_targetScale, _duration)
-            .SetEase(Ease.OutBack, _overshoot))
-            .SetLoops(-1, LoopType.Restart)
-            .SetUpdate(true);
-    }
+        private void OnDisable()
+        {
+            Stop();
+        }
 
-    public void EnableMoveAnimationZ()
-    {
-        GetAnimationSequence(0, _distanceZ).
-           SetLoops(-1, LoopType.Restart);
-    }
+        public void SetPosition(Vector3 position)
+        {
+            position.y += 0.5f;
 
-    public void EnableMoveAnimationX()
-    {
-        GetAnimationSequence(-_distanceX);
-    }
+            transform.position = position;
+        }
 
-    public void EnableLoopingAnimationZ()
-    {
-        GetAnimationSequence(0, _distanceZ)
-            .SetLoops(-1, LoopType.Restart);
-    }
+        public void EnableScaleAnimation()
+        {
+            _sequence?.Kill();
+            _sequence = DOTween.Sequence();
 
-    public Sequence GetAnimationSequence(float distanceX = 0, float distance = 0)
-    {
-        _sequence?.Kill();
-        _sequence = DOTween.Sequence();
+            _sequence.Append(transform
+                .DOScale(_targetScale, _duration)
+                .SetEase(Ease.OutBack, _overshoot))
+                .SetLoops(-1, LoopType.Restart)
+                .SetUpdate(true);
+        }
 
-        _sequence.AppendInterval(_duration);
-        _sequence.Join(transform.DOMove(GetTargetPosition(distanceX, distance), 1f));
+        public void EnableMoveAnimationZ()
+        {
+            GetAnimationSequence(0, _distanceZ).
+               SetLoops(-1, LoopType.Restart);
+        }
 
-        _sequence.SetUpdate(true);
+        public void EnableMoveAnimationX()
+        {
+            GetAnimationSequence(-_distanceX);
+        }
 
-        return _sequence;
-    }
+        public void EnableLoopingAnimationZ()
+        {
+            GetAnimationSequence(0, _distanceZ)
+                .SetLoops(-1, LoopType.Restart);
+        }
 
-    public void TurnOff()
-    {
-        gameObject.SetActive(false);
-    }
+        public Sequence GetAnimationSequence(float distanceX = 0, float distance = 0)
+        {
+            _sequence?.Kill();
+            _sequence = DOTween.Sequence();
 
-    public void TurnOn()
-    {
-        gameObject.SetActive(true);
-    }
+            _sequence.AppendInterval(_duration);
+            _sequence.Join(transform.DOMove(GetTargetPosition(distanceX, distance), 1f));
 
-    public void Stop()
-    {
-        _sequence?.Kill();
+            _sequence.SetUpdate(true);
 
-        transform.localScale = Vector3.one * _startScale.x;
-    }
+            return _sequence;
+        }
 
-    public void OnDestroyed()
-    {
-        Destroyed?.Invoke();
-        TurnOff();
-    }
+        public void TurnOff()
+        {
+            gameObject.SetActive(false);
+        }
 
-    private Vector3 GetTargetPosition(float distanceX = 0, float distance = 0)
-    {
-        Vector3 position = transform.position;
+        public void TurnOn()
+        {
+            gameObject.SetActive(true);
+        }
 
-        position.x -= distanceX;
-        position.z -= distance;
+        public void Stop()
+        {
+            _sequence?.Kill();
 
-        return position;
+            transform.localScale = Vector3.one * _startScale.x;
+        }
+
+        public void OnDestroyed()
+        {
+            Destroyed?.Invoke();
+            TurnOff();
+        }
+
+        private Vector3 GetTargetPosition(float distanceX = 0, float distance = 0)
+        {
+            Vector3 position = transform.position;
+
+            position.x -= distanceX;
+            position.z -= distance;
+
+            return position;
+        }
     }
 }

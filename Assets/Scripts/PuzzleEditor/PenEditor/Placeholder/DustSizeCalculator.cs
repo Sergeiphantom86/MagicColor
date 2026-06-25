@@ -1,12 +1,14 @@
 using UnityEngine;
+namespace PuzzleEditor.PenEditor.Placeholder
+{
 
 public class DustSizeCalculator : MonoBehaviour
 {
-    [Header("Настройки запыленности")]
+    [Header("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ")]
     [SerializeField] private float _minSize = 0.1f;
     [SerializeField] private float _maxSize = 1f;
 
-    [Header("Отладка")]
+    [Header("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ")]
     [SerializeField] private float _calculatedSize;
 
     public float CalculateSize(int quantity, int maxDustValue)
@@ -30,7 +32,7 @@ public class DustSizeCalculator : MonoBehaviour
     {
         if (amount < 0)
         {
-            Debug.LogWarning($"Значение запыленности не может быть отрицательным. Получено: {amount}. Установлено значение 0.");
+            Debug.LogWarning($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {amount}. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 0.");
         }
     }
 
@@ -38,7 +40,7 @@ public class DustSizeCalculator : MonoBehaviour
     {
         if (upperLimit <= 0)
         {
-            Debug.LogError($"Максимальное значение запыленности должно быть положительным. Получено: {upperLimit}. Установлено значение по умолчанию: 500.");
+            Debug.LogError($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {upperLimit}. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: 500.");
         }
     }
 
@@ -52,7 +54,7 @@ public class DustSizeCalculator : MonoBehaviour
     {
         if (_minSize < 0f)
         {
-            Debug.LogWarning($"Минимальный размер не может быть отрицательным. Получено: {_minSize}. Установлено значение 0.");
+            Debug.LogWarning($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {_minSize}. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 0.");
             _minSize = 0f;
         }
     }
@@ -61,7 +63,7 @@ public class DustSizeCalculator : MonoBehaviour
     {
         if (_maxSize < _minSize)
         {
-            Debug.LogWarning($"Максимальный размер не может быть меньше минимального. Максимальный: {_maxSize}, Минимальный: {_minSize}. Установлены значения по умолчанию.");
+            Debug.LogWarning($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {_maxSize}, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {_minSize}. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
             _minSize = 0.1f;
             _maxSize = 1f;
         }
@@ -77,4 +79,5 @@ public class DustSizeCalculator : MonoBehaviour
     {
         return Mathf.Lerp(_minSize, _maxSize, interpolationFactor);
     }
+}
 }

@@ -3,6 +3,10 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PuzzleEditor.Walls;
+using PuzzleEditor.MovingBlocks.BlockEditor;
+namespace PuzzleEditor
+{
 
 public class Repainter : MonoBehaviour
 {
@@ -48,7 +52,7 @@ public class Repainter : MonoBehaviour
 
         if (container == null)
         {
-            Debug.LogWarning($"Контейнер {container.name} пропал!", this);
+            Debug.LogWarning($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ {container.name} пїЅпїЅпїЅпїЅпїЅпїЅ!", this);
             return list;
         }
 
@@ -79,7 +83,7 @@ public class Repainter : MonoBehaviour
 
         if (_colors.Count == 0)
         {
-            Debug.LogWarning("В Color Analyzer нет доступных цветов!", this);
+            Debug.LogWarning("пїЅ Color Analyzer пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!", this);
         }
     }
 
@@ -154,4 +158,5 @@ public class Repainter : MonoBehaviour
         ReplaceColors(_blocks);
         OnRecoloredBlock?.Invoke(_blocks);
     }
+}
 }

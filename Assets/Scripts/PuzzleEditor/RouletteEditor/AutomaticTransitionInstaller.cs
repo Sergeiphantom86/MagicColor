@@ -1,5 +1,9 @@
+using Game.SaveEditor;
+using Menu;
 using UnityEngine;
 using UnityEngine.UI;
+namespace PuzzleEditor.RouletteEditor
+{
 
 public class AutomaticTransitionInstaller : MonoBehaviour
 {
@@ -92,4 +96,5 @@ public class AutomaticTransitionInstaller : MonoBehaviour
                _secondTutorial == _maxReachedQuestIndex ||
                _thirdTutorial == _maxReachedQuestIndex;
     }
+}
 }

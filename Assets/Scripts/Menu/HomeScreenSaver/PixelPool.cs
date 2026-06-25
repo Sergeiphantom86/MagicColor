@@ -1,6 +1,9 @@
+using PuzzleEditor;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+namespace Menu.HomeScreenSaver
+{
 
 public class PixelPool : MonoBehaviour
 {
@@ -86,4 +89,5 @@ public class PixelPool : MonoBehaviour
     {
         _pool?.Clear();
     }
+}
 }

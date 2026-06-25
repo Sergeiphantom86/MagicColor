@@ -1,4 +1,7 @@
+using Game.SaveEditor;
 using UnityEngine;
+namespace Menu.TutorialEditor
+{
 
 [RequireComponent(typeof(EngineTutorialMenu))]
 public class Tutorial : MonoBehaviour
@@ -71,4 +74,5 @@ public class Tutorial : MonoBehaviour
 
         _progressSaver.DisableTutorialMenu();
     }
+}
 }

@@ -1,6 +1,11 @@
-public interface IAudioSettings
-{
-    public void SetMusicTime(float time);
+using PuzzleEditor.SoundEditor;
 
-    public void SetVolume(VolumeChanger volumeChanger, float volume);
+namespace Game.SaveEditor
+{
+    public interface IAudioSettings
+    {
+        public void SetMusicTime(float time);
+
+        public void SetVolume(VolumeChanger volumeChanger, float volume);
+    }
 }

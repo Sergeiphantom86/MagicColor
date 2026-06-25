@@ -1,6 +1,9 @@
+using Game.SaveEditor;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu.QuestEditor
+{
 
 public class Quest : MonoBehaviour
 {
@@ -94,4 +97,5 @@ public class Quest : MonoBehaviour
 
         Selected?.Invoke(this);
     }
+}
 }

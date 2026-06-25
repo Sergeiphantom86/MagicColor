@@ -1,3 +1,5 @@
+namespace Game.SaveEditor
+{
 public interface ILocalization
 {
     public string GetTranslationLanguage();
@@ -5,4 +7,5 @@ public interface ILocalization
     public void SwitchLanguage(string langCode);
 
     public void SetCurrentLanguage(string langCode);
+}
 }

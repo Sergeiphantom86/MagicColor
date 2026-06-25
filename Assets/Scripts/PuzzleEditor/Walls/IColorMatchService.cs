@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.Walls
+{
 
 public interface IColorMatchService
 {
@@ -7,4 +9,5 @@ public interface IColorMatchService
     public void Reset();
 
     public void Initialize(IColorPrecision colorPrecision);
+}
 }

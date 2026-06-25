@@ -1,5 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
+namespace PuzzleEditor.PenEditor
+{
 
 public class GhostGlowTween : MonoBehaviour
 {
@@ -39,4 +41,5 @@ public class GhostGlowTween : MonoBehaviour
             .SetEase(Ease.InOutSine)
             .SetTarget(this);
     }
+}
 }

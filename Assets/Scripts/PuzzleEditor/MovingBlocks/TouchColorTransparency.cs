@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.MovingBlocks
+{
 
 [RequireComponent(typeof(Renderer), typeof(ColorableObject))]
 public class TouchColorTransparency : MonoBehaviour
@@ -23,4 +25,5 @@ public class TouchColorTransparency : MonoBehaviour
         color.a = alpha;
         _renderer.material.color = color;
     }
+}
 }

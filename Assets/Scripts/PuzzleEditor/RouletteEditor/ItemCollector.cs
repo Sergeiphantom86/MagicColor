@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+namespace PuzzleEditor.RouletteEditor
+{
 
 public class ItemCollector : MonoBehaviour
 {
@@ -18,4 +20,5 @@ public class ItemCollector : MonoBehaviour
         _items.Clear();
         _items.AddRange(GetComponentsInChildren<Currency>(true));
     }
+}
 }

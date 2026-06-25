@@ -1,7 +1,13 @@
+using Game.SaveEditor;
+using Menu.ButtonEditor;
+using PuzzleEditor;
+using PuzzleEditor.SoundEditor;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu.LanguageManager
+{
 
 [RequireComponent(typeof(Image))]
 public class LanguageMenu : MonoBehaviour, IActivatable
@@ -42,7 +48,7 @@ public class LanguageMenu : MonoBehaviour, IActivatable
     {
         if (_languageBar == null)
         {
-            Debug.LogError("LanguageMenu: не назначены ссылки в инспекторе!");
+            Debug.LogError("LanguageMenu: пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
             return;
         }
 
@@ -121,4 +127,5 @@ public class LanguageMenu : MonoBehaviour, IActivatable
 
         _title = langCode;
     }
+}
 }

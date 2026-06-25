@@ -1,12 +1,17 @@
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using PuzzleEditor.Stars;
+using Menu.TutorialEditor.TutorialUI;
+using PuzzleEditor.Counter;
+namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
+{
 
 public class UITutorialState : TutorialStater
 {
     private readonly float _scaleMultiplier;
     private readonly float _duration;
-    private readonly TutorialStateMachine _tutorialStateMachine;
+    private readonly StateMachine _tutorialStateMachine;
     private readonly TutorialContext _context;
 
     private int _currentCountStars;
@@ -16,7 +21,7 @@ public class UITutorialState : TutorialStater
     private Timer _timer;
     private Coroutine _coroutine;
 
-    public UITutorialState(TutorialStateMachine stateMachine, TutorialContext context)
+    public UITutorialState(StateMachine stateMachine, TutorialContext context)
         : base(stateMachine, context)
     {
         _scaleMultiplier = 1.2f;
@@ -119,4 +124,5 @@ public class UITutorialState : TutorialStater
         Debug.LogError(message, context);
         return false;
     }
+}
 }

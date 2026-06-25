@@ -1,8 +1,19 @@
+using Game;
+using Menu.ButtonEditor.Ability;
+using Menu.Shop;
+using Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine;
+using PuzzleEditor;
+using PuzzleEditor.Counter;
+using PuzzleEditor.LockEditor;
+using PuzzleEditor.MovingBlocks;
+using PuzzleEditor.Spawners;
 using TMPro;
 using UnityEngine;
-
-public class TutorialHandler : TutorialStateMachine
+namespace Menu.TutorialEditor.TutorialPuzzle
 {
+
+public class TutorialHandler : StateMachine
+    {
     [SerializeField] private Key _key;
     [SerializeField] private Lock _lock;
     [SerializeField] private Hints _hints;
@@ -18,7 +29,7 @@ public class TutorialHandler : TutorialStateMachine
     [SerializeField] private HandMover _handMoverUI;
     [SerializeField] private CloseGameButton closeGame;
     [SerializeField] private InputHandler inputHandler;
-    [SerializeField] private TutorialStateMachine tutorialStateMachin;
+    [SerializeField] private StateMachine tutorialStateMachin;
 
     protected override TutorialContext CreateContext()
     {
@@ -64,4 +75,5 @@ public class TutorialHandler : TutorialStateMachine
 
         return isValid;
     }
+}
 }

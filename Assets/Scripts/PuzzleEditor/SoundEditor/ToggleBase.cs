@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+namespace PuzzleEditor.SoundEditor
+{
 
 [RequireComponent(typeof(Toggle))]
 public class ToggleBase : MonoBehaviour
@@ -15,7 +17,7 @@ public class ToggleBase : MonoBehaviour
 
         if (_toggle == null)
         {
-            Debug.LogError("Toggle не назначен!");
+            Debug.LogError("Toggle пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
             return;
         }
     }
@@ -45,4 +47,5 @@ public class ToggleBase : MonoBehaviour
     {
         _toggle.isOn = isOn;
     }
+}
 }

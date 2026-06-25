@@ -1,6 +1,9 @@
+using PuzzleEditor.InkEditor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+namespace PuzzleEditor.PenEditor.Placeholder
+{
 
 public class SequentialSpawner : MonoBehaviour
 {
@@ -50,7 +53,7 @@ public class SequentialSpawner : MonoBehaviour
 
         if (color == null)
         {
-            Debug.LogError("Ñolor for the appearance is null!", this);
+            Debug.LogError("ï¿½olor for the appearance is null!", this);
             return;
         }
 
@@ -105,4 +108,5 @@ public class SequentialSpawner : MonoBehaviour
 
         return placeholder;
     }
+}
 }

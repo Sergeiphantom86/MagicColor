@@ -1,4 +1,8 @@
+using Game.SaveEditor;
+using Menu.Shop;
 using UnityEngine;
+namespace Wallets.WalletEditor
+{
 
 public class AbilityQuantityLoader : MonoBehaviour
 {
@@ -68,4 +72,5 @@ public class AbilityQuantityLoader : MonoBehaviour
         if (_bagAbilities != null)
             _bagAbilities.Add();
     }
+}
 }

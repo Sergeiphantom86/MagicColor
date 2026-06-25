@@ -1,6 +1,9 @@
+using Game.SaveEditor;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
+namespace PuzzleEditor.SoundEditor
+{
 
 [RequireComponent(typeof(AudioSource))]
 public class MenuSound : MonoBehaviour
@@ -175,4 +178,5 @@ public class MenuSound : MonoBehaviour
         _progressSaver.SaveProgress();
         _coroutineSaving = null;
     }
+}
 }

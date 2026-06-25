@@ -1,4 +1,11 @@
-﻿using UnityEngine;
+using Menu.ButtonEditor.Ability;
+using PuzzleEditor.EnergyField;
+using PuzzleEditor.MovingBlocks;
+using PuzzleEditor.MovingBlocks.GridEditor;
+using PuzzleEditor.SoundEditor;
+using UnityEngine;
+namespace PuzzleEditor.Spawners
+{
 
 public class MagicSphereSpawner : BaseSpawner<MagicSphere>
 {
@@ -82,4 +89,5 @@ public class MagicSphereSpawner : BaseSpawner<MagicSphere>
             Despawn(SpawnedObjects[i]);
         }
     }
+}
 }

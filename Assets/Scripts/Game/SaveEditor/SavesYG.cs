@@ -1,8 +1,10 @@
+using PuzzleEditor.RouletteEditor;
+using PuzzleEditor.SoundEditor;
 using UnityEngine;
 
 namespace YG
 {
-    public partial class SavesYG
+    public partial class SavesYG 
     {
         private const int MinIndexValue = 0;
         private const long MinCurrentValue = 0;
@@ -121,7 +123,7 @@ namespace YG
         {
             if (index < MinIndexValue)
             {
-                Debug.LogWarning($"SetTutorial: передан отрицательный индекс: {index}");
+                Debug.LogWarning($"SetTutorial: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ: {index}");
                 return;
             }
 
@@ -174,7 +176,7 @@ namespace YG
         {
             if (currency == null)
             {
-                Debug.LogError("SetCurrency: передан null currency");
+                Debug.LogError("SetCurrency: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ null currency");
                 return;
             }
 
@@ -200,7 +202,7 @@ namespace YG
         {
             if (balance < MinCurrentValue)
             {
-                Debug.LogWarning($"SetCurrency: попытка установить отрицательный баланс для Coin. Текущий: {_currentCoin}, изменение: {balance}");
+                Debug.LogWarning($"SetCurrency: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ Coin. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {_currentCoin}, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {balance}");
                 return MinCurrentValue;
             }
 
@@ -244,7 +246,7 @@ namespace YG
         {
             if (count < 0)
             {
-                Debug.LogWarning($"SetCountStars: переданное количество звезд отрицательно: {count}");
+                Debug.LogWarning($"SetCountStars: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {count}");
                 _stars = MinIndexValue;
                 return;
             }
@@ -256,7 +258,7 @@ namespace YG
         {
             if (float.IsNaN(volume) || float.IsInfinity(volume))
             {
-                Debug.LogError($"SetVolume: передан некорректный volume: {volume}");
+                Debug.LogError($"SetVolume: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ volume: {volume}");
                 return;
             }
 
@@ -270,7 +272,7 @@ namespace YG
         {
             if (volumeChanger == null)
             {
-                Debug.LogError("GetVolume: передан null VolumeChanger. Возвращено значение по умолчанию: 0");
+                Debug.LogError("GetVolume: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ null VolumeChanger. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: 0");
                 return false;
             }
 

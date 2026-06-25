@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu.ButtonEditor
+{
 
 public class Exit : MonoBehaviour
 {
@@ -35,4 +37,5 @@ public class Exit : MonoBehaviour
             _spinButton.interactable = false;
         }
     }
+}
 }

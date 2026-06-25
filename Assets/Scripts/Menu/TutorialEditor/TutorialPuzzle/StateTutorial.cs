@@ -1,5 +1,8 @@
+using PuzzleEditor.LockEditor;
 using System;
 using UnityEngine;
+namespace Menu.TutorialEditor.TutorialPuzzle
+{
 
 public class StateTutorial : MonoBehaviour
 {
@@ -22,7 +25,7 @@ public class StateTutorial : MonoBehaviour
             return;
 
         _key.OnShift -= MovePointer;
-        _key.OnSelected -= MovePointer—lick;
+        _key.OnSelected -= MovePointerClick;
         _lock.OnUnblocking -= Complete;
     }
 
@@ -41,7 +44,7 @@ public class StateTutorial : MonoBehaviour
     private void SubscribeEvents()
     {
         _key.OnShift += MovePointer;
-        _key.OnSelected += MovePointer—lick;
+        _key.OnSelected += MovePointerClick;
         _lock.OnUnblocking += Complete;
     }
 
@@ -50,7 +53,7 @@ public class StateTutorial : MonoBehaviour
         _handMover.EnableLoopingAnimationZ();
     }
 
-    private void MovePointer—lick()
+    private void MovePointerClick()
     {
         SetPositionsEquipment(_lock.transform.position);
     }
@@ -86,4 +89,5 @@ public class StateTutorial : MonoBehaviour
         _handMover.SetPosition(position);
         _visualizer.SetPosition(position);
     }
+}
 }

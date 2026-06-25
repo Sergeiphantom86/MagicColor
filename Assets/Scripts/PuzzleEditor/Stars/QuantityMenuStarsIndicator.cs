@@ -1,4 +1,7 @@
+using Game.SaveEditor;
 using UnityEngine;
+namespace PuzzleEditor.Stars
+{
 
 [RequireComponent(typeof(StarsController))]
 public class QuantityMenuStarsIndicator : MonoBehaviour
@@ -24,4 +27,5 @@ public class QuantityMenuStarsIndicator : MonoBehaviour
             _starsController.ShowWithAnimation(_progressSaver.Saves.CountStars);
         }
     }
+}
 }

@@ -1,6 +1,9 @@
 using TMPro;
 using UnityEngine;
 using Unity.VisualScripting;
+using Game.SaveEditor;
+namespace Menu
+{
 
 public class Icon : MonoBehaviour
 {
@@ -31,4 +34,5 @@ public class Icon : MonoBehaviour
 
         return value;
     }
+}
 }

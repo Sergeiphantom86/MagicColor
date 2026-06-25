@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using PuzzleEditor.UI;
 
 public class AniActivate : MonoBehaviour {
 

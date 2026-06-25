@@ -1,5 +1,8 @@
+using PuzzleEditor.Counter;
 using System;
 using UnityEngine;
+namespace PuzzleEditor.UI.LoadingScreen
+{
 
 public class PuzzleFlowController : MonoBehaviour
 {
@@ -23,4 +26,5 @@ public class PuzzleFlowController : MonoBehaviour
         _timer.gameObject.SetActive(false);
         OnPuzzleCompleted?.Invoke();
     }
+}
 }

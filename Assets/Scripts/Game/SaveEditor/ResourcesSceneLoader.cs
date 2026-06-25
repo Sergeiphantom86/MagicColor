@@ -1,4 +1,8 @@
+using PuzzleEditor.RouletteEditor;
+using PuzzleEditor.UI.LoadingScreen;
 using UnityEngine;
+namespace Game.SaveEditor
+{
 
 public class ResourcesSceneLoader : MonoBehaviour
 {
@@ -83,4 +87,5 @@ public class ResourcesSceneLoader : MonoBehaviour
 
         sceneFlow.Initialize(_spriteTransmitter.Current, _progressSaver);
     }
+}
 }

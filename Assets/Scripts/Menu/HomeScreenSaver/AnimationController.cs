@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+namespace Menu.HomeScreenSaver
+{
 
 public class AnimationController : MonoBehaviour
 {
@@ -33,4 +35,5 @@ public class AnimationController : MonoBehaviour
             }
         }
     }
+}
 }

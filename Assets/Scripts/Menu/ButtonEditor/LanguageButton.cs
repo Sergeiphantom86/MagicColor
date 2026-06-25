@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+namespace Menu.ButtonEditor
+{
 
 public class LanguageButton : MonoBehaviour
 {
@@ -23,4 +25,5 @@ public class LanguageButton : MonoBehaviour
     {
         _choice.enabled = true;
     }
+}
 }

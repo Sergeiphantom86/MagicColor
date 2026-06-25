@@ -1,5 +1,10 @@
+using Game.SaveEditor;
+using Menu.TutorialEditor;
+using PuzzleEditor.RouletteEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+namespace PuzzleEditor.UI.LoadingScreen
+{
 
 public class SceneFlowController : MonoBehaviour
 {
@@ -9,7 +14,7 @@ public class SceneFlowController : MonoBehaviour
 
     [SerializeField] private MenuLoader _menuLoader;
     [SerializeField] private TextureInitializer _textureInitializer;
-    [SerializeField] private TutorialPuzzle _tutorialPuzzle;
+    [SerializeField] private TutorialPuzzle1 _tutorialPuzzle;
 
     private string _sceneName;
     private IProgressSaver _progressSaver;
@@ -21,24 +26,24 @@ public class SceneFlowController : MonoBehaviour
         _adRewardController = GetComponent<AdRewardController>();
 
         if (_textureInitializer == null)
-            Debug.LogError($"[SceneFlowController] TextureInitializer не назначен в инспекторе на объекте {gameObject.name}");
+            Debug.LogError($"[SceneFlowController] TextureInitializer пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ {gameObject.name}");
         if (_menuLoader == null)
-            Debug.LogError($"[SceneFlowController] MenuLoader не назначен на объекте {gameObject.name}");
+            Debug.LogError($"[SceneFlowController] MenuLoader пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ {gameObject.name}");
         if (_adRewardController == null)
-            Debug.LogWarning($"[SceneFlowController] AdRewardController отсутствует на объекте {gameObject.name}");
+            Debug.LogWarning($"[SceneFlowController] AdRewardController пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ {gameObject.name}");
     }
 
     public void Initialize(Sprite sprite, IProgressSaver progressSaver)
     {
         if (sprite == null)
         {
-            Debug.LogError($"Sprite == null на объекте {gameObject.name}");
+            Debug.LogError($"Sprite == null пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ {gameObject.name}");
             return;
         }
 
         if (progressSaver == null)
         {
-            Debug.LogError($"IProgressSaver == null на объекте {gameObject.name}");
+            Debug.LogError($"IProgressSaver == null пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ {gameObject.name}");
             return;
         }
 
@@ -78,4 +83,5 @@ public class SceneFlowController : MonoBehaviour
            ? _tutorialPuzzle.Sprite
            : sprite;
     }
+}
 }

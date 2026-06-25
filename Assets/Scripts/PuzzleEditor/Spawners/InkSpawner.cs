@@ -1,5 +1,9 @@
-﻿using System.Collections;
+using PuzzleEditor.InkEditor;
+using PuzzleEditor.ObjectPool;
+using System.Collections;
 using UnityEngine;
+namespace PuzzleEditor.Spawners
+{
 
 [RequireComponent(typeof(DropPooler))]
 public class InkSpawner : BaseSpawner<Drop>
@@ -76,4 +80,5 @@ public class InkSpawner : BaseSpawner<Drop>
         if (inkDrop.TryGetComponent(out IColorable colorable))
             colorable.SetColor(color);
     }
+}
 }

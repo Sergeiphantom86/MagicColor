@@ -1,5 +1,11 @@
+using Game.SaveEditor;
+using Menu.TutorialEditor.TutorialPuzzle;
+using PuzzleEditor.SoundEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using Wallets;
+namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
+{
 
 public class RewardAnimator : MonoBehaviour
 {
@@ -114,4 +120,5 @@ public class RewardAnimator : MonoBehaviour
     {
         return new Vector3(Random.Range(_directionRange.x, _directionRange.y), _directionValueY, 0).normalized;
     }
+}
 }

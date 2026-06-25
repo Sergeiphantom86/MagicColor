@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.MovingBlocks.GridEditor
+{
 
 public interface IGridOccupant
 {
@@ -9,4 +11,5 @@ public interface IGridOccupant
     public Vector2Int GridPosition { get; }
 
     public void SetGridPosition(Vector2Int origin);
+}
 }

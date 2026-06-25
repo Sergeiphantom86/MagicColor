@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+namespace PuzzleEditor
+{
 
 public class SpriteColorSorter : MonoBehaviour
 {
@@ -27,7 +29,7 @@ public class SpriteColorSorter : MonoBehaviour
 
         foreach (var item in result)
         {
-            Debug.Log($"{item.Name} — {item.ColorCount} colors");
+            Debug.Log($"{item.Name} ï¿½ {item.ColorCount} colors");
         }
     }
 
@@ -50,4 +52,5 @@ public class SpriteColorSorter : MonoBehaviour
 
         return colors.Count;
     }
+}
 }

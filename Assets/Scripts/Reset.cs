@@ -1,26 +1,31 @@
+using Game.LoadingScreen;
+using Game.SaveEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Reset : MonoBehaviour
+namespace Scripts
 {
-    private Button _button;
-    private IProgressSaver _progressSaver;
-
-    private void Awake()
+    public class Reset : MonoBehaviour
     {
-        _button = GetComponent<Button>();
-        _progressSaver = new ProgressSaver();
-    }
+        private Button _button;
+        private IProgressSaver _progressSaver;
 
-    private void Start()
-    {
-        _button.onClick.AddListener(TurnOn);
-    }
+        private void Awake()
+        {
+            _button = GetComponent<Button>();
+            _progressSaver = new ProgressSaver();
+        }
 
-    private void TurnOn()
-    {
-        _progressSaver.SetDefaultValues();
-        _progressSaver.SaveProgress();
-        SceneLoader.Instance.LoadSceneAsyncWithSplash("Menu");
+        private void Start()
+        {
+            _button.onClick.AddListener(TurnOn);
+        }
+
+        private void TurnOn()
+        {
+            _progressSaver.SetDefaultValues();
+            _progressSaver.SaveProgress();
+            SceneLoader.Instance.LoadSceneAsyncWithSplash("Menu");
+        }
     }
 }

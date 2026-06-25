@@ -1,4 +1,7 @@
+using Menu;
 using UnityEngine;
+namespace PuzzleEditor
+{
 
 public class ImageMagnifier : MonoBehaviour
 {
@@ -50,4 +53,5 @@ public class ImageMagnifier : MonoBehaviour
             _isStandardSize = true;
         }
     }
+}
 }

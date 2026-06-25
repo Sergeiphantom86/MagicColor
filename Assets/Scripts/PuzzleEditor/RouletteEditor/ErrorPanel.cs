@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+namespace PuzzleEditor.RouletteEditor
+{
 
 public class ErrorPanel : MonoBehaviour
 {
@@ -42,4 +44,5 @@ public class ErrorPanel : MonoBehaviour
     {
         gameObject.SetActive(true);
     }
+}
 }

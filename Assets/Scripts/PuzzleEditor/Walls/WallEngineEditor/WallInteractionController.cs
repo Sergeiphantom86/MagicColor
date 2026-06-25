@@ -1,5 +1,8 @@
+using PuzzleEditor.MovingBlocks;
 using System;
 using UnityEngine;
+namespace PuzzleEditor.Walls.WallEngineEditor
+{
 
 [RequireComponent(typeof(IInputHandler), typeof(ColorCollisionHandler))]
 public class WallInteractionController : MonoBehaviour
@@ -51,4 +54,5 @@ public class WallInteractionController : MonoBehaviour
 
         _wall.PushMovement();
     }
+}
 }

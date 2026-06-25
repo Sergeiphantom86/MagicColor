@@ -1,10 +1,14 @@
+using PuzzleEditor.MovingBlocks.BlockEditor;
+using PuzzleEditor.Walls.WallEditor;
 using System;
 using System.Collections;
 using UnityEngine;
+namespace PuzzleEditor.Walls
+{
 
 public class BlockDestroySequence : MonoBehaviour, IBlockDestroySequence
 {
-    private Activator _activator;
+    private PenEditor.Activator _activator;
     private IPointer _pointer;
     private WaitForSeconds _waitShutdown;
     private WaitForSeconds _waitActivat;
@@ -14,7 +18,7 @@ public class BlockDestroySequence : MonoBehaviour, IBlockDestroySequence
 
     public event Action IsTouched;
 
-    public void Initialize(Activator activator)
+    public void Initialize(PenEditor.Activator activator)
     {
         _activator = activator;
         _pointer = GetComponent<IPointer>();
@@ -60,4 +64,5 @@ public class BlockDestroySequence : MonoBehaviour, IBlockDestroySequence
 
         _isCollaps = false;
     }
+}
 }

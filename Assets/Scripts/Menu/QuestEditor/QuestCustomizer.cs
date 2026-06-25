@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+using Game.SaveEditor;
+using System.Collections.Generic;
+namespace Menu.QuestEditor
+{
 
 public class QuestCustomizer
 {
@@ -62,4 +65,5 @@ public class QuestCustomizer
         _progressSaver.SetUnblockingTutorial();
         _progressSaver.SetAbilityTutorial();
     }
+}
 }

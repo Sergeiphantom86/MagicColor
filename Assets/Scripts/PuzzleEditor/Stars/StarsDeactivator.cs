@@ -1,6 +1,11 @@
-﻿using System.Collections;
+using Game.SaveEditor;
+using PuzzleEditor.SoundEditor;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
+using PuzzleEditor.Counter;
+namespace PuzzleEditor.Stars
+{
 
 public class StarsDeactivator : MonoBehaviour
 {
@@ -92,4 +97,5 @@ public class StarsDeactivator : MonoBehaviour
             _coroutine = null;
         }
     }
+}
 }

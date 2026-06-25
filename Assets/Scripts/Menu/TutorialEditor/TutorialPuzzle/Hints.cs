@@ -1,4 +1,7 @@
+using PuzzleEditor.SoundEditor;
 using UnityEngine;
+namespace Menu.TutorialEditor.TutorialPuzzle
+{
 
 [RequireComponent(typeof(Voiceover))]
 public class Hints : MonoBehaviour
@@ -25,4 +28,5 @@ public class Hints : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+}
 }

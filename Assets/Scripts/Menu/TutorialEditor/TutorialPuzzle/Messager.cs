@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+namespace Menu.TutorialEditor.TutorialPuzzle
+{
 
 public class Messager : MonoBehaviour
 {
@@ -41,4 +43,5 @@ public class Messager : MonoBehaviour
 
         _coroutine = null;
     }
+}
 }

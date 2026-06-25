@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor.PenEditor
+{
 
 public class ColorableWritNode : ColorableObject, IColorable
 {
@@ -18,4 +20,6 @@ public class ColorableWritNode : ColorableObject, IColorable
     {
         _activator.ColorHasChanged -= SetColor;
     }
+}
+
 }

@@ -1,5 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
+namespace Game.LoadingScreen
+{
 
 public class LoadingRotator : MonoBehaviour
 {
@@ -25,4 +27,5 @@ public class LoadingRotator : MonoBehaviour
 
         transform.Rotate(Vector3.back, _rotationSpeed * direction * Time.deltaTime);
     }
+}
 }

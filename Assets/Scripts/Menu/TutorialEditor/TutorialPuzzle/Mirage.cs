@@ -1,6 +1,12 @@
+using PuzzleEditor.MovingBlocks;
+using PuzzleEditor.SoundEditor;
+using PuzzleEditor.Walls;
+using PuzzleEditor.Walls.WallEditor;
 using System;
 using System.Collections;
 using UnityEngine;
+namespace Menu.TutorialEditor.TutorialPuzzle
+{
 
 [RequireComponent(typeof(HandMover), typeof(Renderer), typeof(PathMover))]
 [RequireComponent(typeof(Collider), typeof(Voiceover))]
@@ -165,4 +171,5 @@ public class Mirage : MonoBehaviour
         renderer.material = material;
         renderer.material.color = color;
     }
+}
 }

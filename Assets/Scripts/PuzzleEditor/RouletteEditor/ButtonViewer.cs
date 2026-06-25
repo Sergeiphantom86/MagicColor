@@ -1,5 +1,8 @@
 using DG.Tweening;
+using Menu.ButtonEditor;
 using UnityEngine;
+namespace PuzzleEditor.RouletteEditor
+{
 
 public class ButtonViewer : MonoBehaviour
 {
@@ -84,4 +87,5 @@ public class ButtonViewer : MonoBehaviour
            _transform.DOScale(_endScale, _duration)
                .SetEase(Ease.OutBack));
     }
+}
 }

@@ -1,5 +1,8 @@
+using PuzzleEditor.Walls.WallEditor;
 using System;
 using UnityEngine;
+namespace PuzzleEditor.Walls.WallEngineEditor
+{
 
 [RequireComponent(typeof(Wall))]
 public class WallLayoutUpdater : MonoBehaviour, IWallLayout
@@ -72,4 +75,5 @@ public class WallLayoutUpdater : MonoBehaviour, IWallLayout
 
         return false;
     }
+}
 }

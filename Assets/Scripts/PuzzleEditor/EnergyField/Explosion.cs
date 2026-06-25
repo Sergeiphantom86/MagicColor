@@ -1,4 +1,7 @@
+using PuzzleEditor.Walls.Partitions;
 using UnityEngine;
+namespace PuzzleEditor.EnergyField
+{
 
 public class Explosion : MonoBehaviour
 {
@@ -50,4 +53,5 @@ public class Explosion : MonoBehaviour
             partition.DestroyPartition();
         }
     }
+}
 }

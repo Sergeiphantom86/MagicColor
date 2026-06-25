@@ -1,6 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+namespace PuzzleEditor.PenEditor
+{
 
 [RequireComponent(typeof(PenScaleController))]
 public class MoverPen : MonoBehaviour, IMover
@@ -166,4 +168,5 @@ public class MoverPen : MonoBehaviour, IMover
             center.y,
             center.z + randomPoint.y);
     }
+}
 }

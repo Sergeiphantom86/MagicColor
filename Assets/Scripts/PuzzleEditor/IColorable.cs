@@ -1,4 +1,6 @@
 using UnityEngine;
+namespace PuzzleEditor
+{
 
 public interface IColorable
 {
@@ -23,4 +25,5 @@ public interface IColorable
     public void SetStartRenderQueueSelectedItem();
 
     public void SetRenderQueueSelectedItem();
+}
 }

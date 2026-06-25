@@ -1,5 +1,7 @@
 using TMPro;
 using UnityEngine;
+namespace Wallets.WalletEditor
+{
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class BalanceIndicator : MonoBehaviour
@@ -27,4 +29,5 @@ public class BalanceIndicator : MonoBehaviour
     {
         _textMeshProUGUI.text = balance.ToString();
     }
+}
 }

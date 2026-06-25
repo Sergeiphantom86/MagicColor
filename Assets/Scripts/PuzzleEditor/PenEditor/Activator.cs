@@ -1,6 +1,10 @@
+using PuzzleEditor.PenEditor.Placeholder;
+using PuzzleEditor.SoundEditor;
 using System;
 using System.Collections;
 using UnityEngine;
+namespace PuzzleEditor.PenEditor
+{
 
 public class Activator : MonoBehaviour, IActivatable
 {
@@ -144,4 +148,5 @@ public class Activator : MonoBehaviour, IActivatable
 
         Deactivate();
     }
+}
 }

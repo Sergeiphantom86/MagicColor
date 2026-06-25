@@ -3,6 +3,11 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using PuzzleEditor.UI;
+using Menu.HomeScreenSaver;
+using Menu;
+namespace PuzzleEditor
+{
 
 public class TextureInitializer : MonoBehaviour
 {
@@ -161,4 +166,5 @@ public class TextureInitializer : MonoBehaviour
     {
         return new Vector3((x - pivot.x) * PixelSize, (y - pivot.y) * PixelSize, 0);
     }
+}
 }

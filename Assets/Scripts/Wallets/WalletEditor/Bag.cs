@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+namespace Wallets.WalletEditor
+{
 
 public class Bag : MonoBehaviour
 {
@@ -63,4 +65,5 @@ public class Bag : MonoBehaviour
 
         return false;
     }
+}
 }

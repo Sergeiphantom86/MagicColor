@@ -1,14 +1,19 @@
-public interface ICurrencyProgress
+using PuzzleEditor.RouletteEditor;
+
+namespace Game.SaveEditor
 {
-    public void SetCurrency(Currency currency, long balance);
+    public interface ICurrencyProgress
+    {
+        public void SetCurrency(Currency currency, long balance);
 
-    public void SetReward(int reward);
+        public void SetReward(int reward);
 
-    public void SetCountStars(int count);
+        public void SetCountStars(int count);
 
-    public void SaveSpinsCount(int spins);
+        public void SaveSpinsCount(int spins);
 
-    public void SetQuantityAbilities(int quantityAbilities);
+        public void SetQuantityAbilities(int quantityAbilities);
 
-    public void SaveBalanceAfterPurchase(long balans);
+        public void SaveBalanceAfterPurchase(long balans);
+    }
 }

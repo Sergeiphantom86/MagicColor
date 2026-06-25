@@ -3,6 +3,9 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using PuzzleEditor;
+namespace Menu.HomeScreenSaver
+{
 
 [RequireComponent(typeof(AppearanceAnimator))]
 public class PixelShine : MonoBehaviour, IAnimatable
@@ -130,4 +133,5 @@ public class PixelShine : MonoBehaviour, IAnimatable
 
         _shineSequence = null;
     }
+}
 }

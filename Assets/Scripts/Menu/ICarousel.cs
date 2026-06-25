@@ -1,3 +1,5 @@
+namespace Menu
+{
 public interface ICarousel
 {
     int CurrentIndex { get; }
@@ -7,4 +9,5 @@ public interface ICarousel
     void ScrollToButton(int index);
 
     void ShowRelative(int direction);
+}
 }

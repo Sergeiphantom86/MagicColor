@@ -1,5 +1,8 @@
+using Game.SaveEditor;
 using UnityEngine;
 using UnityEngine.Audio;
+namespace PuzzleEditor.SoundEditor
+{
 
 [RequireComponent(typeof(AudioSource))]
 public class Voiceover : MonoBehaviour
@@ -69,4 +72,5 @@ public class Voiceover : MonoBehaviour
         if (_sfxSource != null && _sfxGroup != null)
             _sfxSource.outputAudioMixerGroup = _sfxGroup;
     }
+}
 }
