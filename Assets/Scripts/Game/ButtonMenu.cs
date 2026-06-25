@@ -7,7 +7,8 @@ namespace Game
     [RequireComponent(typeof(Button))]
     public class ButtonMenu : MonoBehaviour
     {
-        [SerializeField] private PauseMenu _pauseMenu;
+        [SerializeField]
+        private PauseMenu _pauseMenu;
 
         private Button _button;
 
@@ -30,8 +31,6 @@ namespace Game
             _button.onClick.RemoveListener(PressButton);
         }
 
-        public virtual void PressButton()
-        {
-        }
+        public virtual void PressButton() { }
     }
 }

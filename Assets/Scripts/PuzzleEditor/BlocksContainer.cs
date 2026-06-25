@@ -1,108 +1,133 @@
-using PuzzleEditor.MovingBlocks.BlockEditor;
-using PuzzleEditor.PoolEffects;
-using PuzzleEditor.Spawners;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PuzzleEditor.MovingBlocks.BlockEditor;
+using PuzzleEditor.PoolEffects;
+using PuzzleEditor.Spawners;
 using UnityEngine;
+
 namespace PuzzleEditor
 {
-
-public class BlocksContainer : MonoBehaviour, IBlocksContainer
-{
-    [SerializeField] private TextureInitializer _textureInitializer;
-    [SerializeField] private Repainter _repainter;
-    [SerializeField] private AudioClip _soundDragg;
-    [SerializeField] private AudioClip _soundRaise;
-    [SerializeField] private AudioClip _matchSound;
-    [SerializeField] private AudioClip _soundDestruction;
-    [SerializeField] private Effecter _effectImpact;
-    [SerializeField] private Effecter _effectDestruct;
-    [SerializeField] private Effecter _effectSmock;
-
-    private List<Block> _blocks;
-    private int _initialBlocksCount;
-    private BlockSpawner _blockSpawner;
-    private bool _isInitialize;
-    private float _delayTime;
-
-    public event Action EverythDestroyed;
-
-    public event Action OneDestroyed;
-
-    public Transform Transform => transform;
-
-    public float DelayTime => _delayTime;
-
-    public int ActiveBlocksCount =>
-        _blocks.Count(block => block != null && block.gameObject.activeSelf);
-
-    private void Awake()
+    public class BlocksContainer : MonoBehaviour, IBlocksContainer
     {
-        _blocks = new List<Block>();
-        _blockSpawner = GetComponent<BlockSpawner>();
-    }
+        [SerializeField]
+        private TextureInitializer _textureInitializer;
 
-    private void OnEnable()
-    {
-        _repainter.OnRecoloredBlock += Subscribe;
-        _blockSpawner.BlockSpawned += Register;
-    }
+        [SerializeField]
+        private Repainter _repainter;
 
-    private void OnDisable()
-    {
-        _repainter.OnRecoloredBlock -= Subscribe;
-        _blockSpawner.BlockSpawned -= Register;
-    }
+        [SerializeField]
+        private AudioClip _soundDragg;
 
-    private void Register(Block block)
-    {
-        _blocks.Add(block);
+        [SerializeField]
+        private AudioClip _soundRaise;
 
-        block.Initialize(_effectImpact, _effectSmock, _effectDestruct, _soundDestruction, _soundDragg, _soundRaise, _matchSound);
-    }
+        [SerializeField]
+        private AudioClip _matchSound;
 
-    private void CalculateStartTimeGame(Block block)
-    {
-        if (_isInitialize == false)
+        [SerializeField]
+        private AudioClip _soundDestruction;
+
+        [SerializeField]
+        private Effecter _effectImpact;
+
+        [SerializeField]
+        private Effecter _effectDestruct;
+
+        [SerializeField]
+        private Effecter _effectSmock;
+
+        private List<Block> _blocks;
+        private int _initialBlocksCount;
+        private BlockSpawner _blockSpawner;
+        private bool _isInitialize;
+        private float _delayTime;
+
+        public event Action EverythDestroyed;
+
+        public event Action OneDestroyed;
+
+        public Transform Transform => transform;
+
+        public float DelayTime => _delayTime;
+
+        public int ActiveBlocksCount =>
+            _blocks.Count(block => block != null && block.gameObject.activeSelf);
+
+        private void Awake()
         {
-            _isInitialize = true;
+            _blocks = new List<Block>();
+            _blockSpawner = GetComponent<BlockSpawner>();
+        }
 
-            if (block.TryGetComponent(out SpawnDropAnimation spawnDropAnimation))
+        private void OnEnable()
+        {
+            _repainter.OnRecoloredBlock += Subscribe;
+            _blockSpawner.BlockSpawned += Register;
+        }
+
+        private void OnDisable()
+        {
+            _repainter.OnRecoloredBlock -= Subscribe;
+            _blockSpawner.BlockSpawned -= Register;
+        }
+
+        private void Register(Block block)
+        {
+            _blocks.Add(block);
+
+            block.Initialize(
+                _effectImpact,
+                _effectSmock,
+                _effectDestruct,
+                _soundDestruction,
+                _soundDragg,
+                _soundRaise,
+                _matchSound
+            );
+        }
+
+        private void CalculateStartTimeGame(Block block)
+        {
+            if (_isInitialize == false)
             {
-                _delayTime = spawnDropAnimation.Duration * _blocks.Count;
+                _isInitialize = true;
+
+                if (block.TryGetComponent(out SpawnDropAnimation spawnDropAnimation))
+                {
+                    _delayTime = spawnDropAnimation.Duration * _blocks.Count;
+                }
             }
         }
-    }
 
-    private void Subscribe(List<IColorable> colorableObjects)
-    {
-        foreach (var block in _blocks)
+        private void Subscribe(List<IColorable> colorableObjects)
         {
-            CalculateStartTimeGame(block);
-
-            if (block.IsRepainted)
+            foreach (var block in _blocks)
             {
-                block.OnDestroyed += HandleBlockDestroyed;
-                _initialBlocksCount++;
+                CalculateStartTimeGame(block);
+
+                if (block.IsRepainted)
+                {
+                    block.OnDestroyed += HandleBlockDestroyed;
+                    _initialBlocksCount++;
+                }
             }
         }
-    }
 
-    private void HandleBlockDestroyed(Block block)
-    {
-        _initialBlocksCount--;
-
-        OneDestroyed?.Invoke();
-
-        if (_initialBlocksCount == 0)
+        private void HandleBlockDestroyed(Block block)
         {
-            EverythDestroyed?.Invoke();
+            _initialBlocksCount--;
+
+            OneDestroyed?.Invoke();
+
+            if (_initialBlocksCount == 0)
+            {
+                EverythDestroyed?.Invoke();
+            }
+
+            _blocks.Remove(block);
+
+            block.OnDestroyed -= HandleBlockDestroyed;
         }
-
-        _blocks.Remove(block);
-
-        block.OnDestroyed -= HandleBlockDestroyed;
     }
-}
 }

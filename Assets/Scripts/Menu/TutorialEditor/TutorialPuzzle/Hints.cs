@@ -1,32 +1,33 @@
 using PuzzleEditor.SoundEditor;
 using UnityEngine;
+
 namespace Menu.TutorialEditor.TutorialPuzzle
 {
-
-[RequireComponent(typeof(Voiceover))]
-public class Hints : MonoBehaviour
-{
-    [SerializeField] private AudioClip _audioClip;
-
-    private TextSwitcher _textSwitcher;
-    private Voiceover _voiceover;
-
-    private void Awake()
+    [RequireComponent(typeof(Voiceover))]
+    public class Hints : MonoBehaviour
     {
-        _textSwitcher = GetComponentInChildren<TextSwitcher>();
-        _voiceover = GetComponent<Voiceover>();
-    }
+        [SerializeField]
+        private AudioClip _audioClip;
 
-    public void TurnOn(bool isOn)
-    {
-        gameObject.SetActive(true);
-        _voiceover.PlayOneShot(_audioClip);
-        _textSwitcher.TurnOffDesiredOne(isOn);
-    }
+        private TextSwitcher _textSwitcher;
+        private Voiceover _voiceover;
 
-    public void TurnOff()
-    {
-        gameObject.SetActive(false);
+        private void Awake()
+        {
+            _textSwitcher = GetComponentInChildren<TextSwitcher>();
+            _voiceover = GetComponent<Voiceover>();
+        }
+
+        public void TurnOn(bool isOn)
+        {
+            gameObject.SetActive(true);
+            _voiceover.PlayOneShot(_audioClip);
+            _textSwitcher.TurnOffDesiredOne(isOn);
+        }
+
+        public void TurnOff()
+        {
+            gameObject.SetActive(false);
+        }
     }
-}
 }

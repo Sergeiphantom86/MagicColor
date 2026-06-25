@@ -1,21 +1,24 @@
 using System;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
+
 namespace Menu.HomeScreenSaver
 {
-
-public static class SafeAnimationHelper
-{
-    public static void SafeDelayedCall(this MonoBehaviour behaviour, float delay, Action action)
+    public static class SafeAnimationHelper
     {
-        if (behaviour == null) 
-            return;
-
-        DOVirtual.DelayedCall(delay, () =>
+        public static void SafeDelayedCall(this MonoBehaviour behaviour, float delay, Action action)
         {
-            if (behaviour != null && behaviour.isActiveAndEnabled)
-                action?.Invoke();
-        });
+            if (behaviour == null)
+                return;
+
+            DOVirtual.DelayedCall(
+                delay,
+                () =>
+                {
+                    if (behaviour != null && behaviour.isActiveAndEnabled)
+                        action?.Invoke();
+                }
+            );
+        }
     }
-}
 }

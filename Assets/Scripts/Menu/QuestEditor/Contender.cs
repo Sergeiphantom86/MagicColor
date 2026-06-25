@@ -1,8 +1,6 @@
 using UnityEngine;
+
 namespace Menu.QuestEditor
 {
-
-public class Contender : MonoBehaviour
-{
-}
+    public class Contender : MonoBehaviour { }
 }

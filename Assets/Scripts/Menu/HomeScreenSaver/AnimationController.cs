@@ -1,39 +1,39 @@
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace Menu.HomeScreenSaver
 {
-
-public class AnimationController : MonoBehaviour
-{
-    private List<IAnimatable> _animatables;
-
-    private void Awake()
+    public class AnimationController : MonoBehaviour
     {
-        _animatables = new List<IAnimatable>();
+        private List<IAnimatable> _animatables;
 
-        GetComponents(_animatables);
-    }
-
-    public void PauseAllAnimations()
-    {
-        if (_animatables != null)
+        private void Awake()
         {
-            foreach (var animatable in _animatables)
+            _animatables = new List<IAnimatable>();
+
+            GetComponents(_animatables);
+        }
+
+        public void PauseAllAnimations()
+        {
+            if (_animatables != null)
             {
-                animatable.PauseAnimations();
+                foreach (var animatable in _animatables)
+                {
+                    animatable.PauseAnimations();
+                }
+            }
+        }
+
+        public void ResumeAllAnimations()
+        {
+            if (_animatables != null)
+            {
+                foreach (var animatable in _animatables)
+                {
+                    animatable.ResumeAnimations();
+                }
             }
         }
     }
-
-    public void ResumeAllAnimations()
-    {
-        if (_animatables != null)
-        {
-            foreach (var animatable in _animatables)
-            {
-                animatable.ResumeAnimations();
-            }
-        }
-    }
-}
 }

@@ -1,8 +1,6 @@
 using UnityEngine;
+
 namespace PuzzleEditor.MovingBlocks
 {
-
-public class Pivot : MonoBehaviour
-{
-}
+    public class Pivot : MonoBehaviour { }
 }

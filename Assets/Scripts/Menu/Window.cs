@@ -1,30 +1,31 @@
 using UnityEngine;
+
 namespace Menu
 {
-
-public class Window : MonoBehaviour
-{
-    [SerializeField] private Background _background;
-
-    private void OnEnable()
+    public class Window : MonoBehaviour
     {
-        if (_background != null)
+        [SerializeField]
+        private Background _background;
+
+        private void OnEnable()
         {
-            _background.Activate();
+            if (_background != null)
+            {
+                _background.Activate();
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_background != null)
+            {
+                _background.Deactivate();
+            }
+        }
+
+        public virtual void Toggle()
+        {
+            gameObject.SetActive(!gameObject.activeSelf);
         }
     }
-
-    private void OnDisable()
-    {
-        if (_background != null)
-        {
-            _background.Deactivate();
-        }
-    }
-
-    public virtual void Toggle()
-    {
-        gameObject.SetActive(!gameObject.activeSelf);
-    }
-}
 }

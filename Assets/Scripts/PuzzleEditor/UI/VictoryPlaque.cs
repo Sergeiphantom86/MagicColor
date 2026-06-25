@@ -1,22 +1,22 @@
 using UnityEngine;
+
 namespace PuzzleEditor.UI
 {
-
-public class VictoryPlaque : MonoBehaviour
-{
-    private void Awake()
+    public class VictoryPlaque : MonoBehaviour
     {
-        TurnOff();
-    }
+        private void Awake()
+        {
+            TurnOff();
+        }
 
-    public void TurnOn()
-    {
-        gameObject.SetActive(true);
-    }
+        public void TurnOn()
+        {
+            gameObject.SetActive(true);
+        }
 
-    private void TurnOff()
-    {
-        gameObject.SetActive(false);
+        private void TurnOff()
+        {
+            gameObject.SetActive(false);
+        }
     }
-}
 }

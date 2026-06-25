@@ -1,55 +1,55 @@
 using Game.SaveEditor;
 using UnityEngine;
+
 namespace Menu
 {
-
-public class ZoomChanger
-{
-    private readonly Vector2 _referenceResolution = new(1014f, 570f);
-    private readonly float _referenceAspect = 1014f / 570f;
-    private readonly float _mobileAspectRatio = 1.5f;
-    private readonly IProgressSaver _progressSaver = new ProgressSaver();
-
-    private float _currentAspect;
-    private float _width;
-    private float _height;
-
-    public float MobileAspectRatio => _mobileAspectRatio;
-
-    public float GetScreenSize(Camera camera)
+    public class ZoomChanger
     {
-        _width = camera.scaledPixelWidth;
-        _height = camera.scaledPixelHeight;
+        private readonly Vector2 _referenceResolution = new(1014f, 570f);
+        private readonly float _referenceAspect = 1014f / 570f;
+        private readonly float _mobileAspectRatio = 1.5f;
+        private readonly IProgressSaver _progressSaver = new ProgressSaver();
 
-        _currentAspect = _width / _height;
+        private float _currentAspect;
+        private float _width;
+        private float _height;
 
-        float screenSizeMultiplier = 0;
+        public float MobileAspectRatio => _mobileAspectRatio;
 
-        if (Mathf.Abs(_currentAspect - _referenceAspect) < 0.1f)
+        public float GetScreenSize(Camera camera)
         {
-            screenSizeMultiplier = _width / _referenceResolution.x;
+            _width = camera.scaledPixelWidth;
+            _height = camera.scaledPixelHeight;
+
+            _currentAspect = _width / _height;
+
+            float screenSizeMultiplier = 0;
+
+            if (Mathf.Abs(_currentAspect - _referenceAspect) < 0.1f)
+            {
+                screenSizeMultiplier = _width / _referenceResolution.x;
+            }
+            else if (_currentAspect < _referenceAspect)
+            {
+                screenSizeMultiplier = _height / _referenceResolution.y * _currentAspect;
+            }
+
+            return screenSizeMultiplier;
         }
-        else if (_currentAspect < _referenceAspect)
+
+        public bool IsMobileWithTallScreen()
         {
-            screenSizeMultiplier = _height / _referenceResolution.y * _currentAspect;
+            return _progressSaver.IdentifyDevice() && IsMobileLike();
         }
 
-        return screenSizeMultiplier;
-    }
+        private bool IsMobileLike()
+        {
+            return GetAspect() > MobileAspectRatio;
+        }
 
-    public bool IsMobileWithTallScreen()
-    {
-        return _progressSaver.IdentifyDevice() && IsMobileLike();
+        private float GetAspect()
+        {
+            return (float)Screen.height / Screen.width;
+        }
     }
-
-    private bool IsMobileLike()
-    {
-        return GetAspect() > MobileAspectRatio;
-    }
-
-    private float GetAspect()
-    {
-        return (float)Screen.height / Screen.width;
-    }
-}
 }

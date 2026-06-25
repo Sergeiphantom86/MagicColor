@@ -1,41 +1,42 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace Menu.ButtonEditor
 {
-
-public class Exit : MonoBehaviour
-{
-    [SerializeField] private Button _spinButton;
-
-    private Button _button;
-
-    public event Action<Vector3> Showed;
-
-    private void Awake()
+    public class Exit : MonoBehaviour
     {
-        _button = GetComponent<Button>();
+        [SerializeField]
+        private Button _spinButton;
 
-        if (_button == null)
+        private Button _button;
+
+        public event Action<Vector3> Showed;
+
+        private void Awake()
         {
-            Debug.LogError("Button == null");
+            _button = GetComponent<Button>();
+
+            if (_button == null)
+            {
+                Debug.LogError("Button == null");
+            }
+        }
+
+        private void Start()
+        {
+            _button.onClick.AddListener(Show);
+        }
+
+        private void Show()
+        {
+            Showed?.Invoke(transform.position);
+            _button.interactable = false;
+
+            if (_spinButton != null)
+            {
+                _spinButton.interactable = false;
+            }
         }
     }
-
-    private void Start()
-    {
-        _button.onClick.AddListener(Show);
-    }
-
-    private void Show()
-    {
-        Showed?.Invoke(transform.position);
-        _button.interactable = false;
-
-        if (_spinButton != null)
-        {
-            _spinButton.interactable = false;
-        }
-    }
-}
 }

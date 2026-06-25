@@ -1,8 +1,6 @@
 using UnityEngine;
+
 namespace PuzzleEditor.MovingBlocks
 {
-
-public class TapParticleEffect : MonoBehaviour
-{
-}
+    public class TapParticleEffect : MonoBehaviour { }
 }

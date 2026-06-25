@@ -3,74 +3,75 @@ using Menu.ButtonEditor.Ability;
 using PuzzleEditor.Counter;
 using UnityEngine;
 using Wallets.WalletEditor;
+
 namespace PuzzleEditor.UI
 {
-
-public class UISwitcher : MonoBehaviour
-{
-    [SerializeField] private AnimatorPuzzle _animatorPuzzle;
-
-    private Timer _timer;
-    private BagKey _bagKey;
-    private PauseButton _pauseButton;
-    private AbilityButton _abilityButton;
-
-    private void Awake()
+    public class UISwitcher : MonoBehaviour
     {
-        _timer = GetComponentInChildren<Timer>();
-        _bagKey = GetComponentInChildren<BagKey>();
-        _pauseButton = GetComponentInChildren<PauseButton>();
-        _abilityButton = GetComponentInChildren<AbilityButton>();
+        [SerializeField]
+        private AnimatorPuzzle _animatorPuzzle;
 
-        if (Validate() == false)
-            return;
-    }
+        private Timer _timer;
+        private BagKey _bagKey;
+        private PauseButton _pauseButton;
+        private AbilityButton _abilityButton;
 
-    private void OnEnable()
-    {
-        _animatorPuzzle.OnAnimationComplete += TupnOffUI;
-    }
-
-    private void OnDisable()
-    {
-        _animatorPuzzle.OnAnimationComplete -= TupnOffUI;
-    }
-
-    private void TupnOffUI()
-    {
-        _timer.gameObject.SetActive(false);
-        _bagKey.gameObject.SetActive(false);
-        _pauseButton.gameObject.SetActive(false);
-        _abilityButton.gameObject.SetActive(false);
-    }
-
-    private bool Validate()
-    {
-        if (_timer == null)
+        private void Awake()
         {
-            Debug.LogError("Timer == null");
-            return false;
+            _timer = GetComponentInChildren<Timer>();
+            _bagKey = GetComponentInChildren<BagKey>();
+            _pauseButton = GetComponentInChildren<PauseButton>();
+            _abilityButton = GetComponentInChildren<AbilityButton>();
+
+            if (Validate() == false)
+                return;
         }
 
-        if (_bagKey == null)
+        private void OnEnable()
         {
-            Debug.LogError("BagKey == null");
-            return false;
+            _animatorPuzzle.OnAnimationComplete += TupnOffUI;
         }
 
-        if (_pauseButton == null)
+        private void OnDisable()
         {
-            Debug.LogError("PauseButton == null");
-            return false;
+            _animatorPuzzle.OnAnimationComplete -= TupnOffUI;
         }
 
-        if (_abilityButton == null)
+        private void TupnOffUI()
         {
-            Debug.LogError("AbilityButton == null");
-            return false;
+            _timer.gameObject.SetActive(false);
+            _bagKey.gameObject.SetActive(false);
+            _pauseButton.gameObject.SetActive(false);
+            _abilityButton.gameObject.SetActive(false);
         }
 
-        return true;
+        private bool Validate()
+        {
+            if (_timer == null)
+            {
+                Debug.LogError("Timer == null");
+                return false;
+            }
+
+            if (_bagKey == null)
+            {
+                Debug.LogError("BagKey == null");
+                return false;
+            }
+
+            if (_pauseButton == null)
+            {
+                Debug.LogError("PauseButton == null");
+                return false;
+            }
+
+            if (_abilityButton == null)
+            {
+                Debug.LogError("AbilityButton == null");
+                return false;
+            }
+
+            return true;
+        }
     }
-}
 }

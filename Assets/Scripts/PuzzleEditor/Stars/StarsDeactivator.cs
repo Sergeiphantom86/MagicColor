@@ -1,101 +1,104 @@
-using Game.SaveEditor;
-using PuzzleEditor.SoundEditor;
 using System.Collections;
 using System.Linq;
-using UnityEngine;
+using Game.SaveEditor;
 using PuzzleEditor.Counter;
+using PuzzleEditor.SoundEditor;
+using UnityEngine;
+
 namespace PuzzleEditor.Stars
 {
-
-public class StarsDeactivator : MonoBehaviour
-{
-    [SerializeField] private AudioClip _audioClip;
-    [SerializeField] private Timer _timer;
-
-    private StarIndicator[] _stars;
-    private StarsCounter _starsCounter;
-    private Voiceover _voiceover;
-    private WaitForSeconds _waitForSeconds;
-    private float _delay;
-    private IProgressSaver _progressSaver;
-    private Coroutine _coroutine;
-    private bool _isPlaying;
-
-    private void Awake()
+    public class StarsDeactivator : MonoBehaviour
     {
-        _delay = 0.3f;
-        _starsCounter = GetComponent<StarsCounter>();
-        _voiceover = GetComponent<Voiceover>();
-        _waitForSeconds = new WaitForSeconds(_delay);
-        _progressSaver = new ProgressSaver();
+        [SerializeField]
+        private AudioClip _audioClip;
 
-        _stars = GetComponentsInChildren<StarIndicator>(true)
-            .OrderBy(s => s.transform.GetSiblingIndex())
-            .ToArray();
-    }
+        [SerializeField]
+        private Timer _timer;
 
-    private IEnumerator Start()
-    {
-        yield return null;
+        private StarIndicator[] _stars;
+        private StarsCounter _starsCounter;
+        private Voiceover _voiceover;
+        private WaitForSeconds _waitForSeconds;
+        private float _delay;
+        private IProgressSaver _progressSaver;
+        private Coroutine _coroutine;
+        private bool _isPlaying;
 
-        StartCoroutine(StartCountdown());
-    }
-
-    private void OnEnable()
-    {
-        _timer.HasBegun += OnTimerStarted;
-    }
-
-    private void OnDisable()
-    {
-        _timer.HasBegun -= OnTimerStarted;
-    }
-
-    public IEnumerator StartCountdown()
-    {
-        foreach (var star in _stars)
+        private void Awake()
         {
-            yield return _waitForSeconds;
+            _delay = 0.3f;
+            _starsCounter = GetComponent<StarsCounter>();
+            _voiceover = GetComponent<Voiceover>();
+            _waitForSeconds = new WaitForSeconds(_delay);
+            _progressSaver = new ProgressSaver();
 
-            star.TurnOn();
+            _stars = GetComponentsInChildren<StarIndicator>(true)
+                .OrderBy(s => s.transform.GetSiblingIndex())
+                .ToArray();
         }
-    }
 
-    public void OnTimerStarted()
-    {
-        _coroutine = StartCoroutine(DeactivateByTime());
-    }
-
-    private IEnumerator DeactivateByTime()
-    {
-        int minStars = _starsCounter.MinStars;
-
-        for (int i = _stars.Length - 1; i >= minStars; i--)
+        private IEnumerator Start()
         {
-            yield return new WaitUntil(() =>
+            yield return null;
+
+            StartCoroutine(StartCountdown());
+        }
+
+        private void OnEnable()
+        {
+            _timer.HasBegun += OnTimerStarted;
+        }
+
+        private void OnDisable()
+        {
+            _timer.HasBegun -= OnTimerStarted;
+        }
+
+        public IEnumerator StartCountdown()
+        {
+            foreach (var star in _stars)
             {
-                SaveCurrentStars();
+                yield return _waitForSeconds;
 
-                int count = _starsCounter.GetCountStars(_timer.CurrentTimeSeconds);
-                return count <= i;
-            });
-
-            _stars[i].SetInactive();
-            _voiceover.PlayOneShot(_audioClip);
+                star.TurnOn();
+            }
         }
-    }
 
-    private void SaveCurrentStars()
-    {
-        if (_timer.IsRunning == false && _isPlaying == false)
+        public void OnTimerStarted()
         {
-            _isPlaying = true;
-            int starsLeft = _stars.Count(s => s.IsActive);
-            starsLeft = Mathf.Max(starsLeft, _starsCounter.MinStars);
-            _progressSaver.SetCountStars(starsLeft);
+            _coroutine = StartCoroutine(DeactivateByTime());
+        }
 
-            _coroutine = null;
+        private IEnumerator DeactivateByTime()
+        {
+            int minStars = _starsCounter.MinStars;
+
+            for (int i = _stars.Length - 1; i >= minStars; i--)
+            {
+                yield return new WaitUntil(() =>
+                {
+                    SaveCurrentStars();
+
+                    int count = _starsCounter.GetCountStars(_timer.CurrentTimeSeconds);
+                    return count <= i;
+                });
+
+                _stars[i].SetInactive();
+                _voiceover.PlayOneShot(_audioClip);
+            }
+        }
+
+        private void SaveCurrentStars()
+        {
+            if (_timer.IsRunning == false && _isPlaying == false)
+            {
+                _isPlaying = true;
+                int starsLeft = _stars.Count(s => s.IsActive);
+                starsLeft = Mathf.Max(starsLeft, _starsCounter.MinStars);
+                _progressSaver.SetCountStars(starsLeft);
+
+                _coroutine = null;
+            }
         }
     }
-}
 }

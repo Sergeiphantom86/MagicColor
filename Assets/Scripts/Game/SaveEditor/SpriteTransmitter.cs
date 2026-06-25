@@ -1,54 +1,58 @@
 using UnityEngine;
+
 namespace Game.SaveEditor
 {
-
-public class SpriteTransmitter : MonoBehaviour
-{
-    private Sprite _new;
-    private Sprite _current;
-    private bool _isAutomaticallyNewLevel;
-
-    public Sprite New => _new;
-
-    public Sprite Current => _current;
-
-    public bool IsAutomaticallyNewLevel => _isAutomaticallyNewLevel;
-
-    public void SetNew(Sprite sprite)
+    public class SpriteTransmitter : MonoBehaviour
     {
-        if (sprite == null)
+        private Sprite _new;
+        private Sprite _current;
+        private bool _isAutomaticallyNewLevel;
+
+        public Sprite New => _new;
+
+        public Sprite Current => _current;
+
+        public bool IsAutomaticallyNewLevel => _isAutomaticallyNewLevel;
+
+        public void SetNew(Sprite sprite)
         {
-            Debug.LogWarning($"[SpriteTransmitter] ������� ���������� null � _new �� ������� {gameObject.name}");
-            return;
+            if (sprite == null)
+            {
+                Debug.LogWarning(
+                    $"[SpriteTransmitter] ������� ���������� null � _new �� ������� {gameObject.name}"
+                );
+                return;
+            }
+
+            if (_new == sprite)
+            {
+                return;
+            }
+
+            _new = sprite;
         }
 
-        if (_new == sprite)
+        public void SetCurrent(Sprite sprite)
         {
-            return;
+            if (sprite == null)
+            {
+                Debug.LogWarning(
+                    $"[SpriteTransmitter] ������� ���������� null � _current �� ������� {gameObject.name}"
+                );
+                return;
+            }
+
+            if (_current == sprite)
+            {
+                return;
+            }
+
+            _current = sprite;
         }
 
-        _new = sprite;
+        public void SetAutomaticTransition(bool isAutomaticallyNewLevel)
+        {
+            _isAutomaticallyNewLevel = isAutomaticallyNewLevel;
+        }
     }
-
-    public void SetCurrent(Sprite sprite)
-    {
-        if (sprite == null)
-        {
-            Debug.LogWarning($"[SpriteTransmitter] ������� ���������� null � _current �� ������� {gameObject.name}");
-            return;
-        }
-
-        if (_current == sprite)
-        {
-            return;
-        }
-
-        _current = sprite;
-    }
-
-    public void SetAutomaticTransition(bool isAutomaticallyNewLevel)
-    {
-        _isAutomaticallyNewLevel = isAutomaticallyNewLevel;
-    }
-}
 }

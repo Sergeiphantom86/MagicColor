@@ -1,45 +1,44 @@
 using Menu.TutorialEditor.TutorialPuzzle;
 using PuzzleEditor.LockEditor;
 using UnityEngine;
+
 namespace PuzzleEditor.Walls
 {
-
-public class LockInteractionHandler
-{
-    private Lock _lock;
-    private Messager _hintKey;
-    private bool _initialized;
-
-    public void SetHint(Messager hintKey) =>
-        _hintKey = hintKey;
-
-    public void Set(Collider other)
+    public class LockInteractionHandler
     {
-        if (other.TryGetComponent(out Lock @lock))
+        private Lock _lock;
+        private Messager _hintKey;
+        private bool _initialized;
+
+        public void SetHint(Messager hintKey) => _hintKey = hintKey;
+
+        public void Set(Collider other)
         {
-            if (_initialized == false)
+            if (other.TryGetComponent(out Lock @lock))
             {
-                _initialized = true;
-                _lock = @lock;
+                if (_initialized == false)
+                {
+                    _initialized = true;
+                    _lock = @lock;
+                }
+            }
+        }
+
+        public void ShowBlockedFeedback()
+        {
+            if (_lock == null)
+                return;
+
+            _lock.ShakeUp();
+            _hintKey.TurnOn();
+        }
+
+        public void Unblock()
+        {
+            if (_lock != null)
+            {
+                _lock.Unblock();
             }
         }
     }
-
-    public void ShowBlockedFeedback()
-    {
-        if (_lock == null)
-            return;
-
-        _lock.ShakeUp();
-        _hintKey.TurnOn();
-    }
-
-    public void Unblock()
-    {
-        if (_lock != null)
-        {
-            _lock.Unblock();
-        }
-    }
-}
 }

@@ -1,131 +1,135 @@
+using System;
+using System.Collections.Generic;
 using Game.SaveEditor;
 using Menu.ButtonEditor;
 using PuzzleEditor;
 using PuzzleEditor.SoundEditor;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace Menu.LanguageManager
 {
-
-[RequireComponent(typeof(Image))]
-public class LanguageMenu : MonoBehaviour, IActivatable
-{
-    [SerializeField] private ButtonSoundHandler _buttonSound;
-    [SerializeField] private AudioClip _clickSound;
-
-    private LanguageBar _languageBar;
-    private IProgressSaver _progressSaver;
-    private List<LanguageButton> _buttons;
-    private bool _uiInitialized;
-    private string _title;
-
-    public event Action Initialized;
-
-    private void Awake()
+    [RequireComponent(typeof(Image))]
+    public class LanguageMenu : MonoBehaviour, IActivatable
     {
-        _progressSaver = new ProgressSaver();
-        _languageBar = GetComponent<LanguageBar>();
+        [SerializeField]
+        private ButtonSoundHandler _buttonSound;
 
-        SetButtons();
+        [SerializeField]
+        private AudioClip _clickSound;
 
-        _progressSaver.SetCurrentLanguage(_progressSaver.GetTranslationLanguage());
+        private LanguageBar _languageBar;
+        private IProgressSaver _progressSaver;
+        private List<LanguageButton> _buttons;
+        private bool _uiInitialized;
+        private string _title;
 
-        FindButtonForLanguage(_progressSaver.Saves.CurrentLanguage);
-    }
+        public event Action Initialized;
 
-    private void Start()
-    {
-        if (_uiInitialized == false)
+        private void Awake()
         {
-            _uiInitialized = true;
-            Initialized?.Invoke();
-        }
-    }
+            _progressSaver = new ProgressSaver();
+            _languageBar = GetComponent<LanguageBar>();
 
-    private void OnEnable()
-    {
-        if (_languageBar == null)
-        {
-            Debug.LogError("LanguageMenu: �� ��������� ������ � ����������!");
-            return;
+            SetButtons();
+
+            _progressSaver.SetCurrentLanguage(_progressSaver.GetTranslationLanguage());
+
+            FindButtonForLanguage(_progressSaver.Saves.CurrentLanguage);
         }
 
-        _progressSaver.SubscribeSwitchLang(FindButtonForLanguage);
-
-        ClickOnSelectionButton();
-    }
-
-    private void OnDisable()
-    {
-        _progressSaver.UnsubscribeSwitchLang(FindButtonForLanguage);
-    }
-
-    public void Activate() =>
-       gameObject.SetActive(true);
-
-    public void Deactivate() =>
-        gameObject.SetActive(false);
-
-    private void SetButtons()
-    {
-        if (_languageBar == null && _languageBar.Buttons.Count > 0)
+        private void Start()
         {
-            Debug.LogError("LanguageBar == null || Buttons.Count <= 0");
-            return;
-        }
-
-        _buttons = _languageBar.Buttons;
-    }
-
-    private void FindButtonForLanguage(string language)
-    {
-        LanguageButton languageButton = null;
-
-        foreach (LanguageButton button in _buttons)
-        {
-            button.TurnOffChoice();
-
-            if (button != null && string.Equals(button.name, language, StringComparison.OrdinalIgnoreCase))
+            if (_uiInitialized == false)
             {
-                languageButton = button;
+                _uiInitialized = true;
+                Initialized?.Invoke();
             }
         }
 
-        languageButton.TurnOnChoice();
-    }
-
-    private void ClickOnSelectionButton()
-    {
-        if (_buttons.Count <= 0 && _buttons[0] == null) 
-            return;
-
-        foreach (LanguageButton button in _buttons)
+        private void OnEnable()
         {
-            if (button == null) 
-                continue;
-
-            string lang = button.name.ToLower();
-
-            button.ChoiceButton.onClick.AddListener(() =>
+            if (_languageBar == null)
             {
-                _buttonSound.PlayButtonSound(_clickSound);
-                ChangeLanguage(lang);
-            });
+                Debug.LogError("LanguageMenu: �� ��������� ������ � ����������!");
+                return;
+            }
+
+            _progressSaver.SubscribeSwitchLang(FindButtonForLanguage);
+
+            ClickOnSelectionButton();
+        }
+
+        private void OnDisable()
+        {
+            _progressSaver.UnsubscribeSwitchLang(FindButtonForLanguage);
+        }
+
+        public void Activate() => gameObject.SetActive(true);
+
+        public void Deactivate() => gameObject.SetActive(false);
+
+        private void SetButtons()
+        {
+            if (_languageBar == null && _languageBar.Buttons.Count > 0)
+            {
+                Debug.LogError("LanguageBar == null || Buttons.Count <= 0");
+                return;
+            }
+
+            _buttons = _languageBar.Buttons;
+        }
+
+        private void FindButtonForLanguage(string language)
+        {
+            LanguageButton languageButton = null;
+
+            foreach (LanguageButton button in _buttons)
+            {
+                button.TurnOffChoice();
+
+                if (
+                    button != null
+                    && string.Equals(button.name, language, StringComparison.OrdinalIgnoreCase)
+                )
+                {
+                    languageButton = button;
+                }
+            }
+
+            languageButton.TurnOnChoice();
+        }
+
+        private void ClickOnSelectionButton()
+        {
+            if (_buttons.Count <= 0 && _buttons[0] == null)
+                return;
+
+            foreach (LanguageButton button in _buttons)
+            {
+                if (button == null)
+                    continue;
+
+                string lang = button.name.ToLower();
+
+                button.ChoiceButton.onClick.AddListener(() =>
+                {
+                    _buttonSound.PlayButtonSound(_clickSound);
+                    ChangeLanguage(lang);
+                });
+            }
+        }
+
+        private void ChangeLanguage(string langCode)
+        {
+            if (_title == langCode)
+                return;
+
+            _progressSaver.SwitchLanguage(langCode);
+
+            _progressSaver.SaveProgress();
+
+            _title = langCode;
         }
     }
-
-    private void ChangeLanguage(string langCode)
-    {
-        if (_title == langCode) 
-            return;
-
-        _progressSaver.SwitchLanguage(langCode);
-
-        _progressSaver.SaveProgress();
-
-        _title = langCode;
-    }
-}
 }

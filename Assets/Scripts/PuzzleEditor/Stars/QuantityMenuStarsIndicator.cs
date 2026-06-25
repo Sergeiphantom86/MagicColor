@@ -1,31 +1,31 @@
 using Game.SaveEditor;
 using UnityEngine;
+
 namespace PuzzleEditor.Stars
 {
-
-[RequireComponent(typeof(StarsController))]
-public class QuantityMenuStarsIndicator : MonoBehaviour
-{
-    private StarsController _starsController;
-    private IProgressSaver _progressSaver;
-
-    private void Awake()
+    [RequireComponent(typeof(StarsController))]
+    public class QuantityMenuStarsIndicator : MonoBehaviour
     {
-        _starsController = GetComponent<StarsController>();
-        _progressSaver = new ProgressSaver();
-    }
+        private StarsController _starsController;
+        private IProgressSaver _progressSaver;
 
-    private void Start()
-    {
-        ShowQuantity();
-    }
-
-    private void ShowQuantity()
-    {
-        if (_progressSaver.Saves.CountStars != 0)
+        private void Awake()
         {
-            _starsController.ShowWithAnimation(_progressSaver.Saves.CountStars);
+            _starsController = GetComponent<StarsController>();
+            _progressSaver = new ProgressSaver();
+        }
+
+        private void Start()
+        {
+            ShowQuantity();
+        }
+
+        private void ShowQuantity()
+        {
+            if (_progressSaver.Saves.CountStars != 0)
+            {
+                _starsController.ShowWithAnimation(_progressSaver.Saves.CountStars);
+            }
         }
     }
-}
 }

@@ -1,8 +1,6 @@
 using UnityEngine;
+
 namespace Menu.ButtonEditor
 {
-
-public class Flag : MonoBehaviour
-{
-}
+    public class Flag : MonoBehaviour { }
 }

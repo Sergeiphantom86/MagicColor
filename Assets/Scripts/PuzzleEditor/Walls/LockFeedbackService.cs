@@ -1,53 +1,53 @@
 using Menu.TutorialEditor.TutorialPuzzle;
 using PuzzleEditor.LockEditor;
 using UnityEngine;
+
 namespace PuzzleEditor.Walls
 {
-
-public class LockFeedbackService : MonoBehaviour, ILockFeedbackService
-{
-    private Lock _lock;
-    private Messager _hint;
-
-    public void InitializComponents(Lock @lock, Messager hint)
+    public class LockFeedbackService : MonoBehaviour, ILockFeedbackService
     {
-        SetLock(@lock);
-        SetKey(hint);
-    }
+        private Lock _lock;
+        private Messager _hint;
 
-    public void Play()
-    {
-        if (_lock != null)
+        public void InitializComponents(Lock @lock, Messager hint)
         {
-            _lock.ShakeUp();
+            SetLock(@lock);
+            SetKey(hint);
         }
 
-        if (_hint != null)
+        public void Play()
         {
-            _hint.TurnOn();
-        }
-    }
+            if (_lock != null)
+            {
+                _lock.ShakeUp();
+            }
 
-    private void SetLock(Lock @lock)
-    {
-        if (@lock == null)
-        {
-            Debug.LogError("Lock == null");
-            return;
-        }
-
-        _lock = @lock;
-    }
-
-    private void SetKey(Messager hint)
-    {
-        if (hint == null)
-        {
-            Debug.LogError("HintKey == null");
-            return;
+            if (_hint != null)
+            {
+                _hint.TurnOn();
+            }
         }
 
-        _hint = hint;
-    }
+        private void SetLock(Lock @lock)
+        {
+            if (@lock == null)
+            {
+                Debug.LogError("Lock == null");
+                return;
+            }
+
+            _lock = @lock;
+        }
+
+        private void SetKey(Messager hint)
+        {
+            if (hint == null)
+            {
+                Debug.LogError("HintKey == null");
+                return;
+            }
+
+            _hint = hint;
+        }
     }
 }

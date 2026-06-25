@@ -3,85 +3,94 @@ using Menu.TutorialEditor;
 using PuzzleEditor.RouletteEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 namespace PuzzleEditor.UI.LoadingScreen
 {
-
-public class SceneFlowController : MonoBehaviour
-{
-    private const string Puzzle = nameof(Puzzle);
-    private const string Roulette = nameof(Roulette);
-    private const string Tutorial = nameof(Tutorial);
-
-    [SerializeField] private MenuLoader _menuLoader;
-    [SerializeField] private TextureInitializer _textureInitializer;
-    [SerializeField] private TutorialPuzzle1 _tutorialPuzzle;
-
-    private string _sceneName;
-    private IProgressSaver _progressSaver;
-    private AdRewardController _adRewardController;
-
-    private void Awake()
+    public class SceneFlowController : MonoBehaviour
     {
-        _sceneName = SceneManager.GetActiveScene().name;
-        _adRewardController = GetComponent<AdRewardController>();
+        private const string Puzzle = nameof(Puzzle);
+        private const string Roulette = nameof(Roulette);
+        private const string Tutorial = nameof(Tutorial);
 
-        if (_textureInitializer == null)
-            Debug.LogError($"[SceneFlowController] TextureInitializer �� �������� � ���������� �� ������� {gameObject.name}");
-        if (_menuLoader == null)
-            Debug.LogError($"[SceneFlowController] MenuLoader �� �������� �� ������� {gameObject.name}");
-        if (_adRewardController == null)
-            Debug.LogWarning($"[SceneFlowController] AdRewardController ����������� �� ������� {gameObject.name}");
-    }
+        [SerializeField]
+        private MenuLoader _menuLoader;
 
-    public void Initialize(Sprite sprite, IProgressSaver progressSaver)
-    {
-        if (sprite == null)
+        [SerializeField]
+        private TextureInitializer _textureInitializer;
+
+        [SerializeField]
+        private TutorialPuzzle1 _tutorialPuzzle;
+
+        private string _sceneName;
+        private IProgressSaver _progressSaver;
+        private AdRewardController _adRewardController;
+
+        private void Awake()
         {
-            Debug.LogError($"Sprite == null �� ������� {gameObject.name}");
-            return;
+            _sceneName = SceneManager.GetActiveScene().name;
+            _adRewardController = GetComponent<AdRewardController>();
+
+            if (_textureInitializer == null)
+                Debug.LogError(
+                    $"[SceneFlowController] TextureInitializer �� �������� � ���������� �� ������� {gameObject.name}"
+                );
+            if (_menuLoader == null)
+                Debug.LogError(
+                    $"[SceneFlowController] MenuLoader �� �������� �� ������� {gameObject.name}"
+                );
+            if (_adRewardController == null)
+                Debug.LogWarning(
+                    $"[SceneFlowController] AdRewardController ����������� �� ������� {gameObject.name}"
+                );
         }
 
-        if (progressSaver == null)
+        public void Initialize(Sprite sprite, IProgressSaver progressSaver)
         {
-            Debug.LogError($"IProgressSaver == null �� ������� {gameObject.name}");
-            return;
+            if (sprite == null)
+            {
+                Debug.LogError($"Sprite == null �� ������� {gameObject.name}");
+                return;
+            }
+
+            if (progressSaver == null)
+            {
+                Debug.LogError($"IProgressSaver == null �� ������� {gameObject.name}");
+                return;
+            }
+
+            _progressSaver = progressSaver;
+
+            sprite = TryGetSprite(sprite);
+
+            if (sprite == null)
+            {
+                Debug.Log(sprite);
+            }
+
+            _textureInitializer.SpawnPixelsFromTexture(sprite.texture);
         }
 
-        _progressSaver = progressSaver;
-
-        sprite = TryGetSprite(sprite);
-
-        if (sprite == null)
+        public void LoadNext()
         {
-            Debug.Log(sprite);
+            if (_sceneName != Tutorial)
+            {
+                _adRewardController.ShowRewardAd(LoadRoulette);
+                _progressSaver.SaveProgress();
+
+                return;
+            }
+
+            _menuLoader.TargetScene(Puzzle);
         }
 
-        _textureInitializer.SpawnPixelsFromTexture(sprite.texture);
-    }
-
-    public void LoadNext()
-    {
-        if (_sceneName != Tutorial)
+        private void LoadRoulette()
         {
-            _adRewardController.ShowRewardAd(LoadRoulette);
-            _progressSaver.SaveProgress();
-
-            return;
+            _menuLoader.TargetScene(Roulette);
         }
 
-        _menuLoader.TargetScene(Puzzle);
+        private Sprite TryGetSprite(Sprite sprite)
+        {
+            return _tutorialPuzzle != null ? _tutorialPuzzle.Sprite : sprite;
+        }
     }
-
-    private void LoadRoulette()
-    {
-        _menuLoader.TargetScene(Roulette);
-    }
-
-    private Sprite TryGetSprite(Sprite sprite)
-    {
-        return _tutorialPuzzle != null
-           ? _tutorialPuzzle.Sprite
-           : sprite;
-    }
-}
 }

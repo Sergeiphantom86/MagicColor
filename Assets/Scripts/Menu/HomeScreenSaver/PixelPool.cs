@@ -1,93 +1,101 @@
-using PuzzleEditor;
 using System.Collections.Generic;
+using PuzzleEditor;
 using UnityEngine;
 using UnityEngine.Pool;
+
 namespace Menu.HomeScreenSaver
 {
-
-public class PixelPool : MonoBehaviour
-{
-    [SerializeField] private Fragment _pixelPrefab;
-    [SerializeField] private int _defaultPoolSize;
-    [SerializeField] private int _maxPoolSize;
-    [SerializeField] private bool _collectionCheck = true;
-
-    private ObjectPool<Fragment> _pool;
-    private Transform _poolParent;
-    private float _scaleDefault;
-
-    public ObjectPool<Fragment> Pool => _pool;
-
-    private void Awake()
+    public class PixelPool : MonoBehaviour
     {
-        _poolParent = transform;
-        _defaultPoolSize = 1000;
-        _maxPoolSize = 5000;
-        _scaleDefault = 1f;
+        [SerializeField]
+        private Fragment _pixelPrefab;
 
-        CreatePool();
-    }
+        [SerializeField]
+        private int _defaultPoolSize;
 
-    private void CreatePool()
-    {
-        _pool = new ObjectPool<Fragment>(
-            createFunc: CreatePooledItem,
-            actionOnGet: OnTakeFromPool,
-            actionOnRelease: OnReturnedToPool,
-            actionOnDestroy: OnDestroyPoolObject,
-            collectionCheck: _collectionCheck,
-            defaultCapacity: _defaultPoolSize,
-            maxSize: _maxPoolSize);
-    }
+        [SerializeField]
+        private int _maxPoolSize;
 
-    private Fragment CreatePooledItem()
-    {
-        Fragment pixel = Instantiate(_pixelPrefab, _poolParent);
-        pixel.TurnOff();
-        return pixel;
-    }
+        [SerializeField]
+        private bool _collectionCheck = true;
 
-    private void OnTakeFromPool(Fragment pixel)
-    {
-        pixel.TurnOn();
-    }
+        private ObjectPool<Fragment> _pool;
+        private Transform _poolParent;
+        private float _scaleDefault;
 
-    public void OnReturnedToPool(Fragment pixel)
-    {
-        if (pixel != null && pixel.gameObject != null)
+        public ObjectPool<Fragment> Pool => _pool;
+
+        private void Awake()
         {
+            _poolParent = transform;
+            _defaultPoolSize = 1000;
+            _maxPoolSize = 5000;
+            _scaleDefault = 1f;
+
+            CreatePool();
+        }
+
+        private void CreatePool()
+        {
+            _pool = new ObjectPool<Fragment>(
+                createFunc: CreatePooledItem,
+                actionOnGet: OnTakeFromPool,
+                actionOnRelease: OnReturnedToPool,
+                actionOnDestroy: OnDestroyPoolObject,
+                collectionCheck: _collectionCheck,
+                defaultCapacity: _defaultPoolSize,
+                maxSize: _maxPoolSize
+            );
+        }
+
+        private Fragment CreatePooledItem()
+        {
+            Fragment pixel = Instantiate(_pixelPrefab, _poolParent);
             pixel.TurnOff();
-            pixel.SetParent(_poolParent);
-            pixel.SetLocalScale(_scaleDefault);
-            pixel.SetRotation(Quaternion.identity);
+            return pixel;
         }
-    }
 
-    private void OnDestroyPoolObject(Fragment pixel)
-    {
-        if (pixel != null && pixel.gameObject != null)
+        private void OnTakeFromPool(Fragment pixel)
         {
-            Destroy(pixel.gameObject);
+            pixel.TurnOn();
         }
-    }
 
-    public void ReturnAllFragments(List<Fragment> fragments)
-    {
-        if (fragments == null)
-            return;
-
-        foreach (Fragment fragment in fragments)
+        public void OnReturnedToPool(Fragment pixel)
         {
-            if (fragment != null)
+            if (pixel != null && pixel.gameObject != null)
             {
-                _pool.Release(fragment);
+                pixel.TurnOff();
+                pixel.SetParent(_poolParent);
+                pixel.SetLocalScale(_scaleDefault);
+                pixel.SetRotation(Quaternion.identity);
             }
         }
-    }
 
-    private void OnDestroy()
-    {
-        _pool?.Clear();
+        private void OnDestroyPoolObject(Fragment pixel)
+        {
+            if (pixel != null && pixel.gameObject != null)
+            {
+                Destroy(pixel.gameObject);
+            }
+        }
+
+        public void ReturnAllFragments(List<Fragment> fragments)
+        {
+            if (fragments == null)
+                return;
+
+            foreach (Fragment fragment in fragments)
+            {
+                if (fragment != null)
+                {
+                    _pool.Release(fragment);
+                }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            _pool?.Clear();
+        }
     }
-}
 }

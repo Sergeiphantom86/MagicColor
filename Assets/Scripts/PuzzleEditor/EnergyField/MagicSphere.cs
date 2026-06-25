@@ -1,15 +1,20 @@
+using System.Collections;
 using PuzzleEditor.MovingBlocks.GridEditor;
 using PuzzleEditor.PoolEffects;
-using System.Collections;
 using UnityEngine;
 
 namespace PuzzleEditor.EnergyField
 {
     public class MagicSphere : MonoBehaviour, IGridOccupant
     {
-        [SerializeField] private Effecter _electricDischarge;
-        [SerializeField] private Effecter _explosionEffect;
-        [SerializeField] private Vector2Int _sizeInCells;
+        [SerializeField]
+        private Effecter _electricDischarge;
+
+        [SerializeField]
+        private Effecter _explosionEffect;
+
+        [SerializeField]
+        private Vector2Int _sizeInCells;
 
         private Vector2Int _gridPosition;
         private ParticleSystem _particleSystem;

@@ -1,35 +1,36 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace Menu.TutorialEditor.TutorialPuzzle
 {
-
-public class TextSwitcher : MonoBehaviour
-{
-    [SerializeField] private Rewards _awardText;
-
-    private TextMeshProUGUI _notificationText;
-    private Image _image;
-
-    private void Awake()
+    public class TextSwitcher : MonoBehaviour
     {
-        _notificationText = GetComponentInChildren<TextMeshProUGUI>(true);
-        _image = GetComponent<Image>();
-    }
+        [SerializeField]
+        private Rewards _awardText;
 
-    public void TurnOffDesiredOne(bool isOn)
-    {
-        if (isOn == false)
+        private TextMeshProUGUI _notificationText;
+        private Image _image;
+
+        private void Awake()
         {
-            _image.enabled = false;
-            _notificationText.gameObject.SetActive(false);
-            _awardText.gameObject.SetActive(true);
-            return;
+            _notificationText = GetComponentInChildren<TextMeshProUGUI>(true);
+            _image = GetComponent<Image>();
         }
 
-        _image.enabled = true;
-        _awardText.gameObject.SetActive(false);
-        _notificationText.gameObject.SetActive(true);
+        public void TurnOffDesiredOne(bool isOn)
+        {
+            if (isOn == false)
+            {
+                _image.enabled = false;
+                _notificationText.gameObject.SetActive(false);
+                _awardText.gameObject.SetActive(true);
+                return;
+            }
+
+            _image.enabled = true;
+            _awardText.gameObject.SetActive(false);
+            _notificationText.gameObject.SetActive(true);
+        }
     }
-}
 }

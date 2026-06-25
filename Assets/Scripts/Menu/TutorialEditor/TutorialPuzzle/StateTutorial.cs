@@ -1,93 +1,99 @@
-using PuzzleEditor.LockEditor;
 using System;
+using PuzzleEditor.LockEditor;
 using UnityEngine;
+
 namespace Menu.TutorialEditor.TutorialPuzzle
 {
-
-public class StateTutorial : MonoBehaviour
-{
-    [SerializeField] private TextSwitcher _textSwitcher;
-
-    private Key _key;
-    private Lock _lock;
-    private HandMover _handMover;
-    private TouchVisualizer _visualizer;
-    private bool _isClick;
-
-    public event Action OnCompleted;
-
-    private void OnDisable()
+    public class StateTutorial : MonoBehaviour
     {
-        if (_key == null)
-            return;
+        [SerializeField]
+        private TextSwitcher _textSwitcher;
 
-        if (_lock == null)
-            return;
+        private Key _key;
+        private Lock _lock;
+        private HandMover _handMover;
+        private TouchVisualizer _visualizer;
+        private bool _isClick;
 
-        _key.OnShift -= MovePointer;
-        _key.OnSelected -= MovePointerClick;
-        _lock.OnUnblocking -= Complete;
-    }
+        public event Action OnCompleted;
 
-    public void Initialization(HandMover handMover, TouchVisualizer touchVisualizer, Key key, Lock @lock)
-    {
-        _key = key;
-        _lock = @lock;
-        _handMover = handMover;
-        _visualizer = touchVisualizer;
-
-        SubscribeEvents();
-
-        Begin();
-    }
-
-    private void SubscribeEvents()
-    {
-        _key.OnShift += MovePointer;
-        _key.OnSelected += MovePointerClick;
-        _lock.OnUnblocking += Complete;
-    }
-
-    private void Begin()
-    {
-        _handMover.EnableLoopingAnimationZ();
-    }
-
-    private void MovePointerClick()
-    {
-        SetPositionsEquipment(_lock.transform.position);
-    }
-
-    private void MovePointer()
-    {
-        if (_isClick == false)
+        private void OnDisable()
         {
-            _isClick = true;
+            if (_key == null)
+                return;
 
-            SetPositionsEquipment(_key.transform.position);
+            if (_lock == null)
+                return;
 
-            _visualizer.gameObject.SetActive(true);
+            _key.OnShift -= MovePointer;
+            _key.OnSelected -= MovePointerClick;
+            _lock.OnUnblocking -= Complete;
+        }
 
-            _handMover.Stop();
-            _handMover.EnableScaleAnimation();
+        public void Initialization(
+            HandMover handMover,
+            TouchVisualizer touchVisualizer,
+            Key key,
+            Lock @lock
+        )
+        {
+            _key = key;
+            _lock = @lock;
+            _handMover = handMover;
+            _visualizer = touchVisualizer;
+
+            SubscribeEvents();
+
+            Begin();
+        }
+
+        private void SubscribeEvents()
+        {
+            _key.OnShift += MovePointer;
+            _key.OnSelected += MovePointerClick;
+            _lock.OnUnblocking += Complete;
+        }
+
+        private void Begin()
+        {
+            _handMover.EnableLoopingAnimationZ();
+        }
+
+        private void MovePointerClick()
+        {
+            SetPositionsEquipment(_lock.transform.position);
+        }
+
+        private void MovePointer()
+        {
+            if (_isClick == false)
+            {
+                _isClick = true;
+
+                SetPositionsEquipment(_key.transform.position);
+
+                _visualizer.gameObject.SetActive(true);
+
+                _handMover.Stop();
+                _handMover.EnableScaleAnimation();
+            }
+        }
+
+        private void Complete()
+        {
+            _visualizer.gameObject.SetActive(false);
+            _handMover.gameObject.SetActive(false);
+
+            OnCompleted?.Invoke();
+
+            _textSwitcher.gameObject.SetActive(true);
+            _textSwitcher.TurnOffDesiredOne(false);
+        }
+
+        private void SetPositionsEquipment(Vector3 position)
+        {
+            _handMover.SetPosition(position);
+            _visualizer.SetPosition(position);
         }
     }
-
-    private void Complete()
-    {
-        _visualizer.gameObject.SetActive(false);
-        _handMover.gameObject.SetActive(false);
-
-        OnCompleted?.Invoke();
-
-        _textSwitcher.gameObject.SetActive(true);
-        _textSwitcher.TurnOffDesiredOne(false);
-    }
-
-    private void SetPositionsEquipment(Vector3 position)
-    {
-        _handMover.SetPosition(position);
-        _visualizer.SetPosition(position);
-    }
-}
 }

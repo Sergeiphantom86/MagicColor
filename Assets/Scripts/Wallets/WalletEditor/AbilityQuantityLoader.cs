@@ -1,76 +1,77 @@
 using Game.SaveEditor;
 using Menu.Shop;
 using UnityEngine;
+
 namespace Wallets.WalletEditor
 {
-
-public class AbilityQuantityLoader : MonoBehaviour
-{
-    [SerializeField] private PurchaseButton _purchaseButton;
-
-    private int _balance;
-    private BagAbilities _bagAbilities;
-    private IProgressSaver _progressSaver;
-
-    private void Awake()
+    public class AbilityQuantityLoader : MonoBehaviour
     {
-        _progressSaver = new ProgressSaver();
-        _bagAbilities = GetComponent<BagAbilities>();
+        [SerializeField]
+        private PurchaseButton _purchaseButton;
 
-        if (_progressSaver == null)
+        private int _balance;
+        private BagAbilities _bagAbilities;
+        private IProgressSaver _progressSaver;
+
+        private void Awake()
         {
-            Debug.LogError("ProgressSaver == null");
+            _progressSaver = new ProgressSaver();
+            _bagAbilities = GetComponent<BagAbilities>();
+
+            if (_progressSaver == null)
+            {
+                Debug.LogError("ProgressSaver == null");
+            }
+
+            if (_bagAbilities == null)
+            {
+                Debug.LogError("BagAbilities == null");
+            }
+
+            UpdateBalance(GetBalance());
         }
 
-        if (_bagAbilities == null)
+        private void Start()
         {
-            Debug.LogError("BagAbilities == null");
+            _bagAbilities.Add(GetBalance());
         }
 
-        UpdateBalance(GetBalance());
-    }
+        private void OnEnable()
+        {
+            _bagAbilities.OnBagChanged += UpdateBalance;
+            _purchaseButton.Clicked += Add;
+        }
 
-    private void Start()
-    {
-        _bagAbilities.Add(GetBalance());
-    }
+        private void OnDisable()
+        {
+            _bagAbilities.OnBagChanged -= UpdateBalance;
+            _purchaseButton.Clicked -= Add;
+        }
 
-    private void OnEnable()
-    {
-        _bagAbilities.OnBagChanged += UpdateBalance;
-        _purchaseButton.Clicked += Add;
-    }
+        private void OnDestroy()
+        {
+            SaveToFile();
+        }
 
-    private void OnDisable()
-    {
-        _bagAbilities.OnBagChanged -= UpdateBalance;
-        _purchaseButton.Clicked -= Add;
-    }
+        private int GetBalance()
+        {
+            return _progressSaver.Saves.QuantityAbilities;
+        }
 
-    private void OnDestroy()
-    {
-        SaveToFile();
-    }
+        private void UpdateBalance(int balance)
+        {
+            _balance = balance;
+        }
 
-    private int GetBalance()
-    {
-        return _progressSaver.Saves.QuantityAbilities;
-    }
+        private void SaveToFile()
+        {
+            _progressSaver.SetQuantityAbilities(_balance);
+        }
 
-    private void UpdateBalance(int balance)
-    {
-        _balance = balance;
+        private void Add()
+        {
+            if (_bagAbilities != null)
+                _bagAbilities.Add();
+        }
     }
-
-    private void SaveToFile()
-    {
-        _progressSaver.SetQuantityAbilities(_balance);
-    }
-
-    private void Add()
-    {
-        if (_bagAbilities != null)
-            _bagAbilities.Add();
-    }
-}
 }

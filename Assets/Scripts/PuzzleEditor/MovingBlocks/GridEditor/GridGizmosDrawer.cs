@@ -1,8 +1,6 @@
 using UnityEngine;
+
 namespace PuzzleEditor.MovingBlocks.GridEditor
 {
-
-public class GridGizmosDrawer : MonoBehaviour
-{
-}
+    public class GridGizmosDrawer : MonoBehaviour { }
 }

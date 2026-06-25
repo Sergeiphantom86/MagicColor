@@ -1,33 +1,33 @@
 using TMPro;
 using UnityEngine;
+
 namespace Wallets.WalletEditor
 {
-
-[RequireComponent(typeof(TextMeshProUGUI))]
-public class BalanceIndicator : MonoBehaviour
-{
-    private TextMeshProUGUI _textMeshProUGUI;
-    private Bag _bag;
-
-    private void Awake()
+    [RequireComponent(typeof(TextMeshProUGUI))]
+    public class BalanceIndicator : MonoBehaviour
     {
-        _textMeshProUGUI = GetComponent<TextMeshProUGUI>();
-        _bag = GetComponent<Bag>();
-    }
+        private TextMeshProUGUI _textMeshProUGUI;
+        private Bag _bag;
 
-    private void OnEnable()
-    {
-        _bag.OnBagChanged += Show;
-    }
+        private void Awake()
+        {
+            _textMeshProUGUI = GetComponent<TextMeshProUGUI>();
+            _bag = GetComponent<Bag>();
+        }
 
-    private void OnDisable()
-    {
-        _bag.OnBagChanged -= Show;
-    }
+        private void OnEnable()
+        {
+            _bag.OnBagChanged += Show;
+        }
 
-    private void Show(int balance)
-    {
-        _textMeshProUGUI.text = balance.ToString();
+        private void OnDisable()
+        {
+            _bag.OnBagChanged -= Show;
+        }
+
+        private void Show(int balance)
+        {
+            _textMeshProUGUI.text = balance.ToString();
+        }
     }
-}
 }

@@ -1,9 +1,9 @@
+using System.Collections;
+using System.Collections.Generic;
 using PuzzleEditor.MovingBlocks.BlockEditor;
 using PuzzleEditor.MovingBlocks.GridEditor;
 using PuzzleEditor.ObjectPool;
 using PuzzleEditor.PoolEffects;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PuzzleEditor.Spawners
@@ -11,10 +11,17 @@ namespace PuzzleEditor.Spawners
     [RequireComponent(typeof(ObjectPooler<Block>))]
     public class BlockSpawner : BaseSpawner<Block>
     {
-        [SerializeField] private int _count;
-        [SerializeField] private int _index;
-        [SerializeField] private GridSystem _gridSystem;
-        [SerializeField] private Effecter _effectFalling;
+        [SerializeField]
+        private int _count;
+
+        [SerializeField]
+        private int _index;
+
+        [SerializeField]
+        private GridSystem _gridSystem;
+
+        [SerializeField]
+        private Effecter _effectFalling;
 
         private GridPositionHelper _gridHelper;
         private WaitForSeconds _timeInterval;
@@ -71,9 +78,7 @@ namespace PuzzleEditor.Spawners
 
         private void SpawnBlocks(int index)
         {
-            int finalIndex = IndexProvider != null
-                ? IndexProvider.Invoke()
-                : index;
+            int finalIndex = IndexProvider != null ? IndexProvider.Invoke() : index;
 
             ChangeBlockPrefabIndex(finalIndex);
             TrySpawnSingleBlock();

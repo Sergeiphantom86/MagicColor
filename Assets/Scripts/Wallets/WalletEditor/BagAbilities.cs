@@ -1,6 +1,4 @@
 namespace Wallets.WalletEditor
 {
-public class BagAbilities : Bag
-{
-}
+    public class BagAbilities : Bag { }
 }

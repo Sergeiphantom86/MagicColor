@@ -1,13 +1,13 @@
 using UnityEngine.SceneManagement;
+
 namespace Game
 {
-
-public class Restarter : ButtonMenu
-{
-    public override void PressButton()
+    public class Restarter : ButtonMenu
     {
-        base.PressButton();
-        PauseMenu.Load(SceneManager.GetActiveScene().name);
+        public override void PressButton()
+        {
+            base.PressButton();
+            PauseMenu.Load(SceneManager.GetActiveScene().name);
+        }
     }
-}
 }

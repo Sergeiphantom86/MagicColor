@@ -1,8 +1,6 @@
 using UnityEngine;
+
 namespace Wallets
 {
-
-public class MoneyLoader : MonoBehaviour
-{
-}
+    public class MoneyLoader : MonoBehaviour { }
 }

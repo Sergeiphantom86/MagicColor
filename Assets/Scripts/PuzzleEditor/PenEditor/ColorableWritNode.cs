@@ -1,25 +1,25 @@
 using UnityEngine;
+
 namespace PuzzleEditor.PenEditor
 {
-
-public class ColorableWritNode : ColorableObject, IColorable
-{
-    [SerializeField] private Activator _activator;
-
-    private void Start()
+    public class ColorableWritNode : ColorableObject, IColorable
     {
-        InitializeComponents();
-    }
+        [SerializeField]
+        private Activator _activator;
 
-    private void OnEnable()
-    {
-        _activator.ColorHasChanged += SetColor;
-    }
+        private void Start()
+        {
+            InitializeComponents();
+        }
 
-    private void OnDisable()
-    {
-        _activator.ColorHasChanged -= SetColor;
-    }
-}
+        private void OnEnable()
+        {
+            _activator.ColorHasChanged += SetColor;
+        }
 
+        private void OnDisable()
+        {
+            _activator.ColorHasChanged -= SetColor;
+        }
+    }
 }

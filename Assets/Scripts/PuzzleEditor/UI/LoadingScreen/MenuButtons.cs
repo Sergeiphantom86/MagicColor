@@ -1,46 +1,49 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace PuzzleEditor.UI.LoadingScreen
 {
-
-[Serializable]
-public class MenuButtons
-{
-    [SerializeField] private Button _startButton;
-    [SerializeField] private Button _resumeButton;
-
-    public void Initialize(Action onStart, Action onResume)
+    [Serializable]
+    public class MenuButtons
     {
-        if (_startButton != null)
-        {
-            _startButton.onClick.AddListener(() => onStart?.Invoke());
+        [SerializeField]
+        private Button _startButton;
 
-            _startButton.gameObject.SetActive(false);
+        [SerializeField]
+        private Button _resumeButton;
+
+        public void Initialize(Action onStart, Action onResume)
+        {
+            if (_startButton != null)
+            {
+                _startButton.onClick.AddListener(() => onStart?.Invoke());
+
+                _startButton.gameObject.SetActive(false);
+            }
+
+            if (_resumeButton != null)
+            {
+                _resumeButton.onClick.AddListener(() => onResume?.Invoke());
+
+                _resumeButton.gameObject.SetActive(false);
+            }
         }
 
-        if (_resumeButton != null)
+        public void ShowResumeButton()
         {
-            _resumeButton.onClick.AddListener(() => onResume?.Invoke());
+            if (_resumeButton != null)
+            {
+                _resumeButton.gameObject.SetActive(true);
+            }
+        }
 
-            _resumeButton.gameObject.SetActive(false);
+        public void ShowStartButton()
+        {
+            if (_startButton != null)
+            {
+                _startButton.gameObject.SetActive(true);
+            }
         }
     }
-
-    public void ShowResumeButton()
-    {
-        if (_resumeButton != null)
-        {
-            _resumeButton.gameObject.SetActive(true);
-        }
-    }
-
-    public void ShowStartButton()
-    {
-        if (_startButton != null)
-        {
-            _startButton.gameObject.SetActive(true);
-        }
-    }
-}
 }

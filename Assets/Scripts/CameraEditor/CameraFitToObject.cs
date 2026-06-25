@@ -1,12 +1,13 @@
-using Menu;
 using System.Collections;
+using Menu;
 using UnityEngine;
 
 namespace CameraEditor
 {
     public class CameraFitToObject : MonoBehaviour
     {
-        [SerializeField] private float _referenceAspect;
+        [SerializeField]
+        private float _referenceAspect;
 
         private float _maxFov;
         private float _zShift;
@@ -31,9 +32,7 @@ namespace CameraEditor
             _shiftExitFov = 110f;
             _shiftEnterFov = 115f;
 
-            _camera = _camera != null
-               ? _camera
-               : Camera.main;
+            _camera = _camera != null ? _camera : Camera.main;
 
             _zoomChanger = new ZoomChanger();
 
@@ -101,9 +100,7 @@ namespace CameraEditor
         {
             Vector3 position = shift ? _startPosition : transform.position;
 
-            position.z = shift
-                ? _startPosition.z + _zShift
-                : _startPosition.z;
+            position.z = shift ? _startPosition.z + _zShift : _startPosition.z;
 
             transform.position = position;
             _isShifted = shift;
@@ -116,12 +113,14 @@ namespace CameraEditor
 
         private float GetHorizontalFov()
         {
-            return _angleDivider * Mathf.Atan(Mathf.Tan(GetBaseFovRad() / _angleDivider) * _referenceAspect);
+            return _angleDivider
+                * Mathf.Atan(Mathf.Tan(GetBaseFovRad() / _angleDivider) * _referenceAspect);
         }
 
         private float GetVerticalFov(float aspect)
         {
-            return _angleDivider * Mathf.Atan(Mathf.Tan(GetHorizontalFov() / _angleDivider) / aspect);
+            return _angleDivider
+                * Mathf.Atan(Mathf.Tan(GetHorizontalFov() / _angleDivider) / aspect);
         }
 
         private void StartRecalculate()

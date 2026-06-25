@@ -1,118 +1,123 @@
+using System;
+using System.Collections;
 using Game.SaveEditor;
 using Menu.ButtonEditor;
 using Menu.TutorialEditor;
 using PuzzleEditor.SoundEditor;
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace Menu
 {
-
-[RequireComponent(typeof(ButtonKeeper), typeof(ButtonSoundHandler), typeof(WindowInitializer))]
-public class HandlerButtonWindowInteraction : MonoBehaviour
-{
-    [SerializeField] private Tutorial _tutorial;
-    [SerializeField] private AudioClip _clickSound;
-
-    private ButtonKeeper _buttonKeeper;
-    private ButtonSoundHandler _buttonSoundHandler;
-    private WindowInitializer _windowInitializer;
-    private ICarousel _carousel;
-    private IProgressSaver _progressSaver;
-
-    private void Awake()
+    [RequireComponent(typeof(ButtonKeeper), typeof(ButtonSoundHandler), typeof(WindowInitializer))]
+    public class HandlerButtonWindowInteraction : MonoBehaviour
     {
-        _buttonSoundHandler = GetComponent<ButtonSoundHandler>();
-        _buttonKeeper = GetComponent<ButtonKeeper>();
-        _windowInitializer = GetComponent<WindowInitializer>();
-        _carousel = GetComponent<ICarousel>();
-        _progressSaver = new ProgressSaver();
+        [SerializeField]
+        private Tutorial _tutorial;
 
-        _windowInitializer.Initialize();
+        [SerializeField]
+        private AudioClip _clickSound;
 
-        _progressSaver.StartInitYG2();
-    }
+        private ButtonKeeper _buttonKeeper;
+        private ButtonSoundHandler _buttonSoundHandler;
+        private WindowInitializer _windowInitializer;
+        private ICarousel _carousel;
+        private IProgressSaver _progressSaver;
 
-    private void Start()
-    {
-        CreateButtons();
-    }
-
-    public void OnButtonClicked(Button button)
-    {
-        int buttonIndex = GetButtonIndex(button);
-        string windowName = button.name;
-
-        if (buttonIndex == -1)
+        private void Awake()
         {
-            Debug.LogError("Button not found in ButtonKeeper!");
-            return;
+            _buttonSoundHandler = GetComponent<ButtonSoundHandler>();
+            _buttonKeeper = GetComponent<ButtonKeeper>();
+            _windowInitializer = GetComponent<WindowInitializer>();
+            _carousel = GetComponent<ICarousel>();
+            _progressSaver = new ProgressSaver();
+
+            _windowInitializer.Initialize();
+
+            _progressSaver.StartInitYG2();
         }
 
-        if (buttonIndex != _carousel.CurrentIndex)
+        private void Start()
         {
-            StartCoroutine(WaitScroll(windowName, _carousel.ScrollDuration));
-            _carousel.ScrollToButton(buttonIndex);
-            return;
+            CreateButtons();
         }
 
-        ExecuteButtonAction(windowName);
-    }
-
-    private IEnumerator WaitScroll(string windowName, float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        ExecuteButtonAction(windowName);
-    }
-
-    private void ExecuteButtonAction(string windowName)
-    {
-        _tutorial.CompleteClickStep();
-
-        if (string.IsNullOrEmpty(windowName))
+        public void OnButtonClicked(Button button)
         {
-            Debug.LogError("Window name is null or empty!");
-            return;
-        }
+            int buttonIndex = GetButtonIndex(button);
+            string windowName = button.name;
 
-        if (_windowInitializer.WindowActions.TryGetValue(windowName, out Action action) == false)
-        {
-            Debug.LogError($"Unknown window action: {windowName}");
-            return;
-        }
-
-        action.Invoke();
-    }
-
-    private int GetButtonIndex(Button button)
-    {
-        for (int i = 0; i < _buttonKeeper.Buttons.Length; i++)
-        {
-            if (_buttonKeeper.Buttons[i] == button)
-                return i;
-        }
-
-        return -1;
-    }
-
-    private void CreateButtons()
-    {
-        foreach (Button button in _buttonKeeper.Buttons)
-        {
-            IMenuButton menuButton = ButtonFactory.CreateButton(button.name);
-
-            if (menuButton != null)
+            if (buttonIndex == -1)
             {
-                menuButton.Configure(button, this, _buttonSoundHandler, _clickSound);
+                Debug.LogError("Button not found in ButtonKeeper!");
+                return;
             }
-            else
+
+            if (buttonIndex != _carousel.CurrentIndex)
             {
-                Debug.LogError($"Failed to create button: {button.name}");
+                StartCoroutine(WaitScroll(windowName, _carousel.ScrollDuration));
+                _carousel.ScrollToButton(buttonIndex);
+                return;
             }
+
+            ExecuteButtonAction(windowName);
         }
 
-        _tutorial.SetPositionButton(_buttonKeeper.Buttons[0].transform.position);
+        private IEnumerator WaitScroll(string windowName, float duration)
+        {
+            yield return new WaitForSeconds(duration);
+            ExecuteButtonAction(windowName);
+        }
+
+        private void ExecuteButtonAction(string windowName)
+        {
+            _tutorial.CompleteClickStep();
+
+            if (string.IsNullOrEmpty(windowName))
+            {
+                Debug.LogError("Window name is null or empty!");
+                return;
+            }
+
+            if (
+                _windowInitializer.WindowActions.TryGetValue(windowName, out Action action) == false
+            )
+            {
+                Debug.LogError($"Unknown window action: {windowName}");
+                return;
+            }
+
+            action.Invoke();
+        }
+
+        private int GetButtonIndex(Button button)
+        {
+            for (int i = 0; i < _buttonKeeper.Buttons.Length; i++)
+            {
+                if (_buttonKeeper.Buttons[i] == button)
+                    return i;
+            }
+
+            return -1;
+        }
+
+        private void CreateButtons()
+        {
+            foreach (Button button in _buttonKeeper.Buttons)
+            {
+                IMenuButton menuButton = ButtonFactory.CreateButton(button.name);
+
+                if (menuButton != null)
+                {
+                    menuButton.Configure(button, this, _buttonSoundHandler, _clickSound);
+                }
+                else
+                {
+                    Debug.LogError($"Failed to create button: {button.name}");
+                }
+            }
+
+            _tutorial.SetPositionButton(_buttonKeeper.Buttons[0].transform.position);
+        }
     }
-}
 }

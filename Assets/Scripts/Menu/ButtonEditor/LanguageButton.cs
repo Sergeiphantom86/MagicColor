@@ -1,29 +1,30 @@
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace Menu.ButtonEditor
 {
-
-public class LanguageButton : MonoBehaviour
-{
-    [SerializeField] private Image _choice;
-
-    private Button _choiceButton;
-
-    public Button ChoiceButton => _choiceButton;
-
-    private void Awake()
+    public class LanguageButton : MonoBehaviour
     {
-        _choiceButton = GetComponent<Button>();
-    }
+        [SerializeField]
+        private Image _choice;
 
-    public void TurnOffChoice()
-    {
-        _choice.enabled = false;
-    }
+        private Button _choiceButton;
 
-    public void TurnOnChoice()
-    {
-        _choice.enabled = true;
+        public Button ChoiceButton => _choiceButton;
+
+        private void Awake()
+        {
+            _choiceButton = GetComponent<Button>();
+        }
+
+        public void TurnOffChoice()
+        {
+            _choice.enabled = false;
+        }
+
+        public void TurnOnChoice()
+        {
+            _choice.enabled = true;
+        }
     }
-}
 }

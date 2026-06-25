@@ -1,47 +1,47 @@
 using System.Collections;
 using UnityEngine;
+
 namespace Menu.TutorialEditor.TutorialPuzzle
 {
-
-public class Messager : MonoBehaviour
-{
-    private float _delay;
-    private bool _isTurnOn;
-    private Coroutine _coroutine;
-    private WaitForSeconds _delayTime;
-
-    private void Awake()
+    public class Messager : MonoBehaviour
     {
-        _delay = 3;
-        _delayTime = new WaitForSeconds(_delay);
-    }
+        private float _delay;
+        private bool _isTurnOn;
+        private Coroutine _coroutine;
+        private WaitForSeconds _delayTime;
 
-    public void TurnOn()
-    {
-        if (_isTurnOn == false)
+        private void Awake()
         {
-            gameObject.SetActive(true);
+            _delay = 3;
+            _delayTime = new WaitForSeconds(_delay);
+        }
 
-            if (_coroutine != null)
+        public void TurnOn()
+        {
+            if (_isTurnOn == false)
             {
-                StopCoroutine(_coroutine);
-            }
+                gameObject.SetActive(true);
 
-            _coroutine = StartCoroutine(WaitTurnOff());
+                if (_coroutine != null)
+                {
+                    StopCoroutine(_coroutine);
+                }
+
+                _coroutine = StartCoroutine(WaitTurnOff());
+            }
+        }
+
+        private void TurnOff()
+        {
+            gameObject.SetActive(false);
+        }
+
+        private IEnumerator WaitTurnOff()
+        {
+            yield return _delayTime;
+            TurnOff();
+
+            _coroutine = null;
         }
     }
-
-    private void TurnOff()
-    {
-        gameObject.SetActive(false);
-    }
-
-    private IEnumerator WaitTurnOff()
-    {
-        yield return _delayTime;
-        TurnOff();
-
-        _coroutine = null;
-    }
-}
 }

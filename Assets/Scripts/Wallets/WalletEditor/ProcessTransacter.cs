@@ -1,28 +1,28 @@
 using UnityEngine;
+
 namespace Wallets.WalletEditor
 {
-
-public class ProcessTransacter : IProcessTransacter
-{
-    public bool ProcessTransaction(long amount, long balance)
+    public class ProcessTransacter : IProcessTransacter
     {
-        if (amount == 0) 
-            return false;
-
-        if (amount < 0)
+        public bool ProcessTransaction(long amount, long balance)
         {
-            if (Mathf.Abs(amount) > balance)
+            if (amount == 0)
                 return false;
+
+            if (amount < 0)
+            {
+                if (Mathf.Abs(amount) > balance)
+                    return false;
+            }
+
+            long newBalance = checked(balance + amount);
+
+            if (newBalance != balance)
+            {
+                return true;
+            }
+
+            return false;
         }
-
-        long newBalance = checked(balance + amount);
-
-        if (newBalance != balance)
-        {
-            return true;
-        }
-
-        return false;
     }
-}
 }

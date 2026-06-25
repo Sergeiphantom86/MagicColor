@@ -7,10 +7,17 @@ namespace PuzzleEditor.Spawners
 {
     public class SpawnDropAnimation : MonoBehaviour
     {
-        [SerializeField] private float _startYOffset;
-        [SerializeField] private float _duration;
-        [SerializeField] private Ease _ease = Ease.OutCubic;
-        [SerializeField] private AudioClip _fall;
+        [SerializeField]
+        private float _startYOffset;
+
+        [SerializeField]
+        private float _duration;
+
+        [SerializeField]
+        private Ease _ease = Ease.OutCubic;
+
+        [SerializeField]
+        private AudioClip _fall;
 
         private Tween _tween;
         private Vector3 _targetWorldPosition;

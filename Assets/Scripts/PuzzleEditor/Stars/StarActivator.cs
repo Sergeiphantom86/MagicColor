@@ -1,26 +1,29 @@
 using PuzzleEditor.UI;
 using UnityEngine;
+
 namespace PuzzleEditor.Stars
 {
-
-public class StarActivator : MonoBehaviour
-{
-    [SerializeField] private AnimatorPuzzle _animatorPuzzle;
-    [SerializeField] private StarsController _controller;
-
-    private void OnEnable()
+    public class StarActivator : MonoBehaviour
     {
-        _animatorPuzzle.OnAnimationComplete += SetActive;
-    }
+        [SerializeField]
+        private AnimatorPuzzle _animatorPuzzle;
 
-    private void OnDisable()
-    {
-        _animatorPuzzle.OnAnimationComplete -= SetActive;
-    }
+        [SerializeField]
+        private StarsController _controller;
 
-    private void SetActive()
-    {
-        _controller.SetActive(true);
+        private void OnEnable()
+        {
+            _animatorPuzzle.OnAnimationComplete += SetActive;
+        }
+
+        private void OnDisable()
+        {
+            _animatorPuzzle.OnAnimationComplete -= SetActive;
+        }
+
+        private void SetActive()
+        {
+            _controller.SetActive(true);
+        }
     }
-}
 }

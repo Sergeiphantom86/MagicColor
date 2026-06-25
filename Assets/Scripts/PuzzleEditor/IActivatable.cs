@@ -1,9 +1,9 @@
 namespace PuzzleEditor
 {
-public interface IActivatable
-{
-    void Activate();
+    public interface IActivatable
+    {
+        void Activate();
 
-    void Deactivate();
-}
+        void Deactivate();
+    }
 }

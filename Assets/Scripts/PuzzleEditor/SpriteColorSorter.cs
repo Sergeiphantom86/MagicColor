@@ -1,56 +1,57 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
 namespace PuzzleEditor
 {
-
-public class SpriteColorSorter : MonoBehaviour
-{
-    private const float IgnoredTransparency = 0.1f;
-
-    [SerializeField] private Sprite[] _sprites;
-
-    private void Start()
+    public class SpriteColorSorter : MonoBehaviour
     {
-        SortAndPrint();
-    }
+        private const float IgnoredTransparency = 0.1f;
 
-    private void SortAndPrint()
-    {
-        var result = _sprites
-            .Where(sprite => sprite != null)
-            .Select(sprite => new
-            {
-                Name = sprite.name,
-                ColorCount = CountColors(sprite.texture)
-            })
-            .OrderBy(data => data.ColorCount)
-            .ToList();
+        [SerializeField]
+        private Sprite[] _sprites;
 
-        foreach (var item in result)
+        private void Start()
         {
-            Debug.Log($"{item.Name} � {item.ColorCount} colors");
+            SortAndPrint();
         }
-    }
 
-    private int CountColors(Texture2D texture)
-    {
-        if (texture == null)
-            return 0;
-
-        HashSet<Color32> colors = new HashSet<Color32>();
-
-        Color32[] pixels = texture.GetPixels32();
-
-        foreach (var pixel in pixels)
+        private void SortAndPrint()
         {
-            if (pixel.a >= IgnoredTransparency * 255)
+            var result = _sprites
+                .Where(sprite => sprite != null)
+                .Select(sprite => new
+                {
+                    Name = sprite.name,
+                    ColorCount = CountColors(sprite.texture),
+                })
+                .OrderBy(data => data.ColorCount)
+                .ToList();
+
+            foreach (var item in result)
             {
-                colors.Add(pixel);
+                Debug.Log($"{item.Name} � {item.ColorCount} colors");
             }
         }
 
-        return colors.Count;
+        private int CountColors(Texture2D texture)
+        {
+            if (texture == null)
+                return 0;
+
+            HashSet<Color32> colors = new HashSet<Color32>();
+
+            Color32[] pixels = texture.GetPixels32();
+
+            foreach (var pixel in pixels)
+            {
+                if (pixel.a >= IgnoredTransparency * 255)
+                {
+                    colors.Add(pixel);
+                }
+            }
+
+            return colors.Count;
+        }
     }
-}
 }

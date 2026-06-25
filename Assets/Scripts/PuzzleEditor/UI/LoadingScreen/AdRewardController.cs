@@ -1,80 +1,83 @@
+using System;
 using Game.SaveEditor;
 using Menu.TutorialEditor;
-using System;
 using UnityEngine;
+
 namespace PuzzleEditor.UI.LoadingScreen
 {
-
-public class AdRewardController : MonoBehaviour
-{
-    private const string RewardID = "after_puzzle_reward";
-
-    [SerializeField] private OfferPanel _offerPanel;
-
-    private IProgressSaver _progressSaver;
-
-    private Action OnComplete;
-
-    private void Awake()
+    public class AdRewardController : MonoBehaviour
     {
-        _progressSaver = new ProgressSaver();
-    }
+        private const string RewardID = "after_puzzle_reward";
 
-    private void OnEnable()
-    {
-        if (_offerPanel != null)
+        [SerializeField]
+        private OfferPanel _offerPanel;
+
+        private IProgressSaver _progressSaver;
+
+        private Action OnComplete;
+
+        private void Awake()
         {
-            _offerPanel.OnConsent += ShowAd;
-            _offerPanel.OnCancelled += Complete;
+            _progressSaver = new ProgressSaver();
         }
 
-        _progressSaver.SubscribeADSReward(
-            onRewardReceived: null,
-            onAdOpened: null,
-            onAdClosed: Complete,
-            onAdError: Complete);
-    }
-
-    private void OnDisable()
-    {
-        if (_offerPanel != null)
+        private void OnEnable()
         {
-            _offerPanel.OnConsent -= ShowAd;
-            _offerPanel.OnCancelled -= Complete;
+            if (_offerPanel != null)
+            {
+                _offerPanel.OnConsent += ShowAd;
+                _offerPanel.OnCancelled += Complete;
+            }
+
+            _progressSaver.SubscribeADSReward(
+                onRewardReceived: null,
+                onAdOpened: null,
+                onAdClosed: Complete,
+                onAdError: Complete
+            );
         }
 
-        _progressSaver.UnsubscribeADSReward(
-            onRewardReceived: null,
-            onAdOpened: null,
-            onAdClosed: Complete,
-            onAdError: Complete);
-    }
-
-    public void ShowRewardAd(Action onComplete)
-    {
-        OnComplete = onComplete;
-
-        if (_offerPanel == null)
-            return;
-
-        _offerPanel.TurnOn();
-    }
-
-    public void ShowAd()
-    {
-        if (_progressSaver.CanShowAd())
+        private void OnDisable()
         {
-            _progressSaver.RewardedAdvShow(RewardID, null);
-        }
-        else
-        {
-            Complete();
-        }
-    }
+            if (_offerPanel != null)
+            {
+                _offerPanel.OnConsent -= ShowAd;
+                _offerPanel.OnCancelled -= Complete;
+            }
 
-    private void Complete()
-    {
-        OnComplete?.Invoke();
+            _progressSaver.UnsubscribeADSReward(
+                onRewardReceived: null,
+                onAdOpened: null,
+                onAdClosed: Complete,
+                onAdError: Complete
+            );
+        }
+
+        public void ShowRewardAd(Action onComplete)
+        {
+            OnComplete = onComplete;
+
+            if (_offerPanel == null)
+                return;
+
+            _offerPanel.TurnOn();
+        }
+
+        public void ShowAd()
+        {
+            if (_progressSaver.CanShowAd())
+            {
+                _progressSaver.RewardedAdvShow(RewardID, null);
+            }
+            else
+            {
+                Complete();
+            }
+        }
+
+        private void Complete()
+        {
+            OnComplete?.Invoke();
+        }
     }
-}
 }

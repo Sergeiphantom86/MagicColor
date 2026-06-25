@@ -1,8 +1,6 @@
 using UnityEngine;
+
 namespace PuzzleEditor
 {
-
-public class PuzzleGame : MonoBehaviour
-{
-}
+    public class PuzzleGame : MonoBehaviour { }
 }

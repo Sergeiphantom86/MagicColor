@@ -1,5 +1,5 @@
-using Game.SaveEditor;
 using System;
+using Game.SaveEditor;
 
 namespace Wallets
 {
@@ -60,10 +60,18 @@ namespace Wallets
 
             scaledValue = Math.Round(scaledValue, MaxFractionDigits);
 
-            return AddSignAndSuffix(FormatRoundedValue(scaledValue), suffixIndex, isNegative, suffixes);
+            return AddSignAndSuffix(
+                FormatRoundedValue(scaledValue),
+                suffixIndex,
+                isNegative,
+                suffixes
+            );
         }
 
-        private (int suffixIndex, double scaledValue) ScaleNumber(double absNumber, string[] suffixes)
+        private (int suffixIndex, double scaledValue) ScaleNumber(
+            double absNumber,
+            string[] suffixes
+        )
         {
             int suffixIndex = 0;
             double scaledValue = absNumber;
@@ -79,18 +87,26 @@ namespace Wallets
 
         private bool ShouldContinueScaling(double value, int suffixIndex, string[] suffixes)
         {
-            return value >= ScalingFactor &&
-                   suffixIndex < suffixes.Length - 1;
+            return value >= ScalingFactor && suffixIndex < suffixes.Length - 1;
         }
 
         private string FormatRoundedValue(double value)
         {
-            return Math.Abs(value - Math.Round(value, 0)) < RoundingEpsilon ? value.ToString("0") : value.ToString("0.0");
+            return Math.Abs(value - Math.Round(value, 0)) < RoundingEpsilon
+                ? value.ToString("0")
+                : value.ToString("0.0");
         }
 
-        private string AddSignAndSuffix(string value, int suffixIndex, bool isNegative, string[] suffixes)
+        private string AddSignAndSuffix(
+            string value,
+            int suffixIndex,
+            bool isNegative,
+            string[] suffixes
+        )
         {
-            return isNegative ? $"-{value} {suffixes[suffixIndex]}" : $"{value} {suffixes[suffixIndex]}";
+            return isNegative
+                ? $"-{value} {suffixes[suffixIndex]}"
+                : $"{value} {suffixes[suffixIndex]}";
         }
     }
 }

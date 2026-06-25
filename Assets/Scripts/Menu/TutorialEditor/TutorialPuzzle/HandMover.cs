@@ -1,13 +1,14 @@
 using System;
-using UnityEngine;
 using DG.Tweening;
 using PuzzleEditor.MovingBlocks;
+using UnityEngine;
 
 namespace Menu.TutorialEditor.TutorialPuzzle
 {
     public class HandMover : MonoBehaviour
     {
-        [SerializeField] private Pivot _pivot;
+        [SerializeField]
+        private Pivot _pivot;
 
         private Vector3 _startScale;
         private Vector3 _targetScale;
@@ -56,17 +57,17 @@ namespace Menu.TutorialEditor.TutorialPuzzle
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
 
-            _sequence.Append(transform
-                .DOScale(_targetScale, _duration)
-                .SetEase(Ease.OutBack, _overshoot))
+            _sequence
+                .Append(
+                    transform.DOScale(_targetScale, _duration).SetEase(Ease.OutBack, _overshoot)
+                )
                 .SetLoops(-1, LoopType.Restart)
                 .SetUpdate(true);
         }
 
         public void EnableMoveAnimationZ()
         {
-            GetAnimationSequence(0, _distanceZ).
-               SetLoops(-1, LoopType.Restart);
+            GetAnimationSequence(0, _distanceZ).SetLoops(-1, LoopType.Restart);
         }
 
         public void EnableMoveAnimationX()
@@ -76,8 +77,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle
 
         public void EnableLoopingAnimationZ()
         {
-            GetAnimationSequence(0, _distanceZ)
-                .SetLoops(-1, LoopType.Restart);
+            GetAnimationSequence(0, _distanceZ).SetLoops(-1, LoopType.Restart);
         }
 
         public Sequence GetAnimationSequence(float distanceX = 0, float distance = 0)

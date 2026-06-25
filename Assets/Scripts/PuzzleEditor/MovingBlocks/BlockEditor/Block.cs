@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
-using UnityEngine;
 using DG.Tweening;
+using Menu;
+using PuzzleEditor.MovingBlocks.GridEditor;
 using PuzzleEditor.PoolEffects;
 using PuzzleEditor.SoundEditor;
-using Menu;
 using PuzzleEditor.Spawners;
-using PuzzleEditor.MovingBlocks.GridEditor;
+using UnityEngine;
 
 namespace PuzzleEditor.MovingBlocks.BlockEditor
 {
@@ -16,7 +16,8 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
     public class Block : ColorableObject, IDestroyable, IGridOccupant
     {
         [Header("Grid")]
-        [SerializeField] private Vector2Int _sizeInCells;
+        [SerializeField]
+        private Vector2Int _sizeInCells;
 
         private float _duration;
         private float _scaleSmockEffect;
@@ -89,7 +90,15 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
             _magnifier.OnRaised -= PlayFallingSound;
         }
 
-        public void Initialize(Effecter effectImpact, Effecter effectSmock, Effecter effectDestruct, AudioClip soundDestruction, AudioClip soundDragg, AudioClip soundRaise, AudioClip matchSound)
+        public void Initialize(
+            Effecter effectImpact,
+            Effecter effectSmock,
+            Effecter effectDestruct,
+            AudioClip soundDestruction,
+            AudioClip soundDragg,
+            AudioClip soundRaise,
+            AudioClip matchSound
+        )
         {
             _soundDragg = soundDragg;
             _soundRaise = soundRaise;
@@ -122,7 +131,11 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
 
             SetRenderQueue();
 
-            _effectImpact.CraeteParticles(transform.position, Quaternion.identity, _scaleImpactEffect);
+            _effectImpact.CraeteParticles(
+                transform.position,
+                Quaternion.identity,
+                _scaleImpactEffect
+            );
 
             _touchDragInput.ThrowOff();
 
@@ -150,7 +163,11 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
                 GridSystem.Instance.ClearCell(this);
             }
 
-            _effectDestruct.CraeteParticles(transform.position, Quaternion.identity, _scaleDestructEffect);
+            _effectDestruct.CraeteParticles(
+                transform.position,
+                Quaternion.identity,
+                _scaleDestructEffect
+            );
 
             if (_inkSpawner == null)
             {
@@ -177,14 +194,17 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
 
         private void ReduceSize()
         {
-            _scaler.GetTwinResiz(Vector3.zero, _duration)
-               .SetEase(Ease.InOutElastic);
+            _scaler.GetTwinResiz(Vector3.zero, _duration).SetEase(Ease.InOutElastic);
         }
 
         private void ShowEffectMovement()
         {
             _voiceover.PlayOneShot(_soundDragg);
-            _effectSmock.CraeteParticles(transform.position, Quaternion.identity, _scaleSmockEffect);
+            _effectSmock.CraeteParticles(
+                transform.position,
+                Quaternion.identity,
+                _scaleSmockEffect
+            );
         }
 
         private void PlayFallingSound()

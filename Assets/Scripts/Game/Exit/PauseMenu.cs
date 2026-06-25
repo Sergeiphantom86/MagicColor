@@ -1,54 +1,54 @@
 using Game.LoadingScreen;
 using UnityEngine;
+
 namespace Game.Exit
 {
-
-public class PauseMenu : MonoBehaviour
-{
-    private int _speedTimePassing;
-    private bool _isPaused;
-
-    public bool IsPaused => _isPaused;
-
-    private void Awake()
+    public class PauseMenu : MonoBehaviour
     {
-        _speedTimePassing = 1;
-    }
+        private int _speedTimePassing;
+        private bool _isPaused;
 
-    private void Start()
-    {
-        gameObject.SetActive(false);
-    }
+        public bool IsPaused => _isPaused;
 
-    public void Resume()
-    {
-        _isPaused = false;
-
-        SwitchTime(false, _speedTimePassing);
-    }
-
-    public void Stop()
-    {
-        _isPaused = true;
-
-        SwitchTime(true, _speedTimePassing - _speedTimePassing);
-    }
-
-    public void Load(string sceneName)
-    {
-        SwitchTime(false, _speedTimePassing);
-
-        if (SceneLoader.Instance != null)
+        private void Awake()
         {
-            SceneLoader.Instance.LoadSceneAsyncWithSplash(sceneName);
+            _speedTimePassing = 1;
+        }
+
+        private void Start()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void Resume()
+        {
+            _isPaused = false;
+
+            SwitchTime(false, _speedTimePassing);
+        }
+
+        public void Stop()
+        {
+            _isPaused = true;
+
+            SwitchTime(true, _speedTimePassing - _speedTimePassing);
+        }
+
+        public void Load(string sceneName)
+        {
+            SwitchTime(false, _speedTimePassing);
+
+            if (SceneLoader.Instance != null)
+            {
+                SceneLoader.Instance.LoadSceneAsyncWithSplash(sceneName);
+            }
+        }
+
+        private void SwitchTime(bool isOn, int speedTimePassing)
+        {
+            gameObject.SetActive(isOn);
+
+            Time.timeScale = speedTimePassing;
         }
     }
-
-    private void SwitchTime(bool isOn, int speedTimePassing)
-    {
-        gameObject.SetActive(isOn);
-
-        Time.timeScale = speedTimePassing;
-    }
-}
 }

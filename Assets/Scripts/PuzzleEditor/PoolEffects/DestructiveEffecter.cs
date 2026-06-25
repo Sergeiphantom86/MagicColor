@@ -1,6 +1,4 @@
 namespace PuzzleEditor.PoolEffects
 {
-public class DestructiveEffecter : Effecter
-{
-}
+    public class DestructiveEffecter : Effecter { }
 }

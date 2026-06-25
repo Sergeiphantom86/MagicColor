@@ -1,7 +1,7 @@
 namespace PuzzleEditor.Walls.WallEngineEditor
 {
-public interface IWallInteractor
-{
-    void PushMovement();
-}
+    public interface IWallInteractor
+    {
+        void PushMovement();
+    }
 }

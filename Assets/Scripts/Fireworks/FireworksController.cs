@@ -1,39 +1,39 @@
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace Fireworks
 {
-
-public class FireworksController : MonoBehaviour
-{
-    private List<SimpleFireworksAudio> _allFireworksAudio;
-
-    private void Awake()
+    public class FireworksController : MonoBehaviour
     {
-        _allFireworksAudio = new List<SimpleFireworksAudio>();
+        private List<SimpleFireworksAudio> _allFireworksAudio;
 
-        GatherAllFireworksAudio();
-    }
-
-    public void Play()
-    {
-        foreach (var fireworks in _allFireworksAudio)
+        private void Awake()
         {
-            fireworks.StartFireworks();
+            _allFireworksAudio = new List<SimpleFireworksAudio>();
+
+            GatherAllFireworksAudio();
+        }
+
+        public void Play()
+        {
+            foreach (var fireworks in _allFireworksAudio)
+            {
+                fireworks.StartFireworks();
+            }
+        }
+
+        public void Stop()
+        {
+            foreach (var fireworks in _allFireworksAudio)
+            {
+                fireworks.Stop();
+            }
+        }
+
+        private void GatherAllFireworksAudio()
+        {
+            _allFireworksAudio.Clear();
+            _allFireworksAudio.AddRange(GetComponentsInChildren<SimpleFireworksAudio>());
         }
     }
-
-    public void Stop()
-    {
-        foreach (var fireworks in _allFireworksAudio)
-        {
-            fireworks.Stop();
-        }
-    }
-
-    private void GatherAllFireworksAudio()
-    {
-        _allFireworksAudio.Clear();
-        _allFireworksAudio.AddRange(GetComponentsInChildren<SimpleFireworksAudio>());
-    }
-}
 }

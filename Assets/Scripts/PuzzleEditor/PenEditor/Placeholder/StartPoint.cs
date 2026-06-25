@@ -1,8 +1,6 @@
 using UnityEngine;
+
 namespace PuzzleEditor.PenEditor.Placeholder
 {
-
-public class StartPoint : MonoBehaviour
-{
-}
+    public class StartPoint : MonoBehaviour { }
 }

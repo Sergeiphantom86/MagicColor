@@ -1,9 +1,9 @@
 namespace PuzzleEditor.Walls.WallEditor
 {
-public interface IUnblocker
-{
-    public bool IsBlocked { get; }
+    public interface IUnblocker
+    {
+        public bool IsBlocked { get; }
 
-    public void Unblock();
-}
+        public void Unblock();
+    }
 }

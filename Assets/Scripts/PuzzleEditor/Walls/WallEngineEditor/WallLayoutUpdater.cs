@@ -1,79 +1,82 @@
-using PuzzleEditor.Walls.WallEditor;
 using System;
+using PuzzleEditor.Walls.WallEditor;
 using UnityEngine;
+
 namespace PuzzleEditor.Walls.WallEngineEditor
 {
-
-[RequireComponent(typeof(Wall))]
-public class WallLayoutUpdater : MonoBehaviour, IWallLayout
-{
-    private Wall _wall;
-    private Point _point;
-    private Indicator _indicator;
-    private Rotator _rotator;
-
-    private Vector2Int _lastResolution;
-
-    public event Action Updated;
-
-    public void Initialize(Rotator rotator)
+    [RequireComponent(typeof(Wall))]
+    public class WallLayoutUpdater : MonoBehaviour, IWallLayout
     {
-        if (ValidateDependencies(rotator) == false)
-            return;
+        private Wall _wall;
+        private Point _point;
+        private Indicator _indicator;
+        private Rotator _rotator;
 
-        _rotator = rotator;
-        _rotator.OnRotated += OnRotated;
-    }
+        private Vector2Int _lastResolution;
 
-    private void Awake()
-    {
-        _wall = GetComponent<Wall>();
-        _point = GetComponentInChildren<Point>();
-        _indicator = GetComponentInChildren<Indicator>();
+        public event Action Updated;
 
-        _lastResolution = new Vector2Int(Screen.width, Screen.height);
-    }
-
-    private void Update()
-    {
-        if (_lastResolution.x != Screen.width || _lastResolution.y != Screen.height)
+        public void Initialize(Rotator rotator)
         {
-            _lastResolution = new Vector2Int(Screen.width, Screen.height);
-            Recalculate();
+            if (ValidateDependencies(rotator) == false)
+                return;
 
-            Updated?.Invoke();
+            _rotator = rotator;
+            _rotator.OnRotated += OnRotated;
+        }
+
+        private void Awake()
+        {
+            _wall = GetComponent<Wall>();
+            _point = GetComponentInChildren<Point>();
+            _indicator = GetComponentInChildren<Indicator>();
+
+            _lastResolution = new Vector2Int(Screen.width, Screen.height);
+        }
+
+        private void Update()
+        {
+            if (_lastResolution.x != Screen.width || _lastResolution.y != Screen.height)
+            {
+                _lastResolution = new Vector2Int(Screen.width, Screen.height);
+                Recalculate();
+
+                Updated?.Invoke();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_rotator != null)
+                _rotator.OnRotated -= OnRotated;
+        }
+
+        private void OnRotated()
+        {
+            Recalculate();
+        }
+
+        public void Recalculate()
+        {
+            _wall.SetPosition(_indicator.transform.position, _point.transform.position);
+        }
+
+        private bool ValidateDependencies(Rotator rotator)
+        {
+            if (rotator == null)
+                return LogNull(nameof(rotator));
+
+            return true;
+        }
+
+        private bool LogNull(string dependencyName)
+        {
+            Debug.LogError(
+                $"{nameof(WallEngine)} initialization failed: {dependencyName} is NULL",
+                this
+            );
+
+            return false;
         }
     }
-
-    private void OnDestroy()
-    {
-        if (_rotator != null)
-            _rotator.OnRotated -= OnRotated;
-    }
-
-    private void OnRotated()
-    {
-        Recalculate();
-    }
-
-    public void Recalculate()
-    {
-        _wall.SetPosition(_indicator.transform.position, _point.transform.position);
-    }
-
-    private bool ValidateDependencies(Rotator rotator)
-    {
-        if (rotator == null)
-            return LogNull(nameof(rotator));
-
-        return true;
-    }
-
-    private bool LogNull(string dependencyName)
-    {
-        Debug.LogError($"{nameof(WallEngine)} initialization failed: {dependencyName} is NULL", this);
-
-        return false;
-    }
-}
 }

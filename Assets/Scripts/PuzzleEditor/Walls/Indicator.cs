@@ -1,29 +1,30 @@
 using UnityEngine;
+
 namespace PuzzleEditor.Walls
 {
-
-public class Indicator : MonoBehaviour
-{
-    private SpriteRenderer _spriteRenderer;
-
-    private void Awake()
+    public class Indicator : MonoBehaviour
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-    }
+        private SpriteRenderer _spriteRenderer;
 
-    public void TurnOffSpriteRenderer()
-    {
-        if (_spriteRenderer == null) 
-            return;
+        private void Awake()
+        {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+        }
 
-        _spriteRenderer.enabled = false;
-    }
-    public void TurnOnSpriteRenderer()
-    {
-        if (_spriteRenderer == null) 
-            return;
+        public void TurnOffSpriteRenderer()
+        {
+            if (_spriteRenderer == null)
+                return;
 
-        _spriteRenderer.enabled = true;
+            _spriteRenderer.enabled = false;
+        }
+
+        public void TurnOnSpriteRenderer()
+        {
+            if (_spriteRenderer == null)
+                return;
+
+            _spriteRenderer.enabled = true;
+        }
     }
-}
 }

@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
+
 namespace PuzzleEditor.Walls
 {
+    public interface IBlockDestroySequence
+    {
+        public event Action IsTouched;
 
-public interface IBlockDestroySequence
-{
-    public event Action IsTouched;
-
-    public void WaitStart(IColorable colorable, Color color);
-}
+        public void WaitStart(IColorable colorable, Color color);
+    }
 }

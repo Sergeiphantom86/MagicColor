@@ -1,94 +1,101 @@
 using DG.Tweening;
 using PuzzleEditor.SoundEditor;
 using UnityEngine;
+
 namespace PuzzleEditor.RouletteEditor
 {
-
-[RequireComponent(typeof(Voiceover))]
-public class BounceRotator : MonoBehaviour
-{
-    [Header("Rotation Settings")]
-    [SerializeField] private WheelAnimator _wheelAnimator;
-    [SerializeField] private AudioClip _audioClip;
-
-    private bool _isRotating;
-    private bool _useCooldown;
-    private int _rotationAngle;
-    private float _cooldownTime;
-    private float _lastRotationTime;
-    private float _rotationDuration;
-    private Vector3 _originalRotation;
-    private Sequence _rotationSequence;
-    private Voiceover _voiceover;
-
-    private void Awake()
+    [RequireComponent(typeof(Voiceover))]
+    public class BounceRotator : MonoBehaviour
     {
-        _useCooldown = false;
-        _cooldownTime = 1f;
-        _rotationAngle = 60;
-        _rotationDuration = 0.05f;
-        _voiceover = GetComponent<Voiceover>();
+        [Header("Rotation Settings")]
+        [SerializeField]
+        private WheelAnimator _wheelAnimator;
 
-        _originalRotation = transform.localEulerAngles;
-    }
+        [SerializeField]
+        private AudioClip _audioClip;
 
-    private void OnEnable()
-    {
-        _wheelAnimator.OnThresholdPassed += PlayRotation;
-    }
+        private bool _isRotating;
+        private bool _useCooldown;
+        private int _rotationAngle;
+        private float _cooldownTime;
+        private float _lastRotationTime;
+        private float _rotationDuration;
+        private Vector3 _originalRotation;
+        private Sequence _rotationSequence;
+        private Voiceover _voiceover;
 
-    private void OnDisable()
-    {
-        _wheelAnimator.OnThresholdPassed -= PlayRotation;
-
-        ResetRotation();
-    }
-
-    public void PlayRotation()
-    {
-        if (_isRotating)
-            return;
-
-        if (_useCooldown && Time.time - _lastRotationTime < _cooldownTime)
-            return;
-
-        _voiceover.PlayOneShot(_audioClip);
-        _isRotating = true;
-        _lastRotationTime = Time.time;
-
-        ResetRotation();
-
-        _rotationSequence = DOTween.Sequence();
-
-        _rotationSequence.Append(transform.DOLocalRotate(GetTurn(), _rotationDuration));
-
-        _rotationSequence.OnComplete(() =>
+        private void Awake()
         {
-            _isRotating = false;
-            ResetToOriginalRotation();
-        });
-    }
+            _useCooldown = false;
+            _cooldownTime = 1f;
+            _rotationAngle = 60;
+            _rotationDuration = 0.05f;
+            _voiceover = GetComponent<Voiceover>();
 
-    private Vector3 GetTurn()
-    {
-        return new Vector3(_originalRotation.x, _originalRotation.y, _originalRotation.z - _rotationAngle);
-    }
+            _originalRotation = transform.localEulerAngles;
+        }
 
-    private void ResetRotation()
-    {
-        _rotationSequence?.Kill();
-        _rotationSequence = null;
-        transform.DOKill();
-    }
+        private void OnEnable()
+        {
+            _wheelAnimator.OnThresholdPassed += PlayRotation;
+        }
 
-    private void ResetToOriginalRotation()
-    {
-        transform.localEulerAngles = _originalRotation;
-    }
+        private void OnDisable()
+        {
+            _wheelAnimator.OnThresholdPassed -= PlayRotation;
 
-    private void OnDestroy()
-    {
-        ResetRotation();
+            ResetRotation();
+        }
+
+        public void PlayRotation()
+        {
+            if (_isRotating)
+                return;
+
+            if (_useCooldown && Time.time - _lastRotationTime < _cooldownTime)
+                return;
+
+            _voiceover.PlayOneShot(_audioClip);
+            _isRotating = true;
+            _lastRotationTime = Time.time;
+
+            ResetRotation();
+
+            _rotationSequence = DOTween.Sequence();
+
+            _rotationSequence.Append(transform.DOLocalRotate(GetTurn(), _rotationDuration));
+
+            _rotationSequence.OnComplete(() =>
+            {
+                _isRotating = false;
+                ResetToOriginalRotation();
+            });
+        }
+
+        private Vector3 GetTurn()
+        {
+            return new Vector3(
+                _originalRotation.x,
+                _originalRotation.y,
+                _originalRotation.z - _rotationAngle
+            );
+        }
+
+        private void ResetRotation()
+        {
+            _rotationSequence?.Kill();
+            _rotationSequence = null;
+            transform.DOKill();
+        }
+
+        private void ResetToOriginalRotation()
+        {
+            transform.localEulerAngles = _originalRotation;
+        }
+
+        private void OnDestroy()
+        {
+            ResetRotation();
+        }
     }
-}
 }

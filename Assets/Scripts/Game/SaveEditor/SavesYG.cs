@@ -4,48 +4,66 @@ using UnityEngine;
 
 namespace YG
 {
-    public partial class SavesYG 
+    public partial class SavesYG
     {
         private const int MinIndexValue = 0;
         private const long MinCurrentValue = 0;
         private const int IndexUnblockingTutorial = 4;
         private const int IndexAbilityTutorial = 7;
 
-        [SerializeField] private int _indexUnblockingTutorial = IndexUnblockingTutorial;
+        [SerializeField]
+        private int _indexUnblockingTutorial = IndexUnblockingTutorial;
 
-        [SerializeField] private int _questIndex;
+        [SerializeField]
+        private int _questIndex;
 
-        [SerializeField] private int _maxReachedQuestIndex;
+        [SerializeField]
+        private int _maxReachedQuestIndex;
 
-        [SerializeField] private int _quantityAbilities;
+        [SerializeField]
+        private int _quantityAbilities;
 
-        [SerializeField] private long _currentCoin;
+        [SerializeField]
+        private long _currentCoin;
 
-        [SerializeField] private string _currentLanguage = "ru";
+        [SerializeField]
+        private string _currentLanguage = "ru";
 
-        [SerializeField] private long _currentCrystal;
+        [SerializeField]
+        private long _currentCrystal;
 
-        [SerializeField] private bool _isTutorialBasics;
+        [SerializeField]
+        private bool _isTutorialBasics;
 
-        [SerializeField] private bool _isUnblockingTutorial;
+        [SerializeField]
+        private bool _isUnblockingTutorial;
 
-        [SerializeField] private bool _isAbilityTutorial;
+        [SerializeField]
+        private bool _isAbilityTutorial;
 
-        [SerializeField] private bool _isUnlockAbilities;
+        [SerializeField]
+        private bool _isUnlockAbilities;
 
-        [SerializeField] private bool _isMenuTutorial;
+        [SerializeField]
+        private bool _isMenuTutorial;
 
-        [SerializeField] private bool _isTransparency;
+        [SerializeField]
+        private bool _isTransparency;
 
-        [SerializeField] private bool _isUnlockKey;
+        [SerializeField]
+        private bool _isUnlockKey;
 
-        [SerializeField] private int _stars;
+        [SerializeField]
+        private int _stars;
 
-        [SerializeField] private float _musicVolume = 0.3f;
+        [SerializeField]
+        private float _musicVolume = 0.3f;
 
-        [SerializeField] private float _soundVolume = 0.3f;
+        [SerializeField]
+        private float _soundVolume = 0.3f;
 
-        [SerializeField] private int _spins;
+        [SerializeField]
+        private int _spins;
 
         private int _countQuest;
         private int _reward;
@@ -180,7 +198,7 @@ namespace YG
                 return;
             }
 
-            if (balance == 0) 
+            if (balance == 0)
                 return;
 
             if (currency is Coin)
@@ -202,7 +220,9 @@ namespace YG
         {
             if (balance < MinCurrentValue)
             {
-                Debug.LogWarning($"SetCurrency: ������� ���������� ������������� ������ ��� Coin. �������: {_currentCoin}, ���������: {balance}");
+                Debug.LogWarning(
+                    $"SetCurrency: ������� ���������� ������������� ������ ��� Coin. �������: {_currentCoin}, ���������: {balance}"
+                );
                 return MinCurrentValue;
             }
 
@@ -246,7 +266,9 @@ namespace YG
         {
             if (count < 0)
             {
-                Debug.LogWarning($"SetCountStars: ���������� ���������� ����� ������������: {count}");
+                Debug.LogWarning(
+                    $"SetCountStars: ���������� ���������� ����� ������������: {count}"
+                );
                 _stars = MinIndexValue;
                 return;
             }
@@ -272,7 +294,9 @@ namespace YG
         {
             if (volumeChanger == null)
             {
-                Debug.LogError("GetVolume: ������� null VolumeChanger. ���������� �������� �� ���������: 0");
+                Debug.LogError(
+                    "GetVolume: ������� null VolumeChanger. ���������� �������� �� ���������: 0"
+                );
                 return false;
             }
 

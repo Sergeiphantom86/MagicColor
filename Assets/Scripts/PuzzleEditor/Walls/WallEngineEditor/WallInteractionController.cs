@@ -1,58 +1,56 @@
-using PuzzleEditor.MovingBlocks;
 using System;
+using PuzzleEditor.MovingBlocks;
 using UnityEngine;
+
 namespace PuzzleEditor.Walls.WallEngineEditor
 {
-
-[RequireComponent(typeof(IInputHandler), typeof(ColorCollisionHandler))]
-public class WallInteractionController : MonoBehaviour
-{
-    private IUnlockPolicy _unlockPolicy;
-    private IWallInteractor _wall;
-
-    private IInputHandler _inputHandler;
-    private ColorCollisionHandler _colorCollisionHandler;
-
-    private bool _initialized;
-
-    private void Awake()
+    [RequireComponent(typeof(IInputHandler), typeof(ColorCollisionHandler))]
+    public class WallInteractionController : MonoBehaviour
     {
-        _inputHandler = GetComponent<IInputHandler>();
-        _colorCollisionHandler = GetComponent<ColorCollisionHandler>();
-    }
+        private IUnlockPolicy _unlockPolicy;
+        private IWallInteractor _wall;
 
-    public void Initialize(IUnlockPolicy unlockPolicy, IWallInteractor wall)
-    {
-        if (_initialized)
-            return;
+        private IInputHandler _inputHandler;
+        private ColorCollisionHandler _colorCollisionHandler;
 
-        _unlockPolicy = unlockPolicy ??
-            throw new ArgumentNullException(nameof(unlockPolicy));
+        private bool _initialized;
 
-        _wall = wall ??
-            throw new ArgumentNullException(nameof(wall));
-
-        _inputHandler.OnSelected += OnSelected;
-
-        _initialized = true;
-    }
-
-    private void OnDisable()
-    {
-        if (_initialized == false)
-            return;
-
-        _inputHandler.OnSelected -= OnSelected;
-    }
-
-    private void OnSelected(Vector2 screenPosition)
-    {
-        if (_unlockPolicy.TryUnlock())
+        private void Awake()
         {
-            _colorCollisionHandler.UnblockWall();
+            _inputHandler = GetComponent<IInputHandler>();
+            _colorCollisionHandler = GetComponent<ColorCollisionHandler>();
         }
 
-        _wall.PushMovement();
+        public void Initialize(IUnlockPolicy unlockPolicy, IWallInteractor wall)
+        {
+            if (_initialized)
+                return;
+
+            _unlockPolicy = unlockPolicy ?? throw new ArgumentNullException(nameof(unlockPolicy));
+
+            _wall = wall ?? throw new ArgumentNullException(nameof(wall));
+
+            _inputHandler.OnSelected += OnSelected;
+
+            _initialized = true;
+        }
+
+        private void OnDisable()
+        {
+            if (_initialized == false)
+                return;
+
+            _inputHandler.OnSelected -= OnSelected;
+        }
+
+        private void OnSelected(Vector2 screenPosition)
+        {
+            if (_unlockPolicy.TryUnlock())
+            {
+                _colorCollisionHandler.UnblockWall();
+            }
+
+            _wall.PushMovement();
+        }
     }
-}
 }

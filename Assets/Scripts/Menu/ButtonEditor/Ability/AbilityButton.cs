@@ -8,8 +8,11 @@ namespace Menu.ButtonEditor.Ability
     [RequireComponent(typeof(Button), typeof(Image))]
     public class AbilityButton : MonoBehaviour
     {
-        [SerializeField] private Ability ability;
-        [SerializeField] private Image _highlightImage;
+        [SerializeField]
+        private Ability ability;
+
+        [SerializeField]
+        private Image _highlightImage;
 
         private Button _button;
         private Image _image;

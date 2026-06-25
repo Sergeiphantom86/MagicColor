@@ -1,21 +1,21 @@
 using System;
+
 namespace PuzzleEditor.PenEditor
 {
-
-public class FillSpeedController
-{
-    private bool _isAccelerated;
-
-    public void TryAccelerate(float remainingTime, Action<float> notify, Action applySpeed)
+    public class FillSpeedController
     {
-        if (_isAccelerated) 
-            return;
+        private bool _isAccelerated;
 
-        _isAccelerated = true;
+        public void TryAccelerate(float remainingTime, Action<float> notify, Action applySpeed)
+        {
+            if (_isAccelerated)
+                return;
 
-        notify?.Invoke(remainingTime);
+            _isAccelerated = true;
 
-        applySpeed?.Invoke();
+            notify?.Invoke(remainingTime);
+
+            applySpeed?.Invoke();
+        }
     }
-}
 }

@@ -2,7 +2,5 @@ using UnityEngine;
 
 namespace PuzzleEditor.Walls
 {
-    public class Point : MonoBehaviour
-    {
-    }
+    public class Point : MonoBehaviour { }
 }

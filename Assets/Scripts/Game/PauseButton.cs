@@ -1,17 +1,17 @@
 using System;
+
 namespace Game
 {
-
-public class PauseButton : ButtonMenu
-{
-    public event Action OnClick;
-
-    public override void PressButton()
+    public class PauseButton : ButtonMenu
     {
-        base.PressButton();
+        public event Action OnClick;
 
-        PauseMenu.Stop();
-        OnClick?.Invoke();
+        public override void PressButton()
+        {
+            base.PressButton();
+
+            PauseMenu.Stop();
+            OnClick?.Invoke();
+        }
     }
-}
 }

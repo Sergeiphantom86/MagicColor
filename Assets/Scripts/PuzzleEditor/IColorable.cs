@@ -1,29 +1,29 @@
 using UnityEngine;
+
 namespace PuzzleEditor
 {
+    public interface IColorable
+    {
+        public bool IsRepainted { get; }
 
-public interface IColorable
-{
-    public bool IsRepainted { get; }
+        public void SetColor(Color color);
 
-    public void SetColor(Color color);
+        public void SetActive(bool state);
 
-    public void SetActive(bool state);
+        public Color GetColor();
 
-    public Color GetColor();
+        public void InstallRepainted();
 
-    public void InstallRepainted();
+        public void AssignOriginal();
 
-    public void AssignOriginal();
+        public void Disable();
 
-    public void Disable();
+        public void SetAlpha(float alpha);
 
-    public void SetAlpha(float alpha);
+        public void SetRenderQueue();
 
-    public void SetRenderQueue();
+        public void SetStartRenderQueueSelectedItem();
 
-    public void SetStartRenderQueueSelectedItem();
-
-    public void SetRenderQueueSelectedItem();
-}
+        public void SetRenderQueueSelectedItem();
+    }
 }

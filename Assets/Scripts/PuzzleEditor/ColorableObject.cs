@@ -1,10 +1,10 @@
 using System.Collections;
-using UnityEngine;
 using DG.Tweening;
-using PuzzleEditor.Walls;
 using Game.SaveEditor;
-using PuzzleEditor.MovingBlocks.BlockEditor;
 using PuzzleEditor.InkEditor;
+using PuzzleEditor.MovingBlocks.BlockEditor;
+using PuzzleEditor.Walls;
+using UnityEngine;
 
 namespace PuzzleEditor
 {
@@ -15,7 +15,8 @@ namespace PuzzleEditor
         private const string EmissionColor = "_EmissionColor";
         private const string EmissionIntensity = "_EmissionIntensity";
 
-        [SerializeField] private bool _isTransparent;
+        [SerializeField]
+        private bool _isTransparent;
 
         private float _delay;
         private bool _isRepainted;
@@ -116,8 +117,7 @@ namespace PuzzleEditor
             _renderer = GetComponent<Renderer>();
         }
 
-        public void SetActive(bool state) =>
-            gameObject.SetActive(state);
+        public void SetActive(bool state) => gameObject.SetActive(state);
 
         public Color GetColor()
         {
@@ -162,7 +162,11 @@ namespace PuzzleEditor
             _material.color = Color.white;
         }
 
-        public void EnableEmission(Color emissionColor, float intensity = 0.01f, float brightness = 0.5f)
+        public void EnableEmission(
+            Color emissionColor,
+            float intensity = 0.01f,
+            float brightness = 0.5f
+        )
         {
             if (_material == null && _material == null)
                 return;
@@ -195,11 +199,18 @@ namespace PuzzleEditor
             startColor.a = 1f;
             _material.color = startColor;
 
-            return DOTween.To(
+            return DOTween
+                .To(
                     () => _material.color,
                     color => _material.color = color,
-                    new Color(_originalColor.r, _originalColor.g, _originalColor.b, _valueTransparency),
-                    _fadeDuration)
+                    new Color(
+                        _originalColor.r,
+                        _originalColor.g,
+                        _originalColor.b,
+                        _valueTransparency
+                    ),
+                    _fadeDuration
+                )
                 .SetEase(Ease.Linear);
         }
 

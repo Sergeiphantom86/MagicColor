@@ -1,57 +1,75 @@
 using PuzzleEditor.Walls.Partitions;
 using UnityEngine;
+
 namespace PuzzleEditor.EnergyField
 {
-
-public class Explosion : MonoBehaviour
-{
-    [SerializeField] private float _radius = 5f;
-    [SerializeField] private float _force = 700f;
-    [SerializeField] private float _upwardModifier = 1f;
-    [SerializeField] private LayerMask _affectedLayers;
-
-    private Collider[] _colliderBuffer;
-
-    private void Awake()
+    public class Explosion : MonoBehaviour
     {
-        _colliderBuffer = new Collider[100];
-    }
+        [SerializeField]
+        private float _radius = 5f;
 
-    public void Explode()
-    {
-        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, _radius, _colliderBuffer, _affectedLayers);
+        [SerializeField]
+        private float _force = 700f;
 
-        for (int i = 0; i < hitCount; i++)
+        [SerializeField]
+        private float _upwardModifier = 1f;
+
+        [SerializeField]
+        private LayerMask _affectedLayers;
+
+        private Collider[] _colliderBuffer;
+
+        private void Awake()
         {
-            Collider collider = _colliderBuffer[i];
-            ProcessCollider(collider);
+            _colliderBuffer = new Collider[100];
         }
-    }
 
-    private void ProcessCollider(Collider collider)
-    {
-        Rigidbody rigidbody = collider.attachedRigidbody;
-
-        if (collider.TryGetComponent(out Partition partition))
+        public void Explode()
         {
-            rigidbody = partition.Rigidbody;
+            int hitCount = Physics.OverlapSphereNonAlloc(
+                transform.position,
+                _radius,
+                _colliderBuffer,
+                _affectedLayers
+            );
 
-            if (rigidbody != null)
+            for (int i = 0; i < hitCount; i++)
             {
-                rigidbody.useGravity = true;
-                rigidbody.isKinematic = false;
+                Collider collider = _colliderBuffer[i];
+                ProcessCollider(collider);
             }
         }
 
-        if (rigidbody != null)
+        private void ProcessCollider(Collider collider)
         {
-            rigidbody.AddExplosionForce(_force, transform.position, _radius, _upwardModifier, ForceMode.Impulse);
-        }
+            Rigidbody rigidbody = collider.attachedRigidbody;
 
-        if (partition != null)
-        {
-            partition.DestroyPartition();
+            if (collider.TryGetComponent(out Partition partition))
+            {
+                rigidbody = partition.Rigidbody;
+
+                if (rigidbody != null)
+                {
+                    rigidbody.useGravity = true;
+                    rigidbody.isKinematic = false;
+                }
+            }
+
+            if (rigidbody != null)
+            {
+                rigidbody.AddExplosionForce(
+                    _force,
+                    transform.position,
+                    _radius,
+                    _upwardModifier,
+                    ForceMode.Impulse
+                );
+            }
+
+            if (partition != null)
+            {
+                partition.DestroyPartition();
+            }
         }
     }
-}
 }

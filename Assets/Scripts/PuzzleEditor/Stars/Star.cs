@@ -1,30 +1,30 @@
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace PuzzleEditor.Stars
 {
-
-[RequireComponent(typeof(Image))]
-public class Star : MonoBehaviour
-{
-    private Image _image;
-
-    public bool IsActive { get; private set; }
-
-    private void Awake()
+    [RequireComponent(typeof(Image))]
+    public class Star : MonoBehaviour
     {
-        _image = GetComponent<Image>();
-    }
+        private Image _image;
 
-    public void SetActive(bool isOn)
-    {
-        if (_image == null)
+        public bool IsActive { get; private set; }
+
+        private void Awake()
         {
-            Debug.LogError("Image component is null in Star");
-            return;
+            _image = GetComponent<Image>();
         }
 
-        _image.enabled = isOn;
-        IsActive = isOn;
+        public void SetActive(bool isOn)
+        {
+            if (_image == null)
+            {
+                Debug.LogError("Image component is null in Star");
+                return;
+            }
+
+            _image.enabled = isOn;
+            IsActive = isOn;
+        }
     }
-}
 }

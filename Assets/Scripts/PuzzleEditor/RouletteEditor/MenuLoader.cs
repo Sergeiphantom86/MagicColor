@@ -1,23 +1,23 @@
 using Game.LoadingScreen;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 namespace PuzzleEditor.RouletteEditor
 {
-
-public class MenuLoader : MonoBehaviour
-{
-    private const string Menu = nameof(Menu);
-
-    public void TargetScene(string scenName)
+    public class MenuLoader : MonoBehaviour
     {
-        if (SceneLoader.Instance == null)
-        {
-            Debug.LogError("SceneLoader instance not found! Using default load.");
-            SceneManager.LoadScene(Menu);
-            return;
-        }
+        private const string Menu = nameof(Menu);
 
-        SceneLoader.Instance.LoadSceneAsyncWithSplash(scenName);
+        public void TargetScene(string scenName)
+        {
+            if (SceneLoader.Instance == null)
+            {
+                Debug.LogError("SceneLoader instance not found! Using default load.");
+                SceneManager.LoadScene(Menu);
+                return;
+            }
+
+            SceneLoader.Instance.LoadSceneAsyncWithSplash(scenName);
+        }
     }
-}
 }

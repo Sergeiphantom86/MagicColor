@@ -1,6 +1,4 @@
 namespace PuzzleEditor.RouletteEditor
 {
-public class Coin : Currency
-{
-}
+    public class Coin : Currency { }
 }

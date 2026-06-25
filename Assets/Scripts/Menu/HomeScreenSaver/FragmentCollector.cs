@@ -1,41 +1,41 @@
-using PuzzleEditor;
 using System;
 using System.Collections.Generic;
+using PuzzleEditor;
 using UnityEngine;
+
 namespace Menu.HomeScreenSaver
 {
-
-[RequireComponent(typeof(TextureInitializer))]
-public class FragmentCollector : MonoBehaviour
-{
-    private TextureInitializer _textureInitializer;
-
-    public event Action<List<Fragment>> OnPixelsRendered;
-
-    private void Awake()
+    [RequireComponent(typeof(TextureInitializer))]
+    public class FragmentCollector : MonoBehaviour
     {
-        _textureInitializer = GetComponent<TextureInitializer>();
-    }
+        private TextureInitializer _textureInitializer;
 
-    private void OnEnable()
-    {
-        if (_textureInitializer != null)
+        public event Action<List<Fragment>> OnPixelsRendered;
+
+        private void Awake()
         {
-            _textureInitializer.OnInitialize += Collect;
+            _textureInitializer = GetComponent<TextureInitializer>();
+        }
+
+        private void OnEnable()
+        {
+            if (_textureInitializer != null)
+            {
+                _textureInitializer.OnInitialize += Collect;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (_textureInitializer != null)
+            {
+                _textureInitializer.OnInitialize -= Collect;
+            }
+        }
+
+        private void Collect(int count)
+        {
+            OnPixelsRendered.Invoke(_textureInitializer.FragmentsList);
         }
     }
-
-    private void OnDisable()
-    {
-        if (_textureInitializer != null)
-        {
-            _textureInitializer.OnInitialize -= Collect;
-        }
-    }
-
-    private void Collect(int count)
-    {
-        OnPixelsRendered.Invoke(_textureInitializer.FragmentsList);
-    }
-}
 }

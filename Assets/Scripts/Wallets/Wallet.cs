@@ -1,6 +1,6 @@
-using Game.SaveEditor;
 using System;
 using System.Collections;
+using Game.SaveEditor;
 using UnityEngine;
 using Wallets.WalletEditor;
 
@@ -8,7 +8,8 @@ namespace Wallets
 {
     public class Wallet : MonoBehaviour
     {
-        [SerializeField] private bool autoLoadFromSave;
+        [SerializeField]
+        private bool autoLoadFromSave;
 
         private long _balance;
         private float _delay;
@@ -75,7 +76,9 @@ namespace Wallets
             }
             else
             {
-                Debug.LogWarning($"������������ �������! ������� ��������� {amount}, �� ������ ����� {_balance}");
+                Debug.LogWarning(
+                    $"������������ �������! ������� ��������� {amount}, �� ������ ����� {_balance}"
+                );
             }
 
             return success;

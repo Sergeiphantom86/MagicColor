@@ -1,8 +1,6 @@
 using UnityEngine;
+
 namespace PuzzleEditor.InkEditor
 {
-
-public class Ink : MonoBehaviour
-{
-}
+    public class Ink : MonoBehaviour { }
 }

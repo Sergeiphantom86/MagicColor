@@ -1,8 +1,6 @@
 using UnityEngine;
+
 namespace Game.LoadingScreen
 {
-
-public class LanguageInitializer : MonoBehaviour
-{
-}
+    public class LanguageInitializer : MonoBehaviour { }
 }

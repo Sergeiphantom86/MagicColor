@@ -1,6 +1,4 @@
 namespace PuzzleEditor.SoundEditor
 {
-public class ToggleMusic : ToggleBase
-{
-}
+    public class ToggleMusic : ToggleBase { }
 }

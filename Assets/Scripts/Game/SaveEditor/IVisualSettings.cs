@@ -1,7 +1,7 @@
 namespace Game.SaveEditor
 {
-public interface IVisualSettings
-{
-    public void MakeTransparent(bool isTransparency);
-}
+    public interface IVisualSettings
+    {
+        public void MakeTransparent(bool isTransparency);
+    }
 }

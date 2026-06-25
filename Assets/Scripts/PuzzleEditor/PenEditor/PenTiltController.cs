@@ -1,38 +1,45 @@
 using UnityEngine;
+
 namespace PuzzleEditor.PenEditor
 {
-
-public class PenTiltController : MonoBehaviour
-{
-    [Header("Tilt Settings")]
-    [SerializeField] private float _maxTiltAngle;
-    [SerializeField] private float _tiltDuration;
-
-    private float _currentAngle;
-
-    private void Awake()
+    public class PenTiltController : MonoBehaviour
     {
-        _currentAngle = transform.localEulerAngles.z;
-        transform.localEulerAngles = new Vector3(0, 0, _currentAngle);
-    }
+        [Header("Tilt Settings")]
+        [SerializeField]
+        private float _maxTiltAngle;
 
-    private void Update()
-    {
-        float targetAngle = GetTargetAngle(transform.position.x);
+        [SerializeField]
+        private float _tiltDuration;
 
-        if (Mathf.Approximately(targetAngle, _currentAngle) == false)
+        private float _currentAngle;
+
+        private void Awake()
         {
-            _currentAngle = Mathf.Lerp(_currentAngle, targetAngle, Time.deltaTime / _tiltDuration);
-
+            _currentAngle = transform.localEulerAngles.z;
             transform.localEulerAngles = new Vector3(0, 0, _currentAngle);
         }
-    }
 
-    private float GetTargetAngle(float distanceFromCenter)
-    {
-        float angle = distanceFromCenter * _maxTiltAngle;
-        angle = Mathf.Clamp(angle, -_maxTiltAngle, _maxTiltAngle);
-        return -angle;
+        private void Update()
+        {
+            float targetAngle = GetTargetAngle(transform.position.x);
+
+            if (Mathf.Approximately(targetAngle, _currentAngle) == false)
+            {
+                _currentAngle = Mathf.Lerp(
+                    _currentAngle,
+                    targetAngle,
+                    Time.deltaTime / _tiltDuration
+                );
+
+                transform.localEulerAngles = new Vector3(0, 0, _currentAngle);
+            }
+        }
+
+        private float GetTargetAngle(float distanceFromCenter)
+        {
+            float angle = distanceFromCenter * _maxTiltAngle;
+            angle = Mathf.Clamp(angle, -_maxTiltAngle, _maxTiltAngle);
+            return -angle;
+        }
     }
-}
 }

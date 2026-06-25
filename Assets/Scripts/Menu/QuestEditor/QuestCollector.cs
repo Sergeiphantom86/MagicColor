@@ -1,15 +1,20 @@
+using System.Collections.Generic;
 using Game.SaveEditor;
 using Menu.HomeScreenSaver;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Menu.QuestEditor
 {
     public class QuestCollector : MonoBehaviour
     {
-        [SerializeField] private QuestSystem _questSystem;
-        [SerializeField] private Viewer _viewer;
-        [SerializeField] private Contender _contender;
+        [SerializeField]
+        private QuestSystem _questSystem;
+
+        [SerializeField]
+        private Viewer _viewer;
+
+        [SerializeField]
+        private Contender _contender;
 
         private List<Quest> _allQuests;
         private List<Sprite> _spritesQuests;

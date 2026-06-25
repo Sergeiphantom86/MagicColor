@@ -1,153 +1,158 @@
+using DG.Tweening;
+using Game.SaveEditor;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
-using TMPro;
-using Game.SaveEditor;
+
 namespace PuzzleEditor.RouletteEditor
 {
-
-[RequireComponent(typeof(ButtonController))]
-public class RouletteCounter : MonoBehaviour
-{
-    [SerializeField] private RewardAdForSpins _rewardAdForSpins;
-
-    private int _currentCount;
-    private int _displayedCount;
-    private int _initialCount;
-    private float _animationDuration;
-    private Tween _countTween;
-    private TextMeshProUGUI _counterText;
-    private ButtonController _buttonController;
-    private IProgressSaver _progressSaver;
-    private Image _image;
-
-    public bool HasAttempts => _currentCount > 0;
-
-    private void OnEnable()
+    [RequireComponent(typeof(ButtonController))]
+    public class RouletteCounter : MonoBehaviour
     {
-        _rewardAdForSpins.OnSpinsAdded += AddSpin;
-    }
+        [SerializeField]
+        private RewardAdForSpins _rewardAdForSpins;
 
-    private void OnDisable()
-    {
-        _rewardAdForSpins.OnSpinsAdded -= AddSpin;
-    }
+        private int _currentCount;
+        private int _displayedCount;
+        private int _initialCount;
+        private float _animationDuration;
+        private Tween _countTween;
+        private TextMeshProUGUI _counterText;
+        private ButtonController _buttonController;
+        private IProgressSaver _progressSaver;
+        private Image _image;
 
-    private void Awake()
-    {
-        _animationDuration = 0.5f;
+        public bool HasAttempts => _currentCount > 0;
 
-        _buttonController = GetComponent<ButtonController>();
-        _counterText = GetComponentInChildren<TextMeshProUGUI>();
-        _image = GetComponent<Image>();
-
-        _progressSaver = new ProgressSaver();
-
-        if (_counterText == null)
+        private void OnEnable()
         {
-            Debug.LogError("TextMeshProUGUI ��� � �����!!!");
-            return;
+            _rewardAdForSpins.OnSpinsAdded += AddSpin;
         }
 
-        if (_buttonController != null)
+        private void OnDisable()
         {
-            _buttonController.Initialize(
-                globalInteractableCondition: () => true,
-                onClickAction: DecreaseCount);
-
-            _buttonController.UpdateState();
-        }
-        else
-        {
-            Debug.LogError("ButtonController �� ��������!", this);
+            _rewardAdForSpins.OnSpinsAdded -= AddSpin;
         }
 
-        if (_progressSaver == null)
+        private void Awake()
         {
-            Debug.LogError("ProgressSaver == null");
-        }
+            _animationDuration = 0.5f;
 
-        SetCoutSpins();
+            _buttonController = GetComponent<ButtonController>();
+            _counterText = GetComponentInChildren<TextMeshProUGUI>();
+            _image = GetComponent<Image>();
 
-        _rewardAdForSpins.gameObject.SetActive(false);
-    }
+            _progressSaver = new ProgressSaver();
 
-    private void Start()
-    {
-        UpdateText();
-    }
-
-    private void SetCoutSpins()
-    {
-        _initialCount = _progressSaver.Saves.Spins;
-
-        _initialCount++;
-
-        _currentCount = _initialCount;
-        _displayedCount = _initialCount;
-    }
-
-    private void AddSpin()
-    {
-        SwitchVisibility(true);
-
-        if (_buttonController != null)
-        {
-            _buttonController.UpdateState();
-        }
-
-        _currentCount++;
-
-        AnimateCounterChange();
-    }
-
-    public void DecreaseCount()
-    {
-        if (_currentCount <= 0)
-            return;
-
-        _currentCount--;
-        AnimateCounterChange();
-        _buttonController.UpdateState();
-
-        if (_currentCount == 0)
-        {
-            SwitchVisibility(false);
-
-            _rewardAdForSpins.gameObject.SetActive(true);
-        }
-    }
-
-    private void SwitchVisibility(bool isOn)
-    {
-        _counterText.enabled = isOn;
-        _image.enabled = isOn;
-    }
-
-    private void AnimateCounterChange()
-    {
-        _countTween?.Kill();
-
-        _countTween = DOTween.To(() => _displayedCount,
-            currentValue =>
+            if (_counterText == null)
             {
-                _displayedCount = currentValue;
-                UpdateText();
-            },
-            _currentCount,
-            _animationDuration)
-            .SetEase(Ease.OutQuad);
-    }
+                Debug.LogError("TextMeshProUGUI ��� � �����!!!");
+                return;
+            }
 
-    private void UpdateText()
-    {
-        _counterText.text = _displayedCount.ToString();
-    }
+            if (_buttonController != null)
+            {
+                _buttonController.Initialize(
+                    globalInteractableCondition: () => true,
+                    onClickAction: DecreaseCount
+                );
 
-    private void OnDestroy()
-    {
-        _progressSaver.SaveSpinsCount(_currentCount);
-        _countTween?.Kill();
+                _buttonController.UpdateState();
+            }
+            else
+            {
+                Debug.LogError("ButtonController �� ��������!", this);
+            }
+
+            if (_progressSaver == null)
+            {
+                Debug.LogError("ProgressSaver == null");
+            }
+
+            SetCoutSpins();
+
+            _rewardAdForSpins.gameObject.SetActive(false);
+        }
+
+        private void Start()
+        {
+            UpdateText();
+        }
+
+        private void SetCoutSpins()
+        {
+            _initialCount = _progressSaver.Saves.Spins;
+
+            _initialCount++;
+
+            _currentCount = _initialCount;
+            _displayedCount = _initialCount;
+        }
+
+        private void AddSpin()
+        {
+            SwitchVisibility(true);
+
+            if (_buttonController != null)
+            {
+                _buttonController.UpdateState();
+            }
+
+            _currentCount++;
+
+            AnimateCounterChange();
+        }
+
+        public void DecreaseCount()
+        {
+            if (_currentCount <= 0)
+                return;
+
+            _currentCount--;
+            AnimateCounterChange();
+            _buttonController.UpdateState();
+
+            if (_currentCount == 0)
+            {
+                SwitchVisibility(false);
+
+                _rewardAdForSpins.gameObject.SetActive(true);
+            }
+        }
+
+        private void SwitchVisibility(bool isOn)
+        {
+            _counterText.enabled = isOn;
+            _image.enabled = isOn;
+        }
+
+        private void AnimateCounterChange()
+        {
+            _countTween?.Kill();
+
+            _countTween = DOTween
+                .To(
+                    () => _displayedCount,
+                    currentValue =>
+                    {
+                        _displayedCount = currentValue;
+                        UpdateText();
+                    },
+                    _currentCount,
+                    _animationDuration
+                )
+                .SetEase(Ease.OutQuad);
+        }
+
+        private void UpdateText()
+        {
+            _counterText.text = _displayedCount.ToString();
+        }
+
+        private void OnDestroy()
+        {
+            _progressSaver.SaveSpinsCount(_currentCount);
+            _countTween?.Kill();
+        }
     }
-}
 }

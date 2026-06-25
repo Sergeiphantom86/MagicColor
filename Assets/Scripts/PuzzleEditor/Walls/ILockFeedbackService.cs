@@ -3,10 +3,10 @@ using PuzzleEditor.LockEditor;
 
 namespace PuzzleEditor.Walls
 {
-public interface ILockFeedbackService
-{
-    public void InitializComponents(Lock @lock, Messager hint);
+    public interface ILockFeedbackService
+    {
+        public void InitializComponents(Lock @lock, Messager hint);
 
-    void Play();
-}
+        void Play();
+    }
 }

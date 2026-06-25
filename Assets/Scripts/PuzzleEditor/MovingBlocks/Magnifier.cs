@@ -1,50 +1,53 @@
 using System;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
+
 namespace PuzzleEditor.MovingBlocks
 {
-
-public class Magnifier : MonoBehaviour
-{
-    [SerializeField] private float _selectedScale;
-    [SerializeField] private float _animationDuration;
-
-    private Vector3 _originalScale;
-    private Tween _scaleTween;
-    private Transform _transform;
-
-    public event Action OnRaised;
-
-    public event Action OnDropped;
-
-    private void Awake()
+    public class Magnifier : MonoBehaviour
     {
-        _originalScale = transform.localScale;
-        _transform = transform;
-    }
+        [SerializeField]
+        private float _selectedScale;
 
-    public Tween Select()
-    {
-        _scaleTween = ChangeSize(_originalScale * _selectedScale);
-        OnRaised?.Invoke();
-        return _scaleTween;
-    }
+        [SerializeField]
+        private float _animationDuration;
 
-    public Tween Deselect()
-    {
-        _scaleTween = ChangeSize(_originalScale);
-        OnDropped?.Invoke();
-        return _scaleTween;
-    }
+        private Vector3 _originalScale;
+        private Tween _scaleTween;
+        private Transform _transform;
 
-    public Tween ChangeSize(Vector3 scale)
-    {
-        return _transform.DOScale(scale, _animationDuration);
-    }
+        public event Action OnRaised;
 
-    private void OnDestroy()
-    {
-        _scaleTween?.Kill();
+        public event Action OnDropped;
+
+        private void Awake()
+        {
+            _originalScale = transform.localScale;
+            _transform = transform;
+        }
+
+        public Tween Select()
+        {
+            _scaleTween = ChangeSize(_originalScale * _selectedScale);
+            OnRaised?.Invoke();
+            return _scaleTween;
+        }
+
+        public Tween Deselect()
+        {
+            _scaleTween = ChangeSize(_originalScale);
+            OnDropped?.Invoke();
+            return _scaleTween;
+        }
+
+        public Tween ChangeSize(Vector3 scale)
+        {
+            return _transform.DOScale(scale, _animationDuration);
+        }
+
+        private void OnDestroy()
+        {
+            _scaleTween?.Kill();
+        }
     }
-}
 }

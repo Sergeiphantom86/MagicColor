@@ -1,11 +1,10 @@
 namespace Game
 {
-public class CloseGameButton : ButtonMenu
-{
-    public override void PressButton()
+    public class CloseGameButton : ButtonMenu
     {
-        PauseMenu.Resume();
+        public override void PressButton()
+        {
+            PauseMenu.Resume();
+        }
     }
-}
-
 }

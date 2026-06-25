@@ -2,42 +2,45 @@ using PuzzleEditor.RouletteEditor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace Menu
 {
-
-[RequireComponent(typeof(Image))]
-public class Warner : MonoBehaviour
-{
-    [SerializeField] private ErrorPanel _errorPanel;
-    [SerializeField] private ButtonController _buttonController;
-
-    private Image _image;
-    private TextMeshProUGUI _textMeshProUGUI;
-
-    private void Awake()
+    [RequireComponent(typeof(Image))]
+    public class Warner : MonoBehaviour
     {
-        _image = GetComponent<Image>();
-        _textMeshProUGUI = GetComponentInChildren<TextMeshProUGUI>();
+        [SerializeField]
+        private ErrorPanel _errorPanel;
 
-        if (_image == null)
+        [SerializeField]
+        private ButtonController _buttonController;
+
+        private Image _image;
+        private TextMeshProUGUI _textMeshProUGUI;
+
+        private void Awake()
         {
-            Debug.LogError("Image �����������!!!");
-            return;
+            _image = GetComponent<Image>();
+            _textMeshProUGUI = GetComponentInChildren<TextMeshProUGUI>();
+
+            if (_image == null)
+            {
+                Debug.LogError("Image �����������!!!");
+                return;
+            }
+
+            if (_textMeshProUGUI == null)
+            {
+                Debug.LogError("TextMeshProUGUI �����������!!!");
+                return;
+            }
+
+            TurnOff();
         }
 
-        if (_textMeshProUGUI == null)
+        public void TurnOff()
         {
-            Debug.LogError("TextMeshProUGUI �����������!!!");
-            return;
+            _image.gameObject.SetActive(false);
+            _textMeshProUGUI.gameObject.SetActive(false);
         }
-
-        TurnOff();
     }
-
-    public void TurnOff()
-    {
-        _image.gameObject.SetActive(false);
-        _textMeshProUGUI.gameObject.SetActive(false);
-    }
-}
 }

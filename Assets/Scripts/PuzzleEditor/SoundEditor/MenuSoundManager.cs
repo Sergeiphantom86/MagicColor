@@ -1,155 +1,169 @@
-using Game.SaveEditor;
 using System.Collections;
+using Game.SaveEditor;
 using UnityEngine;
 using UnityEngine.Audio;
+
 namespace PuzzleEditor.SoundEditor
 {
-
-[RequireComponent(typeof(AudioSource))]
-public class MenuSoundManager : MonoBehaviour
-{
-    private const float MinDecibels = -80f;
-    private const float DBLinearRatio = 20f;
-    private const float MinVolume = 0.0001f;
-
-    [SerializeField] private AudioClip _backgroundMusic;
-    [SerializeField] private AudioMixerGroup _soundMixerGroup;
-    [SerializeField] private AudioMixerGroup _musicMixerGroup;
-    [SerializeField] private VolumeChanger _musicVolumeChanger;
-    [SerializeField] private VolumeChanger _sounVolumeChanger;
-    [SerializeField] private AudioMixer _mixer;
-
-    private AudioSource _soundSource;
-    private AudioSource _musicSource;
-    private float _currentMusicVolume = 1f;
-    private float _currentSounVolume = 1f;
-    private Coroutine _coroutineSaving;
-    private Coroutine _coroutine;
-    private IProgressSaver _progressSaver;
-
-    private void Awake()
+    [RequireComponent(typeof(AudioSource))]
+    public class MenuSoundManager : MonoBehaviour
     {
-        _progressSaver = new ProgressSaver();
+        private const float MinDecibels = -80f;
+        private const float DBLinearRatio = 20f;
+        private const float MinVolume = 0.0001f;
 
-        SetupAudioSources();
+        [SerializeField]
+        private AudioClip _backgroundMusic;
 
-        LoadVolumeSettings();
+        [SerializeField]
+        private AudioMixerGroup _soundMixerGroup;
 
-        PlayBackgroundMusic();
-    }
+        [SerializeField]
+        private AudioMixerGroup _musicMixerGroup;
 
-    private void OnEnable()
-    {
-        _musicVolumeChanger.OnVolumeChange += SetVolume;
-        _sounVolumeChanger.OnVolumeChange += SetVolume;
-    }
+        [SerializeField]
+        private VolumeChanger _musicVolumeChanger;
 
-    private void OnDisable()
-    {
-        _musicVolumeChanger.OnVolumeChange -= SetVolume;
-        _sounVolumeChanger.OnVolumeChange -= SetVolume;
-    }
+        [SerializeField]
+        private VolumeChanger _sounVolumeChanger;
 
-    public void PlayButtonClickSound(AudioClip audioClip)
-    {
-        if (audioClip == null)
-            return;
+        [SerializeField]
+        private AudioMixer _mixer;
 
-        _soundSource.PlayOneShot(audioClip);
+        private AudioSource _soundSource;
+        private AudioSource _musicSource;
+        private float _currentMusicVolume = 1f;
+        private float _currentSounVolume = 1f;
+        private Coroutine _coroutineSaving;
+        private Coroutine _coroutine;
+        private IProgressSaver _progressSaver;
 
-        if (_coroutine != null)
+        private void Awake()
         {
-            StopCoroutine(_coroutine);
+            _progressSaver = new ProgressSaver();
+
+            SetupAudioSources();
+
+            LoadVolumeSettings();
+
+            PlayBackgroundMusic();
         }
 
-        _coroutine = StartCoroutine(WaitPlaybackFinish(audioClip));
-    }
-
-    private void SetupAudioSources()
-    {
-        AudioSource[] sources = GetComponents<AudioSource>();
-
-        _soundSource = sources[0];
-
-        if (sources.Length < 2)
+        private void OnEnable()
         {
-            _musicSource = gameObject.AddComponent<AudioSource>();
-        }
-        else
-        {
-            _musicSource = sources[1];
+            _musicVolumeChanger.OnVolumeChange += SetVolume;
+            _sounVolumeChanger.OnVolumeChange += SetVolume;
         }
 
-        SetAudioSource(_soundSource, isOnLoop: false, _soundMixerGroup, _currentSounVolume);
-
-        SetAudioSource(_musicSource, isOnLoop: true, _musicMixerGroup, _currentMusicVolume);
-    }
-
-    private void SetAudioSource(AudioSource audioSource, bool isOnLoop, AudioMixerGroup audioMixerGroup, float volume)
-    {
-        audioSource.outputAudioMixerGroup = audioMixerGroup;
-        audioSource.playOnAwake = false;
-        audioSource.loop = isOnLoop;
-        audioSource.volume = volume;
-    }
-
-    private void LoadVolumeSettings()
-    {
-        if (_progressSaver.Saves != null)
+        private void OnDisable()
         {
-            _currentMusicVolume = _progressSaver.Saves.MusicVolume;
-            _currentSounVolume = _progressSaver.Saves.SoundVolume;
+            _musicVolumeChanger.OnVolumeChange -= SetVolume;
+            _sounVolumeChanger.OnVolumeChange -= SetVolume;
+        }
+
+        public void PlayButtonClickSound(AudioClip audioClip)
+        {
+            if (audioClip == null)
+                return;
+
+            _soundSource.PlayOneShot(audioClip);
+
+            if (_coroutine != null)
+            {
+                StopCoroutine(_coroutine);
+            }
+
+            _coroutine = StartCoroutine(WaitPlaybackFinish(audioClip));
+        }
+
+        private void SetupAudioSources()
+        {
+            AudioSource[] sources = GetComponents<AudioSource>();
+
+            _soundSource = sources[0];
+
+            if (sources.Length < 2)
+            {
+                _musicSource = gameObject.AddComponent<AudioSource>();
+            }
+            else
+            {
+                _musicSource = sources[1];
+            }
+
+            SetAudioSource(_soundSource, isOnLoop: false, _soundMixerGroup, _currentSounVolume);
+
+            SetAudioSource(_musicSource, isOnLoop: true, _musicMixerGroup, _currentMusicVolume);
+        }
+
+        private void SetAudioSource(
+            AudioSource audioSource,
+            bool isOnLoop,
+            AudioMixerGroup audioMixerGroup,
+            float volume
+        )
+        {
+            audioSource.outputAudioMixerGroup = audioMixerGroup;
+            audioSource.playOnAwake = false;
+            audioSource.loop = isOnLoop;
+            audioSource.volume = volume;
+        }
+
+        private void LoadVolumeSettings()
+        {
+            if (_progressSaver.Saves != null)
+            {
+                _currentMusicVolume = _progressSaver.Saves.MusicVolume;
+                _currentSounVolume = _progressSaver.Saves.SoundVolume;
+            }
+        }
+
+        public void PlayBackgroundMusic()
+        {
+            if (_backgroundMusic == null || _musicSource.isPlaying)
+                return;
+
+            _musicSource.clip = _backgroundMusic;
+            _musicSource.Play();
+        }
+
+        private void SetVolume(VolumeChanger volumeChanger, float volume)
+        {
+            Debug.Log(volume);
+
+            UpdateMixerVolume(volumeChanger.name, volume);
+            _progressSaver.SetVolume(volumeChanger, volume);
+            SaveVolumeSettings();
+        }
+
+        private void SaveVolumeSettings()
+        {
+            if (_coroutineSaving == null)
+            {
+                _coroutineSaving = StartCoroutine(WaitChangeCompleted());
+            }
+        }
+
+        private void UpdateMixerVolume(string parameter, float volume)
+        {
+            float volumeDB = volume > MinVolume ? Mathf.Log10(volume) * DBLinearRatio : MinDecibels;
+
+            _mixer.SetFloat(parameter, volumeDB);
+        }
+
+        private IEnumerator WaitChangeCompleted()
+        {
+            int delay = 2;
+
+            yield return new WaitForSeconds(delay);
+
+            _progressSaver.SaveProgress();
+            _coroutineSaving = null;
+        }
+
+        private IEnumerator WaitPlaybackFinish(AudioClip audioClip)
+        {
+            yield return new WaitForSeconds(audioClip.length);
         }
     }
-
-    public void PlayBackgroundMusic()
-    {
-        if (_backgroundMusic == null || _musicSource.isPlaying)
-            return;
-
-        _musicSource.clip = _backgroundMusic;
-        _musicSource.Play();
-    }
-
-    private void SetVolume(VolumeChanger volumeChanger, float volume)
-    {
-        Debug.Log(volume);
-
-        UpdateMixerVolume(volumeChanger.name, volume);
-        _progressSaver.SetVolume(volumeChanger, volume);
-        SaveVolumeSettings();
-    }
-
-    private void SaveVolumeSettings()
-    {
-        if (_coroutineSaving == null)
-        {
-            _coroutineSaving = StartCoroutine(WaitChangeCompleted());
-        }
-    }
-
-    private void UpdateMixerVolume(string parameter, float volume)
-    {
-        float volumeDB = volume > MinVolume
-            ? Mathf.Log10(volume) * DBLinearRatio
-            : MinDecibels;
-
-        _mixer.SetFloat(parameter, volumeDB);
-    }
-
-    private IEnumerator WaitChangeCompleted()
-    {
-        int delay = 2;
-
-        yield return new WaitForSeconds(delay);
-
-        _progressSaver.SaveProgress();
-        _coroutineSaving = null;
-    }
-
-    private IEnumerator WaitPlaybackFinish(AudioClip audioClip)
-    {
-        yield return new WaitForSeconds(audioClip.length);
-    }
-}
 }

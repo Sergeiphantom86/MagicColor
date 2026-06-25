@@ -1,112 +1,113 @@
-using PuzzleEditor.InkEditor;
 using System.Collections;
 using System.Collections.Generic;
+using PuzzleEditor.InkEditor;
 using UnityEngine;
+
 namespace PuzzleEditor.PenEditor.Placeholder
 {
-
-public class SequentialSpawner : MonoBehaviour
-{
-    [Header("Spawn Settings")]
-    [SerializeField] private Placeholder _objectToSpawn;
-
-    private float _nextSpawnYPosition;
-    private float _defaultDuration;
-    private Transform _transform;
-    private Placeholder _placeholder;
-    private List<Placeholder> _placeholders;
-    private Color _currentColor;
-
-    private void Awake()
+    public class SequentialSpawner : MonoBehaviour
     {
-        _defaultDuration = 1;
-        _transform = transform;
-        _nextSpawnYPosition = 0f;
-        _placeholders = new List<Placeholder>();
-    }
+        [Header("Spawn Settings")]
+        [SerializeField]
+        private Placeholder _objectToSpawn;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out Drop drop))
+        private float _nextSpawnYPosition;
+        private float _defaultDuration;
+        private Transform _transform;
+        private Placeholder _placeholder;
+        private List<Placeholder> _placeholders;
+        private Color _currentColor;
+
+        private void Awake()
         {
-            if (drop.TryGetComponent(out IColorable component))
-            {
-                Color color = component.GetColor();
+            _defaultDuration = 1;
+            _transform = transform;
+            _nextSpawnYPosition = 0f;
+            _placeholders = new List<Placeholder>();
+        }
 
-                if (color != Color.white && _currentColor != color)
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out Drop drop))
+            {
+                if (drop.TryGetComponent(out IColorable component))
                 {
-                    _currentColor = color;
-                    color.a = 1f;
-                    SpawnObject(color);
+                    Color color = component.GetColor();
+
+                    if (color != Color.white && _currentColor != color)
+                    {
+                        _currentColor = color;
+                        color.a = 1f;
+                        SpawnObject(color);
+                    }
                 }
             }
         }
-    }
 
-    private void SpawnObject(Color color)
-    {
-        if (_objectToSpawn == null)
+        private void SpawnObject(Color color)
         {
-            Debug.LogError("Object to spawn is not assigned!", this);
-            return;
-        }
-
-        if (color == null)
-        {
-            Debug.LogError("�olor for the appearance is null!", this);
-            return;
-        }
-
-        StartCoroutine(UpdatePointInCreatedObject(GetPlaceholder(), color));
-
-        Reduce();
-    }
-
-    private void Reduce()
-    {
-        if (_placeholder == null)
-        {
-            if (_placeholders.Count == 0)
+            if (_objectToSpawn == null)
             {
+                Debug.LogError("Object to spawn is not assigned!", this);
                 return;
             }
 
-            _placeholder = _placeholders[0];
-            _placeholders.RemoveAt(0);
+            if (color == null)
+            {
+                Debug.LogError("�olor for the appearance is null!", this);
+                return;
+            }
+
+            StartCoroutine(UpdatePointInCreatedObject(GetPlaceholder(), color));
+
+            Reduce();
         }
 
-        _placeholder.ReduceSize();
-    }
-
-    private IEnumerator UpdatePointInCreatedObject(Placeholder spawnedObject, Color color)
-    {
-        if (spawnedObject != null)
+        private void Reduce()
         {
-            spawnedObject.ShowFillings(color, _nextSpawnYPosition);
+            if (_placeholder == null)
+            {
+                if (_placeholders.Count == 0)
+                {
+                    return;
+                }
+
+                _placeholder = _placeholders[0];
+                _placeholders.RemoveAt(0);
+            }
+
+            _placeholder.ReduceSize();
         }
 
-        yield return new WaitForSeconds(GetDelayTime(spawnedObject.Duration));
+        private IEnumerator UpdatePointInCreatedObject(Placeholder spawnedObject, Color color)
+        {
+            if (spawnedObject != null)
+            {
+                spawnedObject.ShowFillings(color, _nextSpawnYPosition);
+            }
 
-        AssignNextSpawnPosition(spawnedObject.PositionEndPoint);
+            yield return new WaitForSeconds(GetDelayTime(spawnedObject.Duration));
+
+            AssignNextSpawnPosition(spawnedObject.PositionEndPoint);
+        }
+
+        private float GetDelayTime(float duration)
+        {
+            return duration > 0 ? duration : _defaultDuration;
+        }
+
+        private void AssignNextSpawnPosition(Vector3 position)
+        {
+            _nextSpawnYPosition = _transform.InverseTransformPoint(position).y;
+        }
+
+        private Placeholder GetPlaceholder()
+        {
+            Placeholder placeholder = Instantiate(_objectToSpawn, _transform);
+
+            _placeholders.Add(placeholder);
+
+            return placeholder;
+        }
     }
-
-    private float GetDelayTime(float duration)
-    {
-        return duration > 0 ? duration : _defaultDuration;
-    }
-
-    private void AssignNextSpawnPosition(Vector3 position)
-    {
-        _nextSpawnYPosition = _transform.InverseTransformPoint(position).y;
-    }
-
-    private Placeholder GetPlaceholder()
-    {
-        Placeholder placeholder = Instantiate(_objectToSpawn, _transform);
-
-        _placeholders.Add(placeholder);
-
-        return placeholder;
-    }
-}
 }

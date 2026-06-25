@@ -1,11 +1,11 @@
-using System.IO;
 using System.Collections;
+using System.IO;
+using DG.Tweening;
+using Game.SaveEditor;
+using PuzzleEditor.UI.LoadingScreen;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using DG.Tweening;
 using YG;
-using PuzzleEditor.UI.LoadingScreen;
-using Game.SaveEditor;
 
 namespace Game.LoadingScreen
 {
@@ -15,8 +15,11 @@ namespace Game.LoadingScreen
         private const string Loading = nameof(Loading);
         private const string Menu = nameof(Menu);
 
-        [SerializeField] private float _fadeDuration;
-        [SerializeField] private float _minLoadTime;
+        [SerializeField]
+        private float _fadeDuration;
+
+        [SerializeField]
+        private float _minLoadTime;
 
         private float _maxLoad;
         private bool _isFirstLoad;
@@ -80,7 +83,10 @@ namespace Game.LoadingScreen
 
             asyncLoad.allowSceneActivation = false;
 
-            while (asyncLoad.progress < _maxLoad || (Time.realtimeSinceStartup - loadStartTime) < _minLoadTime)
+            while (
+                asyncLoad.progress < _maxLoad
+                || (Time.realtimeSinceStartup - loadStartTime) < _minLoadTime
+            )
             {
                 yield return null;
             }

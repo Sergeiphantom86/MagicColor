@@ -1,25 +1,25 @@
 using UnityEngine;
+
 namespace PuzzleEditor.LockEditor
 {
-
-public class LockPointer : MonoBehaviour
-{
-    private ColorChanger _colorChanger;
-
-    private void Awake()
+    public class LockPointer : MonoBehaviour
     {
-        _colorChanger = GetComponentInChildren<ColorChanger>();
+        private ColorChanger _colorChanger;
 
-        if (_colorChanger == null)
+        private void Awake()
         {
-            Debug.LogError("ColorChanger components not found in children");
-            return;
+            _colorChanger = GetComponentInChildren<ColorChanger>();
+
+            if (_colorChanger == null)
+            {
+                Debug.LogError("ColorChanger components not found in children");
+                return;
+            }
+        }
+
+        public void SetColor()
+        {
+            _colorChanger.SetGreenColor();
         }
     }
-
-    public void SetColor()
-    {
-        _colorChanger.SetGreenColor();
-    }
-}
 }

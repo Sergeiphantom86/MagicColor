@@ -1,5 +1,5 @@
-using PuzzleEditor.SoundEditor;
 using System.Collections;
+using PuzzleEditor.SoundEditor;
 using UnityEngine;
 
 namespace Fireworks
@@ -13,7 +13,8 @@ namespace Fireworks
         private const float SparkleMaxDelay = 0.1f;
         private const float ExplosionToSparkleDelay = 0.1f;
 
-        [SerializeField] private FireworksSoundPack _soundPack;
+        [SerializeField]
+        private FireworksSoundPack _soundPack;
 
         private bool _isRunning;
         private float _minLaunchDelay;

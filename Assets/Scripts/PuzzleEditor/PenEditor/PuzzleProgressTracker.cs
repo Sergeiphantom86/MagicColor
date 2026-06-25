@@ -1,26 +1,26 @@
 using System;
+
 namespace PuzzleEditor.PenEditor
 {
-
-public class PuzzleProgressTracker
-{
-    private int _remaining;
-
-    public event Action PuzzleCompleted;
-
-    public void Init(int totalPixels)
+    public class PuzzleProgressTracker
     {
-        _remaining = totalPixels;
-    }
+        private int _remaining;
 
-    public void OnFragmentActivated()
-    {
-        _remaining--;
+        public event Action PuzzleCompleted;
 
-        if (_remaining <= 0)
+        public void Init(int totalPixels)
         {
-            PuzzleCompleted?.Invoke();
+            _remaining = totalPixels;
+        }
+
+        public void OnFragmentActivated()
+        {
+            _remaining--;
+
+            if (_remaining <= 0)
+            {
+                PuzzleCompleted?.Invoke();
+            }
         }
     }
-}
 }

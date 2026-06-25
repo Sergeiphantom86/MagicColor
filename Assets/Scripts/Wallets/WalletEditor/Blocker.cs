@@ -1,18 +1,18 @@
 using PuzzleEditor;
 using UnityEngine;
+
 namespace Wallets.WalletEditor
 {
-
-public class Blocker : MonoBehaviour, IActivatable
-{
-    public void Activate()
+    public class Blocker : MonoBehaviour, IActivatable
     {
-        gameObject.SetActive(true);
-    }
+        public void Activate()
+        {
+            gameObject.SetActive(true);
+        }
 
-    public void Deactivate()
-    {
-        gameObject.SetActive(false);
+        public void Deactivate()
+        {
+            gameObject.SetActive(false);
+        }
     }
-}
 }

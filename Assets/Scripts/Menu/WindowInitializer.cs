@@ -1,65 +1,67 @@
-using Menu.ButtonEditor;
 using System;
 using System.Collections.Generic;
+using Menu.ButtonEditor;
 using UnityEngine;
+
 namespace Menu
 {
-
-public class WindowInitializer : MonoBehaviour
-{
-    [SerializeField] private Window _gameSelection;
-    [SerializeField] private Window _settingsWindow;
-    [SerializeField] private Window _leaderboardWindow;
-
-    private Dictionary<string, Action> _windowActions;
-    private bool _isInitialized;
-
-    public Dictionary<string, Action> WindowActions => _windowActions;
-
-    public void Initialize()
+    public class WindowInitializer : MonoBehaviour
     {
-        if (_isInitialized)
-            return;
+        [SerializeField]
+        private Window _gameSelection;
 
-        _windowActions = new Dictionary<string, Action>();
+        [SerializeField]
+        private Window _settingsWindow;
 
-        RegisterActions();
+        [SerializeField]
+        private Window _leaderboardWindow;
 
-        _isInitialized = true;
-    }
+        private Dictionary<string, Action> _windowActions;
+        private bool _isInitialized;
 
-    private void RegisterActions()
-    {
-        RegisterAction(ButtonFactory.Play, () =>
-        ToggleWindow(_gameSelection));
+        public Dictionary<string, Action> WindowActions => _windowActions;
 
-        RegisterAction(ButtonFactory.Settings, () =>
-        ToggleWindow(_settingsWindow));
-
-        RegisterAction(ButtonFactory.Leaderboard, () =>
-        ToggleWindow(_leaderboardWindow));
-    }
-
-    private void RegisterAction(string actionName, Action action)
-    {
-        if (_windowActions.ContainsKey(actionName))
+        public void Initialize()
         {
-            Debug.LogWarning($"Action '{actionName}' is already registered");
-            return;
+            if (_isInitialized)
+                return;
+
+            _windowActions = new Dictionary<string, Action>();
+
+            RegisterActions();
+
+            _isInitialized = true;
         }
 
-        _windowActions.Add(actionName, action);
-    }
-
-    private void ToggleWindow(Window window)
-    {
-        if (window == null)
+        private void RegisterActions()
         {
-            Debug.LogError("Trying to toggle null window!");
-            return;
+            RegisterAction(ButtonFactory.Play, () => ToggleWindow(_gameSelection));
+
+            RegisterAction(ButtonFactory.Settings, () => ToggleWindow(_settingsWindow));
+
+            RegisterAction(ButtonFactory.Leaderboard, () => ToggleWindow(_leaderboardWindow));
         }
 
-        window.Toggle();
+        private void RegisterAction(string actionName, Action action)
+        {
+            if (_windowActions.ContainsKey(actionName))
+            {
+                Debug.LogWarning($"Action '{actionName}' is already registered");
+                return;
+            }
+
+            _windowActions.Add(actionName, action);
+        }
+
+        private void ToggleWindow(Window window)
+        {
+            if (window == null)
+            {
+                Debug.LogError("Trying to toggle null window!");
+                return;
+            }
+
+            window.Toggle();
+        }
     }
-}
 }

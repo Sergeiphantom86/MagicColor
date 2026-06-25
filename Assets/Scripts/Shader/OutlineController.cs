@@ -1,8 +1,6 @@
 using UnityEngine;
+
 namespace Shader
 {
-
-public class OutlineController : MonoBehaviour
-{
-}
+    public class OutlineController : MonoBehaviour { }
 }

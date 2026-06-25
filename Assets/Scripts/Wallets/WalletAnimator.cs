@@ -1,15 +1,16 @@
 using System;
-using UnityEngine;
 using DG.Tweening;
-using TMPro;
 using PuzzleEditor.SoundEditor;
+using TMPro;
+using UnityEngine;
 
 namespace Wallets
 {
     [RequireComponent(typeof(Wallet), typeof(TextMeshProUGUI), typeof(Voiceover))]
     public class WalletAnimator : MonoBehaviour
     {
-        [SerializeField] private AudioClip _audioClip;
+        [SerializeField]
+        private AudioClip _audioClip;
 
         private float _soundTimer;
         private long _displayedBalance;
@@ -73,23 +74,25 @@ namespace Wallets
         {
             _balanceTween?.Kill();
 
-            _balanceTween = DOTween.To(
-                () => _displayedBalance,
-                balance =>
-                {
-                    _soundTimer += Time.unscaledDeltaTime;
-
-                    if (_soundTimer >= 0.05f)
+            _balanceTween = DOTween
+                .To(
+                    () => _displayedBalance,
+                    balance =>
                     {
-                        _voiceover.PlayOneShot(_audioClip);
-                        _soundTimer = 0f;
-                    }
+                        _soundTimer += Time.unscaledDeltaTime;
 
-                    _displayedBalance = balance;
-                    UpdateBalanceText();
-                },
-                newBalance,
-                _animationDuration)
+                        if (_soundTimer >= 0.05f)
+                        {
+                            _voiceover.PlayOneShot(_audioClip);
+                            _soundTimer = 0f;
+                        }
+
+                        _displayedBalance = balance;
+                        UpdateBalanceText();
+                    },
+                    newBalance,
+                    _animationDuration
+                )
                 .SetEase(Ease.OutQuad)
                 .SetUpdate(true)
                 .OnComplete(() =>

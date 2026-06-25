@@ -2,99 +2,106 @@ using Game.SaveEditor;
 using Menu;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace PuzzleEditor.RouletteEditor
 {
-
-public class AutomaticTransitionInstaller : MonoBehaviour
-{
-    [SerializeField] protected ButtonHome ButtonHome;
-
-    private Sprite _newSprite;
-    private Button _nextPuzzle;
-    private PuzzleSelector _selector;
-    private IProgressSaver _progressSaver;
-    private SpriteTransmitter _spriteTransmitter;
-    private int _firstTutorial;
-    private int _secondTutorial;
-    private int _thirdTutorial;
-    private int _maxReachedQuestIndex;
-
-    private void Awake()
+    public class AutomaticTransitionInstaller : MonoBehaviour
     {
-        _nextPuzzle = GetComponent<Button>();
-        _selector = GetComponentInChildren<PuzzleSelector>();
-    }
+        [SerializeField]
+        protected ButtonHome ButtonHome;
 
-    private void Start()
-    {
-        _nextPuzzle.onClick.AddListener(SetValue);
-    }
+        private Sprite _newSprite;
+        private Button _nextPuzzle;
+        private PuzzleSelector _selector;
+        private IProgressSaver _progressSaver;
+        private SpriteTransmitter _spriteTransmitter;
+        private int _firstTutorial;
+        private int _secondTutorial;
+        private int _thirdTutorial;
+        private int _maxReachedQuestIndex;
 
-    public void SetProgressSaver(IProgressSaver progressSaver, SpriteTransmitter spriteTransmitter)
-    {
-        Initialized(progressSaver, spriteTransmitter);
-    }
-
-    private void Initialized(IProgressSaver progressSaver, SpriteTransmitter spriteTransmitter)
-    {
-        if (progressSaver == null)
+        private void Awake()
         {
-            Debug.LogError("IProgressSaver == null");
-            return;
+            _nextPuzzle = GetComponent<Button>();
+            _selector = GetComponentInChildren<PuzzleSelector>();
         }
 
-        _spriteTransmitter = spriteTransmitter;
-        _newSprite = spriteTransmitter.New;
-        _progressSaver = progressSaver;
-
-        _firstTutorial = 0;
-        _secondTutorial = _progressSaver.Saves.IndexSecondQuest;
-        _thirdTutorial = _progressSaver.Saves.ObstacleDeactivatIndex;
-        _maxReachedQuestIndex = _progressSaver.Saves.MaxReachedQuestIndex;
-
-        if (_nextPuzzle == null)
+        private void Start()
         {
-            Debug.LogError("Button == null");
-            return;
+            _nextPuzzle.onClick.AddListener(SetValue);
         }
 
-        if (_selector == null)
+        public void SetProgressSaver(
+            IProgressSaver progressSaver,
+            SpriteTransmitter spriteTransmitter
+        )
         {
-            Debug.LogError("PuzzleSelector == null");
-            return;
+            Initialized(progressSaver, spriteTransmitter);
         }
 
-        if (_newSprite == null)
+        private void Initialized(IProgressSaver progressSaver, SpriteTransmitter spriteTransmitter)
         {
-            Debug.LogError("NewSprite == null");
+            if (progressSaver == null)
+            {
+                Debug.LogError("IProgressSaver == null");
+                return;
+            }
+
+            _spriteTransmitter = spriteTransmitter;
+            _newSprite = spriteTransmitter.New;
+            _progressSaver = progressSaver;
+
+            _firstTutorial = 0;
+            _secondTutorial = _progressSaver.Saves.IndexSecondQuest;
+            _thirdTutorial = _progressSaver.Saves.ObstacleDeactivatIndex;
+            _maxReachedQuestIndex = _progressSaver.Saves.MaxReachedQuestIndex;
+
+            if (_nextPuzzle == null)
+            {
+                Debug.LogError("Button == null");
+                return;
+            }
+
+            if (_selector == null)
+            {
+                Debug.LogError("PuzzleSelector == null");
+                return;
+            }
+
+            if (_newSprite == null)
+            {
+                Debug.LogError("NewSprite == null");
+            }
+
+            Show();
         }
 
-        Show();
-    }
-
-    private void SetValue()
-    {
-        _spriteTransmitter.SetAutomaticTransition(true);
-        ButtonHome.GoMenu();
-    }
-
-    private void Show()
-    {
-        if (_progressSaver.TryEnableFollowingQuest(_maxReachedQuestIndex) || HasMatchingQuestIndex())
+        private void SetValue()
         {
-            gameObject.SetActive(false);
+            _spriteTransmitter.SetAutomaticTransition(true);
+            ButtonHome.GoMenu();
         }
 
-        _selector.SetSprite(_newSprite);
+        private void Show()
+        {
+            if (
+                _progressSaver.TryEnableFollowingQuest(_maxReachedQuestIndex)
+                || HasMatchingQuestIndex()
+            )
+            {
+                gameObject.SetActive(false);
+            }
 
-        _progressSaver.SetMaxReachedQuestIndex();
-    }
+            _selector.SetSprite(_newSprite);
 
-    private bool HasMatchingQuestIndex()
-    {
-        return _firstTutorial == _maxReachedQuestIndex ||
-               _secondTutorial == _maxReachedQuestIndex ||
-               _thirdTutorial == _maxReachedQuestIndex;
+            _progressSaver.SetMaxReachedQuestIndex();
+        }
+
+        private bool HasMatchingQuestIndex()
+        {
+            return _firstTutorial == _maxReachedQuestIndex
+                || _secondTutorial == _maxReachedQuestIndex
+                || _thirdTutorial == _maxReachedQuestIndex;
+        }
     }
-}
 }

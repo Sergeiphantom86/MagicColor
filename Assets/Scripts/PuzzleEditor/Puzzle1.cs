@@ -1,62 +1,62 @@
 using DG.Tweening;
 using Game.SaveEditor;
 using UnityEngine;
+
 namespace PuzzleEditor
 {
-
-public class Puzzle1 : MonoBehaviour
-{
-    private Rotator _rotation;
-    private IProgressSaver _progressSaver;
-    private Tween _moveTween;
-    private float _positionX;
-    private float _durationDivider;
-
-    private void Awake()
+    public class Puzzle1 : MonoBehaviour
     {
-        _positionX = 50;
-        _durationDivider = 10;
-        _rotation = GetComponent<Rotator>();
-        _progressSaver = new ProgressSaver();
-    }
+        private Rotator _rotation;
+        private IProgressSaver _progressSaver;
+        private Tween _moveTween;
+        private float _positionX;
+        private float _durationDivider;
 
-    private void Start()
-    {
-        _progressSaver.SaveProgress();
-    }
+        private void Awake()
+        {
+            _positionX = 50;
+            _durationDivider = 10;
+            _rotation = GetComponent<Rotator>();
+            _progressSaver = new ProgressSaver();
+        }
 
-    public void Return(float duration)
-    {
-        MoveX(duration);
-    }
+        private void Start()
+        {
+            _progressSaver.SaveProgress();
+        }
 
-    public void StartRotation()
-    {
-        _rotation.StartRotation();
-    }
+        public void Return(float duration)
+        {
+            MoveX(duration);
+        }
 
-    private void MoveX(float duration)
-    {
-        _moveTween?.Kill();
-        _moveTween = transform.DOMoveX(GetPositionX(), GetDuration(duration))
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
-            gameObject.SetActive(false));
-    }
+        public void StartRotation()
+        {
+            _rotation.StartRotation();
+        }
 
-    private float GetPositionX()
-    {
-        return transform.position.x - _positionX;
-    }
+        private void MoveX(float duration)
+        {
+            _moveTween?.Kill();
+            _moveTween = transform
+                .DOMoveX(GetPositionX(), GetDuration(duration))
+                .SetEase(Ease.Linear)
+                .OnComplete(() => gameObject.SetActive(false));
+        }
 
-    private float GetDuration(float duration)
-    {
-        return duration / _durationDivider;
-    }
+        private float GetPositionX()
+        {
+            return transform.position.x - _positionX;
+        }
 
-    private void OnDestroy()
-    {
-        _moveTween?.Kill();
+        private float GetDuration(float duration)
+        {
+            return duration / _durationDivider;
+        }
+
+        private void OnDestroy()
+        {
+            _moveTween?.Kill();
+        }
     }
-}
 }

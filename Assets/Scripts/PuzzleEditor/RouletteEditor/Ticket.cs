@@ -1,46 +1,45 @@
 using Game.SaveEditor;
 using UnityEngine;
 using Wallets;
+
 namespace PuzzleEditor.RouletteEditor
 {
-
-public class Ticket : MonoBehaviour
-{
-    private TextAnimator _textAnimator;
-    private Currency _currency;
-    private long _fullReward;
-    private IProgressSaver _progressSaver;
-
-    public long FullReward => _fullReward;
-
-    private void Awake()
+    public class Ticket : MonoBehaviour
     {
-        _currency = GetComponent<Currency>();
-        _textAnimator = GetComponentInChildren<TextAnimator>();
-        _progressSaver = new ProgressSaver();
+        private TextAnimator _textAnimator;
+        private Currency _currency;
+        private long _fullReward;
+        private IProgressSaver _progressSaver;
 
-        if (_currency == null)
+        public long FullReward => _fullReward;
+
+        private void Awake()
         {
-            Debug.LogError("Currency == null");
+            _currency = GetComponent<Currency>();
+            _textAnimator = GetComponentInChildren<TextAnimator>();
+            _progressSaver = new ProgressSaver();
+
+            if (_currency == null)
+            {
+                Debug.LogError("Currency == null");
+            }
+
+            if (_textAnimator == null)
+            {
+                Debug.LogError("TextAnimator == null");
+            }
         }
 
-        if (_textAnimator == null)
+        private void Start()
         {
-            Debug.LogError("TextAnimator == null");
+            Show();
+        }
+
+        private void Show()
+        {
+            _fullReward = _progressSaver.Saves.Reward * _progressSaver.Saves.CountStars;
+
+            _textAnimator.AnimateToValue(_fullReward);
         }
     }
-
-    private void Start()
-    {
-        Show();
-    }
-
-    private void Show()
-    {
-        _fullReward = _progressSaver.Saves.Reward * _progressSaver.Saves.CountStars;
-
-        _textAnimator.AnimateToValue(_fullReward);
-    }
-}
-
 }

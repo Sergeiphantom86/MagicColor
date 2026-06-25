@@ -1,22 +1,22 @@
 using UnityEngine;
+
 namespace PuzzleEditor.SoundEditor
 {
-
-public class DontDestroy : MonoBehaviour
-{
-    private static DontDestroy _instance;
-
-    private void Awake()
+    public class DontDestroy : MonoBehaviour
     {
-        if (_instance != null)
+        private static DontDestroy _instance;
+
+        private void Awake()
         {
-            Destroy(gameObject);
-        }
-        else
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (_instance != null)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                _instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
         }
     }
-}
 }

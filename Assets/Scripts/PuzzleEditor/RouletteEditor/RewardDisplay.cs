@@ -1,8 +1,6 @@
 using UnityEngine;
+
 namespace PuzzleEditor.RouletteEditor
 {
-
-public class RewardDisplay : MonoBehaviour
-{
-}
+    public class RewardDisplay : MonoBehaviour { }
 }

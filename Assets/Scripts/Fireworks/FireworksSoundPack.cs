@@ -1,16 +1,16 @@
 using UnityEngine;
+
 namespace Fireworks
 {
+    [CreateAssetMenu(fileName = "FireworksSoundPack", menuName = "Audio/Fireworks Sound Pack")]
+    public class FireworksSoundPack : ScriptableObject
+    {
+        public AudioClip LaunchSound;
 
-[CreateAssetMenu(fileName = "FireworksSoundPack", menuName = "Audio/Fireworks Sound Pack")]
-public class FireworksSoundPack : ScriptableObject
-{
-    public AudioClip LaunchSound;
+        public AudioClip ExplosionSound;
 
-    public AudioClip ExplosionSound;
+        public AudioClip SparkleSound;
 
-    public AudioClip SparkleSound;
-
-    public AudioClip GlowSound;
-}
+        public AudioClip GlowSound;
+    }
 }

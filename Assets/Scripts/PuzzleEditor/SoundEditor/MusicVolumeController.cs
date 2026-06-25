@@ -1,6 +1,4 @@
 namespace PuzzleEditor.SoundEditor
 {
-public class MusicVolumeController : VolumeChanger
-{
-}
+    public class MusicVolumeController : VolumeChanger { }
 }

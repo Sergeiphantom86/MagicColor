@@ -1,8 +1,6 @@
 using UnityEngine;
+
 namespace PuzzleEditor.PenEditor
 {
-
-public class PenVisualer : MonoBehaviour
-{
-}
+    public class PenVisualer : MonoBehaviour { }
 }

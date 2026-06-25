@@ -5,7 +5,8 @@ namespace Game.SaveEditor
 {
     public class MenuStarter : MonoBehaviour
     {
-        [SerializeField] private QuestCollector _questCollector;
+        [SerializeField]
+        private QuestCollector _questCollector;
 
         public void Initialize(IProgressSaver progressSaver, SpriteTransmitter spriteTransmitter)
         {

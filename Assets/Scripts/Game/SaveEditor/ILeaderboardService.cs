@@ -1,7 +1,7 @@
 namespace Game.SaveEditor
 {
-public interface ILeaderboardService
-{
-    public void SetLeaderboard(string leaderboardName, int balance);
-}
+    public interface ILeaderboardService
+    {
+        public void SetLeaderboard(string leaderboardName, int balance);
+    }
 }

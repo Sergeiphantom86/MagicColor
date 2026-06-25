@@ -1,5 +1,5 @@
-using Menu;
 using System.Collections;
+using Menu;
 using UnityEngine;
 
 namespace CameraEditor

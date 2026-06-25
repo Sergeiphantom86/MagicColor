@@ -1,84 +1,85 @@
+using System.Collections;
 using PuzzleEditor.InkEditor;
 using PuzzleEditor.ObjectPool;
-using System.Collections;
 using UnityEngine;
+
 namespace PuzzleEditor.Spawners
 {
-
-[RequireComponent(typeof(DropPooler))]
-public class InkSpawner : BaseSpawner<Drop>
-{
-    [SerializeField] private Ink _ink;
-
-    private float _delay;
-    private int _quantity;
-    private Coroutine _spawnRoutine;
-    private Vector3 _spawnPosition;
-    private WaitForSeconds _waitForSeconds;
-
-    protected override void Awake()
+    [RequireComponent(typeof(DropPooler))]
+    public class InkSpawner : BaseSpawner<Drop>
     {
-        base.Awake();
+        [SerializeField]
+        private Ink _ink;
 
-        _delay = 0.1f;
-        _quantity = 10;
-        _waitForSeconds = new WaitForSeconds(_delay);
-    }
+        private float _delay;
+        private int _quantity;
+        private Coroutine _spawnRoutine;
+        private Vector3 _spawnPosition;
+        private WaitForSeconds _waitForSeconds;
 
-    private void OnDisable()
-    {
-        StopAllCoroutines();
-    }
-
-    public void ActivateInkDrops(Color color, float duration)
-    {
-        if (color == null)
+        protected override void Awake()
         {
-            Debug.LogError($"{nameof(ActivateInkDrops)}: Color == null!", this);
+            base.Awake();
+
+            _delay = 0.1f;
+            _quantity = 10;
+            _waitForSeconds = new WaitForSeconds(_delay);
         }
 
-        if (duration < 0)
+        private void OnDisable()
         {
-            Debug.LogError($"{nameof(ActivateInkDrops)}: Duration < 0!", this);
+            StopAllCoroutines();
         }
 
-        if (_spawnRoutine != null)
-            StopCoroutine(_spawnRoutine);
-
-        _spawnRoutine = StartCoroutine(SpawnAndActivateRoutine(color, duration));
-    }
-
-    private IEnumerator SpawnAndActivateRoutine(Color color, float duration)
-    {
-        yield return new WaitForSeconds(duration);
-
-        for (int i = 0; i < _quantity; i++)
+        public void ActivateInkDrops(Color color, float duration)
         {
-            yield return _waitForSeconds;
+            if (color == null)
+            {
+                Debug.LogError($"{nameof(ActivateInkDrops)}: Color == null!", this);
+            }
 
-            SpawnSingleInkDrop(color);
+            if (duration < 0)
+            {
+                Debug.LogError($"{nameof(ActivateInkDrops)}: Duration < 0!", this);
+            }
+
+            if (_spawnRoutine != null)
+                StopCoroutine(_spawnRoutine);
+
+            _spawnRoutine = StartCoroutine(SpawnAndActivateRoutine(color, duration));
+        }
+
+        private IEnumerator SpawnAndActivateRoutine(Color color, float duration)
+        {
+            yield return new WaitForSeconds(duration);
+
+            for (int i = 0; i < _quantity; i++)
+            {
+                yield return _waitForSeconds;
+
+                SpawnSingleInkDrop(color);
+            }
+        }
+
+        private void SpawnSingleInkDrop(Color color)
+        {
+            _spawnPosition = transform.position;
+
+            Drop inkDrop = SpawnObject(_spawnPosition, _ink.transform);
+
+            TrySetColor(inkDrop, color);
+
+            if (inkDrop.TryGetComponent(out IDropAnimation animator))
+            {
+                animator.Play(_spawnPosition);
+                inkDrop.PlaySoundSpawn();
+            }
+        }
+
+        private void TrySetColor(Drop inkDrop, Color color)
+        {
+            if (inkDrop.TryGetComponent(out IColorable colorable))
+                colorable.SetColor(color);
         }
     }
-
-    private void SpawnSingleInkDrop(Color color)
-    {
-        _spawnPosition = transform.position;
-
-        Drop inkDrop = SpawnObject(_spawnPosition, _ink.transform);
-
-        TrySetColor(inkDrop, color);
-
-        if (inkDrop.TryGetComponent(out IDropAnimation animator))
-        {
-            animator.Play(_spawnPosition);
-            inkDrop.PlaySoundSpawn();
-        }
-    }
-
-    private void TrySetColor(Drop inkDrop, Color color)
-    {
-        if (inkDrop.TryGetComponent(out IColorable colorable))
-            colorable.SetColor(color);
-    }
-}
 }

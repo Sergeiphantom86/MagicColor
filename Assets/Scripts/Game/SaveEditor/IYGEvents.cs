@@ -1,15 +1,15 @@
 using System;
+
 namespace Game.SaveEditor
 {
+    public interface IYGEvents
+    {
+        public void SubscribeSDKData(Action onYGDataLoaded);
 
-public interface IYGEvents
-{
-    public void SubscribeSDKData(Action onYGDataLoaded);
+        public void UnsubscribeSDKData(Action onYGDataLoaded);
 
-    public void UnsubscribeSDKData(Action onYGDataLoaded);
+        public void SubscribeSwitchLang(Action<string> onLanguageChanged);
 
-    public void SubscribeSwitchLang(Action<string> onLanguageChanged);
-
-    public void UnsubscribeSwitchLang(Action<string> onLanguageChanged);
-}
+        public void UnsubscribeSwitchLang(Action<string> onLanguageChanged);
+    }
 }

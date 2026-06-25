@@ -1,7 +1,7 @@
 namespace Wallets.WalletEditor
 {
-public interface ISaveable
-{
-    void Load();
-}
+    public interface ISaveable
+    {
+        void Load();
+    }
 }

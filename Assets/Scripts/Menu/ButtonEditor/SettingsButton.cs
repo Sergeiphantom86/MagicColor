@@ -1,33 +1,38 @@
 using PuzzleEditor.SoundEditor;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace Menu.ButtonEditor
 {
-
-public class SettingsButton : MenuButtonBase
-{
-    public override void Configure(Button button,
-        HandlerButtonWindowInteraction handlerButtonWindowInteraction,
-        ButtonSoundHandler buttonSound, 
-        AudioClip audioClip)
+    public class SettingsButton : MenuButtonBase
     {
-        if (handlerButtonWindowInteraction == null)
+        public override void Configure(
+            Button button,
+            HandlerButtonWindowInteraction handlerButtonWindowInteraction,
+            ButtonSoundHandler buttonSound,
+            AudioClip audioClip
+        )
         {
-            Debug.LogError("HandlerButtonWindowInteraction is ����������� � ������������!");
-            return;
+            if (handlerButtonWindowInteraction == null)
+            {
+                Debug.LogError("HandlerButtonWindowInteraction is ����������� � ������������!");
+                return;
+            }
+
+            button.onClick.AddListener(() =>
+                Press(button, handlerButtonWindowInteraction, buttonSound, audioClip)
+            );
         }
 
-        button.onClick.AddListener(() =>
-           Press(button, handlerButtonWindowInteraction, buttonSound, audioClip));
+        public override void Press(
+            Button button,
+            HandlerButtonWindowInteraction handlerButtonWindowInteraction,
+            ButtonSoundHandler buttonSound,
+            AudioClip audioClip
+        )
+        {
+            handlerButtonWindowInteraction.OnButtonClicked(button);
+            buttonSound.PlayButtonSound(audioClip);
+        }
     }
-
-    public override void Press(Button button,
-        HandlerButtonWindowInteraction handlerButtonWindowInteraction,
-        ButtonSoundHandler buttonSound, 
-        AudioClip audioClip)
-    {
-        handlerButtonWindowInteraction.OnButtonClicked(button);
-        buttonSound.PlayButtonSound(audioClip);
-    }
-}
 }

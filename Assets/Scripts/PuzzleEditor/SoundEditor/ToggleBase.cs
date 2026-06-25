@@ -1,51 +1,51 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace PuzzleEditor.SoundEditor
 {
-
-[RequireComponent(typeof(Toggle))]
-public class ToggleBase : MonoBehaviour
-{
-    private Toggle _toggle;
-
-    public event Action<bool> OnDisabling;
-
-    private void Awake()
+    [RequireComponent(typeof(Toggle))]
+    public class ToggleBase : MonoBehaviour
     {
-        _toggle = GetComponent<Toggle>();
+        private Toggle _toggle;
 
-        if (_toggle == null)
+        public event Action<bool> OnDisabling;
+
+        private void Awake()
         {
-            Debug.LogError("Toggle �� ��������!");
-            return;
+            _toggle = GetComponent<Toggle>();
+
+            if (_toggle == null)
+            {
+                Debug.LogError("Toggle �� ��������!");
+                return;
+            }
+        }
+
+        private void OnEnable()
+        {
+            if (_toggle == null)
+                return;
+
+            _toggle.onValueChanged.AddListener(TurnOff);
+        }
+
+        private void OnDisable()
+        {
+            if (_toggle == null)
+                return;
+
+            _toggle.onValueChanged.RemoveListener(TurnOff);
+        }
+
+        public void TurnOff(bool isOn)
+        {
+            OnDisabling?.Invoke(isOn);
+        }
+
+        public void TurnOn(bool isOn)
+        {
+            _toggle.isOn = isOn;
         }
     }
-
-    private void OnEnable()
-    {
-        if (_toggle == null) 
-            return;
-
-        _toggle.onValueChanged.AddListener(TurnOff);
-    }
-
-    private void OnDisable()
-    {
-        if (_toggle == null) 
-            return;
-
-        _toggle.onValueChanged.RemoveListener(TurnOff);
-    }
-
-    public void TurnOff(bool isOn)
-    {
-        OnDisabling?.Invoke(isOn);
-    }
-
-    public void TurnOn(bool isOn)
-    {
-        _toggle.isOn = isOn;
-    }
-}
 }

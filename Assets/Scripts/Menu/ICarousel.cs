@@ -1,13 +1,13 @@
 namespace Menu
 {
-public interface ICarousel
-{
-    int CurrentIndex { get; }
+    public interface ICarousel
+    {
+        int CurrentIndex { get; }
 
-    float ScrollDuration { get; }
+        float ScrollDuration { get; }
 
-    void ScrollToButton(int index);
+        void ScrollToButton(int index);
 
-    void ShowRelative(int direction);
-}
+        void ShowRelative(int direction);
+    }
 }

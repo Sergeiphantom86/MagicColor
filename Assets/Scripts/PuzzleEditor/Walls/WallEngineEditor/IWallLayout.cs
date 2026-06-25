@@ -1,7 +1,7 @@
 namespace PuzzleEditor.Walls.WallEngineEditor
 {
-public interface IWallLayout
-{
-    public void Recalculate();
-}
+    public interface IWallLayout
+    {
+        public void Recalculate();
+    }
 }

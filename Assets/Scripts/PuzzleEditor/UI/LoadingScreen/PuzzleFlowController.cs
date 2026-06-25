@@ -1,30 +1,33 @@
-using PuzzleEditor.Counter;
 using System;
+using PuzzleEditor.Counter;
 using UnityEngine;
+
 namespace PuzzleEditor.UI.LoadingScreen
 {
-
-public class PuzzleFlowController : MonoBehaviour
-{
-    [SerializeField] private AnimatorPuzzle _animator;
-    [SerializeField] private Timer _timer;
-
-    public event Action OnPuzzleCompleted;
-
-    private void OnEnable()
+    public class PuzzleFlowController : MonoBehaviour
     {
-        _animator.OnAnimationComplete += OnComplete;
-    }
+        [SerializeField]
+        private AnimatorPuzzle _animator;
 
-    private void OnDisable()
-    {
-        _animator.OnAnimationComplete -= OnComplete;
-    }
+        [SerializeField]
+        private Timer _timer;
 
-    private void OnComplete()
-    {
-        _timer.gameObject.SetActive(false);
-        OnPuzzleCompleted?.Invoke();
+        public event Action OnPuzzleCompleted;
+
+        private void OnEnable()
+        {
+            _animator.OnAnimationComplete += OnComplete;
+        }
+
+        private void OnDisable()
+        {
+            _animator.OnAnimationComplete -= OnComplete;
+        }
+
+        private void OnComplete()
+        {
+            _timer.gameObject.SetActive(false);
+            OnPuzzleCompleted?.Invoke();
+        }
     }
-}
 }

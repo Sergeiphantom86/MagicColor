@@ -1,114 +1,130 @@
-using PuzzleEditor.RouletteEditor.VisualizationWinnings;
 using System.Collections.Generic;
 using System.Linq;
+using PuzzleEditor.RouletteEditor.VisualizationWinnings;
 using UnityEngine;
+
 namespace PuzzleEditor.RouletteEditor
 {
-
-public class RouletteSystem : MonoBehaviour
-{
-    [Header("References")]
-    [SerializeField] private WheelAnimator _wheelAnimator;
-    [SerializeField] private ButtonController _spinButtonController;
-    [SerializeField] private ItemCollector _itemCollector;
-    [SerializeField] private RouletteCounter _counter;
-    [SerializeField] private Arrow _arrow;
-    [SerializeField] private RewardAnimator _rewardAnimator;
-    [SerializeField] private ButtonHome _buttonHome;
-
-    private List<Currency> _items;
-    private bool _isSpinning;
-
-    private void Awake()
+    public class RouletteSystem : MonoBehaviour
     {
-        if (_wheelAnimator == null)
-            Debug.LogError($"{nameof(WheelAnimator)} ������ �� �����������!", this);
+        [Header("References")]
+        [SerializeField]
+        private WheelAnimator _wheelAnimator;
 
-        if (_spinButtonController == null)
-            Debug.LogError($"{nameof(ButtonController)} ������ �� �����������!", this);
+        [SerializeField]
+        private ButtonController _spinButtonController;
 
-        if (_itemCollector == null)
-            Debug.LogError($"{nameof(ItemCollector)} ������ �� �����������!", this);
+        [SerializeField]
+        private ItemCollector _itemCollector;
 
-        if (_counter == null)
-            Debug.LogError($"{nameof(RouletteCounter)} ������ �� �����������!", this);
-    }
+        [SerializeField]
+        private RouletteCounter _counter;
 
-    private void Start()
-    {
-        _spinButtonController.Initialize(
-           globalInteractableCondition: () => _counter.HasAttempts,
-           onClickAction: Spin);
+        [SerializeField]
+        private Arrow _arrow;
 
-        if (_itemCollector == null)
-            return;
+        [SerializeField]
+        private RewardAnimator _rewardAnimator;
 
-        _items = _itemCollector.Items;
+        [SerializeField]
+        private ButtonHome _buttonHome;
 
-        for (var i = 0; i < _items.Count; i++)
+        private List<Currency> _items;
+        private bool _isSpinning;
+
+        private void Awake()
         {
-            _items[i].Initialize(i, _items.Count);
+            if (_wheelAnimator == null)
+                Debug.LogError($"{nameof(WheelAnimator)} ������ �� �����������!", this);
+
+            if (_spinButtonController == null)
+                Debug.LogError($"{nameof(ButtonController)} ������ �� �����������!", this);
+
+            if (_itemCollector == null)
+                Debug.LogError($"{nameof(ItemCollector)} ������ �� �����������!", this);
+
+            if (_counter == null)
+                Debug.LogError($"{nameof(RouletteCounter)} ������ �� �����������!", this);
         }
 
-        UpdateButtonState();
-    }
-
-    private bool HasValidItems() =>
-        _items?.Count > 0;
-
-    private void Spin()
-    {
-        if (_isSpinning || HasValidItems() == false || _counter.HasAttempts == false)
+        private void Start()
         {
-            return;
+            _spinButtonController.Initialize(
+                globalInteractableCondition: () => _counter.HasAttempts,
+                onClickAction: Spin
+            );
+
+            if (_itemCollector == null)
+                return;
+
+            _items = _itemCollector.Items;
+
+            for (var i = 0; i < _items.Count; i++)
+            {
+                _items[i].Initialize(i, _items.Count);
+            }
+
+            UpdateButtonState();
         }
 
-        _isSpinning = true;
-        _counter.DecreaseCount();
-        _spinButtonController.SetLocalBlock(true);
-        _buttonHome.Button.interactable = false;
+        private bool HasValidItems() => _items?.Count > 0;
 
-        Currency result = GetPrize();
-
-        _wheelAnimator.SpinToTarget(result.GetAngle(), () =>
+        private void Spin()
         {
-            _isSpinning = false;
-            _spinButtonController.SetLocalBlock(false);
-            _rewardAnimator.ActivateAtPosition(result);
-            _buttonHome.Button.interactable = true;
-        });
-    }
+            if (_isSpinning || HasValidItems() == false || _counter.HasAttempts == false)
+            {
+                return;
+            }
 
-    private Currency GetPrize()
-    {
-        int cumulative = 0;
+            _isSpinning = true;
+            _counter.DecreaseCount();
+            _spinButtonController.SetLocalBlock(true);
+            _buttonHome.Button.interactable = false;
 
-        foreach (Currency item in _items)
-        {
-            cumulative += item.Weight;
+            Currency result = GetPrize();
 
-            if (GetRandomValue(GetTotalWeight()) <= cumulative)
-                return item;
+            _wheelAnimator.SpinToTarget(
+                result.GetAngle(),
+                () =>
+                {
+                    _isSpinning = false;
+                    _spinButtonController.SetLocalBlock(false);
+                    _rewardAnimator.ActivateAtPosition(result);
+                    _buttonHome.Button.interactable = true;
+                }
+            );
         }
 
-        Debug.LogWarning("Prize selection failed, returning first item");
+        private Currency GetPrize()
+        {
+            int cumulative = 0;
 
-        return _items.First();
-    }
+            foreach (Currency item in _items)
+            {
+                cumulative += item.Weight;
 
-    private void UpdateButtonState()
-    {
-        _spinButtonController.UpdateState();
-    }
+                if (GetRandomValue(GetTotalWeight()) <= cumulative)
+                    return item;
+            }
 
-    private int GetRandomValue(int totalWeight)
-    {
-        return Random.Range(1, totalWeight + 1);
-    }
+            Debug.LogWarning("Prize selection failed, returning first item");
 
-    private int GetTotalWeight()
-    {
-        return _items.Sum(item => item.Weight);
+            return _items.First();
+        }
+
+        private void UpdateButtonState()
+        {
+            _spinButtonController.UpdateState();
+        }
+
+        private int GetRandomValue(int totalWeight)
+        {
+            return Random.Range(1, totalWeight + 1);
+        }
+
+        private int GetTotalWeight()
+        {
+            return _items.Sum(item => item.Weight);
+        }
     }
-}
 }

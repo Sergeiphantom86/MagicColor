@@ -1,5 +1,5 @@
-using Menu;
 using System.Collections;
+using Menu;
 using UnityEngine;
 
 namespace Game
@@ -8,7 +8,8 @@ namespace Game
     public class CustomCanvasScaler : MonoBehaviour
     {
         [Header("Mobile")]
-        [SerializeField] private float _mobileScaleMultiplier;
+        [SerializeField]
+        private float _mobileScaleMultiplier;
 
         private Canvas _canvas;
         private Camera _camera;

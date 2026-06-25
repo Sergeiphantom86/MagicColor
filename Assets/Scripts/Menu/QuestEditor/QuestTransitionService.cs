@@ -14,7 +14,11 @@ namespace Menu.QuestEditor
 
         private TransitionResult _result;
 
-        public QuestTransitionService(IProgressSaver progressSaver, ZoomChanger zoomChanger, SpriteTransmitter spriteTransmitter)
+        public QuestTransitionService(
+            IProgressSaver progressSaver,
+            ZoomChanger zoomChanger,
+            SpriteTransmitter spriteTransmitter
+        )
         {
             _spriteTransmitter = spriteTransmitter;
             _progressSaver = progressSaver;

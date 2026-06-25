@@ -1,6 +1,4 @@
 namespace Wallets
 {
-public class CoinWallet : Wallet
-{
-}
+    public class CoinWallet : Wallet { }
 }

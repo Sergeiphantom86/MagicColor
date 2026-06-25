@@ -1,6 +1,4 @@
 namespace PuzzleEditor.MovingBlocks.BlockEditor
 {
-public class BlockMovementController
-{
-}
+    public class BlockMovementController { }
 }

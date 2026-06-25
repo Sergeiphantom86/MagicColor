@@ -2,80 +2,89 @@ using Game.LoadingScreen;
 using Game.SaveEditor;
 using Menu.TutorialEditor;
 using UnityEngine;
+
 namespace Menu.QuestEditor
 {
-
-public class TransitionChooser : MonoBehaviour
-{
-    private const string Puzzle = nameof(Puzzle);
-    private const string Tutorial = nameof(Tutorial);
-
-    [SerializeField] private OfferPanel _offerPanel;
-    [SerializeField] private OfferPanel _offerPanelMobile;
-
-    private IQuestTransitionService _transitionService;
-    private Sprite _cachedSprite;
-
-    private void OnEnable()
+    public class TransitionChooser : MonoBehaviour
     {
-        _offerPanel.OnConsent += LoadTutorial;
-        _offerPanelMobile.OnConsent += LoadTutorial;
+        private const string Puzzle = nameof(Puzzle);
+        private const string Tutorial = nameof(Tutorial);
 
-        _offerPanel.OnCancelled += LoadPuzzle;
-        _offerPanelMobile.OnCancelled += LoadPuzzle;
-    }
+        [SerializeField]
+        private OfferPanel _offerPanel;
 
-    private void OnDisable()
-    {
-        _offerPanel.OnConsent -= LoadTutorial;
-        _offerPanelMobile.OnConsent -= LoadTutorial;
+        [SerializeField]
+        private OfferPanel _offerPanelMobile;
 
-        _offerPanel.OnCancelled -= LoadPuzzle;
-        _offerPanelMobile.OnCancelled -= LoadPuzzle;
-    }
+        private IQuestTransitionService _transitionService;
+        private Sprite _cachedSprite;
 
-    public void Initialize(IProgressSaver progressSaver, ZoomChanger zoomChanger, SpriteTransmitter spriteTransmitter)
-    {
-        _transitionService = new QuestTransitionService(progressSaver, zoomChanger, spriteTransmitter);
-    }
-
-    public void ChoosePuzzle(Quest quest, bool isAutomaticTransition)
-    {
-        _cachedSprite = quest.Sprite;
-
-        var result = _transitionService.ProcessQuest(quest);
-       
-        if (result.ShowOffer)
+        private void OnEnable()
         {
-            if (result.UseMobilePanel)
-                _offerPanelMobile.TurnOn();
-            else
-                _offerPanel.TurnOn();
+            _offerPanel.OnConsent += LoadTutorial;
+            _offerPanelMobile.OnConsent += LoadTutorial;
 
-            return;
+            _offerPanel.OnCancelled += LoadPuzzle;
+            _offerPanelMobile.OnCancelled += LoadPuzzle;
         }
 
-        LoadScene(result.SceneName, isAutomaticTransition);
-    }
-
-    private void LoadPuzzle() => 
-        LoadScene(Puzzle);
-
-    private void LoadTutorial() => 
-        LoadScene(Tutorial);
-
-    private void LoadScene(string sceneName, bool isAutomaticTransition = false)
-    {
-        float extraTime = 0;
-
-        if (isAutomaticTransition)
+        private void OnDisable()
         {
-            extraTime = 0.2f;
-        }
-        
-        _transitionService.SaveSprite(_cachedSprite);
+            _offerPanel.OnConsent -= LoadTutorial;
+            _offerPanelMobile.OnConsent -= LoadTutorial;
 
-        SceneLoader.Instance.LoadSceneAsyncWithSplash(sceneName, extraTime);
+            _offerPanel.OnCancelled -= LoadPuzzle;
+            _offerPanelMobile.OnCancelled -= LoadPuzzle;
+        }
+
+        public void Initialize(
+            IProgressSaver progressSaver,
+            ZoomChanger zoomChanger,
+            SpriteTransmitter spriteTransmitter
+        )
+        {
+            _transitionService = new QuestTransitionService(
+                progressSaver,
+                zoomChanger,
+                spriteTransmitter
+            );
+        }
+
+        public void ChoosePuzzle(Quest quest, bool isAutomaticTransition)
+        {
+            _cachedSprite = quest.Sprite;
+
+            var result = _transitionService.ProcessQuest(quest);
+
+            if (result.ShowOffer)
+            {
+                if (result.UseMobilePanel)
+                    _offerPanelMobile.TurnOn();
+                else
+                    _offerPanel.TurnOn();
+
+                return;
+            }
+
+            LoadScene(result.SceneName, isAutomaticTransition);
+        }
+
+        private void LoadPuzzle() => LoadScene(Puzzle);
+
+        private void LoadTutorial() => LoadScene(Tutorial);
+
+        private void LoadScene(string sceneName, bool isAutomaticTransition = false)
+        {
+            float extraTime = 0;
+
+            if (isAutomaticTransition)
+            {
+                extraTime = 0.2f;
+            }
+
+            _transitionService.SaveSprite(_cachedSprite);
+
+            SceneLoader.Instance.LoadSceneAsyncWithSplash(sceneName, extraTime);
+        }
     }
-}
 }

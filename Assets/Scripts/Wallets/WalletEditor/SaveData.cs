@@ -1,9 +1,9 @@
 namespace Wallets.WalletEditor
 {
-public class SaveData
-{
-    public long Gold;
-    public long Crystals;
-    public int Inventory;
-}
+    public class SaveData
+    {
+        public long Gold;
+        public long Crystals;
+        public int Inventory;
+    }
 }
