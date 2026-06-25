@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class Puzzle : MonoBehaviour
+public class Puzzle1 : MonoBehaviour
 {
     private Rotator _rotation;
     private IProgressSaver _progressSaver;

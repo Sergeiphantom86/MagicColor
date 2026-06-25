@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Canvas))]
 public class AnimatorPuzzle : MonoBehaviour
 {
-    [SerializeField] private Puzzle _puzzle;
+    [SerializeField] private Puzzle1 _puzzle;
     [SerializeField] private Activator _activator;
     [SerializeField] private VictoryPlaque _victoryPlaque;
     [SerializeField] private FireworksController _fireworks;
