@@ -6,9 +6,6 @@ namespace Menu.TutorialEditor
     [RequireComponent(typeof(EngineTutorialMenu))]
     public class Tutorial : MonoBehaviour
     {
-        private const string IsSwipe = nameof(IsSwipe);
-        private const string IsClick = nameof(IsClick);
-
         private bool _isFinished;
         private EngineTutorialMenu _engineTutorialMenu;
         private IProgressSaver _progressSaver;

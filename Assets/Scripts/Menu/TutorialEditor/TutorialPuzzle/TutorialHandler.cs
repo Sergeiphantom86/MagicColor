@@ -54,13 +54,13 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         private HandMover _handMoverUI;
 
         [SerializeField]
-        private CloseGameButton closeGame;
+        private CloseGameButton _closeGame;
 
         [SerializeField]
-        private InputHandler inputHandler;
+        private InputHandler _inputHandler;
 
         [SerializeField]
-        private StateMachine tutorialStateMachin;
+        private StateMachine _tutorialStateMachin;
 
         protected override TutorialContext CreateContext()
         {
@@ -78,14 +78,14 @@ namespace Menu.TutorialEditor.TutorialPuzzle
                 return context;
 
             TutorialAbilities tutorialAbilities = new(
-                tutorialStateMachin,
+                _tutorialStateMachin,
                 context,
-                inputHandler,
+                _inputHandler,
                 _pauseButton,
                 _priceText,
                 _handMoverUI,
                 _purchaseButton,
-                closeGame,
+                _closeGame,
                 _bagAbilities,
                 _hintsUI
             );

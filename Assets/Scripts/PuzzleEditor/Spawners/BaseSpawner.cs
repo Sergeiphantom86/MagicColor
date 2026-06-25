@@ -56,7 +56,5 @@ namespace PuzzleEditor.Spawners
         {
             CurrentPrefabIndex = index;
         }
-
-        public int GetCurrentPrefabIndex() => CurrentPrefabIndex;
     }
 }

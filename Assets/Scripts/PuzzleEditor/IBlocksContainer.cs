@@ -7,8 +7,6 @@ namespace PuzzleEditor
     {
         public event Action EverythDestroyed;
 
-        public int ActiveBlocksCount { get; }
-
         public Transform Transform { get; }
     }
 }

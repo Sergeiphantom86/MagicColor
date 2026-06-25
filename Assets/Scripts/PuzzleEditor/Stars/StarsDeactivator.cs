@@ -21,7 +21,6 @@ namespace PuzzleEditor.Stars
         private WaitForSeconds _waitForSeconds;
         private float _delay;
         private IProgressSaver _progressSaver;
-        private Coroutine _coroutine;
         private bool _isPlaying;
 
         private void Awake()
@@ -66,7 +65,7 @@ namespace PuzzleEditor.Stars
 
         public void OnTimerStarted()
         {
-            _coroutine = StartCoroutine(DeactivateByTime());
+            StartCoroutine(DeactivateByTime());
         }
 
         private IEnumerator DeactivateByTime()
@@ -96,8 +95,6 @@ namespace PuzzleEditor.Stars
                 int starsLeft = _stars.Count(s => s.IsActive);
                 starsLeft = Mathf.Max(starsLeft, _starsCounter.MinStars);
                 _progressSaver.SetCountStars(starsLeft);
-
-                _coroutine = null;
             }
         }
     }

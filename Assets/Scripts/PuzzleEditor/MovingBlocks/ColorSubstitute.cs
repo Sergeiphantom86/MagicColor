@@ -6,35 +6,35 @@ namespace PuzzleEditor.MovingBlocks
     {
         [Header("��������� �����")]
         [SerializeField]
-        private bool changeOnAwake = true;
+        private bool _changeOnAwake = true;
 
         [SerializeField]
-        private bool useSaturationRange = false;
-
-        [SerializeField]
-        [Range(0f, 1f)]
-        private float minSaturation = 0.5f;
+        private bool _useSaturationRange = false;
 
         [SerializeField]
         [Range(0f, 1f)]
-        private float maxSaturation = 1f;
-
-        [SerializeField]
-        private bool useValueRange = false;
+        private float _minSaturation = 0.5f;
 
         [SerializeField]
         [Range(0f, 1f)]
-        private float minValue = 0.5f;
+        private float _maxSaturation = 1f;
+
+        [SerializeField]
+        private bool _useValueRange = false;
 
         [SerializeField]
         [Range(0f, 1f)]
-        private float maxValue = 1f;
+        private float _minValue = 0.5f;
+
+        [SerializeField]
+        [Range(0f, 1f)]
+        private float _maxValue = 1f;
 
         private void Awake()
         {
             InitializeComponents();
 
-            if (changeOnAwake)
+            if (_changeOnAwake)
             {
                 ChangeToRandomColor();
             }
@@ -44,15 +44,15 @@ namespace PuzzleEditor.MovingBlocks
         {
             Color randomColor;
 
-            if (useSaturationRange || useValueRange)
+            if (_useSaturationRange || _useValueRange)
             {
                 randomColor = Random.ColorHSV(
                     0f,
                     1f,
-                    useSaturationRange ? minSaturation : 0f,
-                    useSaturationRange ? maxSaturation : 1f,
-                    useValueRange ? minValue : 0f,
-                    useValueRange ? maxValue : 1f
+                    _useSaturationRange ? _minSaturation : 0f,
+                    _useSaturationRange ? _maxSaturation : 1f,
+                    _useValueRange ? _minValue : 0f,
+                    _useValueRange ? _maxValue : 1f
                 );
             }
             else

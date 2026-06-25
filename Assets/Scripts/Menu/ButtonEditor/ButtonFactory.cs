@@ -5,7 +5,6 @@ namespace Menu.ButtonEditor
     public class ButtonFactory
     {
         public const string Play = nameof(Play);
-        public const string Shop = nameof(Shop);
         public const string Settings = nameof(Settings);
         public const string Leaderboard = nameof(Leaderboard);
 

@@ -13,7 +13,6 @@ namespace Wallets
 
         private long _balance;
         private float _delay;
-        private float _duration;
         private float _callDelay;
         private bool isInitialized;
         private WaitForSeconds _waitFor;
@@ -30,7 +29,6 @@ namespace Wallets
         {
             _delay = 1.5f;
             _callDelay = 0.1f;
-            _duration = 0.5f;
             _waitFor = new WaitForSeconds(_delay);
             _progressSaver = new ProgressSaver();
             _transacter = new ProcessTransacter();

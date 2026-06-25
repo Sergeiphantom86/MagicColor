@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using PuzzleEditor.MovingBlocks;
 using PuzzleEditor.SoundEditor;
@@ -32,13 +31,6 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         private Renderer _rendererBlock;
         private WaitForSeconds _waitColorChange;
         private WaitForSeconds _waitBeforeChangingLanes;
-        private ColorCollisionHandler _colorCollisionHandler;
-
-        public event Action OnMovement;
-
-        public event Action OnCompleted;
-
-        public event Action OnTouch;
 
         private void Awake()
         {
@@ -67,7 +59,6 @@ namespace Menu.TutorialEditor.TutorialPuzzle
             if (_firstTouch == false)
             {
                 _firstTouch = true;
-                OnTouch?.Invoke();
             }
 
             Move(wall);
@@ -107,13 +98,12 @@ namespace Menu.TutorialEditor.TutorialPuzzle
 
         private void InitializingComponents()
         {
-            if (_wall.TryGetComponent(out ColorCollisionHandler colorCollisionHandler) == false)
+            if (_wall.TryGetComponent(out ColorCollisionHandler _) == false)
                 return;
 
             if (_wall.TryGetComponent(out Renderer renderer) == false)
                 return;
 
-            _colorCollisionHandler = colorCollisionHandler;
             _rendererWall = renderer;
         }
 
@@ -137,15 +127,11 @@ namespace Menu.TutorialEditor.TutorialPuzzle
             yield return _waitBeforeChangingLanes;
 
             ContinueDriving(wallRenderer);
-
-            OnCompleted?.Invoke();
         }
 
         private IEnumerator WaitMove()
         {
             yield return _waitBeforeChangingLanes;
-
-            OnMovement?.Invoke();
 
             _isColored = true;
         }

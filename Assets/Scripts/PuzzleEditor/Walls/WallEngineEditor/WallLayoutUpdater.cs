@@ -5,7 +5,7 @@ using UnityEngine;
 namespace PuzzleEditor.Walls.WallEngineEditor
 {
     [RequireComponent(typeof(Wall))]
-    public class WallLayoutUpdater : MonoBehaviour, IWallLayout
+    public class WallLayoutUpdater : MonoBehaviour
     {
         private Wall _wall;
         private Point _point;
@@ -13,8 +13,6 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         private Rotator _rotator;
 
         private Vector2Int _lastResolution;
-
-        public event Action Updated;
 
         public void Initialize(Rotator rotator)
         {
@@ -40,8 +38,6 @@ namespace PuzzleEditor.Walls.WallEngineEditor
             {
                 _lastResolution = new Vector2Int(Screen.width, Screen.height);
                 Recalculate();
-
-                Updated?.Invoke();
             }
         }
 

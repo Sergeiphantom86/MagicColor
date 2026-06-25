@@ -12,7 +12,6 @@ namespace Game.LoadingScreen
     [RequireComponent(typeof(CanvasGroup), typeof(PanelFader))]
     public class SceneLoader : MonoBehaviour
     {
-        private const string Loading = nameof(Loading);
         private const string Menu = nameof(Menu);
 
         [SerializeField]
@@ -115,15 +114,12 @@ namespace Game.LoadingScreen
             for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
             {
                 string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
-
                 if (Path.GetFileNameWithoutExtension(scenePath) == sceneName)
-                {
                     return true;
-                }
             }
 
             SceneManager.LoadSceneAsync(Menu);
-            Debug.LogError($"����� '{sceneName}' �� ������� � ���������� ������!");
+            Debug.LogError($"Scene '{sceneName}' not found in build settings!");
             return false;
         }
 

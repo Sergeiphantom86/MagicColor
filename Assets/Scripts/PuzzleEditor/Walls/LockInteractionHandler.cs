@@ -24,15 +24,6 @@ namespace PuzzleEditor.Walls
             }
         }
 
-        public void ShowBlockedFeedback()
-        {
-            if (_lock == null)
-                return;
-
-            _lock.ShakeUp();
-            _hintKey.TurnOn();
-        }
-
         public void Unblock()
         {
             if (_lock != null)

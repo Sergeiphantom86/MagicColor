@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace PuzzleEditor.PenEditor
 {
-    public class ColorableWritNode : ColorableObject, IColorable
+    public class ColorableWritNode : ColorableObject
     {
         [SerializeField]
         private Activator _activator;

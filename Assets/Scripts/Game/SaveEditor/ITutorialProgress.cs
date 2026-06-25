@@ -4,8 +4,6 @@ namespace Game.SaveEditor
     {
         public void SetTutorial(int index);
 
-        public void ChangeTutorial(bool isTutorial);
-
         public void DisableTutorialMenu();
 
         public void SetTutorialBasics();

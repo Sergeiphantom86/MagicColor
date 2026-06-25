@@ -13,7 +13,7 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
     [RequireComponent(typeof(GridDragMovement))]
     [RequireComponent(typeof(Collider), typeof(Voiceover), typeof(Scaler))]
     [RequireComponent(typeof(PathMover), typeof(ITouchDragInput), typeof(Magnifier))]
-    public class Block : ColorableObject, IDestroyable, IGridOccupant
+    public class Block : ColorableObject, IGridOccupant
     {
         [Header("Grid")]
         [SerializeField]

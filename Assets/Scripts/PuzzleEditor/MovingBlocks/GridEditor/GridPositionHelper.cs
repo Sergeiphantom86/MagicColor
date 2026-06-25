@@ -5,11 +5,9 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
 {
     public class GridPositionHelper
     {
-        private readonly GridSystem _gridSystem;
-
-        public GridPositionHelper(GridSystem gridSystem)
+        public GridPositionHelper(GridSystem _)
         {
-            _gridSystem = gridSystem;
+
         }
 
         public List<Vector2Int> GetAvailableCenters(Vector2Int blockSize, int marginFromBorder = 0)

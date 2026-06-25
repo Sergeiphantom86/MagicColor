@@ -7,51 +7,46 @@ namespace Menu.ButtonEditor
 {
     public abstract class MenuButtonBase : IMenuButton
     {
-        protected ButtonSoundHandler SoundHandler;
-        protected AudioClip AudioClip;
+        protected Button _button;
+        protected HandlerButtonWindowInteraction _handler;
+        protected ButtonSoundHandler _soundHandler;
+        protected AudioClip _audioClip;
 
-        public virtual void Configure(
-            Button button,
+        public virtual void Configure(Button button,
             HandlerButtonWindowInteraction handlerButtonWindowInteraction,
             ButtonSoundHandler buttonSound,
-            AudioClip audioClip
-        )
+            AudioClip audioClip)
         {
             if (button == null)
-            {
                 throw new ArgumentNullException(nameof(button));
-            }
-
             if (handlerButtonWindowInteraction == null)
-            {
                 throw new ArgumentNullException(nameof(handlerButtonWindowInteraction));
-            }
+            if (buttonSound == null)
+                throw new ArgumentNullException(nameof(buttonSound));
+            if (audioClip == null)
+                throw new ArgumentNullException(nameof(audioClip));
 
-            SoundHandler =
-                buttonSound != null
-                    ? buttonSound
-                    : throw new ArgumentNullException(nameof(buttonSound));
-            AudioClip =
-                audioClip != null ? audioClip : throw new ArgumentNullException(nameof(audioClip));
-
-            button.onClick.AddListener(() =>
-                Press(button, handlerButtonWindowInteraction, buttonSound, audioClip)
-            );
+            _button = button;
+            _handler = handlerButtonWindowInteraction;
+            _soundHandler = buttonSound;
+            _audioClip = audioClip;
 
             button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(OnButtonClicked);
+            button.onClick.AddListener(OnButtonClick);
         }
 
-        public virtual void Press(
-            Button button,
+        public virtual void Press(Button button,
             HandlerButtonWindowInteraction handlerButtonWindowInteraction,
             ButtonSoundHandler buttonSound,
-            AudioClip audioClip
-        ) { }
-
-        private void OnButtonClicked()
+            AudioClip audioClip)
         {
-            SoundHandler.PlayButtonSound(AudioClip);
+            handlerButtonWindowInteraction.OnButtonClicked(button);
+            buttonSound.PlayButtonSound(audioClip);
+        }
+
+        private void OnButtonClick()
+        {
+            Press(_button, _handler, _soundHandler, _audioClip);
         }
     }
 }

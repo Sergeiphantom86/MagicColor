@@ -23,8 +23,6 @@ namespace Menu.HomeScreenSaver
         private Sequence _currentSequence;
         private List<Fragment> _sortedPixels;
 
-        public event Action<List<Fragment>> HasDisplaced;
-
         private void Awake()
         {
             _sortedPixels = new List<Fragment>();
@@ -59,8 +57,7 @@ namespace Menu.HomeScreenSaver
                         GetPixelTransform(_sortedPixels, i)
                             .DOMove(GetTargetPosition(_sortedPixels, i), _animationDuration)
                             .SetEase(Ease.InOutFlash)
-                    )
-                    .OnComplete(() => HasDisplaced?.Invoke(_sortedPixels));
+                    );
             }
         }
 

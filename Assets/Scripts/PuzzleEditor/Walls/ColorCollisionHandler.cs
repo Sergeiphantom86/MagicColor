@@ -27,8 +27,6 @@ namespace PuzzleEditor.Walls
         private ICollisionHandler _collisionHandler;
         private IUnlockPolicy _unlockPolicy;
 
-        public event Action<Block> IsTouched;
-
         private void Awake()
         {
             _wall = GetComponent<IUnblocker>();
@@ -126,11 +124,6 @@ namespace PuzzleEditor.Walls
             _collisionProcessor.ProcessEnter(other);
 
             _lockHandler.Set(other);
-
-            if (other.TryGetComponent(out Block block))
-            {
-                IsTouched?.Invoke(block);
-            }
         }
 
         private void Exit(Collider other)

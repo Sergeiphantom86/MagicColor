@@ -54,11 +54,6 @@ namespace PuzzleEditor
             _transform.SetParent(transform);
         }
 
-        public void SetPosition(Vector3 position)
-        {
-            _transform.position = position;
-        }
-
         public void SetLocalScale(float scale)
         {
             _transform.localScale = Vector3.one * scale;

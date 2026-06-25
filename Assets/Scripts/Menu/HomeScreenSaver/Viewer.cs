@@ -8,6 +8,12 @@ namespace Menu.HomeScreenSaver
     [RequireComponent(typeof(AnimationController), typeof(TextureInitializer))]
     public class Viewer : MonoBehaviour
     {
+        private const int TweenCapacity = 4000;
+        private const int SequenceCapacity = 1250;
+        private const float DefaultDelay = 0.1f;
+        private const int MinIndex = 0;
+        private const int InvalidIndex = -1;
+
         private float _delay;
         private bool _isTransitioning;
         private Sequence _transitionSequence;
@@ -15,18 +21,16 @@ namespace Menu.HomeScreenSaver
         private AnimationController _animationController;
         private TextureInitializer _textureInitializer;
 
-        public event System.Action Initialized;
-
         private void Awake()
         {
             _animationController = GetComponent<AnimationController>();
             _textureInitializer = GetComponent<TextureInitializer>();
             _spriteSequence = new List<Sprite>();
             _isTransitioning = false;
-            _delay = 0.1f;
+            _delay = DefaultDelay;
 
             DOTween.Init(recycleAllByDefault: false, useSafeMode: true, LogBehaviour.Default);
-            DOTween.SetTweensCapacity(4000, 1250);
+            DOTween.SetTweensCapacity(TweenCapacity, SequenceCapacity);
         }
 
         private void OnEnable()
@@ -42,7 +46,6 @@ namespace Menu.HomeScreenSaver
         public void AddSprite(List<Sprite> sprites)
         {
             _spriteSequence = sprites;
-
             ShowNextSprite();
         }
 
@@ -77,7 +80,7 @@ namespace Menu.HomeScreenSaver
 
             int nextIndex = GetNextSpriteIndex();
 
-            if (nextIndex >= 0 && nextIndex < _spriteSequence.Count)
+            if (nextIndex >= MinIndex && nextIndex < _spriteSequence.Count)
             {
                 _transitionSequence
                     .AppendCallback(() =>
@@ -91,32 +94,27 @@ namespace Menu.HomeScreenSaver
             {
                 _isTransitioning = false;
             }
-
-            Initialized?.Invoke();
         }
 
         private void CreateTransitionSequence()
         {
             DOTweenExtensions.SafeKill(_transitionSequence, true);
-
             _transitionSequence = DOTween.Sequence().AppendInterval(_delay).SetRecyclable(true);
         }
 
         private int GetNextSpriteIndex()
         {
             if (_spriteSequence.Count == 0)
-                return -1;
-            return Random.Range(0, _spriteSequence.Count);
+                return InvalidIndex;
+
+            return Random.Range(MinIndex, _spriteSequence.Count);
         }
 
         private void StopAllAnimations()
         {
             _isTransitioning = false;
-
             DOTweenExtensions.SafeKill(_transitionSequence, true);
-
             _animationController.PauseAllAnimations();
-
             DOTween.Kill(this);
         }
 

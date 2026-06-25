@@ -29,8 +29,6 @@ namespace PuzzleEditor.RouletteEditor
 
         public Image Icon => _image;
 
-        public int Winn => _progressSaver.Saves.Reward;
-
         private void Awake()
         {
             _divider = 2;

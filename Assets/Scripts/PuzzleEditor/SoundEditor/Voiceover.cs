@@ -12,14 +12,10 @@ namespace PuzzleEditor.SoundEditor
         private const float MaxVolume = 1f;
         private const float DBMultiplier = 20f;
 
-        [SerializeField]
-        private AudioMixerGroup _sfxGroup;
+        [SerializeField] private AudioMixerGroup _sfxGroup;
 
         private AudioSource _sfxSource;
-        private float _currentVolume;
         private IProgressSaver _progressSaver;
-
-        public bool IsPlaying => _sfxSource.isPlaying;
 
         private void Awake()
         {
@@ -73,7 +69,6 @@ namespace PuzzleEditor.SoundEditor
             if (_sfxGroup != null)
             {
                 _sfxGroup.audioMixer.SetFloat(SoundVolume, dbVolume);
-                _currentVolume = dbVolume;
             }
         }
 

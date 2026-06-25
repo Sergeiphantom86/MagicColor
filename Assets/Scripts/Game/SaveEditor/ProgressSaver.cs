@@ -54,9 +54,6 @@ namespace Game.SaveEditor
         public void SaveBalanceAfterPurchase(long balans) =>
             WithSaves(savesYG2 => savesYG2.SaveBalanceAfterPurchase(balans));
 
-        public void ChangeTutorial(bool isTutorial) =>
-            WithSaves(savesYG2 => savesYG2.ChangeTutorial(isTutorial));
-
         public void SetReward(int reward) => WithSaves(savesYG2 => savesYG2.SetReward(reward));
 
         public void MakeTransparent(bool transparent) =>

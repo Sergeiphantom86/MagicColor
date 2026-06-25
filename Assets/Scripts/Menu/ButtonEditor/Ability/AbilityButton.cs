@@ -9,7 +9,7 @@ namespace Menu.ButtonEditor.Ability
     public class AbilityButton : MonoBehaviour
     {
         [SerializeField]
-        private Ability ability;
+        private Ability _ability;
 
         [SerializeField]
         private Image _highlightImage;
@@ -23,7 +23,7 @@ namespace Menu.ButtonEditor.Ability
 
         public Button Button => _button;
 
-        public Ability Ability => ability;
+        public Ability Ability => _ability;
 
         private void Awake()
         {
@@ -35,7 +35,7 @@ namespace Menu.ButtonEditor.Ability
 
             _highlightImage.enabled = false;
 
-            _image.sprite = ability.Icon;
+            _image.sprite = _ability.Icon;
 
             _blocker.gameObject.SetActive(false);
             _button.interactable = true;

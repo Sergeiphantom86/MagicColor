@@ -8,8 +8,6 @@ namespace PuzzleEditor
 
         public void SetColor(Color color);
 
-        public void SetActive(bool state);
-
         public Color GetColor();
 
         public void InstallRepainted();

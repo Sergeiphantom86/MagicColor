@@ -70,11 +70,6 @@ namespace Menu.TutorialEditor.TutorialPuzzle
             GetAnimationSequence(0, _distanceZ).SetLoops(-1, LoopType.Restart);
         }
 
-        public void EnableMoveAnimationX()
-        {
-            GetAnimationSequence(-_distanceX);
-        }
-
         public void EnableLoopingAnimationZ()
         {
             GetAnimationSequence(0, _distanceZ).SetLoops(-1, LoopType.Restart);
