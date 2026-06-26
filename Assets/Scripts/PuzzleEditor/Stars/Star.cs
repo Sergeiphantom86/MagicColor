@@ -4,12 +4,12 @@ using UnityEngine.UI;
 namespace PuzzleEditor.Stars
 {
     [RequireComponent(typeof(Image))]
+
     public class Star : MonoBehaviour
     {
         private Image _image;
 
         public bool IsActive { get; private set; }
-
         private void Awake()
         {
             _image = GetComponent<Image>();

@@ -7,12 +7,12 @@ namespace Wallets.WalletEditor
         public bool ProcessTransaction(long amount, long balance)
         {
             if (amount == 0)
-                return false;
+            return false;
 
             if (amount < 0)
             {
                 if (Mathf.Abs(amount) > balance)
-                    return false;
+                return false;
             }
 
             long newBalance = checked(balance + amount);

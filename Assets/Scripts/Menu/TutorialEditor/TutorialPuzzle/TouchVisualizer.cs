@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Menu.TutorialEditor.TutorialPuzzle
 {
     [RequireComponent(typeof(SpriteRenderer))]
+
     public class TouchVisualizer : MonoBehaviour
     {
         private float _delay;
@@ -57,9 +58,9 @@ namespace Menu.TutorialEditor.TutorialPuzzle
             }
 
             _sequence
-                .SetDelay(_delay)
-                .SetEase(Ease.InOutQuad, _overshoot)
-                .SetLoops(-1, LoopType.Restart);
+            .SetDelay(_delay)
+            .SetEase(Ease.InOutQuad, _overshoot)
+            .SetLoops(-1, LoopType.Restart);
         }
 
         public void TurnOff()

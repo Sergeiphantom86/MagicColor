@@ -9,11 +9,8 @@ namespace PuzzleEditor.Stars
 {
     public class StarsDeactivator : MonoBehaviour
     {
-        [SerializeField]
-        private AudioClip _audioClip;
-
-        [SerializeField]
-        private Timer _timer;
+        [SerializeField] private AudioClip _audioClip;
+        [SerializeField] private Timer _timer;
 
         private StarIndicator[] _stars;
         private StarsCounter _starsCounter;
@@ -32,8 +29,8 @@ namespace PuzzleEditor.Stars
             _progressSaver = new ProgressSaver();
 
             _stars = GetComponentsInChildren<StarIndicator>(true)
-                .OrderBy(s => s.transform.GetSiblingIndex())
-                .ToArray();
+            .OrderBy(s => s.transform.GetSiblingIndex())
+            .ToArray();
         }
 
         private IEnumerator Start()
@@ -80,22 +77,22 @@ namespace PuzzleEditor.Stars
 
                     int count = _starsCounter.GetCountStars(_timer.CurrentTimeSeconds);
                     return count <= i;
-                });
+                    });
 
-                _stars[i].SetInactive();
-                _voiceover.PlayOneShot(_audioClip);
+                    _stars[i].SetInactive();
+                    _voiceover.PlayOneShot(_audioClip);
+                }
             }
-        }
 
-        private void SaveCurrentStars()
-        {
-            if (_timer.IsRunning == false && _isPlaying == false)
+            private void SaveCurrentStars()
             {
-                _isPlaying = true;
-                int starsLeft = _stars.Count(s => s.IsActive);
-                starsLeft = Mathf.Max(starsLeft, _starsCounter.MinStars);
-                _progressSaver.SetCountStars(starsLeft);
+                if (_timer.IsRunning == false && _isPlaying == false)
+                {
+                    _isPlaying = true;
+                    int starsLeft = _stars.Count(s => s.IsActive);
+                    starsLeft = Mathf.Max(starsLeft, _starsCounter.MinStars);
+                    _progressSaver.SetCountStars(starsLeft);
+                }
             }
         }
     }
-}

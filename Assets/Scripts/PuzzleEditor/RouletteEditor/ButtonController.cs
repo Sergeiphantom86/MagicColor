@@ -6,11 +6,8 @@ namespace PuzzleEditor.RouletteEditor
 {
     public class ButtonController : MonoBehaviour
     {
-        [SerializeField]
-        private Button _button;
-
-        [SerializeField]
-        private Button _buttonDailySpin;
+        [SerializeField] private Button _button;
+        [SerializeField] private Button _buttonDailySpin;
 
         private bool _localBlock;
         private bool _isSpin;
@@ -49,7 +46,7 @@ namespace PuzzleEditor.RouletteEditor
         public void UpdateState()
         {
             bool isInteractable =
-                _localBlock == false && (GlobalInteractableCondition?.Invoke() ?? false);
+            _localBlock == false && (GlobalInteractableCondition?.Invoke() ?? false);
 
             _button.interactable = isInteractable;
         }

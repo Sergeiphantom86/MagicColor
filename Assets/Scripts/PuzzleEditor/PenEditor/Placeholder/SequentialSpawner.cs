@@ -8,8 +8,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
     public class SequentialSpawner : MonoBehaviour
     {
         [Header("Spawn Settings")]
-        [SerializeField]
-        private Placeholder _objectToSpawn;
+        [SerializeField] private Placeholder _objectToSpawn;
 
         private float _nextSpawnYPosition;
         private float _defaultDuration;

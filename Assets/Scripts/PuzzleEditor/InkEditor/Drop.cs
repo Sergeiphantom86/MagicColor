@@ -4,13 +4,11 @@ using UnityEngine;
 namespace PuzzleEditor.InkEditor
 {
     [RequireComponent(typeof(Voiceover))]
+
     public class Drop : ColorableObject
     {
-        [SerializeField]
-        private AudioClip _spawn;
-
-        [SerializeField]
-        private AudioClip _moving;
+        [SerializeField] private AudioClip _spawn;
+        [SerializeField] private AudioClip _moving;
 
         private Voiceover _voiceover;
 

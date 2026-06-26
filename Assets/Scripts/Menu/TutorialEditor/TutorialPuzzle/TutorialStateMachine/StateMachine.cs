@@ -19,8 +19,8 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
             var context = new TutorialContext();
 
             context.InitBase(
-                handMover: GetComponentInChildren<HandMover>(true),
-                visualizer: GetComponentInChildren<TouchVisualizer>(true)
+            handMover: GetComponentInChildren<HandMover>(true),
+            visualizer: GetComponentInChildren<TouchVisualizer>(true)
             );
 
             return context;

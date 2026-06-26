@@ -5,11 +5,8 @@ namespace PuzzleEditor
 {
     public class ImageMagnifier : MonoBehaviour
     {
-        [SerializeField]
-        private Vector3 _positoonZ;
-
-        [SerializeField]
-        private float _multiplier;
+        [SerializeField] private Vector3 _positoonZ;
+        [SerializeField] private float _multiplier;
 
         private float _lastWidth;
         private float _lastHeight;
@@ -44,10 +41,10 @@ namespace PuzzleEditor
         private void SetSize()
         {
             if (
-                _zoomChanger.IsMobileWithTallScreen()
-                && _multiplier > 0
-                && _isStandardSize
-                && _camera.fieldOfView > 116
+            _zoomChanger.IsMobileWithTallScreen()
+            && _multiplier > 0
+            && _isStandardSize
+            && _camera.fieldOfView > 116
             )
             {
                 transform.localScale = Vector3.one * _multiplier;
@@ -55,9 +52,9 @@ namespace PuzzleEditor
                 _isStandardSize = false;
             }
             else if (
-                _isStandardSize == false
-                && _zoomChanger.IsMobileWithTallScreen() == false
-                && _camera.fieldOfView < 116
+            _isStandardSize == false
+            && _zoomChanger.IsMobileWithTallScreen() == false
+            && _camera.fieldOfView < 116
             )
             {
                 transform.localScale = Vector3.one * _startSize;

@@ -6,10 +6,10 @@ using UnityEngine;
 namespace PuzzleEditor.Walls.Partitions
 {
     [RequireComponent(typeof(Rigidbody))]
+
     public class Partition : MonoBehaviour, IGridOccupant
     {
-        [SerializeField]
-        private Vector2Int _sizeInCells;
+        [SerializeField] private Vector2Int _sizeInCells;
 
         private Rigidbody _rigidbody;
         private bool _isDestroyed;
@@ -21,7 +21,6 @@ namespace PuzzleEditor.Walls.Partitions
         public Vector2Int SizeInCells => _sizeInCells;
 
         public Vector2Int GridPosition { get; private set; }
-
         public GameObject GameObject => gameObject;
 
         private void Awake()
@@ -42,7 +41,7 @@ namespace PuzzleEditor.Walls.Partitions
         public void DestroyPartition()
         {
             if (_isDestroyed)
-                return;
+            return;
 
             _isDestroyed = true;
             Destroyed?.Invoke(this);

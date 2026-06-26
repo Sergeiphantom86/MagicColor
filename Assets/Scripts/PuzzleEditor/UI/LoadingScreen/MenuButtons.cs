@@ -5,13 +5,11 @@ using UnityEngine.UI;
 namespace PuzzleEditor.UI.LoadingScreen
 {
     [Serializable]
+
     public class MenuButtons
     {
-        [SerializeField]
-        private Button _startButton;
-
-        [SerializeField]
-        private Button _resumeButton;
+        [SerializeField] private Button _startButton;
+        [SerializeField] private Button _resumeButton;
 
         public void Initialize(Action onStart, Action onResume)
         {

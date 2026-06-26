@@ -14,11 +14,11 @@ namespace Menu
         private readonly float _distanceFromCenter;
 
         public CarouselLayoutCalculator(
-            RectTransform[] buttons,
-            Vector2[] originalPositions,
-            float centerScale,
-            float sideScale,
-            float distanceFromCenter
+        RectTransform[] buttons,
+        Vector2[] originalPositions,
+        float centerScale,
+        float sideScale,
+        float distanceFromCenter
         )
         {
             _buttons = buttons;
@@ -31,7 +31,7 @@ namespace Menu
         public float GetTargetPositionX(int buttonIndex, int centerIndex)
         {
             if (buttonIndex == centerIndex)
-                return GetCenterX(centerIndex);
+            return GetCenterX(centerIndex);
 
             return GetAccumulatedOffsetX(buttonIndex, centerIndex);
         }
@@ -49,7 +49,7 @@ namespace Menu
             foreach (int stepIndex in GetSteps(centerIndex, buttonIndex))
             {
                 positionX +=
-                    direction * GetStepDistance(stepIndex, stepIndex + (int)direction, centerIndex);
+                direction * GetStepDistance(stepIndex, stepIndex + (int)direction, centerIndex);
             }
 
             return positionX;
@@ -60,7 +60,7 @@ namespace Menu
             int step = from < to ? 1 : -1;
 
             for (int i = from; i != to; i += step)
-                yield return i;
+            yield return i;
         }
 
         private float GetStepDistance(int fromIndex, int toIndex, int centerIndex)

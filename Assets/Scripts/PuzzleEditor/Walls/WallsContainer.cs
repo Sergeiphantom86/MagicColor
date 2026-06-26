@@ -11,11 +11,8 @@ namespace PuzzleEditor.Walls
 {
     public class WallsContainer : MonoBehaviour
     {
-        [SerializeField]
-        private Vector2Int _gridSize;
-
-        [SerializeField]
-        private Vector3 _position;
+        [SerializeField] private Vector2Int _gridSize;
+        [SerializeField] private Vector3 _position;
 
         private WallEngine _wall;
         private List<WallEngine> _walls;
@@ -25,52 +22,52 @@ namespace PuzzleEditor.Walls
         public Vector3 Position => _position;
 
         public void InitializeWalls(
-            IColorPrecision colorPrecision,
-            BagKey bag,
-            Rotator rotator,
-            Messager hintKey,
-            Lock @lock,
-            ErrorPanel errorPanel,
-            Activator activator,
-            AudioClip audioClip
+        IColorPrecision colorPrecision,
+        BagKey bag,
+        Rotator rotator,
+        Messager hintKey,
+        Lock @lock,
+        ErrorPanel errorPanel,
+        Activator activator,
+        AudioClip audioClip
         )
         {
             if (_walls == null)
-                _walls = new List<WallEngine>();
+            _walls = new List<WallEngine>();
             else
-                _walls.Clear();
+            _walls.Clear();
 
             if (
-                ValidateDependencies(
-                    colorPrecision,
-                    bag,
-                    rotator,
-                    hintKey,
-                    @lock,
-                    errorPanel,
-                    activator
-                ) == false
+            ValidateDependencies(
+            colorPrecision,
+            bag,
+            rotator,
+            hintKey,
+            @lock,
+            errorPanel,
+            activator
+            ) == false
             )
-                return;
+            return;
 
             foreach (Transform child in transform)
             {
                 _wall = child.GetComponent<WallEngine>();
 
                 if (_wall == null)
-                    continue;
+                continue;
 
                 if (
-                    _wall.Initialize(
-                        colorPrecision,
-                        bag,
-                        rotator,
-                        hintKey,
-                        @lock,
-                        errorPanel,
-                        activator,
-                        audioClip
-                    ) == false
+                _wall.Initialize(
+                colorPrecision,
+                bag,
+                rotator,
+                hintKey,
+                @lock,
+                errorPanel,
+                activator,
+                audioClip
+                ) == false
                 )
                 {
                     Debug.LogError("WallEngine failed to initialize", _wall);
@@ -82,35 +79,35 @@ namespace PuzzleEditor.Walls
         }
 
         private bool ValidateDependencies(
-            IColorPrecision colorPrecision,
-            BagKey bag,
-            Rotator rotator,
-            Messager hintKey,
-            Lock @lock,
-            ErrorPanel errorPanel,
-            Activator activator
+        IColorPrecision colorPrecision,
+        BagKey bag,
+        Rotator rotator,
+        Messager hintKey,
+        Lock @lock,
+        ErrorPanel errorPanel,
+        Activator activator
         )
         {
             if (colorPrecision == null)
-                return LogNull(nameof(colorPrecision));
+            return LogNull(nameof(colorPrecision));
 
             if (bag == null)
-                return LogNull(nameof(bag));
+            return LogNull(nameof(bag));
 
             if (rotator == null)
-                return LogNull(nameof(rotator));
+            return LogNull(nameof(rotator));
 
             if (hintKey == null)
-                return LogNull(nameof(hintKey));
+            return LogNull(nameof(hintKey));
 
             if (@lock == null)
-                return LogNull(nameof(@lock));
+            return LogNull(nameof(@lock));
 
             if (errorPanel == null)
-                return LogNull(nameof(errorPanel));
+            return LogNull(nameof(errorPanel));
 
             if (activator == null)
-                return LogNull(nameof(activator));
+            return LogNull(nameof(activator));
 
             return true;
         }
@@ -118,8 +115,8 @@ namespace PuzzleEditor.Walls
         private bool LogNull(string dependencyName)
         {
             Debug.LogError(
-                $"{nameof(WallEngine)} initialization failed: {dependencyName} is NULL",
-                this
+            $"{nameof(WallEngine)} initialization failed: {dependencyName} is NULL",
+            this
             );
 
             return false;

@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Fireworks
 {
     [RequireComponent(typeof(ParticleSystem))]
+
     public class SimpleFireworksAudio : MonoBehaviour
     {
         private const float GlowDelay = 0.2f;
@@ -13,8 +14,7 @@ namespace Fireworks
         private const float SparkleMaxDelay = 0.1f;
         private const float ExplosionToSparkleDelay = 0.1f;
 
-        [SerializeField]
-        private FireworksSoundPack _soundPack;
+        [SerializeField] private FireworksSoundPack _soundPack;
 
         private bool _isRunning;
         private float _minLaunchDelay;
@@ -41,7 +41,7 @@ namespace Fireworks
         public void StartFireworks()
         {
             if (_isRunning)
-                return;
+            return;
 
             _isRunning = true;
 
@@ -96,7 +96,7 @@ namespace Fireworks
         private IEnumerator PlaySingleFirework()
         {
             if (_soundPack == null)
-                yield break;
+            yield break;
 
             yield return _waitSoundGlow;
             yield return _waitSoundGlow;

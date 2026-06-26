@@ -5,6 +5,7 @@ using UnityEngine;
 namespace PuzzleEditor.Walls.WallEngineEditor
 {
     [RequireComponent(typeof(IInputHandler), typeof(ColorCollisionHandler))]
+
     public class WallInteractionController : MonoBehaviour
     {
         private IUnlockPolicy _unlockPolicy;
@@ -24,7 +25,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         public void Initialize(IUnlockPolicy unlockPolicy, IWallInteractor wall)
         {
             if (_initialized)
-                return;
+            return;
 
             _unlockPolicy = unlockPolicy ?? throw new ArgumentNullException(nameof(unlockPolicy));
 
@@ -38,7 +39,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         private void OnDisable()
         {
             if (_initialized == false)
-                return;
+            return;
 
             _inputHandler.Selected -= OnSelected;
         }

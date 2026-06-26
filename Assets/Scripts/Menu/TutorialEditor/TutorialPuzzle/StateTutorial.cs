@@ -6,8 +6,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle
 {
     public class StateTutorial : MonoBehaviour
     {
-        [SerializeField]
-        private TextSwitcher _textSwitcher;
+        [SerializeField] private TextSwitcher _textSwitcher;
 
         private Key _key;
         private Lock _lock;
@@ -20,10 +19,10 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         private void OnDisable()
         {
             if (_key == null)
-                return;
+            return;
 
             if (_lock == null)
-                return;
+            return;
 
             _key.Shift -= OnMovePointer;
             _key.Selected -= OnMovePointerClick;
@@ -31,10 +30,10 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         }
 
         public void Initialization(
-            HandMover handMover,
-            TouchVisualizer touchVisualizer,
-            Key key,
-            Lock @lock
+        HandMover handMover,
+        TouchVisualizer touchVisualizer,
+        Key key,
+        Lock @lock
         )
         {
             _key = key;

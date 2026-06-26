@@ -8,8 +8,7 @@ namespace Menu.TutorialEditor
 {
     public class Blinker : MonoBehaviour, IActivatable
     {
-        [SerializeField]
-        private Button _button;
+        [SerializeField] private Button _button;
 
         private float _minAlpha;
         private float _maxAlpha;
@@ -54,10 +53,10 @@ namespace Menu.TutorialEditor
         {
             SetAlpha(_maxAlpha);
             _blinkTween = _targetImage
-                .DOFade(_minAlpha, _blinkSpeed)
-                .SetEase(Ease.InOutSine)
-                .SetLoops(-1, LoopType.Yoyo)
-                .SetUpdate(true);
+            .DOFade(_minAlpha, _blinkSpeed)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetUpdate(true);
         }
 
         private void OnGoNext()

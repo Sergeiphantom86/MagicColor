@@ -39,9 +39,9 @@ namespace PuzzleEditor
         {
             _moveTween?.Kill();
             _moveTween = transform
-                .DOMoveX(GetPositionX(), GetDuration(duration))
-                .SetEase(Ease.Linear)
-                .OnComplete(() => gameObject.SetActive(false));
+            .DOMoveX(GetPositionX(), GetDuration(duration))
+            .SetEase(Ease.Linear)
+            .OnComplete(() => gameObject.SetActive(false));
         }
 
         private float GetPositionX()

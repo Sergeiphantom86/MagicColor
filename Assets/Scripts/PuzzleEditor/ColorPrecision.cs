@@ -16,14 +16,14 @@ namespace PuzzleEditor
         public bool Match(Color firstColor, Color secondColor)
         {
             if (firstColor.a < AlphaThreshold || secondColor.a < AlphaThreshold)
-                return false;
+            return false;
 
             firstColor = Reduce(firstColor);
             secondColor = Reduce(secondColor);
 
             return Mathf.Abs(firstColor.r - secondColor.r) <= ColorEpsilon
-                && Mathf.Abs(firstColor.g - secondColor.g) <= ColorEpsilon
-                && Mathf.Abs(firstColor.b - secondColor.b) <= ColorEpsilon;
+            && Mathf.Abs(firstColor.g - secondColor.g) <= ColorEpsilon
+            && Mathf.Abs(firstColor.b - secondColor.b) <= ColorEpsilon;
         }
 
         private float Round(float value)

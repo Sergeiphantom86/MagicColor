@@ -8,12 +8,12 @@ using UnityEngine.UI;
 namespace PuzzleEditor.RouletteEditor
 {
     [RequireComponent(typeof(Button))]
+
     public class RewardAdForSpins : MonoBehaviour
     {
         private readonly string _rewardID = "add_spins";
 
-        [SerializeField]
-        private TextMeshProUGUI _textMeshPro;
+        [SerializeField] private TextMeshProUGUI _textMeshPro;
 
         private Button _button;
         private IProgressSaver _progressSaver;
@@ -69,7 +69,7 @@ namespace PuzzleEditor.RouletteEditor
         public int ParseTextToInt()
         {
             string numericText = new string(
-                _textMeshPro.text.Where(c => char.IsDigit(c) || c == '-').ToArray()
+            _textMeshPro.text.Where(c => char.IsDigit(c) || c == '-').ToArray()
             );
 
             return int.TryParse(numericText, out int result) ? result : 0;
@@ -93,14 +93,14 @@ namespace PuzzleEditor.RouletteEditor
         private void OnDestroy()
         {
             _progressSaver.UnsubscribeADSReward(
-                OnRewardReceived,
-                OnAdOpened,
-                OnAdClosed,
-                OnAdError
+            OnRewardReceived,
+            OnAdOpened,
+            OnAdClosed,
+            OnAdError
             );
 
             if (_button != null)
-                _button.onClick.RemoveListener(OnShowRewardedAd);
+            _button.onClick.RemoveListener(OnShowRewardedAd);
         }
     }
 }

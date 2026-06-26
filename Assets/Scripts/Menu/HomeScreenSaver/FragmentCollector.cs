@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Menu.HomeScreenSaver
 {
     [RequireComponent(typeof(TextureInitializer))]
+
     public class FragmentCollector : MonoBehaviour
     {
         private TextureInitializer _textureInitializer;

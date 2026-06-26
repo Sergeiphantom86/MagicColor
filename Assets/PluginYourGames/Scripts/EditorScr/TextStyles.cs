@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;

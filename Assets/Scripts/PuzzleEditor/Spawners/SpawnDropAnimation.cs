@@ -7,17 +7,10 @@ namespace PuzzleEditor.Spawners
 {
     public class SpawnDropAnimation : MonoBehaviour
     {
-        [SerializeField]
-        private float _startYOffset;
-
-        [SerializeField]
-        private float _duration;
-
-        [SerializeField]
-        private Ease _ease = Ease.OutCubic;
-
-        [SerializeField]
-        private AudioClip _fall;
+        [SerializeField] private float _startYOffset;
+        [SerializeField] private float _duration;
+        [SerializeField] private Ease _ease = Ease.OutCubic;
+        [SerializeField] private AudioClip _fall;
 
         private Tween _tween;
         private Vector3 _targetWorldPosition;
@@ -42,7 +35,7 @@ namespace PuzzleEditor.Spawners
             _tween?.Play();
 
             if (_voiceover != null && _fall != null)
-                _voiceover.PlayOneShot(_fall);
+            _voiceover.PlayOneShot(_fall);
         }
 
         public void Create(Effecter effecter)
@@ -56,25 +49,25 @@ namespace PuzzleEditor.Spawners
             _collider.enabled = true;
 
             _tween = transform
-                .DOMove(_targetWorldPosition, _duration)
-                .OnComplete(() =>
-                {
-                    effecter.CraeteParticles(transform.position, Quaternion.identity, 0.5f);
+            .DOMove(_targetWorldPosition, _duration)
+            .OnComplete(() =>
+            {
+                effecter.CraeteParticles(transform.position, Quaternion.identity, 0.5f);
 
-                    _targetColor.SetAlpha(_valueTransparency);
+                _targetColor.SetAlpha(_valueTransparency);
                 })
                 .SetEase(_ease)
                 .Pause();
-        }
+            }
 
-        private void SetStartPosition()
-        {
-            transform.position = _targetWorldPosition + Vector3.up * _startYOffset;
-        }
+            private void SetStartPosition()
+            {
+                transform.position = _targetWorldPosition + Vector3.up * _startYOffset;
+            }
 
-        private void SetTargetPosition()
-        {
-            _targetWorldPosition = transform.position;
+            private void SetTargetPosition()
+            {
+                _targetWorldPosition = transform.position;
+            }
         }
     }
-}

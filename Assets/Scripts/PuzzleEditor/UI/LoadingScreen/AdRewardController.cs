@@ -9,8 +9,7 @@ namespace PuzzleEditor.UI.LoadingScreen
     {
         private const string RewardID = "after_puzzle_reward";
 
-        [SerializeField]
-        private OfferPanel _offerPanel;
+        [SerializeField] private OfferPanel _offerPanel;
 
         private IProgressSaver _progressSaver;
 
@@ -30,10 +29,10 @@ namespace PuzzleEditor.UI.LoadingScreen
             }
 
             _progressSaver.SubscribeADSReward(
-                onRewardReceived: null,
-                onAdOpened: null,
-                onAdClosed: Complete,
-                onAdError: Complete
+            onRewardReceived: null,
+            onAdOpened: null,
+            onAdClosed: Complete,
+            onAdError: Complete
             );
         }
 
@@ -46,10 +45,10 @@ namespace PuzzleEditor.UI.LoadingScreen
             }
 
             _progressSaver.UnsubscribeADSReward(
-                onRewardReceived: null,
-                onAdOpened: null,
-                onAdClosed: Complete,
-                onAdError: Complete
+            onRewardReceived: null,
+            onAdOpened: null,
+            onAdClosed: Complete,
+            onAdError: Complete
             );
         }
 
@@ -58,7 +57,7 @@ namespace PuzzleEditor.UI.LoadingScreen
             OnComplete = onComplete;
 
             if (_offerPanel == null)
-                return;
+            return;
 
             _offerPanel.TurnOn();
         }

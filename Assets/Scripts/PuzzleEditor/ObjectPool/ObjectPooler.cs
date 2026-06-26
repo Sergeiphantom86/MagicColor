@@ -5,22 +5,17 @@ using UnityEngine.Pool;
 namespace PuzzleEditor.ObjectPool
 {
     public class ObjectPooler<T> : MonoBehaviour
-        where T : Component
+    where T : Component
     {
-        [SerializeField]
-        private T _prefab;
+        [SerializeField] private T _prefab;
 
         [SerializeField]
+
         private List<T> _fallbackPrefabs;
 
-        [SerializeField]
-        private bool _collectionCheck = true;
-
-        [SerializeField]
-        private int _defaultPoolSize = 10;
-
-        [SerializeField]
-        private int _maxPoolSize = 50;
+        [SerializeField] private bool _collectionCheck = true;
+        [SerializeField] private int _defaultPoolSize = 10;
+        [SerializeField] private int _maxPoolSize = 50;
 
         private ObjectPool<T> _pool;
         private Dictionary<int, ObjectPool<T>> _prefabPools;
@@ -45,8 +40,8 @@ namespace PuzzleEditor.ObjectPool
         public void Release(T item)
         {
             if (
-                _objectToPrefabIndex != null
-                && _objectToPrefabIndex.TryGetValue(item, out int prefabIndex)
+            _objectToPrefabIndex != null
+            && _objectToPrefabIndex.TryGetValue(item, out int prefabIndex)
             )
             {
                 if (_prefabPools.TryGetValue(prefabIndex, out var specificPool))
@@ -63,13 +58,13 @@ namespace PuzzleEditor.ObjectPool
         private void CreatePool()
         {
             _pool = new ObjectPool<T>(
-                createFunc: CreatePooledItem,
-                actionOnGet: OnTakeFromPool,
-                actionOnRelease: OnReturnedToPool,
-                actionOnDestroy: OnDestroyPoolObject,
-                collectionCheck: _collectionCheck,
-                defaultCapacity: _defaultPoolSize,
-                maxSize: _maxPoolSize
+            createFunc: CreatePooledItem,
+            actionOnGet: OnTakeFromPool,
+            actionOnRelease: OnReturnedToPool,
+            actionOnDestroy: OnDestroyPoolObject,
+            collectionCheck: _collectionCheck,
+            defaultCapacity: _defaultPoolSize,
+            maxSize: _maxPoolSize
             );
 
             if (_fallbackPrefabs != null && _fallbackPrefabs.Count > 1)
@@ -81,13 +76,13 @@ namespace PuzzleEditor.ObjectPool
                 {
                     int index = i;
                     var pool = new ObjectPool<T>(
-                        createFunc: () => CreateFromSpecificPrefab(index),
-                        actionOnGet: OnTakeFromPool,
-                        actionOnRelease: OnReturnedToPool,
-                        actionOnDestroy: OnDestroyPoolObject,
-                        collectionCheck: _collectionCheck,
-                        defaultCapacity: _defaultPoolSize,
-                        maxSize: _maxPoolSize
+                    createFunc: () => CreateFromSpecificPrefab(index),
+                    actionOnGet: OnTakeFromPool,
+                    actionOnRelease: OnReturnedToPool,
+                    actionOnDestroy: OnDestroyPoolObject,
+                    collectionCheck: _collectionCheck,
+                    defaultCapacity: _defaultPoolSize,
+                    maxSize: _maxPoolSize
                     );
                     _prefabPools[i] = pool;
                 }
@@ -143,7 +138,7 @@ namespace PuzzleEditor.ObjectPool
         private void OnDestroyPoolObject(T item)
         {
             if (item == null)
-                return;
+            return;
 
             _objectToPrefabIndex?.Remove(item);
 

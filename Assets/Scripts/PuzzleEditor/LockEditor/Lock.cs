@@ -8,16 +8,12 @@ using UnityEngine;
 namespace PuzzleEditor.LockEditor
 {
     [RequireComponent(typeof(Unblocker), typeof(Oscillator), typeof(Voiceover))]
+
     public class Lock : MonoBehaviour
     {
-        [SerializeField]
-        private AudioClip _flight;
-
-        [SerializeField]
-        private AudioClip _blocking;
-
-        [SerializeField]
-        private ErrorPanel _errorPanel;
+        [SerializeField] private AudioClip _flight;
+        [SerializeField] private AudioClip _blocking;
+        [SerializeField] private ErrorPanel _errorPanel;
 
         private Oscillator _ocillator;
         private Unblocker _unblocker;

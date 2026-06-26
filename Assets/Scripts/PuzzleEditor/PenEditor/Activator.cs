@@ -8,23 +8,12 @@ namespace PuzzleEditor.PenEditor
 {
     public class Activator : MonoBehaviour, IActivatable
     {
-        [SerializeField]
-        private AudioClip _winn;
-
-        [SerializeField]
-        private AudioClip _pixelSound;
-
-        [SerializeField]
-        private Transform _transformPenHolder;
-
-        [SerializeField]
-        private BlocksContainer _blocksContainer;
-
-        [SerializeField]
-        private SequentialSpawner _sequentialSpawner;
-
-        [SerializeField]
-        private TextureInitializer _textureInitializer;
+        [SerializeField] private AudioClip _winn;
+        [SerializeField] private AudioClip _pixelSound;
+        [SerializeField] private Transform _transformPenHolder;
+        [SerializeField] private BlocksContainer _blocksContainer;
+        [SerializeField] private SequentialSpawner _sequentialSpawner;
+        [SerializeField] private TextureInitializer _textureInitializer;
 
         private float _delay;
         private float _duration;
@@ -64,11 +53,11 @@ namespace PuzzleEditor.PenEditor
             IFragmentAnimator animator = GetComponent<IFragmentAnimator>();
 
             _queueProcessor = new FragmentQueueProcessor(
-                _voiceover,
-                _pixelSound,
-                mover,
-                animator,
-                _blocksContainer
+            _voiceover,
+            _pixelSound,
+            mover,
+            animator,
+            _blocksContainer
             );
         }
 
@@ -108,7 +97,7 @@ namespace PuzzleEditor.PenEditor
         public void EnqueueFragments(Color color)
         {
             if (_textureInitializer == null)
-                return;
+            return;
 
             InitProgressIfNeeded();
 
@@ -125,7 +114,7 @@ namespace PuzzleEditor.PenEditor
         private void InitProgressIfNeeded()
         {
             if (_totalCountPixel > 0)
-                return;
+            return;
 
             _totalCountPixel = _textureInitializer.TotalCount;
             _progressTracker.Init(_totalCountPixel);
@@ -150,9 +139,9 @@ namespace PuzzleEditor.PenEditor
             yield return _delayWait;
 
             _speedController.TryAccelerate(
-                remainingTime,
-                Approached,
-                _queueProcessor.SpeedUpMovement
+            remainingTime,
+            Approached,
+            _queueProcessor.SpeedUpMovement
             );
         }
 

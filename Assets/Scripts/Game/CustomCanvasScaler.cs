@@ -5,11 +5,11 @@ using UnityEngine;
 namespace Game
 {
     [RequireComponent(typeof(Canvas))]
+
     public class CustomCanvasScaler : MonoBehaviour
     {
         [Header("Mobile")]
-        [SerializeField]
-        private float _mobileScaleMultiplier;
+        [SerializeField] private float _mobileScaleMultiplier;
 
         private Canvas _canvas;
         private Camera _camera;
@@ -47,7 +47,7 @@ namespace Game
         private void StartRecalculate()
         {
             if (_recalculateRoutine != null)
-                StopCoroutine(_recalculateRoutine);
+            StopCoroutine(_recalculateRoutine);
 
             _recalculateRoutine = StartCoroutine(RecalculateDelayed());
         }
@@ -60,10 +60,10 @@ namespace Game
             float scale = _zoomChanger.GetScreenSize(_camera);
 
             if (scale <= 0f)
-                yield break;
+            yield break;
 
             if (_zoomChanger.IsMobileWithTallScreen() == false)
-                yield break;
+            yield break;
 
             _canvas.scaleFactor = scale * _mobileScaleMultiplier;
         }

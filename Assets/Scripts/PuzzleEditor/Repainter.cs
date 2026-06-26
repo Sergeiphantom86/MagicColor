@@ -10,11 +10,8 @@ namespace PuzzleEditor
 {
     public class Repainter : MonoBehaviour
     {
-        [SerializeField]
-        private PuzzlesIdentifier _puzzlesIdentifier;
-
-        [SerializeField]
-        private BlocksContainer _blocksContainer;
+        [SerializeField] private PuzzlesIdentifier _puzzlesIdentifier;
+        [SerializeField] private BlocksContainer _blocksContainer;
 
         private List<Color> _colors;
         private List<IColorable> _walls;
@@ -93,7 +90,7 @@ namespace PuzzleEditor
         private void ReplaceColors(List<IColorable> colorables)
         {
             if (ShouldRepaint(colorables) == false)
-                return;
+            return;
 
             var (colors, objects) = PreparePaintingData(colorables);
 
@@ -106,12 +103,12 @@ namespace PuzzleEditor
         }
 
         private (List<Color> Colors, List<IColorable> Objects) PreparePaintingData(
-            List<IColorable> colorables
+        List<IColorable> colorables
         )
         {
             return (
-                Colors: ShuffleColors(_colors),
-                Objects: SelectRandomColorables(colorables, _colors.Count)
+            Colors: ShuffleColors(_colors),
+            Objects: SelectRandomColorables(colorables, _colors.Count)
             );
         }
 
@@ -123,9 +120,9 @@ namespace PuzzleEditor
         private List<IColorable> SelectRandomColorables(List<IColorable> colorables, int maxCount)
         {
             return colorables
-                .OrderBy(_ => Guid.NewGuid())
-                .Take(Mathf.Min(maxCount, colorables.Count))
-                .ToList();
+            .OrderBy(_ => Guid.NewGuid())
+            .Take(Mathf.Min(maxCount, colorables.Count))
+            .ToList();
         }
 
         private void ExecutePainting(List<Color> colors, List<IColorable> colorables)

@@ -7,17 +7,13 @@ using UnityEngine;
 namespace Menu.HomeScreenSaver
 {
     [RequireComponent(typeof(Sorter))]
+
     public class PixelMover : MonoBehaviour, IAnimatable
     {
         [Header("Settings")]
-        [SerializeField]
-        private float _moveDistance;
-
-        [SerializeField]
-        private float _animationDuration;
-
-        [SerializeField]
-        private float _delayBetweenPixels;
+        [SerializeField] private float _moveDistance;
+        [SerializeField] private float _animationDuration;
+        [SerializeField] private float _delayBetweenPixels;
 
         private Sorter _sorter;
         private Sequence _currentSequence;
@@ -51,13 +47,12 @@ namespace Menu.HomeScreenSaver
 
             for (int i = 0; i < _sortedPixels.Count; i++)
             {
-                _currentSequence
-                    .Insert(
-                        GetDelayPixels(i),
-                        GetPixelTransform(_sortedPixels, i)
-                            .DOMove(GetTargetPosition(_sortedPixels, i), _animationDuration)
-                            .SetEase(Ease.InOutFlash)
-                    );
+                _currentSequence.Insert(
+                GetDelayPixels(i),
+                GetPixelTransform(_sortedPixels, i)
+                .DOMove(GetTargetPosition(_sortedPixels, i), _animationDuration)
+                .SetEase(Ease.InOutFlash)
+                );
             }
         }
 

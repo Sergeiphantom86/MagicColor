@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -10,7 +10,7 @@ public static class NamespaceUpdater
     private const string RootFolder = "Assets/Scripts";
     private static readonly string[] ExcludeFolders = { "/Editor/", "/Plugins/", "/Tests/" };
 
-    [MenuItem("Tools/Update Namespaces (fix)")]
+    //[MenuItem("Tools/Update Namespaces (fix)")]
     public static void UpdateAllNamespaces()
     {
         string rootFullPath = Path.Combine(Application.dataPath, RootFolder.Substring("Assets/".Length));

@@ -13,14 +13,14 @@ namespace Menu.ButtonEditor
             switch (buttonType)
             {
                 case Play:
-                    return new PlayButton();
+                return new PlayButton();
                 case Settings:
-                    return new SettingsButton();
+                return new SettingsButton();
                 case Leaderboard:
-                    return new LeaderboardButton();
+                return new LeaderboardButton();
                 default:
-                    Debug.LogError($"Unknown button type: {buttonType}");
-                    return null;
+                Debug.LogError($"Unknown button type: {buttonType}");
+                return null;
             }
         }
     }

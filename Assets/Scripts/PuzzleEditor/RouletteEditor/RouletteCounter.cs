@@ -7,10 +7,10 @@ using UnityEngine.UI;
 namespace PuzzleEditor.RouletteEditor
 {
     [RequireComponent(typeof(ButtonController))]
+
     public class RouletteCounter : MonoBehaviour
     {
-        [SerializeField]
-        private RewardAdForSpins _rewardAdForSpins;
+        [SerializeField] private RewardAdForSpins _rewardAdForSpins;
 
         private int _currentCount;
         private int _displayedCount;
@@ -53,8 +53,8 @@ namespace PuzzleEditor.RouletteEditor
             if (_buttonController != null)
             {
                 _buttonController.Initialize(
-                    globalInteractableCondition: () => true,
-                    onClickAction: DecreaseCount
+                globalInteractableCondition: () => true,
+                onClickAction: DecreaseCount
                 );
 
                 _buttonController.UpdateState();
@@ -106,7 +106,7 @@ namespace PuzzleEditor.RouletteEditor
         public void DecreaseCount()
         {
             if (_currentCount <= 0)
-                return;
+            return;
 
             _currentCount--;
             AnimateCounterChange();
@@ -131,28 +131,28 @@ namespace PuzzleEditor.RouletteEditor
             _countTween?.Kill();
 
             _countTween = DOTween
-                .To(
-                    () => _displayedCount,
-                    currentValue =>
-                    {
-                        _displayedCount = currentValue;
-                        UpdateText();
-                    },
-                    _currentCount,
-                    _animationDuration
+            .To(
+            () => _displayedCount,
+            currentValue =>
+            {
+                _displayedCount = currentValue;
+                UpdateText();
+                },
+                _currentCount,
+                _animationDuration
                 )
                 .SetEase(Ease.OutQuad);
-        }
+            }
 
-        private void UpdateText()
-        {
-            _counterText.text = _displayedCount.ToString();
-        }
+            private void UpdateText()
+            {
+                _counterText.text = _displayedCount.ToString();
+            }
 
-        private void OnDestroy()
-        {
-            _progressSaver.SaveSpinsCount(_currentCount);
-            _countTween?.Kill();
+            private void OnDestroy()
+            {
+                _progressSaver.SaveSpinsCount(_currentCount);
+                _countTween?.Kill();
+            }
         }
     }
-}

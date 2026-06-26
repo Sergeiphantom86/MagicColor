@@ -6,6 +6,7 @@ using UnityEngine.Audio;
 namespace PuzzleEditor.SoundEditor
 {
     [RequireComponent(typeof(AudioSource))]
+
     public class MenuSoundManager : MonoBehaviour
     {
         private const float MinDecibels = -80f;
@@ -13,21 +14,11 @@ namespace PuzzleEditor.SoundEditor
         private const float MinVolume = 0.0001f;
 
         [SerializeField] private AudioClip _backgroundMusic;
-
-        [SerializeField]
-        private AudioMixerGroup _soundMixerGroup;
-
-        [SerializeField]
-        private AudioMixerGroup _musicMixerGroup;
-
-        [SerializeField]
-        private VolumeChanger _musicVolumeChanger;
-
-        [SerializeField]
-        private VolumeChanger _sounVolumeChanger;
-
-        [SerializeField]
-        private AudioMixer _mixer;
+        [SerializeField] private AudioMixerGroup _soundMixerGroup;
+        [SerializeField] private AudioMixerGroup _musicMixerGroup;
+        [SerializeField] private VolumeChanger _musicVolumeChanger;
+        [SerializeField] private VolumeChanger _sounVolumeChanger;
+        [SerializeField] private AudioMixer _mixer;
 
         private AudioSource _soundSource;
         private AudioSource _musicSource;
@@ -63,7 +54,7 @@ namespace PuzzleEditor.SoundEditor
         public void PlayButtonClickSound(AudioClip audioClip)
         {
             if (audioClip == null)
-                return;
+            return;
 
             _soundSource.PlayOneShot(audioClip);
 
@@ -96,10 +87,10 @@ namespace PuzzleEditor.SoundEditor
         }
 
         private void SetAudioSource(
-            AudioSource audioSource,
-            bool isOnLoop,
-            AudioMixerGroup audioMixerGroup,
-            float volume
+        AudioSource audioSource,
+        bool isOnLoop,
+        AudioMixerGroup audioMixerGroup,
+        float volume
         )
         {
             audioSource.outputAudioMixerGroup = audioMixerGroup;
@@ -120,7 +111,7 @@ namespace PuzzleEditor.SoundEditor
         public void PlayBackgroundMusic()
         {
             if (_backgroundMusic == null || _musicSource.isPlaying)
-                return;
+            return;
 
             _musicSource.clip = _backgroundMusic;
             _musicSource.Play();

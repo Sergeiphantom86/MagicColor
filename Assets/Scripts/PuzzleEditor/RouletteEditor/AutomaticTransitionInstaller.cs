@@ -7,8 +7,7 @@ namespace PuzzleEditor.RouletteEditor
 {
     public class AutomaticTransitionInstaller : MonoBehaviour
     {
-        [SerializeField]
-        protected ButtonHome ButtonHome;
+        [SerializeField] protected ButtonHome ButtonHome;
 
         private Sprite _newSprite;
         private Button _nextPuzzle;
@@ -32,8 +31,8 @@ namespace PuzzleEditor.RouletteEditor
         }
 
         public void SetProgressSaver(
-            IProgressSaver progressSaver,
-            SpriteTransmitter spriteTransmitter
+        IProgressSaver progressSaver,
+        SpriteTransmitter spriteTransmitter
         )
         {
             Initialized(progressSaver, spriteTransmitter);
@@ -85,8 +84,8 @@ namespace PuzzleEditor.RouletteEditor
         private void Show()
         {
             if (
-                _progressSaver.TryEnableFollowingQuest(_maxReachedQuestIndex)
-                || HasMatchingQuestIndex()
+            _progressSaver.TryEnableFollowingQuest(_maxReachedQuestIndex)
+            || HasMatchingQuestIndex()
             )
             {
                 gameObject.SetActive(false);
@@ -100,8 +99,8 @@ namespace PuzzleEditor.RouletteEditor
         private bool HasMatchingQuestIndex()
         {
             return _firstTutorial == _maxReachedQuestIndex
-                || _secondTutorial == _maxReachedQuestIndex
-                || _thirdTutorial == _maxReachedQuestIndex;
+            || _secondTutorial == _maxReachedQuestIndex
+            || _thirdTutorial == _maxReachedQuestIndex;
         }
     }
 }

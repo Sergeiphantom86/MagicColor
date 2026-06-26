@@ -15,7 +15,7 @@ namespace YG.Insides
             OnEnable,
             OnDisable,
 #if RU_YG2
-            [InspectorName("Вручную (метод ExecuteEvent)")]
+            [InspectorName("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅ ExecuteEvent)")]
 #else
             [InspectorName("Manual (method ExecuteEvent)")]
 #endif
@@ -26,13 +26,13 @@ namespace YG.Insides
         public enum ExecuteMode
         {
 #if RU_YG2
-            [InspectorName("Выполнять только у выбранных платформ")]
+            [InspectorName("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ")]
 #else
             [InspectorName("Run only on selected platforms")]
 #endif
             Selected,
 #if RU_YG2
-            [InspectorName("Игнорировать выбранные платформы (выполнять у тех, которых нет в списке)")]
+            [InspectorName("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)")]
 #else
             [InspectorName("Ignore selected platforms (perform on those that are not in the list)")]
 #endif

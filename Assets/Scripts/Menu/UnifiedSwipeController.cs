@@ -6,21 +6,17 @@ using UnityEngine.EventSystems;
 namespace Menu
 {
     [RequireComponent(typeof(ButtonCarouselController), typeof(ButtonSoundHandler))]
+
     public class UnifiedSwipeController
-        : MonoBehaviour,
-            IBeginDragHandler,
-            IDragHandler,
-            IEndDragHandler
+    : MonoBehaviour,
+    IBeginDragHandler,
+    IDragHandler,
+    IEndDragHandler
     {
         [Header("Swipe Settings")]
-        [SerializeField]
-        private float _swipeThreshold = 50f;
-
-        [SerializeField]
-        private Tutorial _tutorial;
-
-        [SerializeField]
-        private AudioClip _swipeSound;
+        [SerializeField] private float _swipeThreshold = 50f;
+        [SerializeField] private Tutorial _tutorial;
+        [SerializeField] private AudioClip _swipeSound;
 
         private ICarousel _carousel;
         private ButtonSoundHandler _buttonSound;
@@ -37,7 +33,7 @@ namespace Menu
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (ShouldBlockInput())
-                return;
+            return;
 
             _buttonSound.PlayButtonSound(_swipeSound);
             _isDragging = true;
@@ -47,20 +43,20 @@ namespace Menu
         public void OnDrag(PointerEventData eventData)
         {
             if (_isDragging == false || ShouldBlockInput())
-                return;
+            return;
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
             if (_isDragging == false || ShouldBlockInput())
-                return;
+            return;
 
             _isDragging = false;
 
             Vector2 direction = eventData.position - _startDragPosition;
 
             if (Mathf.Abs(direction.x) < _swipeThreshold)
-                return;
+            return;
 
             _carousel.ShowRelative((int)Mathf.Sign(-direction.x));
 
@@ -72,20 +68,20 @@ namespace Menu
             Vector2 delta = eventData.position - _startDragPosition;
 
             if (Mathf.Abs(delta.x) < 80f)
-                return;
+            return;
         }
 
         private bool ShouldBlockInput()
         {
             if (_blockInputWhenTutorialActive == false)
-                return false;
+            return false;
 
             if (_tutorial == null)
-                return false;
+            return false;
 
             return _tutorial.IsTutorialActive
-                && (_tutorial.IsSwipeAllowed && _isDragging) == false
-                && _tutorial.IsClickAllowed == false;
+            && (_tutorial.IsSwipeAllowed && _isDragging) == false
+            && _tutorial.IsClickAllowed == false;
         }
     }
 }

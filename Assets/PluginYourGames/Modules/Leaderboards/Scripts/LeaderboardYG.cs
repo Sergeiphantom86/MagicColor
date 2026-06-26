@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.UI;
@@ -285,4 +285,3 @@ namespace YG
         }
     }
 }
-

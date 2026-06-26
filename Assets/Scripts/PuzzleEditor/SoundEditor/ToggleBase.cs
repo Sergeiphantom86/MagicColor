@@ -5,6 +5,7 @@ using UnityEngine.UI;
 namespace PuzzleEditor.SoundEditor
 {
     [RequireComponent(typeof(Toggle))]
+
     public class ToggleBase : MonoBehaviour
     {
         private Toggle _toggle;
@@ -25,7 +26,7 @@ namespace PuzzleEditor.SoundEditor
         private void OnEnable()
         {
             if (_toggle == null)
-                return;
+            return;
 
             _toggle.onValueChanged.AddListener(TurnOff);
         }
@@ -33,7 +34,7 @@ namespace PuzzleEditor.SoundEditor
         private void OnDisable()
         {
             if (_toggle == null)
-                return;
+            return;
 
             _toggle.onValueChanged.RemoveListener(TurnOff);
         }

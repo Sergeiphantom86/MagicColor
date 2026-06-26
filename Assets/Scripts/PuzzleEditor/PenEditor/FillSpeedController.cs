@@ -9,7 +9,7 @@ namespace PuzzleEditor.PenEditor
         public void TryAccelerate(float remainingTime, Action<float> notify, Action applySpeed)
         {
             if (_isAccelerated)
-                return;
+            return;
 
             _isAccelerated = true;
 

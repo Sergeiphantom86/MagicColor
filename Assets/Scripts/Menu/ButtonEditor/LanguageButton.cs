@@ -5,8 +5,7 @@ namespace Menu.ButtonEditor
 {
     public class LanguageButton : MonoBehaviour
     {
-        [SerializeField]
-        private Image _choice;
+        [SerializeField] private Image _choice;
 
         private Button _choiceButton;
 

@@ -5,10 +5,10 @@ using UnityEngine;
 namespace PuzzleEditor.PenEditor.Placeholder
 {
     [RequireComponent(typeof(DustSizeCalculator))]
+
     public class AnimatorPenFilling : MonoBehaviour
     {
-        [SerializeField]
-        private TextureInitializer _fragmentCollector;
+        [SerializeField] private TextureInitializer _fragmentCollector;
 
         private DustSizeCalculator _dustSizeCalculator;
         private float _duration;
@@ -16,7 +16,6 @@ namespace PuzzleEditor.PenEditor.Placeholder
         private float _currentOccupancy;
 
         public int Size { get; private set; }
-
         private void Awake()
         {
             _duration = 1f;
@@ -35,7 +34,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
         private void UpdatePenSize(int quantity, Placeholder placeholder)
         {
             if (placeholder == null || quantity < 0)
-                return;
+            return;
 
             Size = quantity;
             _currentOccupancy = GetQuantityOccupancy(quantity);
@@ -70,11 +69,11 @@ namespace PuzzleEditor.PenEditor.Placeholder
         private void ChangePosition(Placeholder placeholder, float occupancy)
         {
             placeholder
-                .transform.DOLocalMove(
-                    GetPosition(placeholder.transform.localPosition, GetHeightIncrease(occupancy)),
-                    _duration
-                )
-                .SetEase(Ease.OutQuad);
+            .transform.DOLocalMove(
+            GetPosition(placeholder.transform.localPosition, GetHeightIncrease(occupancy)),
+            _duration
+            )
+            .SetEase(Ease.OutQuad);
         }
 
         private Vector3 GetNewScaleY(float occupancy)

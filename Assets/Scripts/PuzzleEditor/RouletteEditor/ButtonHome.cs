@@ -8,21 +8,15 @@ using UnityEngine.UI;
 namespace PuzzleEditor.RouletteEditor
 {
     [RequireComponent(typeof(Voiceover), typeof(Button), typeof(MenuLoader))]
+
     public class ButtonHome : MonoBehaviour
     {
         private const string Menu = nameof(Menu);
 
-        [SerializeField]
-        private Coin _coin;
-
-        [SerializeField]
-        private Ticket _ticket;
-
-        [SerializeField]
-        private AudioClip _audioClip;
-
-        [SerializeField]
-        private ButtonController _buttonController;
+        [SerializeField] private Coin _coin;
+        [SerializeField] private Ticket _ticket;
+        [SerializeField] private AudioClip _audioClip;
+        [SerializeField] private ButtonController _buttonController;
 
         private Voiceover _voiceover;
         private MenuLoader _menuLoader;
@@ -75,15 +69,15 @@ namespace PuzzleEditor.RouletteEditor
             }
 
             StartCoroutine(
-                WaitForWindowClose(_audioClip, true, 0, () => _menuLoader.TargetScene(Menu))
+            WaitForWindowClose(_audioClip, true, 0, () => _menuLoader.TargetScene(Menu))
             );
         }
 
         private IEnumerator WaitForWindowClose(
-            AudioClip clip,
-            bool isOn,
-            int duration,
-            Action callback
+        AudioClip clip,
+        bool isOn,
+        int duration,
+        Action callback
         )
         {
             _voiceover.PlayOneShot(clip);

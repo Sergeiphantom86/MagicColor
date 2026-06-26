@@ -14,7 +14,7 @@ namespace PuzzleEditor.Walls
         public void TurnOffSpriteRenderer()
         {
             if (_spriteRenderer == null)
-                return;
+            return;
 
             _spriteRenderer.enabled = false;
         }
@@ -22,7 +22,7 @@ namespace PuzzleEditor.Walls
         public void TurnOnSpriteRenderer()
         {
             if (_spriteRenderer == null)
-                return;
+            return;
 
             _spriteRenderer.enabled = true;
         }

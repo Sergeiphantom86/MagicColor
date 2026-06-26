@@ -9,10 +9,10 @@ namespace Menu.TutorialEditor.TutorialPuzzle
 {
     [RequireComponent(typeof(HandMover), typeof(Renderer), typeof(PathMover))]
     [RequireComponent(typeof(Collider), typeof(Voiceover))]
+
     public class Mirage : MonoBehaviour
     {
-        [SerializeField]
-        private AudioClip _audioClip;
+        [SerializeField] private AudioClip _audioClip;
 
         private bool _isMoved;
         private bool _isColored;
@@ -54,7 +54,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out Wall wall) == false)
-                return;
+            return;
 
             if (_firstTouch == false)
             {
@@ -69,7 +69,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         private void Move(Wall wall)
         {
             if (_isMoved == false)
-                return;
+            return;
 
             _voiceover.PlayOneShot(_audioClip);
 
@@ -83,7 +83,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         private void Repaint(Wall wall)
         {
             if (_isColored == false)
-                return;
+            return;
 
             _voiceover.PlayOneShot(_audioClip);
 
@@ -99,10 +99,10 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         private void InitializingComponents()
         {
             if (_wall.TryGetComponent(out ColorCollisionHandler _) == false)
-                return;
+            return;
 
             if (_wall.TryGetComponent(out Renderer renderer) == false)
-                return;
+            return;
 
             _rendererWall = renderer;
         }

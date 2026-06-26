@@ -5,8 +5,8 @@ namespace Menu.Shop
 {
     public class ShoppingWallet : MonoBehaviour
     {
-        [SerializeField]
-        private Wallet _wallet;
+        [SerializeField] private Wallet _wallet;
+
         private PurchaseButton _purchaseButton;
 
         private void Awake()
@@ -27,7 +27,7 @@ namespace Menu.Shop
         private void OnSpendFunds(long pay)
         {
             if (_wallet.SpendFunds(pay) == false)
-                return;
+            return;
 
             _purchaseButton.Click();
         }

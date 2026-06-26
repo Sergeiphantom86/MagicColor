@@ -8,8 +8,7 @@ namespace Menu.TutorialEditor
 {
     public class HintCounter : MonoBehaviour
     {
-        [SerializeField]
-        private BlocksContainer _container;
+        [SerializeField] private BlocksContainer _container;
 
         private Coroutine _hintCoroutine;
         private float _hintDelay;

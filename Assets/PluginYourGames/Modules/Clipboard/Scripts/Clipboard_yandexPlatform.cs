@@ -1,4 +1,4 @@
-﻿#if YandexGamesPlatform_yg
+#if YandexGamesPlatform_yg
 using System;
 using System.Runtime.InteropServices;
 using UnityEngine;

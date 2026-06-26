@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Menu.HomeScreenSaver
 {
     [RequireComponent(typeof(FragmentCollector))]
+
     public class Sorter : MonoBehaviour
     {
         private FragmentCollector _fragmentCollector;
@@ -18,18 +19,18 @@ namespace Menu.HomeScreenSaver
         private static int CompareFragments(Fragment first, Fragment second)
         {
             if (first == null || second == null)
-                return 0;
+            return 0;
 
             Vector3 positionA = first.transform.position;
             Vector3 positionB = second.transform.position;
 
             int diagonalComparison = CompareByDiagonal(positionA, positionB);
             if (diagonalComparison != 0)
-                return diagonalComparison;
+            return diagonalComparison;
 
             int heightComparison = CompareByHeight(positionA, positionB);
             if (heightComparison != 0)
-                return heightComparison;
+            return heightComparison;
 
             return CompareByX(positionA, positionB);
         }
@@ -70,7 +71,7 @@ namespace Menu.HomeScreenSaver
         private void OnSortFragments(List<Fragment> fragments)
         {
             if (fragments == null || fragments.Count == 0)
-                return;
+            return;
 
             fragments.Sort(CompareFragments);
 

@@ -5,8 +5,7 @@ namespace PuzzleEditor.PenEditor
 {
     public class FragmentAnimator : MonoBehaviour, IFragmentAnimator
     {
-        [SerializeField]
-        private Sprite _sprite;
+        [SerializeField] private Sprite _sprite;
 
         public void ActivateFragment(Fragment fragment)
         {

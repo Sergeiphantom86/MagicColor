@@ -1,6 +1,4 @@
 namespace Menu.ButtonEditor
 {
-    public class LeaderboardButton : MenuButtonBase
-    {
-    }
+    public class LeaderboardButton : MenuButtonBase { }
 }

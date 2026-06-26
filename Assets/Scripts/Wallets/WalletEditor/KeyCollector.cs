@@ -5,8 +5,7 @@ namespace Wallets.WalletEditor
 {
     public class KeyCollector : MonoBehaviour
     {
-        [SerializeField]
-        private BagKey bagKey;
+        [SerializeField] private BagKey bagKey;
 
         private ICollisionHandler _collisionHandler;
 
@@ -30,7 +29,7 @@ namespace Wallets.WalletEditor
             if (collider.TryGetComponent(out Key key))
             {
                 if (key == null)
-                    return;
+                return;
 
                 bagKey.Add();
                 key.gameObject.SetActive(false);

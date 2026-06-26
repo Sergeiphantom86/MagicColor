@@ -10,13 +10,11 @@ using UnityEngine.UI;
 namespace Menu
 {
     [RequireComponent(typeof(ButtonKeeper), typeof(ButtonSoundHandler), typeof(WindowInitializer))]
+
     public class HandlerButtonWindowInteraction : MonoBehaviour
     {
-        [SerializeField]
-        private Tutorial _tutorial;
-
-        [SerializeField]
-        private AudioClip _clickSound;
+        [SerializeField] private Tutorial _tutorial;
+        [SerializeField] private AudioClip _clickSound;
 
         private ButtonKeeper _buttonKeeper;
         private ButtonSoundHandler _buttonSoundHandler;
@@ -80,7 +78,7 @@ namespace Menu
             }
 
             if (
-                _windowInitializer.WindowActions.TryGetValue(windowName, out Action action) == false
+            _windowInitializer.WindowActions.TryGetValue(windowName, out Action action) == false
             )
             {
                 Debug.LogError($"Unknown window action: {windowName}");
@@ -95,7 +93,7 @@ namespace Menu
             for (int i = 0; i < _buttonKeeper.Buttons.Length; i++)
             {
                 if (_buttonKeeper.Buttons[i] == button)
-                    return i;
+                return i;
             }
 
             return -1;

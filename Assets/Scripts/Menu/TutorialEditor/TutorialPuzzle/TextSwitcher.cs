@@ -6,8 +6,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle
 {
     public class TextSwitcher : MonoBehaviour
     {
-        [SerializeField]
-        private Rewards _awardText;
+        [SerializeField] private Rewards _awardText;
 
         private TextMeshProUGUI _notificationText;
         private Image _image;

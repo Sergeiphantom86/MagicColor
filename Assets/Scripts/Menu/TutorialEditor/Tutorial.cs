@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Menu.TutorialEditor
 {
     [RequireComponent(typeof(EngineTutorialMenu))]
+
     public class Tutorial : MonoBehaviour
     {
         private bool _isFinished;
@@ -11,9 +12,7 @@ namespace Menu.TutorialEditor
         private IProgressSaver _progressSaver;
 
         public bool IsSwipeAllowed { get; private set; }
-
         public bool IsClickAllowed { get; private set; }
-
         public bool IsTutorialActive => gameObject.activeSelf;
 
         private void Awake()

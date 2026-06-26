@@ -7,8 +7,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle
 {
     public class HandMover : MonoBehaviour
     {
-        [SerializeField]
-        private Pivot _pivot;
+        [SerializeField] private Pivot _pivot;
 
         private Vector3 _startScale;
         private Vector3 _targetScale;
@@ -56,11 +55,11 @@ namespace Menu.TutorialEditor.TutorialPuzzle
             _sequence = DOTween.Sequence();
 
             _sequence
-                .Append(
-                    transform.DOScale(_targetScale, _duration).SetEase(Ease.OutBack, _overshoot)
-                )
-                .SetLoops(-1, LoopType.Restart)
-                .SetUpdate(true);
+            .Append(
+            transform.DOScale(_targetScale, _duration).SetEase(Ease.OutBack, _overshoot)
+            )
+            .SetLoops(-1, LoopType.Restart)
+            .SetUpdate(true);
         }
 
         public void EnableMoveAnimationZ()

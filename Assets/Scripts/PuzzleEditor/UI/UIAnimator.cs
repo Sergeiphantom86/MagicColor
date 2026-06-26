@@ -4,13 +4,11 @@ using UnityEngine;
 namespace PuzzleEditor.UI
 {
     [RequireComponent(typeof(RectTransform))]
+
     public class UIAnimator : MonoBehaviour
     {
-        [SerializeField]
-        private float _positionX;
-
-        [SerializeField]
-        private float _positionY;
+        [SerializeField] private float _positionX;
+        [SerializeField] private float _positionY;
 
         private float _scale;
         private float _duration;
@@ -46,19 +44,19 @@ namespace PuzzleEditor.UI
         }
 
         private Sequence GetSequence(
-            RectTransform canvasRect,
-            float positionX,
-            float positionY,
-            float positionZ
+        RectTransform canvasRect,
+        float positionX,
+        float positionY,
+        float positionZ
         )
         {
             return _moverUI.EnableMotionAnimation(
-                _rectTransform,
-                _duration,
-                canvasRect,
-                positionX,
-                positionY,
-                positionZ
+            _rectTransform,
+            _duration,
+            canvasRect,
+            positionX,
+            positionY,
+            positionZ
             );
         }
 

@@ -5,6 +5,7 @@ using UnityEngine.Audio;
 namespace PuzzleEditor.SoundEditor
 {
     [RequireComponent(typeof(AudioSource))]
+
     public class Voiceover : MonoBehaviour
     {
         private const string SoundVolume = nameof(SoundVolume);
@@ -29,12 +30,12 @@ namespace PuzzleEditor.SoundEditor
         public void PlayOneShot(AudioClip clip)
         {
             if (
-                clip == false
-                || _sfxSource == false
-                || _sfxSource.enabled == false
-                || gameObject.activeInHierarchy == false
+            clip == false
+            || _sfxSource == false
+            || _sfxSource.enabled == false
+            || gameObject.activeInHierarchy == false
             )
-                return;
+            return;
 
             _sfxSource.PlayOneShot(clip);
         }
@@ -60,9 +61,9 @@ namespace PuzzleEditor.SoundEditor
         private void LoadVolumeSettings()
         {
             float clampedVolume = Mathf.Clamp(
-                _progressSaver.Saves.SoundVolume,
-                MinVolume,
-                MaxVolume
+            _progressSaver.Saves.SoundVolume,
+            MinVolume,
+            MaxVolume
             );
             float dbVolume = Mathf.Log10(clampedVolume) * DBMultiplier;
 
@@ -75,7 +76,7 @@ namespace PuzzleEditor.SoundEditor
         private void OnValidate()
         {
             if (_sfxSource != null && _sfxGroup != null)
-                _sfxSource.outputAudioMixerGroup = _sfxGroup;
+            _sfxSource.outputAudioMixerGroup = _sfxGroup;
         }
     }
 }

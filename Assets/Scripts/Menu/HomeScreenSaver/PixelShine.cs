@@ -8,10 +8,10 @@ using UnityEngine;
 namespace Menu.HomeScreenSaver
 {
     [RequireComponent(typeof(AppearanceAnimator))]
+
     public class PixelShine : MonoBehaviour, IAnimatable
     {
-        [SerializeField]
-        private ParticleSystem _particleSystem;
+        [SerializeField] private ParticleSystem _particleSystem;
 
         private float _shineDuration;
         private float _pauseBetweenPasses;
@@ -51,14 +51,14 @@ namespace Menu.HomeScreenSaver
         private void OnStartShineAnimation()
         {
             if (_appearanceAnimator.Fragments.Count == 0)
-                return;
+            return;
 
             _validFragments = _appearanceAnimator
-                .Fragments.Where(f => f != null && f.Renderer != null)
-                .ToList();
+            .Fragments.Where(f => f != null && f.Renderer != null)
+            .ToList();
 
             if (_validFragments.Count == 0)
-                return;
+            return;
 
             CreateShineSequence();
             StoreOriginalColors();
@@ -68,78 +68,78 @@ namespace Menu.HomeScreenSaver
                 RestoreOriginalColors();
 
                 Glistened?.Invoke(_validFragments);
-            });
+                });
 
-            _particleSystem.gameObject.SetActive(true);
-            _particleSystem.Play();
-        }
-
-        private void StoreOriginalColors()
-        {
-            _originalColors.Clear();
-
-            _originalColors = _validFragments.ToDictionary(
-                fragment => fragment,
-                fragment => fragment.Renderer.color
-            );
-        }
-
-        private void RestoreOriginalColors()
-        {
-            foreach (var pair in _originalColors)
-            {
-                if (pair.Key.Renderer != null)
-                    pair.Key.Renderer.color = pair.Value;
+                _particleSystem.gameObject.SetActive(true);
+                _particleSystem.Play();
             }
 
-            _originalColors.Clear();
-        }
-
-        private void CreateShineSequence()
-        {
-            ResetAnimation();
-
-            _shineSequence = DOTween.Sequence();
-
-            for (int i = 0; i < _validFragments.Count; i++)
+            private void StoreOriginalColors()
             {
-                _shineSequence.Insert(
-                    i * _delayBetweenPixels,
-                    CreateShineTween(_validFragments[i])
+                _originalColors.Clear();
+
+                _originalColors = _validFragments.ToDictionary(
+                fragment => fragment,
+                fragment => fragment.Renderer.color
                 );
             }
 
-            _shineSequence.AppendInterval(_pauseBetweenPasses);
-        }
-
-        private Sequence CreateShineTween(Fragment fragment)
-        {
-            SpriteRenderer renderer = fragment.Renderer;
-
-            return DOTween
-                .Sequence()
-                .Append(
-                    renderer
-                        .DOColor(Color.white + Color.yellow, _shineDuration)
-                        .SetEase(Ease.OutQuad)
-                )
-                .Append(renderer.DOColor(renderer.color, _shineDuration).SetEase(Ease.InQuad));
-        }
-
-        private void ResetAnimation()
-        {
-            DOTweenExtensions.SafeKill(_shineSequence);
-
-            if (_validFragments != null)
+            private void RestoreOriginalColors()
             {
-                foreach (var fragment in _validFragments)
+                foreach (var pair in _originalColors)
                 {
-                    if (fragment != null)
-                        fragment.transform.DOKill();
+                    if (pair.Key.Renderer != null)
+                    pair.Key.Renderer.color = pair.Value;
                 }
+
+                _originalColors.Clear();
             }
 
-            _shineSequence = null;
+            private void CreateShineSequence()
+            {
+                ResetAnimation();
+
+                _shineSequence = DOTween.Sequence();
+
+                for (int i = 0; i < _validFragments.Count; i++)
+                {
+                    _shineSequence.Insert(
+                    i * _delayBetweenPixels,
+                    CreateShineTween(_validFragments[i])
+                    );
+                }
+
+                _shineSequence.AppendInterval(_pauseBetweenPasses);
+            }
+
+            private Sequence CreateShineTween(Fragment fragment)
+            {
+                SpriteRenderer renderer = fragment.Renderer;
+
+                return DOTween
+                .Sequence()
+                .Append(
+                renderer
+                .DOColor(Color.white + Color.yellow, _shineDuration)
+                .SetEase(Ease.OutQuad)
+                )
+                .Append(renderer.DOColor(renderer.color, _shineDuration).SetEase(Ease.InQuad));
+            }
+
+            private void ResetAnimation()
+            {
+                DOTweenExtensions.SafeKill(_shineSequence);
+
+                if (_validFragments != null)
+                {
+                    foreach (var fragment in _validFragments)
+                    {
+                        if (fragment != null)
+                        fragment.transform.DOKill();
+                    }
+                }
+
+                _shineSequence = null;
+            }
         }
     }
-}

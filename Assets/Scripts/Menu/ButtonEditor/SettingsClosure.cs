@@ -6,19 +6,13 @@ using UnityEngine.UI;
 namespace Menu.ButtonEditor
 {
     [RequireComponent(typeof(Button))]
+
     public class SettingsClosure : MonoBehaviour
     {
-        [SerializeField]
-        private Window _settingWindow;
-
-        [SerializeField]
-        private ButtonSoundHandler _buttonSound;
-
-        [SerializeField]
-        private AudioClip _audioClip;
-
-        [SerializeField]
-        private Viewer _viewer;
+        [SerializeField] private Window _settingWindow;
+        [SerializeField] private ButtonSoundHandler _buttonSound;
+        [SerializeField] private AudioClip _audioClip;
+        [SerializeField] private Viewer _viewer;
 
         private Button _button;
 

@@ -2,7 +2,5 @@ using UnityEngine;
 
 namespace PuzzleEditor.Walls
 {
-    public class NarrowPuzzle : MonoBehaviour
-    {
-    }
+    public class NarrowPuzzle : MonoBehaviour { }
 }

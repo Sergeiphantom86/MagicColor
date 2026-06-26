@@ -10,15 +10,13 @@ using YG;
 namespace Game.LoadingScreen
 {
     [RequireComponent(typeof(CanvasGroup), typeof(PanelFader))]
+
     public class SceneLoader : MonoBehaviour
     {
         private const string Menu = nameof(Menu);
 
-        [SerializeField]
-        private float _fadeDuration;
-
-        [SerializeField]
-        private float _minLoadTime;
+        [SerializeField] private float _fadeDuration;
+        [SerializeField] private float _minLoadTime;
 
         private float _maxLoad;
         private bool _isFirstLoad;
@@ -30,7 +28,6 @@ namespace Game.LoadingScreen
         private ResourcesSceneLoader _resourcesSceneLoader;
 
         public static SceneLoader Instance { get; private set; }
-
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -68,14 +65,14 @@ namespace Game.LoadingScreen
         private IEnumerator LoadAsyncSceneProcess(string sceneName)
         {
             if (_panelFader != null)
-                yield return _panelFader.Fade(1f, true).WaitForCompletion();
+            yield return _panelFader.Fade(1f, true).WaitForCompletion();
 
             float loadStartTime = Time.realtimeSinceStartup;
 
             if (ValidateSceneExists(sceneName) == false)
             {
                 if (_panelFader != null)
-                    yield return _panelFader.Fade(0, false).WaitForCompletion();
+                yield return _panelFader.Fade(0, false).WaitForCompletion();
             }
 
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
@@ -83,8 +80,8 @@ namespace Game.LoadingScreen
             asyncLoad.allowSceneActivation = false;
 
             while (
-                asyncLoad.progress < _maxLoad
-                || (Time.realtimeSinceStartup - loadStartTime) < _minLoadTime
+            asyncLoad.progress < _maxLoad
+            || (Time.realtimeSinceStartup - loadStartTime) < _minLoadTime
             )
             {
                 yield return null;
@@ -104,7 +101,7 @@ namespace Game.LoadingScreen
             }
 
             if (_panelFader != null)
-                yield return _panelFader.Fade(0, false).WaitForCompletion();
+            yield return _panelFader.Fade(0, false).WaitForCompletion();
 
             _isFirstLoad = false;
         }
@@ -115,7 +112,7 @@ namespace Game.LoadingScreen
             {
                 string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
                 if (Path.GetFileNameWithoutExtension(scenePath) == sceneName)
-                    return true;
+                return true;
             }
 
             SceneManager.LoadSceneAsync(Menu);
@@ -126,7 +123,7 @@ namespace Game.LoadingScreen
         private void OnDestroy()
         {
             if (Instance == this)
-                Instance = null;
+            Instance = null;
 
             _canvasGroup.DOKill();
         }

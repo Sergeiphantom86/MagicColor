@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using YG.Utils.Metrica;
 
 namespace YG
@@ -125,4 +125,3 @@ namespace YG
         }
     }
 }
-

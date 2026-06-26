@@ -9,8 +9,7 @@ namespace PuzzleEditor.MovingBlocks
 {
     public class KeyInstaller : MonoBehaviour
     {
-        [SerializeField]
-        private int _desiredBlockCount = 3;
+        [SerializeField] private int _desiredBlockCount = 3;
 
         private IActivatable _activatable;
         private bool _isPlaced;
@@ -32,17 +31,17 @@ namespace PuzzleEditor.MovingBlocks
         public void TryPlaceKey(List<IColorable> colorables)
         {
             if (CanPlace() == false)
-                return;
+            return;
 
             var blocks = colorables
-                .OfType<Block>()
-                .Where(block => block.IsRepainted == false)
-                .OrderBy(_ => Random.value)
-                .Take(_desiredBlockCount)
-                .ToList();
+            .OfType<Block>()
+            .Where(block => block.IsRepainted == false)
+            .OrderBy(_ => Random.value)
+            .Take(_desiredBlockCount)
+            .ToList();
 
             if (blocks.Count == 0)
-                return;
+            return;
 
             Block block = blocks[Random.Range(0, blocks.Count)];
 

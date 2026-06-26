@@ -7,34 +7,18 @@ using UnityEngine;
 namespace Menu.TutorialEditor
 {
     [RequireComponent(typeof(Scaler), typeof(Voiceover))]
+
     public class OfferPanel : MonoBehaviour
     {
-        [SerializeField]
-        private MenuButtons _menuButtons;
-
-        [SerializeField]
-        private Rewards _rewards;
-
-        [SerializeField]
-        private float _duration;
-
-        [SerializeField]
-        private float _minScale;
-
-        [SerializeField]
-        private float _scaleMultiplier;
-
-        [SerializeField]
-        private float _overshoot;
-
-        [SerializeField]
-        private float _delay;
-
-        [SerializeField]
-        private AudioClip _audioClip;
-
-        [SerializeField]
-        private AudioClip _click;
+        [SerializeField] private MenuButtons _menuButtons;
+        [SerializeField] private Rewards _rewards;
+        [SerializeField] private float _duration;
+        [SerializeField] private float _minScale;
+        [SerializeField] private float _scaleMultiplier;
+        [SerializeField] private float _overshoot;
+        [SerializeField] private float _delay;
+        [SerializeField] private AudioClip _audioClip;
+        [SerializeField] private AudioClip _click;
 
         private Vector3 _scale;
         private Scaler _scaling;

@@ -1,6 +1,4 @@
 namespace Menu.ButtonEditor
 {
-    public class PlayButton : MenuButtonBase
-    {
-    }
+    public class PlayButton : MenuButtonBase { }
 }

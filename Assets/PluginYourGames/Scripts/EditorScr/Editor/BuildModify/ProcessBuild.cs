@@ -1,4 +1,4 @@
-﻿namespace YG.EditorScr.BuildModify
+namespace YG.EditorScr.BuildModify
 {
     using UnityEditor.Build.Reporting;
     using UnityEditor.Build;

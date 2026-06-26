@@ -5,11 +5,8 @@ namespace Menu.TutorialEditor.TutorialUI
 {
     public class TimerFringe : Fring
     {
-        [SerializeField]
-        private GameObject _panel;
-
-        [SerializeField]
-        private StarsCounter _starsCounter;
+        [SerializeField] private GameObject _panel;
+        [SerializeField] private StarsCounter _starsCounter;
 
         public StarsCounter StarsCounter => _starsCounter;
 

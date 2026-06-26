@@ -6,10 +6,10 @@ using UnityEngine.UI;
 namespace Menu.QuestEditor
 {
     [RequireComponent(typeof(TransitionChooser))]
+
     public class QuestSystem : MonoBehaviour
     {
-        [SerializeField]
-        private Button _button;
+        [SerializeField] private Button _button;
 
         private Quest _next;
         private Quest _active;
@@ -36,13 +36,13 @@ namespace Menu.QuestEditor
         }
 
         public void Initialize(
-            IReadOnlyList<Quest> quests,
-            IProgressSaver progressSaver,
-            SpriteTransmitter spriteTransmitter
+        IReadOnlyList<Quest> quests,
+        IProgressSaver progressSaver,
+        SpriteTransmitter spriteTransmitter
         )
         {
             if (quests == null || quests.Count == 0)
-                return;
+            return;
 
             if (progressSaver.Saves == null)
             {
@@ -83,7 +83,7 @@ namespace Menu.QuestEditor
         private void ProcessSavedProgress()
         {
             if (IsQuestListValid() == false)
-                return;
+            return;
 
             UnlockQuestsUpToSavedIndex();
             SetActiveQuestIndicator();
@@ -118,7 +118,7 @@ namespace Menu.QuestEditor
             _active = _quests[index];
 
             if (_active.IsUnlocked)
-                return;
+            return;
 
             _active.Unlock();
             SubscribeToQuest(_active);
@@ -138,13 +138,13 @@ namespace Menu.QuestEditor
         private void SetActiveQuestIndicator()
         {
             if (_active != null)
-                _active.SetActiveIndicator(true);
+            _active.SetActiveIndicator(true);
         }
 
         public void TryAutoTransition()
         {
             if (_isOn == false || _active == null)
-                return;
+            return;
             _isActivate = true;
             _active.OnClick();
         }

@@ -4,10 +4,10 @@ using UnityEngine;
 namespace Menu.TutorialEditor.TutorialPuzzle
 {
     [RequireComponent(typeof(Voiceover))]
+
     public class Hints : MonoBehaviour
     {
-        [SerializeField]
-        private AudioClip _audioClip;
+        [SerializeField] private AudioClip _audioClip;
 
         private TextSwitcher _textSwitcher;
         private Voiceover _voiceover;

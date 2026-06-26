@@ -1,4 +1,4 @@
-﻿#if WelwiseGamesPlatform_yg && EnvirData_yg
+#if WelwiseGamesPlatform_yg && EnvirData_yg
 namespace YG
 {
     using System.Runtime.InteropServices;

@@ -4,8 +4,7 @@ namespace PuzzleEditor.PenEditor
 {
     public class ColorableWritNode : ColorableObject
     {
-        [SerializeField]
-        private Activator _activator;
+        [SerializeField] private Activator _activator;
 
         private void Start()
         {

@@ -5,32 +5,26 @@ using UnityEngine;
 namespace PuzzleEditor.UI
 {
     [RequireComponent(typeof(Canvas))]
+
     public class AnimatorPuzzle : MonoBehaviour
     {
-        [SerializeField]
-        private Puzzle1 _puzzle;
-
-        [SerializeField]
-        private Activator _activator;
-
-        [SerializeField]
-        private VictoryPlaque _victoryPlaque;
-
-        [SerializeField]
-        private FireworksController _fireworks;
+        [SerializeField] private Puzzle1 _puzzle;
+        [SerializeField] private Activator _activator;
+        [SerializeField] private VictoryPlaque _victoryPlaque;
+        [SerializeField] private FireworksController _fireworks;
 
         public event System.Action AnimationComplete;
 
         private void Awake()
         {
             if (_activator == null)
-                Debug.LogError("Activator component not found on Pen object!", this);
+            Debug.LogError("Activator component not found on Pen object!", this);
         }
 
         private void OnEnable()
         {
             if (_activator == null)
-                return;
+            return;
 
             _activator.PuzzleCompleted += OnLaunchFinal;
             _activator.Approached += OnRemove;

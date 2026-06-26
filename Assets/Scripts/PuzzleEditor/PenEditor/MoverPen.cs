@@ -5,22 +5,14 @@ using UnityEngine;
 namespace PuzzleEditor.PenEditor
 {
     [RequireComponent(typeof(PenScaleController))]
+
     public class MoverPen : MonoBehaviour, IMover
     {
-        [SerializeField]
-        private float _radius = 0.5f;
-
-        [SerializeField]
-        private float _duration = 1f;
-
-        [SerializeField]
-        private float _positionX = 1.5f;
-
-        [SerializeField]
-        private float _positionZ = 5f;
-
-        [SerializeField]
-        private float _centerChangeInterval = 10f;
+        [SerializeField] private float _radius = 0.5f;
+        [SerializeField] private float _duration = 1f;
+        [SerializeField] private float _positionX = 1.5f;
+        [SerializeField] private float _positionZ = 5f;
+        [SerializeField] private float _centerChangeInterval = 10f;
 
         private PenScaleController _scaleController;
         private Coroutine _movementCoroutine;
@@ -60,7 +52,7 @@ namespace PuzzleEditor.PenEditor
             StopMovementLoop();
 
             if (ValidateMoveParameters(targetPosition, duration) == false)
-                yield break;
+            yield break;
 
             PrepareForProgrammaticMove();
 
@@ -74,7 +66,7 @@ namespace PuzzleEditor.PenEditor
         private void StartMovementLoop()
         {
             if (_movementCoroutine != null)
-                return;
+            return;
 
             _isRunning = true;
             _movementCoroutine = StartCoroutine(MovementLoop());
@@ -152,7 +144,7 @@ namespace PuzzleEditor.PenEditor
         private void PrepareForProgrammaticMove()
         {
             if (_scaleController == null)
-                return;
+            return;
 
             _scaleController.Stop();
             _scaleController.StartScaleUp();

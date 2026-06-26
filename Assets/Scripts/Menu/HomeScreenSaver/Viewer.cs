@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Menu.HomeScreenSaver
 {
     [RequireComponent(typeof(AnimationController), typeof(TextureInitializer))]
+
     public class Viewer : MonoBehaviour
     {
         private const int TweenCapacity = 4000;
@@ -54,7 +55,7 @@ namespace Menu.HomeScreenSaver
             if (active)
             {
                 if (gameObject.activeSelf)
-                    return;
+                return;
 
                 gameObject.SetActive(true);
                 _animationController.ResumeAllAnimations();
@@ -64,7 +65,7 @@ namespace Menu.HomeScreenSaver
             _animationController.PauseAllAnimations();
 
             if (gameObject.activeSelf == false)
-                return;
+            return;
 
             gameObject.SetActive(false);
         }
@@ -72,7 +73,7 @@ namespace Menu.HomeScreenSaver
         public void ShowNextSprite()
         {
             if (_isTransitioning || _spriteSequence.Count == 0)
-                return;
+            return;
 
             _isTransitioning = true;
 
@@ -83,12 +84,12 @@ namespace Menu.HomeScreenSaver
             if (nextIndex >= MinIndex && nextIndex < _spriteSequence.Count)
             {
                 _transitionSequence
-                    .AppendCallback(() =>
-                        _textureInitializer.SpawnPixelsFromTexture(
-                            _spriteSequence[nextIndex].texture
-                        )
-                    )
-                    .OnComplete(() => _isTransitioning = false);
+                .AppendCallback(() =>
+                _textureInitializer.SpawnPixelsFromTexture(
+                _spriteSequence[nextIndex].texture
+                )
+                )
+                .OnComplete(() => _isTransitioning = false);
             }
             else
             {
@@ -105,7 +106,7 @@ namespace Menu.HomeScreenSaver
         private int GetNextSpriteIndex()
         {
             if (_spriteSequence.Count == 0)
-                return InvalidIndex;
+            return InvalidIndex;
 
             return Random.Range(MinIndex, _spriteSequence.Count);
         }

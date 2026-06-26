@@ -35,7 +35,7 @@ public class DropShatterAnimation : MonoBehaviour
         StoreOriginalTransforms();
         _originalDropPosition = _mainDrop.position;
 
-        // Изначально скрываем осколки
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         SetShatterPiecesActive(false);
 
         PlayShatterAnimation();
@@ -91,10 +91,10 @@ public class DropShatterAnimation : MonoBehaviour
     {
         _isAnimating = true;
 
-        // 1. Падение капли
+        // 1. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         yield return FallAnimation();
 
-        // 2. Разбитие и разлёт осколков
+        // 2. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         yield return ShatterEffect();
 
         _isAnimating = false;
@@ -104,10 +104,10 @@ public class DropShatterAnimation : MonoBehaviour
     {
         _isAnimating = true;
 
-        // 1. Сборка осколков обратно
+        // 1. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         yield return ReverseShatterEffect();
 
-        // 2. Подъём капли
+        // 2. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         yield return RiseAnimation();
 
         _isAnimating = false;
@@ -117,15 +117,15 @@ public class DropShatterAnimation : MonoBehaviour
     {
         _mainDrop.gameObject.SetActive(true);
 
-        // Сбрасываем позицию капли
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         _mainDrop.position = _originalDropPosition + Vector3.up * _dropHeight;
         _mainDrop.localScale = Vector3.one;
 
-        // Анимация падения
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         var fallTween = _mainDrop.DOMoveY(_originalDropPosition.y, _shatterDuration * 0.6f)
             .SetEase(_fallEase);
 
-        // Легкое сплющивание при ударе
+        // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         var squashTween = _mainDrop.DOScale(new Vector3(1.2f, 0.8f, 1.2f), _shatterDuration * 0.2f)
             .SetDelay(_shatterDuration * 0.5f)
             .SetEase(Ease.OutBounce);
@@ -135,15 +135,15 @@ public class DropShatterAnimation : MonoBehaviour
 
     private IEnumerator ShatterEffect()
     {
-        // Воспроизводим частицы брызг
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         if (_splashParticles != null)
             _splashParticles.Play();
 
-        // Скрываем основную каплю
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         _mainDrop.DOScale(Vector3.zero, _shatterDuration * 0.3f)
             .SetEase(Ease.InBack);
 
-        // Активируем и разбрасываем осколки
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         SetShatterPiecesActive(true);
         ResetPiecesToOrigin();
 
@@ -153,7 +153,7 @@ public class DropShatterAnimation : MonoBehaviour
         {
             if (_shatterPieces[i] == null) continue;
 
-            // Случайное направление разлёта
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             Vector3 randomDirection = new Vector3(
                 Random.Range(-1f, 1f),
                 Random.Range(0.2f, 1f),
@@ -194,13 +194,13 @@ public class DropShatterAnimation : MonoBehaviour
 
         yield return _reverseSequence.WaitForCompletion();
 
-        // Скрываем осколки после сборки
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         SetShatterPiecesActive(false);
     }
 
     private IEnumerator RiseAnimation()
     {
-        // Показываем и анимируем подъём капли
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         _mainDrop.gameObject.SetActive(true);
         _mainDrop.position = _originalDropPosition;
         _mainDrop.localScale = Vector3.zero;
@@ -250,11 +250,11 @@ public class DropShatterAnimation : MonoBehaviour
         StopAllAnimations();
     }
 
-    // Автоматическая настройка через контекстное меню
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
     [ContextMenu("Setup Drop Pieces")]
     private void SetupDropPieces()
     {
-        // Этот метод поможет быстро настроить осколки в редакторе
+        // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         var children = new System.Collections.Generic.List<Transform>();
 
         for (int i = 0; i < transform.childCount; i++)
@@ -268,7 +268,7 @@ public class DropShatterAnimation : MonoBehaviour
 
         _shatterPieces = children.ToArray();
 
-        // Находим основную каплю
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         if (_mainDrop == null)
         {
             var main = transform.Find("MainDrop");

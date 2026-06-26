@@ -5,8 +5,7 @@ namespace Menu
 {
     public class UIScaleModifier : MonoBehaviour
     {
-        [SerializeField]
-        private float _multiplier;
+        [SerializeField] private float _multiplier;
 
         private ZoomChanger _zoomChanger;
         private float _lastWidth;

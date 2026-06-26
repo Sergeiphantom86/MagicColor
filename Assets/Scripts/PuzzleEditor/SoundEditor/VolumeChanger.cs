@@ -6,6 +6,7 @@ using UnityEngine.UI;
 namespace PuzzleEditor.SoundEditor
 {
     [RequireComponent(typeof(Slider))]
+
     public class VolumeChanger : MonoBehaviour
     {
         private IProgressSaver _progressSaver;

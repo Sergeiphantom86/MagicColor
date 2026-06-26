@@ -7,26 +7,25 @@ namespace PuzzleEditor.MovingBlocks
     public class PathMover : MonoBehaviour
     {
         [Header("Movement Settings")]
-        [SerializeField]
-        private Ease _moveEase = Ease.InOutBounce;
+        [SerializeField] private Ease _moveEase = Ease.InOutBounce;
+        [SerializeField] private float _durationToWaypoint = 0.1f;
+        [SerializeField] private float _durationToEnd = 0.2f;
 
-        [SerializeField]
-        private float _durationToWaypoint = 0.1f;
-
-        [SerializeField]
-        private float _durationToEnd = 0.2f;
-
-        [Header("Scale Animation Settings")]
-        private float _scaleDownDuration = 0.05f;
-        private float _scaleUpDuration = 0.05f;
-        private float _scaleReturnDuration = 0.1f;
-        private float _scaleDownFactor = 0.8f;
-        private float _scaleUpFactor = 1.2f;
+        private float _scaleDownDuration;
+        private float _scaleUpDuration;
+        private float _scaleReturnDuration;
+        private float _scaleDownFactor;
+        private float _scaleUpFactor;
         private Sequence _pathSequence;
         private Vector3 _originalScale;
 
         private void Awake()
         {
+            _scaleDownDuration = 0.05f;
+            _scaleUpDuration = 0.05f;
+            _scaleReturnDuration = 0.1f;
+            _scaleDownFactor = 0.8f;
+            _scaleUpFactor = 1.2f;
             _originalScale = transform.localScale;
         }
 
@@ -35,27 +34,27 @@ namespace PuzzleEditor.MovingBlocks
             _originalScale = transform.localScale;
 
             if (_pathSequence != null && _pathSequence.IsActive())
-                _pathSequence.Kill();
+            _pathSequence.Kill();
 
             _pathSequence = DOTween.Sequence();
             _pathSequence.Append(
-                transform
-                    .DOScale(_originalScale * _scaleDownFactor, _scaleDownDuration)
-                    .SetEase(Ease.OutQuad)
+            transform
+            .DOScale(_originalScale * _scaleDownFactor, _scaleDownDuration)
+            .SetEase(Ease.OutQuad)
             );
             _pathSequence.Append(
-                transform
-                    .DOScale(_originalScale * _scaleUpFactor, _scaleUpDuration)
-                    .SetEase(Ease.OutBack)
+            transform
+            .DOScale(_originalScale * _scaleUpFactor, _scaleUpDuration)
+            .SetEase(Ease.OutBack)
             );
 
             AddMovePoint(_pathSequence, waypoint, _durationToWaypoint);
             AddMovePoint(_pathSequence, endPoint, _durationToEnd);
 
             _pathSequence.Append(
-                transform
-                    .DOScale(_originalScale, _scaleReturnDuration)
-                    .SetEase(Ease.OutElastic, 0.8f, 0.3f)
+            transform
+            .DOScale(_originalScale, _scaleReturnDuration)
+            .SetEase(Ease.OutElastic, 0.8f, 0.3f)
             );
 
             _pathSequence.OnComplete(() => onComplete?.Invoke());

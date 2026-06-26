@@ -19,11 +19,11 @@ namespace PuzzleEditor.RouletteEditor
             [4] = ReducedProbability,
             [100] = ReducedProbability,
             [150] = LowProbability,
-        };
+            };
 
-        public int GetWeight(int value)
-        {
-            return _weightMap.TryGetValue(value, out int weight) ? weight : MinimalProbability;
+            public int GetWeight(int value)
+            {
+                return _weightMap.TryGetValue(value, out int weight) ? weight : MinimalProbability;
+            }
         }
     }
-}

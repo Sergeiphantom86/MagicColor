@@ -5,7 +5,7 @@ using UnityEngine;
 namespace PuzzleEditor.Spawners
 {
     public abstract class BaseSpawner<T> : MonoBehaviour
-        where T : MonoBehaviour
+    where T : MonoBehaviour
     {
         protected ObjectPooler<T> Pooler;
         protected List<T> SpawnedObjects;
@@ -14,7 +14,7 @@ namespace PuzzleEditor.Spawners
         protected virtual void Awake()
         {
             if (Pooler == null)
-                Pooler = GetComponent<ObjectPooler<T>>();
+            Pooler = GetComponent<ObjectPooler<T>>();
 
             SpawnedObjects = new List<T>();
         }
@@ -31,12 +31,12 @@ namespace PuzzleEditor.Spawners
         protected T SpawnObject(Vector3 position, Transform parent = null, int prefabIndex = 0)
         {
             if (Pooler == null)
-                return null;
+            return null;
 
             T obj = Pooler.GetFromPrefab(prefabIndex);
 
             if (obj == null)
-                return null;
+            return null;
 
             obj.transform.SetParent(parent);
             obj.transform.position = position;

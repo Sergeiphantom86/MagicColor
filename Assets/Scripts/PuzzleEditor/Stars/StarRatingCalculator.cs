@@ -7,22 +7,14 @@ using UnityEngine.UI;
 namespace PuzzleEditor.Stars
 {
     [RequireComponent(typeof(StarsCounter))]
+
     public class StarRatingCalculator : MonoBehaviour
     {
-        [SerializeField]
-        private float _starSpacing = 10;
-
-        [SerializeField]
-        private Image _starPrefab;
-
-        [SerializeField]
-        private TextMeshProUGUI _text;
-
-        [SerializeField]
-        private RectTransform _rectTransform;
-
-        [SerializeField]
-        private float _positionMobile;
+        [SerializeField] private float _starSpacing = 10;
+        [SerializeField] private Image _starPrefab;
+        [SerializeField] private TextMeshProUGUI _text;
+        [SerializeField] private RectTransform _rectTransform;
+        [SerializeField] private float _positionMobile;
 
         private TextMeshProUGUI _linePrefab;
         private StarsCounter _starCounter;
@@ -49,8 +41,8 @@ namespace PuzzleEditor.Stars
             if (_zoomChanger.IsMobileWithTallScreen())
             {
                 _rectTransform.anchoredPosition = new Vector2(
-                    _positionMobile,
-                    _rectTransform.anchoredPosition.y
+                _positionMobile,
+                _rectTransform.anchoredPosition.y
                 );
             }
         }
@@ -69,7 +61,7 @@ namespace PuzzleEditor.Stars
                 int stars = _starCounter.GetCountStars(time);
 
                 if (_starsToTimes.ContainsKey(stars) == false)
-                    _starsToTimes[stars] = new List<int>();
+                _starsToTimes[stars] = new List<int>();
 
                 _starsToTimes[stars].Add(time);
             }
@@ -92,7 +84,7 @@ namespace PuzzleEditor.Stars
 
                 RectTransform rect = line.rectTransform;
                 rect.anchoredPosition =
-                    startPos - new Vector2(0f, index * GetRowSpacing(prefabRect.rect.height));
+                startPos - new Vector2(0f, index * GetRowSpacing(prefabRect.rect.height));
 
                 _starPrefab.transform.position = line.transform.position;
 
@@ -127,7 +119,7 @@ namespace PuzzleEditor.Stars
         private void ClearContainer()
         {
             for (int i = transform.childCount - 1; i >= 0; i--)
-                Destroy(transform.GetChild(i).gameObject);
+            Destroy(transform.GetChild(i).gameObject);
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 namespace PuzzleEditor.Stars
 {
     [RequireComponent(typeof(Image))]
+
     public class StarIndicator : MonoBehaviour
     {
         private Star _star;
@@ -17,7 +18,6 @@ namespace PuzzleEditor.Stars
         private Tweener _currentTween;
 
         public bool IsActive { get; private set; }
-
         private void Awake()
         {
             _delay = 0.1f;
@@ -59,9 +59,9 @@ namespace PuzzleEditor.Stars
             _star.transform.localScale = Vector3.one * _minScale;
 
             _currentTween = _star
-                .transform.DOScale(Vector3.one, _duration)
-                .SetDelay(_delay)
-                .SetEase(Ease.OutBack, overshoot: _overshoot);
+            .transform.DOScale(Vector3.one, _duration)
+            .SetDelay(_delay)
+            .SetEase(Ease.OutBack, overshoot: _overshoot);
         }
 
         public void SetInactive()
@@ -69,7 +69,7 @@ namespace PuzzleEditor.Stars
             _currentTween?.Kill();
 
             if (_inactivePart == null)
-                return;
+            return;
 
             IsActive = false;
 
@@ -78,9 +78,9 @@ namespace PuzzleEditor.Stars
                 _currentTween?.Kill();
 
                 _currentTween = _star
-                    .transform.DOScale(Vector3.zero, _duration)
-                    .SetDelay(_delay)
-                    .SetEase(Ease.OutBack, overshoot: _overshoot);
+                .transform.DOScale(Vector3.zero, _duration)
+                .SetDelay(_delay)
+                .SetEase(Ease.OutBack, overshoot: _overshoot);
             }
         }
     }

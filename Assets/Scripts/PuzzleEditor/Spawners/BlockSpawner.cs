@@ -9,19 +9,13 @@ using UnityEngine;
 namespace PuzzleEditor.Spawners
 {
     [RequireComponent(typeof(ObjectPooler<Block>))]
+
     public class BlockSpawner : BaseSpawner<Block>
     {
-        [SerializeField]
-        private int _count;
-
-        [SerializeField]
-        private int _index;
-
-        [SerializeField]
-        private GridSystem _gridSystem;
-
-        [SerializeField]
-        private Effecter _effectFalling;
+        [SerializeField] private int _count;
+        [SerializeField] private int _index;
+        [SerializeField] private GridSystem _gridSystem;
+        [SerializeField] private Effecter _effectFalling;
 
         private GridPositionHelper _gridHelper;
         private WaitForSeconds _timeInterval;
@@ -89,7 +83,7 @@ namespace PuzzleEditor.Spawners
             Block block = SpawnObject(Vector3.zero, transform, _index);
 
             if (block == null)
-                return;
+            return;
 
             Vector2Int? origin = GetRandomAvailableOrigin(block);
 
@@ -113,7 +107,7 @@ namespace PuzzleEditor.Spawners
             List<Vector2Int> availableCenters = _gridHelper.GetAvailableCenters(block.SizeInCells);
 
             if (availableCenters.Count == 0)
-                return null;
+            return null;
 
             Vector2Int centerCell = availableCenters[Random.Range(0, availableCenters.Count)];
             return _gridSystem.GetOriginFromCenter(centerCell, block.SizeInCells);

@@ -9,32 +9,15 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
 {
     public class RewardAnimator : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject _spritePrefab;
-
-        [SerializeField]
-        private Rewards _rewards;
-
-        [SerializeField]
-        private CoinWallet _coinWallet;
-
-        [SerializeField]
-        private CrystalWallet _crystalWallet;
-
-        [SerializeField]
-        private float _explosionRadius;
-
-        [SerializeField]
-        private float _minScale;
-
-        [SerializeField]
-        private float _maxScale;
-
-        [SerializeField]
-        private float _firstPhaseRatio;
-
-        [SerializeField]
-        private AudioClip _audioClip;
+        [SerializeField] private GameObject _spritePrefab;
+        [SerializeField] private Rewards _rewards;
+        [SerializeField] private CoinWallet _coinWallet;
+        [SerializeField] private CrystalWallet _crystalWallet;
+        [SerializeField] private float _explosionRadius;
+        [SerializeField] private float _minScale;
+        [SerializeField] private float _maxScale;
+        [SerializeField] private float _firstPhaseRatio;
+        [SerializeField] private AudioClip _audioClip;
 
         private float _duration;
         private Vector2 _directionRange;
@@ -74,17 +57,17 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
         private int GetNumberParticles(Currency item)
         {
             return item is Crystal
-                ? item.Value / _quantityMultiplier
-                : item.Value * _quantityMultiplier;
+            ? item.Value / _quantityMultiplier
+            : item.Value * _quantityMultiplier;
         }
 
         private void CreateParticle(Currency item)
         {
             GameObject particle = Instantiate(
-                _spritePrefab,
-                transform.position,
-                Quaternion.Euler(0, 0, Random.Range(0, 360f)),
-                transform
+            _spritePrefab,
+            transform.position,
+            Quaternion.Euler(0, 0, Random.Range(0, 360f)),
+            transform
             );
 
             particle.transform.localScale = Vector3.zero;
@@ -97,21 +80,21 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
             ParticleAnimation anim = particle.AddComponent<ParticleAnimation>();
 
             anim.Initialize(
-                randomPosition: CalculateRandomPosition(),
-                targetPosition: _rewards.transform.position,
-                settings: GetParticleAnimation()
+            randomPosition: CalculateRandomPosition(),
+            targetPosition: _rewards.transform.position,
+            settings: GetParticleAnimation()
             );
         }
 
         private ParticleAnimation.Settings GetParticleAnimation()
         {
             return new ParticleAnimation.Settings(
-                minScale: _minScale,
-                maxScale: _maxScale,
-                scaleUpDuration: _duration,
-                moveToRandomDuration: _duration,
-                moveToTargetDuration: _moveToTargetDuration,
-                firstPhaseRatio: _firstPhaseRatio
+            minScale: _minScale,
+            maxScale: _maxScale,
+            scaleUpDuration: _duration,
+            moveToRandomDuration: _duration,
+            moveToTargetDuration: _moveToTargetDuration,
+            firstPhaseRatio: _firstPhaseRatio
             );
         }
 
@@ -138,14 +121,14 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
         }
 
         private float GetDistance() =>
-            Random.Range(_explosionRadius, _explosionRadius * _explosionDistanceMultiplier);
+        Random.Range(_explosionRadius, _explosionRadius * _explosionDistanceMultiplier);
 
         private Vector3 GetRandomDirection()
         {
             return new Vector3(
-                Random.Range(_directionRange.x, _directionRange.y),
-                _directionValueY,
-                0
+            Random.Range(_directionRange.x, _directionRange.y),
+            _directionValueY,
+            0
             ).normalized;
         }
     }

@@ -16,26 +16,13 @@ namespace Menu.Shop
     {
         private const string RewardID = "after_puzzle_reward";
 
-        [SerializeField]
-        private TextMeshProUGUI _paymentCoin;
-
-        [SerializeField]
-        private TextMeshProUGUI _paymentAdv;
-
-        [SerializeField]
-        private WalletAnimator _walletAnimator;
-
-        [SerializeField]
-        private AudioClip _audioClip;
-
-        [SerializeField]
-        private Blocker _blocker;
-
-        [SerializeField]
-        private ParticleSystem _shine;
-
-        [SerializeField]
-        private Messager _hint;
+        [SerializeField] private TextMeshProUGUI _paymentCoin;
+        [SerializeField] private TextMeshProUGUI _paymentAdv;
+        [SerializeField] private WalletAnimator _walletAnimator;
+        [SerializeField] private AudioClip _audioClip;
+        [SerializeField] private Blocker _blocker;
+        [SerializeField] private ParticleSystem _shine;
+        [SerializeField] private Messager _hint;
 
         private Voiceover _voiceover;
         private Button _button;
@@ -121,7 +108,7 @@ namespace Menu.Shop
             }
 
             if (_result <= 0)
-                return;
+            return;
 
             CoinPurchased?.Invoke(_result);
             TryChangeTypePayment();
@@ -142,13 +129,13 @@ namespace Menu.Shop
         private void TryChangeTypePayment()
         {
             if (_progressSaver == null)
-                return;
+            return;
 
             if (_paymentCoin == null)
-                return;
+            return;
 
             if (_paymentAdv == null)
-                return;
+            return;
 
             if (_progressSaver.Saves.CurrentCoin >= _result)
             {

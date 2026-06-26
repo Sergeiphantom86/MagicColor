@@ -10,13 +10,11 @@ using UnityEngine.UI;
 namespace Menu.LanguageManager
 {
     [RequireComponent(typeof(Image))]
+
     public class LanguageMenu : MonoBehaviour, IActivatable
     {
-        [SerializeField]
-        private ButtonSoundHandler _buttonSound;
-
-        [SerializeField]
-        private AudioClip _clickSound;
+        [SerializeField] private ButtonSoundHandler _buttonSound;
+        [SerializeField] private AudioClip _clickSound;
 
         private LanguageBar _languageBar;
         private IProgressSaver _progressSaver;
@@ -89,8 +87,8 @@ namespace Menu.LanguageManager
                 button.TurnOffChoice();
 
                 if (
-                    button != null
-                    && string.Equals(button.name, language, StringComparison.OrdinalIgnoreCase)
+                button != null
+                && string.Equals(button.name, language, StringComparison.OrdinalIgnoreCase)
                 )
                 {
                     languageButton = button;
@@ -103,12 +101,12 @@ namespace Menu.LanguageManager
         private void ClickOnSelectionButton()
         {
             if (_buttons.Count <= 0 && _buttons[0] == null)
-                return;
+            return;
 
             foreach (LanguageButton button in _buttons)
             {
                 if (button == null)
-                    continue;
+                continue;
 
                 string lang = button.name.ToLower();
 
@@ -116,20 +114,20 @@ namespace Menu.LanguageManager
                 {
                     _buttonSound.PlayButtonSound(_clickSound);
                     ChangeLanguage(lang);
-                });
+                    });
+                }
             }
-        }
 
-        private void ChangeLanguage(string langCode)
-        {
-            if (_title == langCode)
+            private void ChangeLanguage(string langCode)
+            {
+                if (_title == langCode)
                 return;
 
-            _progressSaver.SwitchLanguage(langCode);
+                _progressSaver.SwitchLanguage(langCode);
 
-            _progressSaver.SaveProgress();
+                _progressSaver.SaveProgress();
 
-            _title = langCode;
+                _title = langCode;
+            }
         }
     }
-}

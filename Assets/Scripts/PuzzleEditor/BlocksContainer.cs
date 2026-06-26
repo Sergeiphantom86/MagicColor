@@ -10,32 +10,15 @@ namespace PuzzleEditor
 {
     public class BlocksContainer : MonoBehaviour, IBlocksContainer
     {
-        [SerializeField]
-        private TextureInitializer _textureInitializer;
-
-        [SerializeField]
-        private Repainter _repainter;
-
-        [SerializeField]
-        private AudioClip _soundDragg;
-
-        [SerializeField]
-        private AudioClip _soundRaise;
-
-        [SerializeField]
-        private AudioClip _matchSound;
-
-        [SerializeField]
-        private AudioClip _soundDestruction;
-
-        [SerializeField]
-        private Effecter _effectImpact;
-
-        [SerializeField]
-        private Effecter _effectDestruct;
-
-        [SerializeField]
-        private Effecter _effectSmock;
+        [SerializeField] private TextureInitializer _textureInitializer;
+        [SerializeField] private Repainter _repainter;
+        [SerializeField] private AudioClip _soundDragg;
+        [SerializeField] private AudioClip _soundRaise;
+        [SerializeField] private AudioClip _matchSound;
+        [SerializeField] private AudioClip _soundDestruction;
+        [SerializeField] private Effecter _effectImpact;
+        [SerializeField] private Effecter _effectDestruct;
+        [SerializeField] private Effecter _effectSmock;
 
         private List<Block> _blocks;
         private int _initialBlocksCount;
@@ -52,7 +35,7 @@ namespace PuzzleEditor
         public float DelayTime => _delayTime;
 
         public int ActiveBlocksCount =>
-            _blocks.Count(block => block != null && block.gameObject.activeSelf);
+        _blocks.Count(block => block != null && block.gameObject.activeSelf);
 
         private void Awake()
         {
@@ -77,13 +60,13 @@ namespace PuzzleEditor
             _blocks.Add(block);
 
             block.Initialize(
-                _effectImpact,
-                _effectSmock,
-                _effectDestruct,
-                _soundDestruction,
-                _soundDragg,
-                _soundRaise,
-                _matchSound
+            _effectImpact,
+            _effectSmock,
+            _effectDestruct,
+            _soundDestruction,
+            _soundDragg,
+            _soundRaise,
+            _matchSound
             );
         }
 

@@ -25,13 +25,13 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         private bool _isMoving;
 
         public MovementState(
-            StateMachine stateMachine,
-            TutorialContext context,
-            Block block,
-            GridDragMovement gridDragMovement,
-            ITouchDragInput input
+        StateMachine stateMachine,
+        TutorialContext context,
+        Block block,
+        GridDragMovement gridDragMovement,
+        ITouchDragInput input
         )
-            : base(stateMachine, context)
+        : base(stateMachine, context)
         {
             _block = block;
             _input = input;
@@ -49,7 +49,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         public override void Enter()
         {
             if (ValidateReferences() == false)
-                return;
+            return;
 
             _context.Visualizer.TurnOff();
 

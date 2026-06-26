@@ -1,4 +1,4 @@
-﻿#if WelwiseGamesPlatform_yg
+#if WelwiseGamesPlatform_yg
 namespace YG
 {
     using System;

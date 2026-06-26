@@ -8,8 +8,7 @@ namespace PuzzleEditor.UI
 {
     public class UISwitcher : MonoBehaviour
     {
-        [SerializeField]
-        private AnimatorPuzzle _animatorPuzzle;
+        [SerializeField] private AnimatorPuzzle _animatorPuzzle;
 
         private Timer _timer;
         private BagKey _bagKey;
@@ -24,7 +23,7 @@ namespace PuzzleEditor.UI
             _abilityButton = GetComponentInChildren<AbilityButton>();
 
             if (Validate() == false)
-                return;
+            return;
         }
 
         private void OnEnable()

@@ -6,29 +6,19 @@ using UnityEngine.Audio;
 namespace PuzzleEditor.SoundEditor
 {
     [RequireComponent(typeof(AudioSource))]
+
     public class MenuSound : MonoBehaviour
     {
         private const float MinDecibels = -80f;
         private const float DBLinearRatio = 20f;
         private const float MinVolume = 0.0001f;
 
-        [SerializeField]
-        private AudioMixer _mixer;
-
-        [SerializeField]
-        private AudioClip _backgroundMusic;
-
-        [SerializeField]
-        private AudioMixerGroup _soundMixerGroup;
-
-        [SerializeField]
-        private AudioMixerGroup _musicMixerGroup;
-
-        [SerializeField]
-        private MusicVolumeController _musicVolumeChanger;
-
-        [SerializeField]
-        private VolumeSoundsController _sounVolumeChanger;
+        [SerializeField] private AudioMixer _mixer;
+        [SerializeField] private AudioClip _backgroundMusic;
+        [SerializeField] private AudioMixerGroup _soundMixerGroup;
+        [SerializeField] private AudioMixerGroup _musicMixerGroup;
+        [SerializeField] private MusicVolumeController _musicVolumeChanger;
+        [SerializeField] private VolumeSoundsController _sounVolumeChanger;
 
         private AudioSource _soundSource;
         private AudioSource _musicSource;
@@ -76,7 +66,7 @@ namespace PuzzleEditor.SoundEditor
         public void PlayButtonClick(AudioClip audioClip)
         {
             if (audioClip == null)
-                return;
+            return;
 
             SetAudioClip(audioClip);
 
@@ -120,10 +110,10 @@ namespace PuzzleEditor.SoundEditor
         }
 
         private void SetAudioSource(
-            AudioSource audioSource,
-            bool isOn,
-            AudioMixerGroup audioMixerGroup,
-            float volume
+        AudioSource audioSource,
+        bool isOn,
+        AudioMixerGroup audioMixerGroup,
+        float volume
         )
         {
             audioSource.outputAudioMixerGroup = audioMixerGroup;
@@ -144,7 +134,7 @@ namespace PuzzleEditor.SoundEditor
         private void PlayBackgroundMusic(float time)
         {
             if (_backgroundMusic == null || _musicSource.isPlaying)
-                return;
+            return;
 
             _musicSource.clip = _backgroundMusic;
             _musicSource.time = time;
@@ -161,7 +151,7 @@ namespace PuzzleEditor.SoundEditor
         private void SaveVolumeSettings()
         {
             if (_coroutineSaving != null)
-                return;
+            return;
 
             _coroutineSaving = StartCoroutine(WaitChangeCompleted());
         }

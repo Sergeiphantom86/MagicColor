@@ -5,8 +5,7 @@ namespace Menu.TutorialEditor
 {
     public class CurrencySound : MonoBehaviour
     {
-        [SerializeField]
-        private AudioClip _audioClip;
+        [SerializeField] private AudioClip _audioClip;
 
         private Voiceover _voiceover;
 

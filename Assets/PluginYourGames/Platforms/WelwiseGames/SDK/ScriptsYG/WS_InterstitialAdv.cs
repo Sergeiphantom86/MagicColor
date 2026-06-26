@@ -1,4 +1,4 @@
-﻿#if WelwiseGamesPlatform_yg && InterstitialAdv_yg
+#if WelwiseGamesPlatform_yg && InterstitialAdv_yg
 namespace YG
 {
     using System;

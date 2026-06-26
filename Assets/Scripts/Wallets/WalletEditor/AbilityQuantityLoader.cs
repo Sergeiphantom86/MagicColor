@@ -6,8 +6,7 @@ namespace Wallets.WalletEditor
 {
     public class AbilityQuantityLoader : MonoBehaviour
     {
-        [SerializeField]
-        private PurchaseButton _purchaseButton;
+        [SerializeField] private PurchaseButton _purchaseButton;
 
         private int _balance;
         private BagAbilities _bagAbilities;
@@ -71,7 +70,7 @@ namespace Wallets.WalletEditor
         private void OnAdd()
         {
             if (_bagAbilities != null)
-                _bagAbilities.Add();
+            _bagAbilities.Add();
         }
     }
 }

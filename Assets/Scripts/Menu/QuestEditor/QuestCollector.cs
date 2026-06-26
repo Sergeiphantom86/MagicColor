@@ -7,14 +7,9 @@ namespace Menu.QuestEditor
 {
     public class QuestCollector : MonoBehaviour
     {
-        [SerializeField]
-        private QuestSystem _questSystem;
-
-        [SerializeField]
-        private Viewer _viewer;
-
-        [SerializeField]
-        private Contender _contender;
+        [SerializeField] private QuestSystem _questSystem;
+        [SerializeField] private Viewer _viewer;
+        [SerializeField] private Contender _contender;
 
         private List<Quest> _allQuests;
         private List<Sprite> _spritesQuests;
@@ -75,7 +70,7 @@ namespace Menu.QuestEditor
         private void SetLatestSprite(SpriteTransmitter spriteTransmitter)
         {
             if (_spritesQuests == null || _spritesQuests.Count == 0)
-                return;
+            return;
 
             int index = Mathf.Clamp(_progressSaver.Saves.QuestIndex, 0, _spritesQuests.Count - 1);
 
@@ -85,13 +80,13 @@ namespace Menu.QuestEditor
         private void ValidateDependencies()
         {
             if (_questSystem == null)
-                Debug.LogError("QuestSystem is not assigned!");
+            Debug.LogError("QuestSystem is not assigned!");
 
             if (_viewer == null)
-                Debug.LogError("Viewer is not assigned!");
+            Debug.LogError("Viewer is not assigned!");
 
             if (_contender == null)
-                Debug.LogError("Contender is not assigned!");
+            Debug.LogError("Contender is not assigned!");
         }
     }
 }

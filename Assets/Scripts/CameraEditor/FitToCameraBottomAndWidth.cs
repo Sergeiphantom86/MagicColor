@@ -58,7 +58,7 @@ namespace CameraEditor
         private void StartRecalculate()
         {
             if (_recalculateRoutine != null)
-                StopCoroutine(_recalculateRoutine);
+            StopCoroutine(_recalculateRoutine);
 
             _recalculateRoutine = StartCoroutine(RecalculateDelayed());
         }

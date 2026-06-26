@@ -8,11 +8,8 @@ namespace PuzzleEditor.MovingBlocks
 {
     public class LockInstaller : MonoBehaviour
     {
-        [SerializeField]
-        private int _additionalTurnY = 90;
-
-        [SerializeField]
-        private int _additionalTurnZ = 90;
+        [SerializeField] private int _additionalTurnY = 90;
+        [SerializeField] private int _additionalTurnZ = 90;
 
         private Lock _lock;
         private bool _isPlaced;
@@ -32,14 +29,14 @@ namespace PuzzleEditor.MovingBlocks
         public void TryPlaceLock(List<IColorable> colorables)
         {
             if (CanPlace() == false)
-                return;
+            return;
 
             Wall wall = colorables
-                .OfType<Wall>()
-                .FirstOrDefault(wall => wall.IsRepainted && wall.CenterFence != null);
+            .OfType<Wall>()
+            .FirstOrDefault(wall => wall.IsRepainted && wall.CenterFence != null);
 
             if (wall == null)
-                return;
+            return;
 
             PlaceOnWall(wall);
         }

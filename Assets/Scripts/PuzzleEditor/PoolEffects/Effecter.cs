@@ -6,11 +6,8 @@ namespace PuzzleEditor.PoolEffects
 {
     public class Effecter : MonoBehaviour
     {
-        [SerializeField]
-        private ParticleSystem _prefab;
-
-        [SerializeField]
-        private bool _collectionCheck = true;
+        [SerializeField] private ParticleSystem _prefab;
+        [SerializeField] private bool _collectionCheck = true;
 
         private int _maxPoolSize;
         private int _defaultPoolSize;
@@ -50,13 +47,13 @@ namespace PuzzleEditor.PoolEffects
         private void InitializePools()
         {
             _pool = new ObjectPool<ParticleSystem>(
-                createFunc: CreatePooledItem,
-                actionOnGet: OnTakeFromPool,
-                actionOnRelease: OnReturnedToPool,
-                actionOnDestroy: OnDestroyPoolObject,
-                collectionCheck: _collectionCheck,
-                defaultCapacity: _defaultPoolSize,
-                maxSize: _maxPoolSize
+            createFunc: CreatePooledItem,
+            actionOnGet: OnTakeFromPool,
+            actionOnRelease: OnReturnedToPool,
+            actionOnDestroy: OnDestroyPoolObject,
+            collectionCheck: _collectionCheck,
+            defaultCapacity: _defaultPoolSize,
+            maxSize: _maxPoolSize
             );
         }
 
@@ -81,10 +78,10 @@ namespace PuzzleEditor.PoolEffects
         }
 
         private void SetLocation(
-            ParticleSystem particles,
-            Vector3 position,
-            Quaternion quaternion,
-            float scale
+        ParticleSystem particles,
+        Vector3 position,
+        Quaternion quaternion,
+        float scale
         )
         {
             particles.transform.SetPositionAndRotation(position, quaternion);

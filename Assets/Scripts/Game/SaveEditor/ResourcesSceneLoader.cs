@@ -21,7 +21,7 @@ namespace Game.SaveEditor
             if (_spriteTransmitter == null)
             {
                 Debug.LogError(
-                    $"{nameof(SpriteTransmitter)} component missing on {gameObject.name}"
+                $"{nameof(SpriteTransmitter)} component missing on {gameObject.name}"
                 );
             }
 
@@ -33,21 +33,21 @@ namespace Game.SaveEditor
             switch (sceneName)
             {
                 case Roulette:
-                    InitializeRouletteScene();
-                    break;
+                InitializeRouletteScene();
+                break;
 
                 case Menu:
-                    InitializeMenuScene();
-                    break;
+                InitializeMenuScene();
+                break;
 
                 case Puzzle:
                 case Tutorial:
-                    InitializePuzzleOrTutorialScene();
-                    break;
+                InitializePuzzleOrTutorialScene();
+                break;
 
                 default:
-                    Debug.LogWarning($"No specific initialization defined for scene: {sceneName}");
-                    break;
+                Debug.LogWarning($"No specific initialization defined for scene: {sceneName}");
+                break;
             }
         }
 
@@ -84,7 +84,7 @@ namespace Game.SaveEditor
             if (sceneFlow == null)
             {
                 Debug.LogError(
-                    $"{nameof(SceneFlowController)} not found in {Puzzle} or {Tutorial} scene."
+                $"{nameof(SceneFlowController)} not found in {Puzzle} or {Tutorial} scene."
                 );
                 return;
             }

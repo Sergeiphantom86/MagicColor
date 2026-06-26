@@ -7,17 +7,10 @@ namespace Menu.HomeScreenSaver
 {
     public class PixelPool : MonoBehaviour
     {
-        [SerializeField]
-        private Fragment _pixelPrefab;
-
-        [SerializeField]
-        private int _defaultPoolSize;
-
-        [SerializeField]
-        private int _maxPoolSize;
-
-        [SerializeField]
-        private bool _collectionCheck = true;
+        [SerializeField] private Fragment _pixelPrefab;
+        [SerializeField] private int _defaultPoolSize;
+        [SerializeField] private int _maxPoolSize;
+        [SerializeField] private bool _collectionCheck = true;
 
         private ObjectPool<Fragment> _pool;
         private Transform _poolParent;
@@ -38,13 +31,13 @@ namespace Menu.HomeScreenSaver
         private void CreatePool()
         {
             _pool = new ObjectPool<Fragment>(
-                createFunc: CreatePooledItem,
-                actionOnGet: OnTakeFromPool,
-                actionOnRelease: OnReturnedToPool,
-                actionOnDestroy: OnDestroyPoolObject,
-                collectionCheck: _collectionCheck,
-                defaultCapacity: _defaultPoolSize,
-                maxSize: _maxPoolSize
+            createFunc: CreatePooledItem,
+            actionOnGet: OnTakeFromPool,
+            actionOnRelease: OnReturnedToPool,
+            actionOnDestroy: OnDestroyPoolObject,
+            collectionCheck: _collectionCheck,
+            defaultCapacity: _defaultPoolSize,
+            maxSize: _maxPoolSize
             );
         }
 
@@ -82,7 +75,7 @@ namespace Menu.HomeScreenSaver
         public void ReturnAllFragments(List<Fragment> fragments)
         {
             if (fragments == null)
-                return;
+            return;
 
             foreach (Fragment fragment in fragments)
             {

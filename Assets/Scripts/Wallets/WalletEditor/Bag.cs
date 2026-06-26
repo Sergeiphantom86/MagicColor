@@ -17,7 +17,7 @@ namespace Wallets.WalletEditor
         public void Add(int amount = 1)
         {
             if (amount <= 0)
-                return;
+            return;
 
             _balance += amount;
 
@@ -27,10 +27,10 @@ namespace Wallets.WalletEditor
         public bool TryApply(int amount = 1)
         {
             if (amount <= 0 || _balance < amount)
-                return false;
+            return false;
 
             if (ProcessTransaction(amount, _balance) == false)
-                return false;
+            return false;
 
             return true;
         }
@@ -38,7 +38,7 @@ namespace Wallets.WalletEditor
         public void Use(int amount = 1)
         {
             if (amount <= 0 || _balance < amount)
-                return;
+            return;
 
             _balance -= amount;
 
@@ -48,12 +48,12 @@ namespace Wallets.WalletEditor
         private bool ProcessTransaction(long amount, long balance)
         {
             if (amount == 0)
-                return false;
+            return false;
 
             if (amount < 0)
             {
                 if (Mathf.Abs(amount) > balance)
-                    return false;
+                return false;
             }
 
             long newBalance = checked(balance + amount);

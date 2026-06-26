@@ -25,11 +25,11 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         private IProgressSaver _progressSaver;
 
         public BlockTutorialState(
-            StateMachine stateMachine,
-            TutorialContext context,
-            StarsCounter starsCounter
+        StateMachine stateMachine,
+        TutorialContext context,
+        StarsCounter starsCounter
         )
-            : base(stateMachine, context)
+        : base(stateMachine, context)
         {
             _stateMachine = stateMachine;
             _context = context;
@@ -60,9 +60,9 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         private void SetBlock(int index)
         {
             if (
-                _context.Container.SpawnedBlocks == null
-                || index < 0
-                || index >= _context.Container.SpawnedBlocks.Count
+            _context.Container.SpawnedBlocks == null
+            || index < 0
+            || index >= _context.Container.SpawnedBlocks.Count
             )
             {
                 Debug.LogError($"Invalid block index: {index} or SpawnedBlocks null");
@@ -103,44 +103,44 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
                 }
 
                 return false;
-            });
-        }
-
-        private void DisableUnnecessaryComponents()
-        {
-            _context.Lock.gameObject.SetActive(false);
-            _context.Key.gameObject.SetActive(false);
-        }
-
-        private void OnClick(Vector2 position)
-        {
-            if (_isAnimationChange == false)
-            {
-                _isAnimationChange = true;
-
-                _stateMachine.ChangeState(
-                    new MovementState(_stateMachine, _context, _block, _movement, _input)
-                );
+                });
             }
-        }
 
-        private void ShowHintsAndContinue()
-        {
-            SetBlock(BlockIndex);
+            private void DisableUnnecessaryComponents()
+            {
+                _context.Lock.gameObject.SetActive(false);
+                _context.Key.gameObject.SetActive(false);
+            }
 
-            _context.Visualizer.gameObject.SetActive(true);
+            private void OnClick(Vector2 position)
+            {
+                if (_isAnimationChange == false)
+                {
+                    _isAnimationChange = true;
 
-            _context.AdjustPositions(
+                    _stateMachine.ChangeState(
+                    new MovementState(_stateMachine, _context, _block, _movement, _input)
+                    );
+                }
+            }
+
+            private void ShowHintsAndContinue()
+            {
+                SetBlock(BlockIndex);
+
+                _context.Visualizer.gameObject.SetActive(true);
+
+                _context.AdjustPositions(
                 _block.transform.position,
                 _block.transform.position,
                 yOffset: _yOffset
-            );
+                );
 
-            _context.HandMover.EnableScaleAnimation();
+                _context.HandMover.EnableScaleAnimation();
 
-            DisableUnnecessaryComponents();
+                DisableUnnecessaryComponents();
 
-            _input.Touched += OnClick;
+                _input.Touched += OnClick;
+            }
         }
     }
-}

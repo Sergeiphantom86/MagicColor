@@ -6,10 +6,10 @@ using UnityEngine;
 namespace PuzzleEditor.MovingBlocks.GridEditor
 {
     [RequireComponent(typeof(Block), typeof(ITouchDragInput))]
+
     public class GridDragMovement : MonoBehaviour
     {
-        [SerializeField]
-        private float _moveDuration;
+        [SerializeField] private float _moveDuration;
 
         private Camera _camera;
         private Transform _transform;
@@ -49,8 +49,8 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
         public void BeginInteraction(Vector2 screenTouchPos)
         {
             _currentCenterCell = new Vector2Int(
-                _block.GridPosition.x + (_block.SizeInCells.x - 1) / 2,
-                _block.GridPosition.y + (_block.SizeInCells.y - 1) / 2
+            _block.GridPosition.x + (_block.SizeInCells.x - 1) / 2,
+            _block.GridPosition.y + (_block.SizeInCells.y - 1) / 2
             );
 
             _lastWorldTouch = ScreenToWorld(screenTouchPos);
@@ -92,8 +92,8 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
             if (_grid.CanPlaceBlock(targetOrigin, _block.SizeInCells) == false)
             {
                 Vector2Int currentOrigin = _grid.GetOriginFromCenter(
-                    _currentCenterCell,
-                    _block.SizeInCells
+                _currentCenterCell,
+                _block.SizeInCells
                 );
 
                 _grid.PlaceObject(currentOrigin, _block);
@@ -114,8 +114,8 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
             _grid.PlaceObject(origin, _block);
 
             _moveTween = _transform
-                .DOMove(GetWorldCenterFromOrigin(origin), _moveDuration)
-                .SetEase(Ease.OutQuad);
+            .DOMove(GetWorldCenterFromOrigin(origin), _moveDuration)
+            .SetEase(Ease.OutQuad);
 
             _currentCenterCell = targetCenter;
         }
@@ -126,8 +126,8 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
             Vector2Int size = _block.SizeInCells;
 
             Vector3 offset =
-                _grid.GetComponent<Grid>().CellToWorld(new Vector3Int(size.x - 1, size.y - 1, 0))
-                - _grid.GetComponent<Grid>().CellToWorld(Vector3Int.zero);
+            _grid.GetComponent<Grid>().CellToWorld(new Vector3Int(size.x - 1, size.y - 1, 0))
+            - _grid.GetComponent<Grid>().CellToWorld(Vector3Int.zero);
 
             return basePos + offset * 0.5f;
         }
@@ -135,7 +135,7 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
         private Vector2Int GetShiftDirection(Vector3 delta)
         {
             if (Mathf.Abs(delta.x) > Mathf.Abs(delta.z))
-                return delta.x > 0 ? Vector2Int.right : Vector2Int.left;
+            return delta.x > 0 ? Vector2Int.right : Vector2Int.left;
 
             return delta.z > 0 ? Vector2Int.up : Vector2Int.down;
         }

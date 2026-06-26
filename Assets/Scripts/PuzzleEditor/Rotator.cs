@@ -7,17 +7,10 @@ namespace PuzzleEditor
     public class Rotator : MonoBehaviour
     {
         [Header("Rotation Settings")]
-        [SerializeField]
-        private float _duration;
-
-        [SerializeField]
-        private float _targetAngleX;
-
-        [SerializeField]
-        private RotateMode _rotateMode;
-
-        [SerializeField]
-        private Ease _easeType;
+        [SerializeField] private float _duration;
+        [SerializeField] private float _targetAngleX;
+        [SerializeField] private RotateMode _rotateMode;
+        [SerializeField] private Ease _easeType;
 
         private Tween _rotationTween;
         private float _targetX;
@@ -66,8 +59,8 @@ namespace PuzzleEditor
         private Tween GetTweenRotation(float targetAngleX)
         {
             return transform
-                .DORotate(GetTargetAngleX(targetAngleX), _duration, _rotateMode)
-                .SetEase(_easeType);
+            .DORotate(GetTargetAngleX(targetAngleX), _duration, _rotateMode)
+            .SetEase(_easeType);
         }
 
         private Vector3 GetTargetAngleX(float targetAngleX)

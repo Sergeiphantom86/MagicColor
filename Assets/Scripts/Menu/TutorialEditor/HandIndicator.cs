@@ -5,10 +5,10 @@ using UnityEngine.UI;
 namespace Menu.TutorialEditor
 {
     [RequireComponent(typeof(HandMover))]
+
     public class HandIndicator : MonoBehaviour
     {
-        [SerializeField]
-        private Button _buttonBack;
+        [SerializeField] private Button _buttonBack;
 
         private HandMover _handMover;
 

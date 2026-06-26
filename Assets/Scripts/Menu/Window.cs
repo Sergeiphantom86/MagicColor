@@ -4,8 +4,7 @@ namespace Menu
 {
     public class Window : MonoBehaviour
     {
-        [SerializeField]
-        private Background _background;
+        [SerializeField] private Background _background;
 
         private void OnEnable()
         {

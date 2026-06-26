@@ -21,7 +21,7 @@ namespace Menu
         public void SetRank(string rank)
         {
             if (_textMeshProUGUI == null)
-                return;
+            return;
 
             _textMeshProUGUI.text = rank;
         }

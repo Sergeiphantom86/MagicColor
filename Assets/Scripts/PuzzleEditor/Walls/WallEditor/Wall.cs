@@ -8,9 +8,7 @@ namespace PuzzleEditor.Walls.WallEditor
         private float _height;
 
         public Vector3 EndPoint { get; private set; }
-
         public Vector3 MiddlePoint { get; private set; }
-
         public Transform CenterFence => transform;
 
         public bool IsBlocked => _isBlocked;

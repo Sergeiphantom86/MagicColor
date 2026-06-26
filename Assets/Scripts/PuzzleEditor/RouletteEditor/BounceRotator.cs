@@ -5,14 +5,12 @@ using UnityEngine;
 namespace PuzzleEditor.RouletteEditor
 {
     [RequireComponent(typeof(Voiceover))]
+
     public class BounceRotator : MonoBehaviour
     {
         [Header("Rotation Settings")]
-        [SerializeField]
-        private WheelAnimator _wheelAnimator;
-
-        [SerializeField]
-        private AudioClip _audioClip;
+        [SerializeField] private WheelAnimator _wheelAnimator;
+        [SerializeField] private AudioClip _audioClip;
 
         private bool _isRotating;
         private bool _useCooldown;
@@ -50,10 +48,10 @@ namespace PuzzleEditor.RouletteEditor
         public void PlayRotation()
         {
             if (_isRotating)
-                return;
+            return;
 
             if (_useCooldown && Time.time - _lastRotationTime < _cooldownTime)
-                return;
+            return;
 
             _voiceover.PlayOneShot(_audioClip);
             _isRotating = true;
@@ -69,33 +67,33 @@ namespace PuzzleEditor.RouletteEditor
             {
                 _isRotating = false;
                 ResetToOriginalRotation();
-            });
-        }
+                });
+            }
 
-        private Vector3 GetTurn()
-        {
-            return new Vector3(
+            private Vector3 GetTurn()
+            {
+                return new Vector3(
                 _originalRotation.x,
                 _originalRotation.y,
                 _originalRotation.z - _rotationAngle
-            );
-        }
+                );
+            }
 
-        private void ResetRotation()
-        {
-            _rotationSequence?.Kill();
-            _rotationSequence = null;
-            transform.DOKill();
-        }
+            private void ResetRotation()
+            {
+                _rotationSequence?.Kill();
+                _rotationSequence = null;
+                transform.DOKill();
+            }
 
-        private void ResetToOriginalRotation()
-        {
-            transform.localEulerAngles = _originalRotation;
-        }
+            private void ResetToOriginalRotation()
+            {
+                transform.localEulerAngles = _originalRotation;
+            }
 
-        private void OnDestroy()
-        {
-            ResetRotation();
+            private void OnDestroy()
+            {
+                ResetRotation();
+            }
         }
     }
-}

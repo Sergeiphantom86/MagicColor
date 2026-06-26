@@ -7,8 +7,7 @@ namespace Menu.QuestEditor
 {
     public class Quest : MonoBehaviour
     {
-        [SerializeField]
-        private int _indexPuzzle;
+        [SerializeField] private int _indexPuzzle;
 
         private LockImage _lockImage;
         private ActiveIndicator _activeIndicator;
@@ -23,7 +22,6 @@ namespace Menu.QuestEditor
         public event Action<Quest> Selected;
 
         public int Index { get; private set; }
-
         public bool IsUnlocked => _isUnlocked;
 
         public bool IsTutorial => _isTutorial;
@@ -78,7 +76,7 @@ namespace Menu.QuestEditor
         public void SetActiveIndicator(bool active)
         {
             if (_activeIndicator != null)
-                _activeIndicator.gameObject.SetActive(active);
+            _activeIndicator.gameObject.SetActive(active);
         }
 
         private void UpdateVisualState()
@@ -91,7 +89,7 @@ namespace Menu.QuestEditor
         public void OnClick()
         {
             if (_isUnlocked == false || _isCompleted)
-                return;
+            return;
 
             _progressSaver.SetReward(_reward);
             _progressSaver.Saves.IndexPuzzle = _indexPuzzle;

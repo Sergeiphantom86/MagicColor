@@ -7,14 +7,9 @@ namespace Menu
 {
     public class WindowInitializer : MonoBehaviour
     {
-        [SerializeField]
-        private Window _gameSelection;
-
-        [SerializeField]
-        private Window _settingsWindow;
-
-        [SerializeField]
-        private Window _leaderboardWindow;
+        [SerializeField] private Window _gameSelection;
+        [SerializeField] private Window _settingsWindow;
+        [SerializeField] private Window _leaderboardWindow;
 
         private Dictionary<string, Action> _windowActions;
         private bool _isInitialized;
@@ -24,7 +19,7 @@ namespace Menu
         public void Initialize()
         {
             if (_isInitialized)
-                return;
+            return;
 
             _windowActions = new Dictionary<string, Action>();
 

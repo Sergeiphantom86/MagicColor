@@ -5,11 +5,8 @@ namespace PuzzleEditor
 {
     public class UIMaterialOrder : MonoBehaviour
     {
-        [SerializeField]
-        private int _uiBackgroundQueue;
-
-        [SerializeField]
-        private bool _isImmediate;
+        [SerializeField] private int _uiBackgroundQueue;
+        [SerializeField] private bool _isImmediate;
 
         private Graphic _uiGraphic;
         private Material _originalMaterial;
@@ -34,7 +31,7 @@ namespace PuzzleEditor
         public void SetUIBackground()
         {
             if (_clonedMaterial != null)
-                _clonedMaterial.renderQueue = _uiBackgroundQueue;
+            _clonedMaterial.renderQueue = _uiBackgroundQueue;
         }
 
         public void SetOrder()
@@ -48,7 +45,7 @@ namespace PuzzleEditor
         private void OnDestroy()
         {
             if (_uiGraphic != null && _originalMaterial != null)
-                _uiGraphic.material = _originalMaterial;
+            _uiGraphic.material = _originalMaterial;
         }
     }
 }

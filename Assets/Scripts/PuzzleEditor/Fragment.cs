@@ -3,6 +3,7 @@ using UnityEngine;
 namespace PuzzleEditor
 {
     [RequireComponent(typeof(SpriteRenderer))]
+
     public class Fragment : MonoBehaviour
     {
         private Color _newColor;
@@ -46,7 +47,7 @@ namespace PuzzleEditor
         public void SetSprite(Sprite sprite)
         {
             if (_renderer != null)
-                _renderer.sprite = sprite;
+            _renderer.sprite = sprite;
         }
 
         public void SetParent(Transform transform)

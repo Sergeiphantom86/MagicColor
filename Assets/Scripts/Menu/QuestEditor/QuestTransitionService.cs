@@ -15,9 +15,9 @@ namespace Menu.QuestEditor
         private TransitionResult _result;
 
         public QuestTransitionService(
-            IProgressSaver progressSaver,
-            ZoomChanger zoomChanger,
-            SpriteTransmitter spriteTransmitter
+        IProgressSaver progressSaver,
+        ZoomChanger zoomChanger,
+        SpriteTransmitter spriteTransmitter
         )
         {
             _spriteTransmitter = spriteTransmitter;
@@ -47,9 +47,9 @@ namespace Menu.QuestEditor
             _progressSaver.ObstacleSwitch(true);
 
             if (quest.Index < _progressSaver.Saves.ObstacleDeactivatIndex)
-                _progressSaver.ObstacleSwitch(false);
+            _progressSaver.ObstacleSwitch(false);
             else
-                _progressSaver.ObstacleSwitch(true);
+            _progressSaver.ObstacleSwitch(true);
 
             _result.SceneName = Puzzle;
 

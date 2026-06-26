@@ -5,10 +5,10 @@ using UnityEngine.UI;
 namespace Game
 {
     [RequireComponent(typeof(Button))]
+
     public class ButtonMenu : MonoBehaviour
     {
-        [SerializeField]
-        private PauseMenu _pauseMenu;
+        [SerializeField] private PauseMenu _pauseMenu;
 
         private Button _button;
 

@@ -8,7 +8,6 @@ namespace PuzzleEditor.MovingBlocks
         private Touch _touch;
 
         public Vector3 Point { get; private set; }
-
         public event Action<Vector2> Selected;
         public event Action<Vector2> Moved;
         public event Action Throwed;
@@ -32,18 +31,18 @@ namespace PuzzleEditor.MovingBlocks
             switch (_touch.phase)
             {
                 case TouchPhase.Began:
-                    SelectBlock(_touch.position);
-                    break;
+                SelectBlock(_touch.position);
+                break;
 
                 case TouchPhase.Moved:
-                    Moved?.Invoke(_touch.position);
-                    break;
+                Moved?.Invoke(_touch.position);
+                break;
 
                 case TouchPhase.Ended:
                 case TouchPhase.Canceled:
-                    Throwed?.Invoke();
-                    Debug.Log(Input.imeIsSelected);
-                    break;
+                Throwed?.Invoke();
+                Debug.Log(Input.imeIsSelected);
+                break;
             }
         }
 
@@ -81,7 +80,7 @@ namespace PuzzleEditor.MovingBlocks
             {
                 Point = hit.point;
                 return hit.collider.transform == transform
-                    || hit.collider.transform.IsChildOf(transform);
+                || hit.collider.transform.IsChildOf(transform);
             }
 
             Point = Vector2.zero;

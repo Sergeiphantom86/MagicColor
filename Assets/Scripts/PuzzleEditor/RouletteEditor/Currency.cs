@@ -8,11 +8,8 @@ namespace PuzzleEditor.RouletteEditor
 {
     public class Currency : MonoBehaviour
     {
-        [SerializeField]
-        private TextMeshProUGUI _textMeshPro;
-
-        [SerializeField]
-        private Image _image;
+        [SerializeField] private TextMeshProUGUI _textMeshPro;
+        [SerializeField] private Image _image;
 
         private WeightCalculator _weightCalculator;
         private IProgressSaver _progressSaver;

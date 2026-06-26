@@ -9,14 +9,14 @@ using UnityEngine;
 namespace PuzzleEditor
 {
     [RequireComponent(typeof(Renderer))]
+
     public class ColorableObject : MonoBehaviour, IColorable
     {
         private const string Emission = "_EMISSION";
         private const string EmissionColor = "_EmissionColor";
         private const string EmissionIntensity = "_EmissionIntensity";
 
-        [SerializeField]
-        private bool _isTransparent;
+        [SerializeField] private bool _isTransparent;
 
         private float _delay;
         private bool _isRepainted;
@@ -87,7 +87,7 @@ namespace PuzzleEditor
         public void SetColor(Color color)
         {
             if (_renderer.material == null)
-                return;
+            return;
 
             SetOriginalColor(color);
 
@@ -97,7 +97,7 @@ namespace PuzzleEditor
             }
 
             if (this is not Drop)
-                return;
+            return;
 
             if (_material == null)
             {
@@ -112,7 +112,7 @@ namespace PuzzleEditor
         private void InitializeRenderer()
         {
             if (_renderer != null)
-                return;
+            return;
 
             _renderer = GetComponent<Renderer>();
         }
@@ -163,13 +163,13 @@ namespace PuzzleEditor
         }
 
         public void EnableEmission(
-            Color emissionColor,
-            float intensity = 0.01f,
-            float brightness = 0.5f
+        Color emissionColor,
+        float intensity = 0.01f,
+        float brightness = 0.5f
         )
         {
             if (_material == null && _material == null)
-                return;
+            return;
 
             _material.EnableKeyword(Emission);
 
@@ -191,7 +191,7 @@ namespace PuzzleEditor
         public Tween TurnOffRenderer()
         {
             if (_renderer == null || _material == null)
-                return null;
+            return null;
 
             _renderer.enabled = true;
 
@@ -200,18 +200,18 @@ namespace PuzzleEditor
             _material.color = startColor;
 
             return DOTween
-                .To(
-                    () => _material.color,
-                    color => _material.color = color,
-                    new Color(
-                        _originalColor.r,
-                        _originalColor.g,
-                        _originalColor.b,
-                        _valueTransparency
-                    ),
-                    _fadeDuration
-                )
-                .SetEase(Ease.Linear);
+            .To(
+            () => _material.color,
+            color => _material.color = color,
+            new Color(
+            _originalColor.r,
+            _originalColor.g,
+            _originalColor.b,
+            _valueTransparency
+            ),
+            _fadeDuration
+            )
+            .SetEase(Ease.Linear);
         }
 
         private Color GetDimmedEmissionColor(Color color, float brightness)
@@ -222,7 +222,7 @@ namespace PuzzleEditor
         private void ValidateRenderer()
         {
             if (_renderer == null)
-                Debug.LogError($"Renderer not found on {name}", this);
+            Debug.LogError($"Renderer not found on {name}", this);
         }
 
         private void SetOriginalColor(Color color)

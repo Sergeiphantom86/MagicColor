@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Menu.HomeScreenSaver
 {
     [RequireComponent(typeof(Viewer), typeof(Agitator), typeof(TextureInitializer))]
+
     public class AnimationFinalizer : MonoBehaviour
     {
         private float _delay;
@@ -34,14 +35,14 @@ namespace Menu.HomeScreenSaver
             _textureInitializer.ClearAllFragments();
 
             this.SafeDelayedCall(
-                _delay,
-                () =>
+            _delay,
+            () =>
+            {
+                if (_viewer != null && isActiveAndEnabled)
                 {
-                    if (_viewer != null && isActiveAndEnabled)
-                    {
-                        _viewer.ShowNextSprite();
-                    }
+                    _viewer.ShowNextSprite();
                 }
+            }
             );
         }
     }

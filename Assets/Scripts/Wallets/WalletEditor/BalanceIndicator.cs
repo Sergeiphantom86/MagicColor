@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Wallets.WalletEditor
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
+
     public class BalanceIndicator : MonoBehaviour
     {
         private TextMeshProUGUI _textMeshProUGUI;

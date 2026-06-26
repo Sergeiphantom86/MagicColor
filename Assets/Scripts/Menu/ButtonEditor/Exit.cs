@@ -6,8 +6,7 @@ namespace Menu.ButtonEditor
 {
     public class Exit : MonoBehaviour
     {
-        [SerializeField]
-        private Button _spinButton;
+        [SerializeField] private Button _spinButton;
 
         private Button _button;
 

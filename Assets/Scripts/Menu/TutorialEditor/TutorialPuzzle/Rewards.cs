@@ -8,11 +8,8 @@ namespace Menu.TutorialEditor.TutorialPuzzle
 {
     public class Rewards : MonoBehaviour
     {
-        [SerializeField]
-        private float _delay;
-
-        [SerializeField]
-        private bool _isImmediately;
+        [SerializeField] private float _delay;
+        [SerializeField] private bool _isImmediately;
 
         private WaitForSeconds _waitForSeconds;
         private List<Reward> _rewards;
@@ -56,10 +53,10 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         private List<Reward> GetSortedList(Currency currency)
         {
             return _rewards
-                .Where(reward =>
-                    reward.Currency != null && reward.Currency.GetType() == currency.GetType()
-                )
-                .ToList();
+            .Where(reward =>
+            reward.Currency != null && reward.Currency.GetType() == currency.GetType()
+            )
+            .ToList();
         }
 
         private void Show(Reward reward, int value)

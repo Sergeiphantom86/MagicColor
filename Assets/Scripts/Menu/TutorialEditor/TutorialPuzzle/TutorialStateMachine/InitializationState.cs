@@ -9,7 +9,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         private readonly TutorialContext _context;
 
         public InitializationState(StateMachine stateMachine, TutorialContext context)
-            : base(stateMachine, context)
+        : base(stateMachine, context)
         {
             _progressSaver = new ProgressSaver();
 

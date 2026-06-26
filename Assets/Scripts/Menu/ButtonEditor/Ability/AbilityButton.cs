@@ -6,13 +6,11 @@ using Wallets.WalletEditor;
 namespace Menu.ButtonEditor.Ability
 {
     [RequireComponent(typeof(Button), typeof(Image))]
+
     public class AbilityButton : MonoBehaviour
     {
-        [SerializeField]
-        private Ability _ability;
-
-        [SerializeField]
-        private Image _highlightImage;
+        [SerializeField] private Ability _ability;
+        [SerializeField] private Image _highlightImage;
 
         private Button _button;
         private Image _image;
@@ -73,10 +71,10 @@ namespace Menu.ButtonEditor.Ability
         private void OnClick()
         {
             if (_isUsed)
-                return;
+            return;
 
             if (_bag.TryApply() == false)
-                return;
+            return;
 
             _isUsed = true;
 

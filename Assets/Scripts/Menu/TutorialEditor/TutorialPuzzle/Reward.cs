@@ -6,10 +6,10 @@ using Wallets;
 namespace Menu.TutorialEditor.TutorialPuzzle
 {
     [RequireComponent(typeof(Currency))]
+
     public class Reward : MonoBehaviour
     {
-        [SerializeField]
-        private int _value;
+        [SerializeField] private int _value;
 
         private Currency _currency;
         private TextAnimator _textAnimator;

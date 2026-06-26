@@ -13,11 +13,11 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
     [RequireComponent(typeof(GridDragMovement))]
     [RequireComponent(typeof(Collider), typeof(Voiceover), typeof(Scaler))]
     [RequireComponent(typeof(PathMover), typeof(ITouchDragInput), typeof(Magnifier))]
+
     public class Block : ColorableObject, IGridOccupant
     {
         [Header("Grid")]
-        [SerializeField]
-        private Vector2Int _sizeInCells;
+        [SerializeField] private Vector2Int _sizeInCells;
 
         private float _duration;
         private float _scaleSmockEffect;
@@ -91,13 +91,13 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
         }
 
         public void Initialize(
-            Effecter effectImpact,
-            Effecter effectSmock,
-            Effecter effectDestruct,
-            AudioClip soundDestruction,
-            AudioClip soundDragg,
-            AudioClip soundRaise,
-            AudioClip matchSound
+        Effecter effectImpact,
+        Effecter effectSmock,
+        Effecter effectDestruct,
+        AudioClip soundDestruction,
+        AudioClip soundDragg,
+        AudioClip soundRaise,
+        AudioClip matchSound
         )
         {
             _soundDragg = soundDragg;
@@ -132,9 +132,9 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
             SetRenderQueue();
 
             _effectImpact.CraeteParticles(
-                transform.position,
-                Quaternion.identity,
-                _scaleImpactEffect
+            transform.position,
+            Quaternion.identity,
+            _scaleImpactEffect
             );
 
             _touchDragInput.ThrowOff();
@@ -164,9 +164,9 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
             }
 
             _effectDestruct.CraeteParticles(
-                transform.position,
-                Quaternion.identity,
-                _scaleDestructEffect
+            transform.position,
+            Quaternion.identity,
+            _scaleDestructEffect
             );
 
             if (_inkSpawner == null)
@@ -187,7 +187,7 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
             Tween fadeTween = TurnOffRenderer();
 
             if (fadeTween != null)
-                yield return fadeTween.WaitForCompletion();
+            yield return fadeTween.WaitForCompletion();
 
             _inkSpawner.ActivateInkDrops(GetColor(), _duration);
         }
@@ -201,9 +201,9 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
         {
             _voiceover.PlayOneShot(_soundDragg);
             _effectSmock.CraeteParticles(
-                transform.position,
-                Quaternion.identity,
-                _scaleSmockEffect
+            transform.position,
+            Quaternion.identity,
+            _scaleSmockEffect
             );
         }
 

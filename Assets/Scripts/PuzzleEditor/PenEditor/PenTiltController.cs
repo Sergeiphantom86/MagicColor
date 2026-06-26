@@ -5,11 +5,8 @@ namespace PuzzleEditor.PenEditor
     public class PenTiltController : MonoBehaviour
     {
         [Header("Tilt Settings")]
-        [SerializeField]
-        private float _maxTiltAngle;
-
-        [SerializeField]
-        private float _tiltDuration;
+        [SerializeField] private float _maxTiltAngle;
+        [SerializeField] private float _tiltDuration;
 
         private float _currentAngle;
 
@@ -26,9 +23,9 @@ namespace PuzzleEditor.PenEditor
             if (Mathf.Approximately(targetAngle, _currentAngle) == false)
             {
                 _currentAngle = Mathf.Lerp(
-                    _currentAngle,
-                    targetAngle,
-                    Time.deltaTime / _tiltDuration
+                _currentAngle,
+                targetAngle,
+                Time.deltaTime / _tiltDuration
                 );
 
                 transform.localEulerAngles = new Vector3(0, 0, _currentAngle);

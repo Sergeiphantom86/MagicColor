@@ -6,11 +6,8 @@ namespace PuzzleEditor.MovingBlocks
 {
     public class Magnifier : MonoBehaviour
     {
-        [SerializeField]
-        private float _selectedScale;
-
-        [SerializeField]
-        private float _animationDuration;
+        [SerializeField] private float _selectedScale;
+        [SerializeField] private float _animationDuration;
 
         private Vector3 _originalScale;
         private Tween _scaleTween;

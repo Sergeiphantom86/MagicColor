@@ -26,18 +26,18 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         private readonly IProgressSaver _progressSaver;
 
         public TutorialAbilities(
-            StateMachine stateMachine,
-            TutorialContext context,
-            IInputHandler input,
-            PauseButton pauseButton,
-            TextMeshProUGUI text,
-            HandMover handMoverUI,
-            PurchaseButton purchaseButton,
-            CloseGameButton closeGame,
-            AbilityButton bagAbilities,
-            Hints hintsUI
+        StateMachine stateMachine,
+        TutorialContext context,
+        IInputHandler input,
+        PauseButton pauseButton,
+        TextMeshProUGUI text,
+        HandMover handMoverUI,
+        PurchaseButton purchaseButton,
+        CloseGameButton closeGame,
+        AbilityButton bagAbilities,
+        Hints hintsUI
         )
-            : base(stateMachine, context)
+        : base(stateMachine, context)
         {
             _input = input;
             _text = text;

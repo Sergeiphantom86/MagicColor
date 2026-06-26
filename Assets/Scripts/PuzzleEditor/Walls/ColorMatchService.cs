@@ -22,10 +22,10 @@ namespace PuzzleEditor.Walls
             Color otherColor = other.GetColor();
 
             if (otherColor == Color.white)
-                return false;
+            return false;
 
             if (_precision.Match(_colorable.GetColor(), otherColor) == false)
-                return false;
+            return false;
 
             matchedColor = otherColor;
             return true;

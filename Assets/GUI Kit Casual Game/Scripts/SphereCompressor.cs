@@ -38,7 +38,7 @@ public class SphereCompressor : MonoBehaviour
 
         _compressionSequence = DOTween.Sequence();
 
-        // Сжатие по оси Y, растяжение по X и Z
+        // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ Y, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ X пїЅ Z
         Vector3 compressedScale = new Vector3(
             _originalScale.x * (1f + _compressionStrength),
             _originalScale.y * (1f - _compressionStrength),
@@ -56,17 +56,17 @@ public class SphereCompressor : MonoBehaviour
     {
         StopCompression();
 
-        // Нормализуем направление и создаем масштаб для сжатия
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         direction = direction.normalized;
 
         Vector3 compressedScale = _originalScale;
 
-        // Сжимаем в направлении (уменьшаем масштаб по направлению)
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
         compressedScale.x *= (1f - Mathf.Abs(direction.x) * strength);
         compressedScale.y *= (1f - Mathf.Abs(direction.y) * strength);
         compressedScale.z *= (1f - Mathf.Abs(direction.z) * strength);
 
-        // Растягиваем в перпендикулярных направлениях
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         compressedScale.x *= (1f + (1f - Mathf.Abs(direction.x)) * strength * 0.5f);
         compressedScale.y *= (1f + (1f - Mathf.Abs(direction.y)) * strength * 0.5f);
         compressedScale.z *= (1f + (1f - Mathf.Abs(direction.z)) * strength * 0.5f);
@@ -80,10 +80,10 @@ public class SphereCompressor : MonoBehaviour
     {
         StopCompression();
 
-        // Вычисляем направление от точки удара к центру сферы
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         Vector3 directionToCenter = (transform.position - impactPoint).normalized;
 
-        // Вычисляем силу сжатия на основе расстояния
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         float distance = Vector3.Distance(transform.position, impactPoint);
         float distanceFactor = Mathf.Clamp01(1f - (distance / radius));
         float actualStrength = strength * distanceFactor;

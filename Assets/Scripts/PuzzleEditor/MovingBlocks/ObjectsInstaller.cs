@@ -7,13 +7,11 @@ using UnityEngine;
 namespace PuzzleEditor.MovingBlocks
 {
     [RequireComponent(typeof(Repainter), typeof(KeyInstaller), typeof(LockInstaller))]
+
     public class ObjectsInstaller : MonoBehaviour
     {
-        [SerializeField]
-        private Key _key;
-
-        [SerializeField]
-        private Lock _lock;
+        [SerializeField] private Key _key;
+        [SerializeField] private Lock _lock;
 
         private Repainter _repainter;
         private KeyInstaller _keyInstaller;
@@ -55,7 +53,7 @@ namespace PuzzleEditor.MovingBlocks
         private void OnPlaceLockOnRepaintedWalls(List<IColorable> colorables)
         {
             if (_isTutorial == false)
-                return;
+            return;
 
             _lockInstaller.TryPlaceLock(colorables);
         }
@@ -63,7 +61,7 @@ namespace PuzzleEditor.MovingBlocks
         private void OnPlaceKeyOnUnrepaintedBlock(List<IColorable> colorables)
         {
             if (_isTutorial == false)
-                return;
+            return;
 
             _keyInstaller.TryPlaceKey(colorables);
         }

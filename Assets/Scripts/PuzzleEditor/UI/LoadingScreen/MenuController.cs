@@ -6,14 +6,9 @@ namespace PuzzleEditor.UI.LoadingScreen
 {
     public class MenuController : MonoBehaviour
     {
-        [SerializeField]
-        private MenuButtons _menuButtons;
-
-        [SerializeField]
-        private PanelFader _panelFader;
-
-        [SerializeField]
-        private FireworksController _fireworks;
+        [SerializeField] private MenuButtons _menuButtons;
+        [SerializeField] private PanelFader _panelFader;
+        [SerializeField] private FireworksController _fireworks;
 
         private SceneFlowController _sceneFlow;
         private PuzzleFlowController _puzzleFlow;
@@ -69,7 +64,6 @@ namespace PuzzleEditor.UI.LoadingScreen
         }
 
         private void OnAnyButton() { }
-
         private void OnPuzzleCompleted()
         {
             _menuButtons.ShowResumeButton();
@@ -82,7 +76,7 @@ namespace PuzzleEditor.UI.LoadingScreen
             _panelFader.FadeIn(() =>
             {
                 _sceneFlow.LoadNext();
-            });
+                });
+            }
         }
     }
-}

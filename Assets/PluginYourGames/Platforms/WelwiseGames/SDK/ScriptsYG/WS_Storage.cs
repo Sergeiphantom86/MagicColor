@@ -1,4 +1,4 @@
-﻿#if WelwiseGamesPlatform_yg && Storage_yg
+#if WelwiseGamesPlatform_yg && Storage_yg
 using UnityEngine;
 using YG.Insides;
 using System;

@@ -6,11 +6,8 @@ namespace Wallets
 {
     public class TextAnimator : MonoBehaviour
     {
-        [SerializeField]
-        private float _animationDuration = 0.5f;
-
-        [SerializeField]
-        private bool _useSmoothAnimation = true;
+        [SerializeField] private float _animationDuration = 0.5f;
+        [SerializeField] private bool _useSmoothAnimation = true;
 
         private Tween _balanceTween;
         private long _currentValue;
@@ -39,7 +36,7 @@ namespace Wallets
         public void AnimateToValue(long newValue, float customDuration = -1)
         {
             if (customDuration < 0)
-                customDuration = _animationDuration;
+            customDuration = _animationDuration;
 
             _balanceTween?.Kill();
             _targetValue = newValue;
@@ -47,31 +44,31 @@ namespace Wallets
             if (_useSmoothAnimation)
             {
                 _balanceTween = DOTween
-                    .To(
-                        () => _currentValue,
-                        animatedValue =>
-                        {
-                            _currentValue = animatedValue;
-                            UpdateText();
-                        },
-                        _targetValue,
-                        customDuration
+                .To(
+                () => _currentValue,
+                animatedValue =>
+                {
+                    _currentValue = animatedValue;
+                    UpdateText();
+                    },
+                    _targetValue,
+                    customDuration
                     )
                     .SetEase(Ease.OutQuad);
+                }
+                else
+                {
+                    _currentValue = _targetValue;
+                    UpdateText();
+                }
             }
-            else
-            {
-                _currentValue = _targetValue;
-                UpdateText();
-            }
-        }
 
-        private void UpdateText()
-        {
-            if (_textMeshPro != null)
+            private void UpdateText()
             {
-                _textMeshPro.text = $"{_numberFormatter.FormatNumber(_currentValue)}";
+                if (_textMeshPro != null)
+                {
+                    _textMeshPro.text = $"{_numberFormatter.FormatNumber(_currentValue)}";
+                }
             }
         }
     }
-}

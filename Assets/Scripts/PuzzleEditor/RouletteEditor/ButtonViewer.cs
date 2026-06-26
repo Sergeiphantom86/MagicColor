@@ -6,8 +6,7 @@ namespace PuzzleEditor.RouletteEditor
 {
     public class ButtonViewer : MonoBehaviour
     {
-        [SerializeField]
-        private Exit _exit;
+        [SerializeField] private Exit _exit;
 
         private float _duration;
         private Vector3 _endScale;
@@ -60,7 +59,7 @@ namespace PuzzleEditor.RouletteEditor
         private void ResetSequence()
         {
             if (_sequence == null || !_sequence.IsActive())
-                return;
+            return;
 
             _sequence.Kill();
             _sequence = null;

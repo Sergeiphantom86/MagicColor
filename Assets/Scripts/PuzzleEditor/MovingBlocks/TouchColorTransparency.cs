@@ -3,6 +3,7 @@ using UnityEngine;
 namespace PuzzleEditor.MovingBlocks
 {
     [RequireComponent(typeof(Renderer), typeof(ColorableObject))]
+
     public class TouchColorTransparency : MonoBehaviour
     {
         private Renderer _renderer;

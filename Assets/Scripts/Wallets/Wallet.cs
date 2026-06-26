@@ -8,8 +8,7 @@ namespace Wallets
 {
     public class Wallet : MonoBehaviour
     {
-        [SerializeField]
-        private bool autoLoadFromSave;
+        [SerializeField] private bool autoLoadFromSave;
 
         private long _balance;
         private float _delay;
@@ -61,7 +60,7 @@ namespace Wallets
         public bool SpendFunds(long amount)
         {
             if (CanSpend(amount) == false)
-                return false;
+            return false;
 
             bool success = _transacter.ProcessTransaction(amount, _balance);
 
@@ -75,7 +74,7 @@ namespace Wallets
             else
             {
                 Debug.LogWarning(
-                    $"������������ �������! ������� ��������� {amount}, �� ������ ����� {_balance}"
+                $"������������ �������! ������� ��������� {amount}, �� ������ ����� {_balance}"
                 );
             }
 
@@ -93,7 +92,7 @@ namespace Wallets
         private void LoadFromSave()
         {
             if (_progressSaver.Saves == null)
-                return;
+            return;
 
             if (this is CoinWallet)
             {

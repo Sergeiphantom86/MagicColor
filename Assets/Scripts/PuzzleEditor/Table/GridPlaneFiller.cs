@@ -6,26 +6,12 @@ namespace PuzzleEditor.Table
 {
     public class GridPlaneFiller : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject _planePrefab;
-
+        [SerializeField] private GameObject _planePrefab;
         [SerializeField][Min(0.1f)] private float _planeHeight;
-
-        [SerializeField]
-        [Min(1)]
-        private int _scaleDivider;
-
-        [SerializeField]
-        [Min(1)]
-        private int _positionDivider;
-
-        [SerializeField]
-        [Range(1f, 1.2f)]
-        private float _scaleMultiplierX;
-
-        [SerializeField]
-        [Range(1f, 1.2f)]
-        private float _scaleMultiplierZ;
+        [SerializeField][Min(1)] private int _scaleDivider;
+        [SerializeField][Min(1)] private int _positionDivider;
+        [SerializeField][Range(1f, 1.2f)] private float _scaleMultiplierX;
+        [SerializeField][Range(1f, 1.2f)] private float _scaleMultiplierZ;
 
         private GameObject _planeInstance;
         private GridSystem _grid;
@@ -46,7 +32,7 @@ namespace PuzzleEditor.Table
             _grid.Initialized += OnStartSpawn;
 
             if (_grid.IsInitialized)
-                OnStartSpawn();
+            OnStartSpawn();
         }
 
         private void OnDisable()
@@ -93,17 +79,17 @@ namespace PuzzleEditor.Table
                 SetPosition();
 
                 HasChanged?.Invoke(
-                    _renderer.material,
-                    _grid.GridSizeX,
-                    _grid.GridSizeY,
-                    _grid.CellSize
+                _renderer.material,
+                _grid.GridSizeX,
+                _grid.GridSizeY,
+                _grid.CellSize
                 );
             }
             catch (Exception exception)
             {
                 Debug.LogError(
-                    $"{nameof(GridPlaneFiller)}: Failed to spawn plane. Error: {exception.Message}",
-                    this
+                $"{nameof(GridPlaneFiller)}: Failed to spawn plane. Error: {exception.Message}",
+                this
                 );
                 CleanupInstance();
             }
@@ -116,8 +102,8 @@ namespace PuzzleEditor.Table
             if (_grid.GridSizeX <= 0)
             {
                 Debug.LogError(
-                    $"{nameof(GridPlaneFiller)}: GridSizeX must be greater than 0. Current value: {_grid.GridSizeX}",
-                    this
+                $"{nameof(GridPlaneFiller)}: GridSizeX must be greater than 0. Current value: {_grid.GridSizeX}",
+                this
                 );
                 isValid = false;
             }
@@ -125,8 +111,8 @@ namespace PuzzleEditor.Table
             if (_grid.GridSizeY <= 0)
             {
                 Debug.LogError(
-                    $"{nameof(GridPlaneFiller)}: GridSizeY must be greater than 0. Current value: {_grid.GridSizeY}",
-                    this
+                $"{nameof(GridPlaneFiller)}: GridSizeY must be greater than 0. Current value: {_grid.GridSizeY}",
+                this
                 );
                 isValid = false;
             }
@@ -134,8 +120,8 @@ namespace PuzzleEditor.Table
             if (_grid.CellSize <= 0)
             {
                 Debug.LogError(
-                    $"{nameof(GridPlaneFiller)}: CellSize must be greater than 0. Current value: {_grid.CellSize}",
-                    this
+                $"{nameof(GridPlaneFiller)}: CellSize must be greater than 0. Current value: {_grid.CellSize}",
+                this
                 );
                 isValid = false;
             }
@@ -150,8 +136,8 @@ namespace PuzzleEditor.Table
             if (_renderer == null)
             {
                 Debug.LogError(
-                    $"{nameof(GridPlaneFiller)}: Plane prefab must have a Renderer component!",
-                    this
+                $"{nameof(GridPlaneFiller)}: Plane prefab must have a Renderer component!",
+                this
                 );
                 return false;
             }
@@ -159,8 +145,8 @@ namespace PuzzleEditor.Table
             if (_renderer.material == null)
             {
                 Debug.LogWarning(
-                    $"{nameof(GridPlaneFiller)}: Renderer material is null. Using default material.",
-                    this
+                $"{nameof(GridPlaneFiller)}: Renderer material is null. Using default material.",
+                this
                 );
             }
 
@@ -172,7 +158,7 @@ namespace PuzzleEditor.Table
             if (divider <= 0)
             {
                 Debug.LogWarning(
-                    $"{nameof(GridPlaneFiller)}: Divider is 0 or negative. Using default value 1."
+                $"{nameof(GridPlaneFiller)}: Divider is 0 or negative. Using default value 1."
                 );
                 divider = 1;
             }
@@ -185,17 +171,17 @@ namespace PuzzleEditor.Table
             try
             {
                 float scaleX =
-                    GetScreenDimensions(_grid.GridSizeX, _scaleMultiplier) * _scaleMultiplierX;
+                GetScreenDimensions(_grid.GridSizeX, _scaleMultiplier) * _scaleMultiplierX;
                 float scaleZ =
-                    GetScreenDimensions(_grid.GridSizeY, _scaleMultiplier) * _scaleMultiplierZ;
+                GetScreenDimensions(_grid.GridSizeY, _scaleMultiplier) * _scaleMultiplierZ;
 
                 _planeInstance.transform.localScale = new Vector3(scaleX, _positionY, scaleZ);
             }
             catch (Exception exception)
             {
                 Debug.LogError(
-                    $"{nameof(GridPlaneFiller)}: Failed to set scale. Error: {exception.Message}",
-                    this
+                $"{nameof(GridPlaneFiller)}: Failed to set scale. Error: {exception.Message}",
+                this
                 );
                 _planeInstance.transform.localScale = Vector3.one;
             }
@@ -213,8 +199,8 @@ namespace PuzzleEditor.Table
             catch (Exception exception)
             {
                 Debug.LogError(
-                    $"{nameof(GridPlaneFiller)}: Failed to set position. Error: {exception.Message}",
-                    this
+                $"{nameof(GridPlaneFiller)}: Failed to set position. Error: {exception.Message}",
+                this
                 );
                 _planeInstance.transform.localPosition = Vector3.zero;
             }

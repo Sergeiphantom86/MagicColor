@@ -10,11 +10,8 @@ namespace Menu.QuestEditor
         private const string Puzzle = nameof(Puzzle);
         private const string Tutorial = nameof(Tutorial);
 
-        [SerializeField]
-        private OfferPanel _offerPanel;
-
-        [SerializeField]
-        private OfferPanel _offerPanelMobile;
+        [SerializeField] private OfferPanel _offerPanel;
+        [SerializeField] private OfferPanel _offerPanelMobile;
 
         private IQuestTransitionService _transitionService;
         private Sprite _cachedSprite;
@@ -38,15 +35,15 @@ namespace Menu.QuestEditor
         }
 
         public void Initialize(
-            IProgressSaver progressSaver,
-            ZoomChanger zoomChanger,
-            SpriteTransmitter spriteTransmitter
+        IProgressSaver progressSaver,
+        ZoomChanger zoomChanger,
+        SpriteTransmitter spriteTransmitter
         )
         {
             _transitionService = new QuestTransitionService(
-                progressSaver,
-                zoomChanger,
-                spriteTransmitter
+            progressSaver,
+            zoomChanger,
+            spriteTransmitter
             );
         }
 
@@ -59,9 +56,9 @@ namespace Menu.QuestEditor
             if (result.ShowOffer)
             {
                 if (result.UseMobilePanel)
-                    _offerPanelMobile.TurnOn();
+                _offerPanelMobile.TurnOn();
                 else
-                    _offerPanel.TurnOn();
+                _offerPanel.TurnOn();
 
                 return;
             }

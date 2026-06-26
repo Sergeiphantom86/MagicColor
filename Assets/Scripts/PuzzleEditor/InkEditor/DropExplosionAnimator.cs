@@ -33,7 +33,7 @@ namespace PuzzleEditor.InkEditor
             sequence.SetDelay(delay);
 
             sequence.Append(
-                transform.DOJump(target, jumpPower, 1, _duration).SetEase(Ease.OutBounce)
+            transform.DOJump(target, jumpPower, 1, _duration).SetEase(Ease.OutBounce)
             );
         }
 

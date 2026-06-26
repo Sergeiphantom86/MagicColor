@@ -16,7 +16,7 @@ namespace YG.EditorScr
         protected virtual void OnEnable()
         {
 #if RU_YG2
-            m_AddButonContent = EditorGUIUtility.TrTextContent("Добавить новый тип события");
+            m_AddButonContent = EditorGUIUtility.TrTextContent("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 #else
             m_AddButonContent = EditorGUIUtility.TrTextContent("Add New Event Type");
 #endif

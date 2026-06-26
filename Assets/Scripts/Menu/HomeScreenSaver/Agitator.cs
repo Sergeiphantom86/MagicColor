@@ -8,20 +8,16 @@ using UnityEngine;
 namespace Menu.HomeScreenSaver
 {
     [RequireComponent(typeof(Viewer), typeof(TextureInitializer))]
+
     public class Agitator : MonoBehaviour, IAnimatable
     {
         private const float MinDirectionValue = -1f;
         private const float MaxDirectionValue = 1f;
         private const float AxisValueZ = 0f;
 
-        [SerializeField]
-        private ParticleSystem _particleSystem;
-
-        [SerializeField]
-        private Effecter _destruction;
-
-        [SerializeField]
-        private AudioClip _destructionSound;
+        [SerializeField] private ParticleSystem _particleSystem;
+        [SerializeField] private Effecter _destruction;
+        [SerializeField] private AudioClip _destructionSound;
 
         private float _interval;
         private float _explosionForce;
@@ -66,7 +62,7 @@ namespace Menu.HomeScreenSaver
         public void TriggerExplosion(List<Fragment> pixels)
         {
             if (pixels == null || pixels.Count == 0)
-                return;
+            return;
 
             SafeWaitExplosion(pixels);
         }
@@ -74,7 +70,7 @@ namespace Menu.HomeScreenSaver
         private void SafeWaitExplosion(List<Fragment> pixels)
         {
             if (isActiveAndEnabled == false)
-                return;
+            return;
 
             DOTweenExtensions.SafeKill(_explosionSequence);
 
@@ -101,9 +97,9 @@ namespace Menu.HomeScreenSaver
             if (_destruction != null)
             {
                 _destruction.CraeteParticles(
-                    _particleSystem.transform.position,
-                    Quaternion.identity,
-                    transform.localScale.x
+                _particleSystem.transform.position,
+                Quaternion.identity,
+                transform.localScale.x
                 );
 
                 _explosionSequence.Play();
@@ -113,110 +109,110 @@ namespace Menu.HomeScreenSaver
         private void CompleteSequence()
         {
             _explosionSequence
-                .Play()
-                .OnComplete(() =>
-                {
-                    Exploded?.Invoke();
-                });
-        }
-
-        private void AddPixelToExplosionSequence(List<Fragment> pixels)
-        {
-            foreach (Fragment pixel in pixels)
+            .Play()
+            .OnComplete(() =>
             {
-                if (pixel == null || pixel.gameObject.activeInHierarchy == false)
+                Exploded?.Invoke();
+                });
+            }
+
+            private void AddPixelToExplosionSequence(List<Fragment> pixels)
+            {
+                foreach (Fragment pixel in pixels)
+                {
+                    if (pixel == null || pixel.gameObject.activeInHierarchy == false)
                     continue;
 
-                _explosionSequence.Join(CreatePixelExplosionSequence(pixel));
+                    _explosionSequence.Join(CreatePixelExplosionSequence(pixel));
+                }
             }
-        }
 
-        private Sequence CreatePixelExplosionSequence(Fragment pixel)
-        {
-            _sequence = DOTween.Sequence();
-
-            AddMovementAnimation(_sequence, pixel);
-            AddRotationAnimation(_sequence, pixel);
-            AddScalingAnimation(_sequence, pixel);
-
-            _sequence.AppendInterval(_delayBeforeDestroy);
-
-            _sequence.OnComplete(() => ResetFragmentState(pixel));
-
-            return _sequence;
-        }
-
-        private void ResetFragmentState(Fragment pixel)
-        {
-            if (pixel != null)
+            private Sequence CreatePixelExplosionSequence(Fragment pixel)
             {
-                pixel.transform.localScale = Vector3.one;
-                pixel.transform.rotation = Quaternion.identity;
+                _sequence = DOTween.Sequence();
+
+                AddMovementAnimation(_sequence, pixel);
+                AddRotationAnimation(_sequence, pixel);
+                AddScalingAnimation(_sequence, pixel);
+
+                _sequence.AppendInterval(_delayBeforeDestroy);
+
+                _sequence.OnComplete(() => ResetFragmentState(pixel));
+
+                return _sequence;
             }
-        }
 
-        private void AddMovementAnimation(Sequence sequence, Fragment pixel)
-        {
-            Vector3 targetPosition = GetTargetPosition(pixel.transform.position);
+            private void ResetFragmentState(Fragment pixel)
+            {
+                if (pixel != null)
+                {
+                    pixel.transform.localScale = Vector3.one;
+                    pixel.transform.rotation = Quaternion.identity;
+                }
+            }
 
-            sequence.Append(
+            private void AddMovementAnimation(Sequence sequence, Fragment pixel)
+            {
+                Vector3 targetPosition = GetTargetPosition(pixel.transform.position);
+
+                sequence.Append(
                 pixel.transform.DOMove(targetPosition, _explosionDuration).SetEase(Ease.OutQuad)
-            );
-        }
+                );
+            }
 
-        private void AddRotationAnimation(Sequence sequence, Fragment pixel)
-        {
-            Vector3 targetRotation = GetRandomTargetRotation(
+            private void AddRotationAnimation(Sequence sequence, Fragment pixel)
+            {
+                Vector3 targetRotation = GetRandomTargetRotation(
                 pixel.transform.rotation.eulerAngles.z
-            );
-            sequence.Join(
+                );
+                sequence.Join(
                 pixel.transform.DORotate(targetRotation, _explosionDuration).SetEase(Ease.OutQuad)
-            );
-        }
+                );
+            }
 
-        private void AddScalingAnimation(Sequence sequence, Fragment pixel)
-        {
-            sequence.Append(
+            private void AddScalingAnimation(Sequence sequence, Fragment pixel)
+            {
+                sequence.Append(
                 pixel.transform.DOScale(Vector3.zero, _scaleDownDuration).SetEase(Ease.InBack)
-            );
-        }
+                );
+            }
 
-        private Vector3 GetTargetPosition(Vector3 originalPosition)
-        {
-            return originalPosition + GetRandomExplosionDirection() * _explosionForce;
-        }
+            private Vector3 GetTargetPosition(Vector3 originalPosition)
+            {
+                return originalPosition + GetRandomExplosionDirection() * _explosionForce;
+            }
 
-        private Vector3 GetRandomExplosionDirection()
-        {
-            return new Vector3(GetDirectionValue(), GetDirectionValue(), AxisValueZ).normalized;
-        }
+            private Vector3 GetRandomExplosionDirection()
+            {
+                return new Vector3(GetDirectionValue(), GetDirectionValue(), AxisValueZ).normalized;
+            }
 
-        private float GetDirectionValue()
-        {
-            return Random.Range(MinDirectionValue, MaxDirectionValue);
-        }
+            private float GetDirectionValue()
+            {
+                return Random.Range(MinDirectionValue, MaxDirectionValue);
+            }
 
-        private Vector3 GetRandomTargetRotation(float rotationZ)
-        {
-            return new Vector3(
+            private Vector3 GetRandomTargetRotation(float rotationZ)
+            {
+                return new Vector3(
                 0,
                 0,
                 rotationZ + Random.Range(-_rotationIntensity, _rotationIntensity)
-            );
-        }
+                );
+            }
 
-        private void TurnOffParticleSystem()
-        {
-            if (_particleSystem != null)
+            private void TurnOffParticleSystem()
             {
-                _particleSystem.Stop();
-                _particleSystem.gameObject.SetActive(false);
+                if (_particleSystem != null)
+                {
+                    _particleSystem.Stop();
+                    _particleSystem.gameObject.SetActive(false);
+                }
+            }
+
+            private void OnDestroy()
+            {
+                DOTweenExtensions.SafeKill(_explosionSequence);
             }
         }
-
-        private void OnDestroy()
-        {
-            DOTweenExtensions.SafeKill(_explosionSequence);
-        }
     }
-}

@@ -1,4 +1,4 @@
-﻿#if WelwiseGamesPlatform_yg && ServerTime_yg
+#if WelwiseGamesPlatform_yg && ServerTime_yg
 namespace YG
 {
     using System;

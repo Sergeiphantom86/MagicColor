@@ -5,8 +5,7 @@ namespace Menu.TutorialEditor.TutorialUI
 {
     public class Fring : MonoBehaviour
     {
-        [SerializeField]
-        private Button _button;
+        [SerializeField] private Button _button;
 
         public Button Button => _button;
 

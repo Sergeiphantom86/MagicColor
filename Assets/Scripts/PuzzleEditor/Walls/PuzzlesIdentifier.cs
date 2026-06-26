@@ -14,32 +14,19 @@ namespace PuzzleEditor.Walls
 {
     public class PuzzlesIdentifier : MonoBehaviour
     {
-        [SerializeField]
-        private BagKey _bag;
+        [SerializeField] private BagKey _bag;
+        [SerializeField] private Lock _lock;
+        [SerializeField] private Messager _hintKey;
+        [SerializeField] private AnimatorPuzzle _animator;
+        [SerializeField] private ErrorPanel _errorPanel;
+        [SerializeField] private Activator _activator;
+        [SerializeField] private AudioClip _audioClip;
 
         [SerializeField]
-        private Lock _lock;
 
-        [SerializeField]
-        private Messager _hintKey;
-
-        [SerializeField]
-        private AnimatorPuzzle _animator;
-
-        [SerializeField]
-        private ErrorPanel _errorPanel;
-
-        [SerializeField]
-        private Activator _activator;
-
-        [SerializeField]
-        private AudioClip _audioClip;
-
-        [SerializeField]
         private List<WallsContainer> _wallPrefabs;
 
-        [SerializeField]
-        private int _index;
+        [SerializeField] private int _index;
 
         private Rotator _rotation;
         private GridSystem _gridSystem;
@@ -48,7 +35,6 @@ namespace PuzzleEditor.Walls
         private ZoomChanger _zoomChanger;
 
         public WallsContainer CurrentContainer { get; private set; }
-
         private void Awake()
         {
             _rotation = GetComponent<Rotator>();
@@ -104,9 +90,9 @@ namespace PuzzleEditor.Walls
             SetGridSize();
 
             _rotation.SetPositionPuzzle(
-                0,
-                CurrentContainer.Position.y,
-                CurrentContainer.Position.z
+            0,
+            CurrentContainer.Position.y,
+            CurrentContainer.Position.z
             );
         }
 
@@ -127,14 +113,14 @@ namespace PuzzleEditor.Walls
         private void InitializeWalls()
         {
             CurrentContainer.InitializeWalls(
-                _colorPrecision,
-                _bag,
-                _rotation,
-                _hintKey,
-                _lock,
-                _errorPanel,
-                _activator,
-                _audioClip
+            _colorPrecision,
+            _bag,
+            _rotation,
+            _hintKey,
+            _lock,
+            _errorPanel,
+            _activator,
+            _audioClip
             );
         }
 

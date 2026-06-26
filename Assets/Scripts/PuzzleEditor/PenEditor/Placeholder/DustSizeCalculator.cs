@@ -5,15 +5,10 @@ namespace PuzzleEditor.PenEditor.Placeholder
     public class DustSizeCalculator : MonoBehaviour
     {
         [Header("��������� ������������")]
-        [SerializeField]
-        private float _minSize = 0.1f;
-
-        [SerializeField]
-        private float _maxSize = 1f;
-
+        [SerializeField] private float _minSize = 0.1f;
+        [SerializeField] private float _maxSize = 1f;
         [Header("�������")]
-        [SerializeField]
-        private float _calculatedSize;
+        [SerializeField] private float _calculatedSize;
 
         public float CalculateSize(int quantity, int maxDustValue)
         {
@@ -37,7 +32,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
             if (amount < 0)
             {
                 Debug.LogWarning(
-                    $"�������� ������������ �� ����� ���� �������������. ��������: {amount}. ����������� �������� 0."
+                $"�������� ������������ �� ����� ���� �������������. ��������: {amount}. ����������� �������� 0."
                 );
             }
         }
@@ -47,7 +42,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
             if (upperLimit <= 0)
             {
                 Debug.LogError(
-                    $"������������ �������� ������������ ������ ���� �������������. ��������: {upperLimit}. ����������� �������� �� ���������: 500."
+                $"������������ �������� ������������ ������ ���� �������������. ��������: {upperLimit}. ����������� �������� �� ���������: 500."
                 );
             }
         }
@@ -63,7 +58,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
             if (_minSize < 0f)
             {
                 Debug.LogWarning(
-                    $"����������� ������ �� ����� ���� �������������. ��������: {_minSize}. ����������� �������� 0."
+                $"����������� ������ �� ����� ���� �������������. ��������: {_minSize}. ����������� �������� 0."
                 );
                 _minSize = 0f;
             }
@@ -74,7 +69,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
             if (_maxSize < _minSize)
             {
                 Debug.LogWarning(
-                    $"������������ ������ �� ����� ���� ������ ������������. ������������: {_maxSize}, �����������: {_minSize}. ����������� �������� �� ���������."
+                $"������������ ������ �� ����� ���� ������ ������������. ������������: {_maxSize}, �����������: {_minSize}. ����������� �������� �� ���������."
                 );
                 _minSize = 0.1f;
                 _maxSize = 1f;

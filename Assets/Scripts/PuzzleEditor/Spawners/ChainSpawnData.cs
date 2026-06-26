@@ -4,6 +4,7 @@ using UnityEngine;
 namespace PuzzleEditor.Spawners
 {
     [Serializable]
+
     public struct ChainSpawnData
     {
         public Vector2Int StartOrigin;

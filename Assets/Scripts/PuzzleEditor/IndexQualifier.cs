@@ -33,7 +33,7 @@ namespace PuzzleEditor
         private void OnDestroy()
         {
             if (_spawner != null)
-                _spawner.SpawnerReadyed -= OnSpawnerReady;
+            _spawner.SpawnerReadyed -= OnSpawnerReady;
         }
 
         private void OnSpawnerReady()
@@ -65,11 +65,11 @@ namespace PuzzleEditor
 
             int totalBlocks = _spawner.Count;
             for (int i = 0; i < totalBlocks; i++)
-                _allowedIndexes.Add(i);
+            _allowedIndexes.Add(i);
 
             var container = _identifier.CurrentContainer;
             if (container == null)
-                return;
+            return;
 
             int gridSize = container.GridSize.y;
 

@@ -5,11 +5,8 @@ namespace PuzzleEditor.Stars
 {
     public class StarActivator : MonoBehaviour
     {
-        [SerializeField]
-        private AnimatorPuzzle _animatorPuzzle;
-
-        [SerializeField]
-        private StarsController _controller;
+        [SerializeField] private AnimatorPuzzle _animatorPuzzle;
+        [SerializeField] private StarsController _controller;
 
         private void OnEnable()
         {

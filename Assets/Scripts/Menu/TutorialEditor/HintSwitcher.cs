@@ -6,20 +6,11 @@ namespace Menu.TutorialEditor
 {
     public class HintSwitcher : MonoBehaviour
     {
-        [SerializeField]
-        private Blinker _backlightPause;
-
-        [SerializeField]
-        private Blinker _backlightPurchase;
-
-        [SerializeField]
-        private Blinker _backlightAbility;
-
-        [SerializeField]
-        private HandMover _handMover;
-
-        [SerializeField]
-        private Activator _activator;
+        [SerializeField] private Blinker _backlightPause;
+        [SerializeField] private Blinker _backlightPurchase;
+        [SerializeField] private Blinker _backlightAbility;
+        [SerializeField] private HandMover _handMover;
+        [SerializeField] private Activator _activator;
 
         private HintCounter _hintCounter;
 

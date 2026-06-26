@@ -10,7 +10,7 @@ namespace YG.Example
         private void Update()
         {
 #if RU_YG2
-            string translate = "Таймер до рекламы: ";
+            string translate = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ";
 #else
             string translate = "Timer before adv: ";
 #endif

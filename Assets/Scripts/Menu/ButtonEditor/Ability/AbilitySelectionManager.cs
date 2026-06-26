@@ -22,7 +22,7 @@ namespace Menu.ButtonEditor.Ability
         public void Select(AbilityButton button)
         {
             if (_currentButton != null)
-                _currentButton.SetHighlight(false);
+            _currentButton.SetHighlight(false);
 
             _currentButton = button;
             _currentAbility = button.Ability;
@@ -33,7 +33,7 @@ namespace Menu.ButtonEditor.Ability
         public void ClearSelection()
         {
             if (_currentButton == null)
-                return;
+            return;
 
             _currentButton.SetHighlight(false);
             _currentButton = null;

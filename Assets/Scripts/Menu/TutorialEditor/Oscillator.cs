@@ -6,8 +6,7 @@ namespace Menu.TutorialEditor
 {
     public class Oscillator : MonoBehaviour
     {
-        [SerializeField]
-        private Rotator _rotation;
+        [SerializeField] private Rotator _rotation;
 
         private float _duration;
         private float _amplitude;
@@ -35,7 +34,7 @@ namespace Menu.TutorialEditor
         public void Play()
         {
             if (_sequence != null && _sequence.IsPlaying())
-                return;
+            return;
 
             Rotate();
         }
@@ -54,25 +53,25 @@ namespace Menu.TutorialEditor
             CreateSequence(0, 0, -_amplitude);
 
             _sequence
-                .SetLoops(_quantityCycles, LoopType.Restart)
-                .OnComplete(() => transform.eulerAngles = _initialRotation);
+            .SetLoops(_quantityCycles, LoopType.Restart)
+            .OnComplete(() => transform.eulerAngles = _initialRotation);
 
             _sequence.SetEase(Ease.Linear);
         }
 
         private void CreateSequence(
-            float amplitudeX = 0,
-            float amplitudeY = 0,
-            float amplitudeZ = 0
+        float amplitudeX = 0,
+        float amplitudeY = 0,
+        float amplitudeZ = 0
         )
         {
             _sequence.Append(
-                transform
-                    .DORotate(
-                        transform.eulerAngles + new Vector3(amplitudeX, amplitudeY, amplitudeZ),
-                        _duration
-                    )
-                    .SetEase(Ease.InSine)
+            transform
+            .DORotate(
+            transform.eulerAngles + new Vector3(amplitudeX, amplitudeY, amplitudeZ),
+            _duration
+            )
+            .SetEase(Ease.InSine)
             );
         }
 

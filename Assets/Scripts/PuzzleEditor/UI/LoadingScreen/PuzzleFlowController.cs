@@ -6,11 +6,8 @@ namespace PuzzleEditor.UI.LoadingScreen
 {
     public class PuzzleFlowController : MonoBehaviour
     {
-        [SerializeField]
-        private AnimatorPuzzle _animator;
-
-        [SerializeField]
-        private Timer _timer;
+        [SerializeField] private AnimatorPuzzle _animator;
+        [SerializeField] private Timer _timer;
 
         public event Action PuzzleCompleted;
 

@@ -9,20 +9,11 @@ namespace PuzzleEditor.Counter
 {
     public class Timer : MonoBehaviour
     {
-        [SerializeField]
-        private TMP_Text _timerText;
-
-        [SerializeField]
-        private string _timeFormat = "mm':'ss";
-
-        [SerializeField]
-        private BlocksContainer _blocksContainer;
-
-        [SerializeField]
-        private StarsController _starCounter;
-
-        [SerializeField]
-        private PauseMenu _pauseMenu;
+        [SerializeField] private TMP_Text _timerText;
+        [SerializeField] private string _timeFormat = "mm':'ss";
+        [SerializeField] private BlocksContainer _blocksContainer;
+        [SerializeField] private StarsController _starCounter;
+        [SerializeField] private PauseMenu _pauseMenu;
 
         private float _value;
         private bool _isRunning;
@@ -32,7 +23,6 @@ namespace PuzzleEditor.Counter
         public event Action HasBegun;
 
         public int CurrentTimeSeconds { get; private set; }
-
         public TMP_Text TimerText => _timerText;
 
         public bool IsRunning => _isRunning;
@@ -80,7 +70,7 @@ namespace PuzzleEditor.Counter
         public void StartTimer()
         {
             if (_isRunning)
-                return;
+            return;
 
             _isRunning = true;
             _value = 0f;
@@ -102,7 +92,7 @@ namespace PuzzleEditor.Counter
         public void Stop()
         {
             if (_isRunning == false)
-                return;
+            return;
 
             _isRunning = false;
         }

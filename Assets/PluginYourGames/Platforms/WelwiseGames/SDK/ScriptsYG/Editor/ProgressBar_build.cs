@@ -1,4 +1,4 @@
-﻿#if WelwiseGamesPlatform_yg
+#if WelwiseGamesPlatform_yg
 using UnityEngine;
 
 namespace YG.EditorScr.BuildModify

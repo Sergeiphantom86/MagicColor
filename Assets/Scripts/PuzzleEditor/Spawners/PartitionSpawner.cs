@@ -8,23 +8,12 @@ namespace PuzzleEditor.Spawners
 {
     public class PartitionSpawner : BaseSpawner<Partition>
     {
-        [SerializeField]
-        private GridSystem _gridSystem;
-
-        [SerializeField]
-        private int _count;
-
-        [SerializeField]
-        private int _marginFromBorder = 1;
-
-        [SerializeField]
-        private int _chainCount = 3;
-
-        [SerializeField]
-        private int _chainSpacing = 2;
-
-        [SerializeField]
-        private ChainSpawnDirection _chainDirection;
+        [SerializeField] private GridSystem _gridSystem;
+        [SerializeField] private int _count;
+        [SerializeField] private int _marginFromBorder = 1;
+        [SerializeField] private int _chainCount = 3;
+        [SerializeField] private int _chainSpacing = 2;
+        [SerializeField] private ChainSpawnDirection _chainDirection;
 
         private PartitionChainSpawner _chainSpawner;
         private GridPositionHelper _gridHelper;
@@ -43,7 +32,7 @@ namespace PuzzleEditor.Spawners
             _gridSystem.Initialized += OnSpawnRandom;
 
             if (_gridSystem.IsInitialized)
-                OnSpawnRandom();
+            OnSpawnRandom();
         }
 
         private void OnDisable()
@@ -72,7 +61,7 @@ namespace PuzzleEditor.Spawners
             }
 
             if (_progressSaver.Saves.IsUnlockAbilities == false)
-                return;
+            return;
 
             for (int i = 0; i < _chainCount; i++)
             {
@@ -85,7 +74,7 @@ namespace PuzzleEditor.Spawners
             Partition partition = SpawnObjectWithCurrentIndex(Vector3.zero, transform);
 
             if (partition == null)
-                return;
+            return;
 
             if (TryGetAvailableCenters(partition.SizeInCells, out var centers) == false)
             {
@@ -106,53 +95,53 @@ namespace PuzzleEditor.Spawners
                 Direction = _chainDirection,
                 Count = _chainCount,
                 Spacing = _chainSpacing,
-            };
+                };
 
-            _chainSpawner.TrySpawnChain(
+                _chainSpawner.TrySpawnChain(
                 _chainSpawnData,
                 () => SpawnObjectWithCurrentIndex(Vector3.zero, transform),
                 PlacePartition
-            );
-        }
+                );
+            }
 
-        private void OnClearCell(IGridOccupant gridOccupant)
-        {
-            _gridSystem.ClearCell(gridOccupant);
-
-            if (gridOccupant is Partition partition)
+            private void OnClearCell(IGridOccupant gridOccupant)
             {
-                partition.Destroyed -= OnClearCell;
+                _gridSystem.ClearCell(gridOccupant);
+
+                if (gridOccupant is Partition partition)
+                {
+                    partition.Destroyed -= OnClearCell;
+                }
+            }
+
+            private Vector2Int GetCentr(List<Vector2Int> availableCenters)
+            {
+                return availableCenters[Random.Range(0, availableCenters.Count)];
+            }
+
+            private bool TryGetAvailableCenters(Vector2Int size, out List<Vector2Int> availableCenters)
+            {
+                availableCenters = _gridHelper.GetAvailableOrigins(size, _marginFromBorder);
+
+                return availableCenters != null && availableCenters.Count > 0;
+            }
+
+            private void PlacePartition(Partition partition, Vector2Int origin)
+            {
+                Vector3 worldPos = _gridSystem.GetWorldPosition(origin, partition.SizeInCells);
+
+                ConfigurePartition(partition, origin, worldPos);
+
+                _gridSystem.PlaceObject(origin, partition);
+            }
+
+            private void ConfigurePartition(Partition partition, Vector2Int origin, Vector3 worldPos)
+            {
+                partition.transform.SetParent(transform);
+                partition.transform.position = worldPos;
+                partition.SetGridPosition(origin);
+
+                partition.Destroyed += OnClearCell;
             }
         }
-
-        private Vector2Int GetCentr(List<Vector2Int> availableCenters)
-        {
-            return availableCenters[Random.Range(0, availableCenters.Count)];
-        }
-
-        private bool TryGetAvailableCenters(Vector2Int size, out List<Vector2Int> availableCenters)
-        {
-            availableCenters = _gridHelper.GetAvailableOrigins(size, _marginFromBorder);
-
-            return availableCenters != null && availableCenters.Count > 0;
-        }
-
-        private void PlacePartition(Partition partition, Vector2Int origin)
-        {
-            Vector3 worldPos = _gridSystem.GetWorldPosition(origin, partition.SizeInCells);
-
-            ConfigurePartition(partition, origin, worldPos);
-
-            _gridSystem.PlaceObject(origin, partition);
-        }
-
-        private void ConfigurePartition(Partition partition, Vector2Int origin, Vector3 worldPos)
-        {
-            partition.transform.SetParent(transform);
-            partition.transform.position = worldPos;
-            partition.SetGridPosition(origin);
-
-            partition.Destroyed += OnClearCell;
-        }
     }
-}

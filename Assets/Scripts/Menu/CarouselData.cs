@@ -21,9 +21,7 @@ namespace Menu
         }
 
         public RectTransform[] Buttons { get; }
-
         public CanvasGroup[] CanvasGroups { get; }
-
         public Vector2[] OriginalPositions { get; }
     }
 }

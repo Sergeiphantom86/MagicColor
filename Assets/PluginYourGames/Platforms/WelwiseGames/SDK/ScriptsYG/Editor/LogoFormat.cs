@@ -1,4 +1,4 @@
-﻿#if WelwiseGamesPlatform_yg
+#if WelwiseGamesPlatform_yg
 using System.IO;
 using UnityEngine;
 

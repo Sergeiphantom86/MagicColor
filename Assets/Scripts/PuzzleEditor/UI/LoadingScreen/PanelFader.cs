@@ -5,10 +5,10 @@ using UnityEngine;
 namespace PuzzleEditor.UI.LoadingScreen
 {
     [RequireComponent(typeof(CanvasGroup))]
+
     public class PanelFader : MonoBehaviour
     {
-        [SerializeField]
-        private float _fadeDuration = 1;
+        [SerializeField] private float _fadeDuration = 1;
 
         private CanvasGroup _canvasGroup;
         private Tween _currentTween;
@@ -39,25 +39,25 @@ namespace PuzzleEditor.UI.LoadingScreen
             _currentTween?.Kill();
 
             if (_canvasGroup == null)
-                _canvasGroup = GetComponent<CanvasGroup>();
+            _canvasGroup = GetComponent<CanvasGroup>();
 
             _currentTween = _canvasGroup
-                .DOFade(targetAlpha, _fadeDuration)
-                .SetLink(gameObject)
-                .OnStart(() =>
+            .DOFade(targetAlpha, _fadeDuration)
+            .SetLink(gameObject)
+            .OnStart(() =>
+            {
+                if (_canvasGroup != null)
                 {
-                    if (_canvasGroup != null)
-                    {
-                        _canvasGroup.interactable = isInteractable;
-                        _canvasGroup.blocksRaycasts = isInteractable;
-                    }
+                    _canvasGroup.interactable = isInteractable;
+                    _canvasGroup.blocksRaycasts = isInteractable;
+                }
                 });
-            return _currentTween;
-        }
+                return _currentTween;
+            }
 
-        private void OnDestroy()
-        {
-            _currentTween?.Kill();
+            private void OnDestroy()
+            {
+                _currentTween?.Kill();
+            }
         }
     }
-}

@@ -1,4 +1,3 @@
-
 namespace YG
 {
     public static partial class YG2

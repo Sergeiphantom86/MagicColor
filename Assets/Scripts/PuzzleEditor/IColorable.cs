@@ -5,7 +5,6 @@ namespace PuzzleEditor
     public interface IColorable
     {
         public bool IsRepainted { get; }
-
         public void SetColor(Color color);
 
         public Color GetColor();

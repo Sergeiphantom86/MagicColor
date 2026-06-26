@@ -24,11 +24,11 @@ namespace PuzzleEditor.PenEditor
         private Fragment _currentFragment;
 
         public FragmentQueueProcessor(
-            Voiceover voiceover,
-            AudioClip pixelActivation,
-            IMover mover,
-            IFragmentAnimator fragmentAnimator,
-            IBlocksContainer blocksContainer
+        Voiceover voiceover,
+        AudioClip pixelActivation,
+        IMover mover,
+        IFragmentAnimator fragmentAnimator,
+        IBlocksContainer blocksContainer
         )
         {
             _mover = mover;
@@ -81,13 +81,13 @@ namespace PuzzleEditor.PenEditor
                 _currentFragment = _fragmentsQueue.Dequeue();
 
                 if (_currentFragment == null)
-                    continue;
+                continue;
 
                 NotifyColorChangeIfNeeded(_currentFragment);
 
                 yield return _mover.MoveToPosition(
-                    _currentFragment.transform.position,
-                    _currentDuration
+                _currentFragment.transform.position,
+                _currentDuration
                 );
 
                 _fragmentAnimator.ActivateFragment(_currentFragment);
@@ -114,7 +114,7 @@ namespace PuzzleEditor.PenEditor
         private void TryRequestSpeedIncrease()
         {
             if (_needSpeedBoost == false)
-                return;
+            return;
 
             _needSpeedBoost = false;
 
@@ -131,7 +131,7 @@ namespace PuzzleEditor.PenEditor
             var fragmentColor = fragment.GetColor();
 
             if (_currentColor == fragmentColor)
-                return;
+            return;
 
             _currentColor = fragmentColor;
 

@@ -6,13 +6,11 @@ using UnityEngine.UI;
 namespace Menu
 {
     [RequireComponent(typeof(Image))]
+
     public class Warner : MonoBehaviour
     {
-        [SerializeField]
-        private ErrorPanel _errorPanel;
-
-        [SerializeField]
-        private ButtonController _buttonController;
+        [SerializeField] private ErrorPanel _errorPanel;
+        [SerializeField] private ButtonController _buttonController;
 
         private Image _image;
         private TextMeshProUGUI _textMeshProUGUI;

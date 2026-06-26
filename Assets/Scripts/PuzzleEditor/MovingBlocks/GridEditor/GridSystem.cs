@@ -4,10 +4,10 @@ using UnityEngine;
 namespace PuzzleEditor.MovingBlocks.GridEditor
 {
     [RequireComponent(typeof(Grid))]
+
     public class GridSystem : MonoBehaviour
     {
         public static GridSystem Instance { get; private set; }
-
         private int _gridSizeX;
         private int _gridSizeY;
         private Grid _unityGrid;
@@ -22,7 +22,6 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
         public int GridSizeY => _gridSizeY;
 
         public bool IsInitialized { get; private set; }
-
         private void Awake()
         {
             if (Instance != null)
@@ -96,28 +95,28 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
             }
 
             return ForEachCell(
-                origin,
-                size,
-                pos => IsValidGridPosition(pos) && _grid[pos.x, pos.y] == null
+            origin,
+            size,
+            pos => IsValidGridPosition(pos) && _grid[pos.x, pos.y] == null
             );
         }
 
         public void PlaceObject(Vector2Int origin, IGridOccupant occupant)
         {
             if (_grid == null)
-                Debug.LogError("GRID NULL WHEN PLACING");
+            Debug.LogError("GRID NULL WHEN PLACING");
 
             ForEachCell(
-                origin,
-                occupant.SizeInCells,
-                pos =>
-                {
-                    if (IsValidGridPosition(pos) == false)
-                        return false;
+            origin,
+            occupant.SizeInCells,
+            pos =>
+            {
+                if (IsValidGridPosition(pos) == false)
+                return false;
 
-                    _grid[pos.x, pos.y] = occupant.GameObject;
-                    return true;
-                }
+                _grid[pos.x, pos.y] = occupant.GameObject;
+                return true;
+            }
             );
 
             occupant.SetGridPosition(origin);
@@ -128,14 +127,14 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
             Vector2Int origin = occupant.GridPosition;
 
             ForEachCell(
-                origin,
-                occupant.SizeInCells,
-                pos =>
-                {
-                    if (IsValidGridPosition(pos))
-                        _grid[pos.x, pos.y] = null;
-                    return true;
-                }
+            origin,
+            occupant.SizeInCells,
+            pos =>
+            {
+                if (IsValidGridPosition(pos))
+                _grid[pos.x, pos.y] = null;
+                return true;
+            }
             );
         }
 
@@ -144,7 +143,7 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
             for (int i = 0; i < GetTotalCells(size); i++)
             {
                 if (check(GetPosition(origin, size, i)) == false)
-                    return false;
+                return false;
             }
 
             return true;

@@ -7,6 +7,7 @@ namespace PuzzleEditor.MovingBlocks
 {
     [RequireComponent(typeof(GridDragMovement), typeof(Magnifier), typeof(IInputHandler))]
     [RequireComponent(typeof(IColorable), typeof(Voiceover))]
+
     public class TouchDragInput : MonoBehaviour, ITouchDragInput
     {
         private bool _isSelected;

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 #if TMP_YG2
 using TMPro;
 #endif

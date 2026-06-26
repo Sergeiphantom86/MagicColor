@@ -5,6 +5,7 @@ using UnityEngine.Audio;
 namespace PuzzleEditor.SoundEditor
 {
     [RequireComponent(typeof(AudioSource))]
+
     public class BackgroundMusicPuzzle : MonoBehaviour
     {
         private const string MusicVolume = nameof(MusicVolume);
@@ -12,11 +13,8 @@ namespace PuzzleEditor.SoundEditor
         private const float DBLinearRatio = 20f;
         private const float MinVolume = 0.0001f;
 
-        [SerializeField]
-        private AudioMixerGroup _musicGroup;
-
-        [SerializeField]
-        private AudioClip _backgroundMusic;
+        [SerializeField] private AudioMixerGroup _musicGroup;
+        [SerializeField] private AudioClip _backgroundMusic;
 
         private AudioSource _musicSource;
         private IProgressSaver _progressSaver;
@@ -55,7 +53,7 @@ namespace PuzzleEditor.SoundEditor
         private void PlayBackgroundMusic(float time)
         {
             if (_backgroundMusic == null || _musicSource.isPlaying)
-                return;
+            return;
 
             _musicSource.clip = _backgroundMusic;
             _musicSource.time = time;
@@ -72,7 +70,7 @@ namespace PuzzleEditor.SoundEditor
         private void OnValidate()
         {
             if (_musicGroup != null && _musicSource != null)
-                _musicSource.outputAudioMixerGroup = _musicGroup;
+            _musicSource.outputAudioMixerGroup = _musicGroup;
         }
     }
 }

@@ -13,11 +13,11 @@ namespace Menu
         }
 
         public void ApplyImmediate(
-            RectTransform rect,
-            CanvasGroup canvas,
-            float positionX,
-            float scale,
-            float alpha
+        RectTransform rect,
+        CanvasGroup canvas,
+        float positionX,
+        float scale,
+        float alpha
         )
         {
             rect.anchoredPosition = new Vector2(positionX, rect.anchoredPosition.y);
@@ -26,11 +26,11 @@ namespace Menu
         }
 
         public void ApplyAnimated(
-            RectTransform rect,
-            CanvasGroup canvas,
-            float positionX,
-            float scale,
-            float alpha
+        RectTransform rect,
+        CanvasGroup canvas,
+        float positionX,
+        float scale,
+        float alpha
         )
         {
             rect.DOKill();

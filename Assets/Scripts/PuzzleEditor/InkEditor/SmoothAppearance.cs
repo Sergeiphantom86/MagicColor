@@ -5,6 +5,7 @@ using UnityEngine;
 namespace PuzzleEditor.InkEditor
 {
     [RequireComponent(typeof(SmoothMoveToTarget), typeof(Drop))]
+
     public class SmoothAppearance : MonoBehaviour
     {
         private float _duration;
@@ -27,7 +28,7 @@ namespace PuzzleEditor.InkEditor
             _smoothMoveToTarget = GetComponent<SmoothMoveToTarget>();
 
             if (_disableOnStart && _useScale)
-                transform.localScale = Vector3.zero;
+            transform.localScale = Vector3.zero;
         }
 
         private void OnEnable()
@@ -45,9 +46,9 @@ namespace PuzzleEditor.InkEditor
             _drop.PlaySoundSpawn();
 
             CreateSizeChangeSequence(
-                Vector3.zero,
-                _durationDeletion,
-                () => gameObject.SetActive(false)
+            Vector3.zero,
+            _durationDeletion,
+            () => gameObject.SetActive(false)
             );
         }
 
@@ -56,23 +57,23 @@ namespace PuzzleEditor.InkEditor
             gameObject.SetActive(true);
 
             CreateSizeChangeSequence(
-                _originalScale,
-                _duration,
-                () => _smoothMoveToTarget.BeginMovement()
+            _originalScale,
+            _duration,
+            () => _smoothMoveToTarget.BeginMovement()
             );
         }
 
         private void CreateSizeChangeSequence(Vector3 scale, float duration, Action action = null)
         {
             if (_useScale == false)
-                return;
+            return;
 
             _sequence?.Kill();
 
             _sequence = DOTween.Sequence();
             _sequence
-                .Join(transform.DOScale(scale, duration).SetEase(Ease.InOutBack))
-                .OnComplete(() => action?.Invoke());
+            .Join(transform.DOScale(scale, duration).SetEase(Ease.InOutBack))
+            .OnComplete(() => action?.Invoke());
         }
     }
 }

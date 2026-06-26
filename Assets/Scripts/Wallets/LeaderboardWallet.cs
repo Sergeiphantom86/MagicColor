@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Wallets
 {
     [RequireComponent(typeof(Wallet))]
+
     public class LeaderboardWallet : MonoBehaviour
     {
         private const string Suffix = "Wallet";
@@ -47,10 +48,10 @@ namespace Wallets
         private string ConvertName(string original)
         {
             if (string.IsNullOrEmpty(original))
-                return Default;
+            return Default;
 
             if (original.EndsWith(Suffix))
-                return original[..^Suffix.Length];
+            return original[..^Suffix.Length];
 
             return original;
         }

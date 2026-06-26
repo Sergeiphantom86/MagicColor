@@ -4,8 +4,7 @@ namespace PuzzleEditor.Table
 {
     public class ShaderUpdaterr : MonoBehaviour
     {
-        [SerializeField]
-        private float _multiplier;
+        [SerializeField] private float _multiplier;
 
         private GridPlaneFiller _gridPlaneFiller;
 
@@ -25,20 +24,20 @@ namespace PuzzleEditor.Table
         }
 
         private void OnUpdateGridAfterScale(
-            Material material,
-            int gridSizeX,
-            int gridSizeY,
-            float cellSize
+        Material material,
+        int gridSizeX,
+        int gridSizeY,
+        float cellSize
         )
         {
             material.SetVector(
-                "_GridSize",
-                new Vector4(
-                    cellSize * gridSizeX / _multiplier,
-                    cellSize * gridSizeY / _multiplier,
-                    0,
-                    0
-                )
+            "_GridSize",
+            new Vector4(
+            cellSize * gridSizeX / _multiplier,
+            cellSize * gridSizeY / _multiplier,
+            0,
+            0
+            )
             );
         }
     }

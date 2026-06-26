@@ -4,6 +4,7 @@ using UnityEngine.UI;
 namespace Menu
 {
     [RequireComponent(typeof(Image))]
+
     public class PuzzleSelector : MonoBehaviour
     {
         private Image _puzzleImage;

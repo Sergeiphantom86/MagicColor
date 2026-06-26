@@ -19,7 +19,7 @@ namespace Game.SaveEditor
             if (sprite == null)
             {
                 Debug.LogWarning(
-                    $"[SpriteTransmitter] ������� ���������� null � _new �� ������� {gameObject.name}"
+                $"[SpriteTransmitter] ������� ���������� null � _new �� ������� {gameObject.name}"
                 );
                 return;
             }
@@ -37,7 +37,7 @@ namespace Game.SaveEditor
             if (sprite == null)
             {
                 Debug.LogWarning(
-                    $"[SpriteTransmitter] ������� ���������� null � _current �� ������� {gameObject.name}"
+                $"[SpriteTransmitter] ������� ���������� null � _current �� ������� {gameObject.name}"
                 );
                 return;
             }

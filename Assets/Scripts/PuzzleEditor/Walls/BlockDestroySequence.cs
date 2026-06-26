@@ -35,7 +35,7 @@ namespace PuzzleEditor.Walls
         public void WaitStart(IColorable colorable, Color color)
         {
             if (colorable is not Block block)
-                return;
+            return;
 
             if (_isCollaps == false)
             {

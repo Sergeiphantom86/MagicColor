@@ -8,23 +8,12 @@ namespace Menu.TutorialEditor
 {
     public class Unblocker : MonoBehaviour
     {
-        [SerializeField]
-        private Point _endPoint;
-
-        [SerializeField]
-        private float _moveDuration;
-
-        [SerializeField]
-        private float _rotationDuration;
-
-        [SerializeField]
-        private Ease _moveEase = Ease.InOutSine;
-
-        [SerializeField]
-        private Ease _rotationEase = Ease.InOutSine;
-
-        [SerializeField]
-        private Rotator _rotate;
+        [SerializeField] private Point _endPoint;
+        [SerializeField] private float _moveDuration;
+        [SerializeField] private float _rotationDuration;
+        [SerializeField] private Ease _moveEase = Ease.InOutSine;
+        [SerializeField] private Ease _rotationEase = Ease.InOutSine;
+        [SerializeField] private Rotator _rotate;
 
         private Sequence _movementSequence;
         private Vector3 _firstPointTarget;
@@ -79,16 +68,16 @@ namespace Menu.TutorialEditor
             SetLiftingHeight();
 
             AddWaypointToSequence(
-                _firstPointTarget,
-                GetAngleRotation(),
-                _moveDuration,
-                _rotationDuration
+            _firstPointTarget,
+            GetAngleRotation(),
+            _moveDuration,
+            _rotationDuration
             );
             AddWaypointToSequence(
-                _endPoint.transform.position,
-                GetAngleRotation(_angleX),
-                _moveDuration,
-                _rotationDuration
+            _endPoint.transform.position,
+            GetAngleRotation(_angleX),
+            _moveDuration,
+            _rotationDuration
             );
 
             _movementSequence.Pause();
@@ -105,10 +94,10 @@ namespace Menu.TutorialEditor
         }
 
         private void AddWaypointToSequence(
-            Vector3 position,
-            Vector3 angleRotation,
-            float moveDuration,
-            float rotationDuration
+        Vector3 position,
+        Vector3 angleRotation,
+        float moveDuration,
+        float rotationDuration
         )
         {
             Rotate(angleRotation, rotationDuration);
@@ -124,7 +113,7 @@ namespace Menu.TutorialEditor
         private void Rotate(Vector3 angleRotation, float rotationDuration)
         {
             _movementSequence.Append(
-                transform.DORotate(angleRotation, rotationDuration).SetEase(_rotationEase)
+            transform.DORotate(angleRotation, rotationDuration).SetEase(_rotationEase)
             );
         }
 

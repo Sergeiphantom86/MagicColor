@@ -12,14 +12,9 @@ namespace PuzzleEditor.UI.LoadingScreen
         private const string Roulette = nameof(Roulette);
         private const string Tutorial = nameof(Tutorial);
 
-        [SerializeField]
-        private MenuLoader _menuLoader;
-
-        [SerializeField]
-        private TextureInitializer _textureInitializer;
-
-        [SerializeField]
-        private TutorialPuzzle1 _tutorialPuzzle;
+        [SerializeField] private MenuLoader _menuLoader;
+        [SerializeField] private TextureInitializer _textureInitializer;
+        [SerializeField] private TutorialPuzzle1 _tutorialPuzzle;
 
         private string _sceneName;
         private IProgressSaver _progressSaver;
@@ -31,17 +26,17 @@ namespace PuzzleEditor.UI.LoadingScreen
             _adRewardController = GetComponent<AdRewardController>();
 
             if (_textureInitializer == null)
-                Debug.LogError(
-                    $"[SceneFlowController] TextureInitializer �� �������� � ���������� �� ������� {gameObject.name}"
-                );
+            Debug.LogError(
+            $"[SceneFlowController] TextureInitializer �� �������� � ���������� �� ������� {gameObject.name}"
+            );
             if (_menuLoader == null)
-                Debug.LogError(
-                    $"[SceneFlowController] MenuLoader �� �������� �� ������� {gameObject.name}"
-                );
+            Debug.LogError(
+            $"[SceneFlowController] MenuLoader �� �������� �� ������� {gameObject.name}"
+            );
             if (_adRewardController == null)
-                Debug.LogWarning(
-                    $"[SceneFlowController] AdRewardController ����������� �� ������� {gameObject.name}"
-                );
+            Debug.LogWarning(
+            $"[SceneFlowController] AdRewardController ����������� �� ������� {gameObject.name}"
+            );
         }
 
         public void Initialize(Sprite sprite, IProgressSaver progressSaver)

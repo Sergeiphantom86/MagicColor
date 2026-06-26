@@ -15,17 +15,10 @@ namespace PuzzleEditor
         private const float AlignmentMultiplier = 0.5f;
         private const float IgnoredTransparency = 0.1f;
 
-        [SerializeField]
-        private AnimatorPuzzle _animator;
-
-        [SerializeField]
-        private Vector3 _mobilePosition;
-
-        [SerializeField]
-        private float _scaleMultiplier;
-
-        [SerializeField]
-        private bool _isSaveCollections = true;
+        [SerializeField] private AnimatorPuzzle _animator;
+        [SerializeField] private Vector3 _mobilePosition;
+        [SerializeField] private float _scaleMultiplier;
+        [SerializeField] private bool _isSaveCollections = true;
 
         private int _totalCount;
         private Color[] _pixels;
@@ -58,8 +51,8 @@ namespace PuzzleEditor
         public Queue<Fragment> GetFragmentsByColor(Color color)
         {
             return _fragments.TryGetValue(color, out Queue<Fragment> fragments)
-                ? new Queue<Fragment>(fragments)
-                : new Queue<Fragment>();
+            ? new Queue<Fragment>(fragments)
+            : new Queue<Fragment>();
         }
 
         public void SpawnPixelsFromTexture(Texture2D texture)
@@ -105,16 +98,16 @@ namespace PuzzleEditor
         private void EditMobile()
         {
             if (
-                _zoomChanger.IsMobileWithTallScreen()
-                && SceneManager.GetActiveScene().name == "Menu"
+            _zoomChanger.IsMobileWithTallScreen()
+            && SceneManager.GetActiveScene().name == "Menu"
             )
             {
                 _scaleMultiplier = 25;
             }
 
             if (
-                _zoomChanger.IsMobileWithTallScreen()
-                && SceneManager.GetActiveScene().name != "Menu"
+            _zoomChanger.IsMobileWithTallScreen()
+            && SceneManager.GetActiveScene().name != "Menu"
             )
             {
                 transform.position = _mobilePosition;
@@ -124,66 +117,66 @@ namespace PuzzleEditor
         private void Group(int width, int height, Vector2 pivot)
         {
             Enumerable
-                .Range(0, height)
-                .SelectMany(y => Enumerable.Range(0, width), (y, x) => (x, y))
-                .Select(position =>
-                    (position.x, position.y, pixelColor: _pixels[position.y * width + position.x])
-                )
-                .Where(positon => positon.pixelColor.a >= IgnoredTransparency)
-                .ToList()
-                .ForEach(position =>
-                {
-                    SpawnPixel(position.x, position.y, position.pixelColor, pivot);
-                    _totalCount++;
-                });
-        }
-
-        private void SetPivot(int width, int height)
-        {
-            _pivot = new Vector2(width * AlignmentMultiplier, height * AlignmentMultiplier);
-        }
-
-        private void SpawnPixel(int x, int y, Color color, Vector2 pivot)
-        {
-            if (_pixelPool.Pool.Get().TryGetComponent(out Fragment fragment))
+            .Range(0, height)
+            .SelectMany(y => Enumerable.Range(0, width), (y, x) => (x, y))
+            .Select(position =>
+            (position.x, position.y, pixelColor: _pixels[position.y * width + position.x])
+            )
+            .Where(positon => positon.pixelColor.a >= IgnoredTransparency)
+            .ToList()
+            .ForEach(position =>
             {
-                color = _precision.Reduce(color);
+                SpawnPixel(position.x, position.y, position.pixelColor, pivot);
+                _totalCount++;
+                });
+            }
 
-                fragment.transform.SetParent(transform != null ? transform : transform);
+            private void SetPivot(int width, int height)
+            {
+                _pivot = new Vector2(width * AlignmentMultiplier, height * AlignmentMultiplier);
+            }
 
-                fragment.transform.SetLocalPositionAndRotation(
+            private void SpawnPixel(int x, int y, Color color, Vector2 pivot)
+            {
+                if (_pixelPool.Pool.Get().TryGetComponent(out Fragment fragment))
+                {
+                    color = _precision.Reduce(color);
+
+                    fragment.transform.SetParent(transform != null ? transform : transform);
+
+                    fragment.transform.SetLocalPositionAndRotation(
                     GetPosition(x, y, pivot),
                     Quaternion.identity
-                );
-                fragment.transform.localScale = Vector3.one;
-                fragment.SetColor(color);
+                    );
+                    fragment.transform.localScale = Vector3.one;
+                    fragment.SetColor(color);
 
-                if (_isSaveCollections)
-                {
-                    AddToDictionaries(color, fragment);
-                }
-                else
-                {
-                    _fragmentsList.Add(fragment);
+                    if (_isSaveCollections)
+                    {
+                        AddToDictionaries(color, fragment);
+                    }
+                    else
+                    {
+                        _fragmentsList.Add(fragment);
+                    }
                 }
             }
-        }
 
-        private void AddToDictionaries(Color color, Fragment fragment)
-        {
-            if (_fragments.ContainsKey(color) == false)
+            private void AddToDictionaries(Color color, Fragment fragment)
             {
-                _fragments[color] = new Queue<Fragment>();
+                if (_fragments.ContainsKey(color) == false)
+                {
+                    _fragments[color] = new Queue<Fragment>();
+                }
+
+                _fragments[color].Enqueue(fragment);
+
+                fragment.TurnOnTransparency();
             }
 
-            _fragments[color].Enqueue(fragment);
-
-            fragment.TurnOnTransparency();
-        }
-
-        private Vector3 GetPosition(int x, int y, Vector2 pivot)
-        {
-            return new Vector3((x - pivot.x) * PixelSize, (y - pivot.y) * PixelSize, 0);
+            private Vector3 GetPosition(int x, int y, Vector2 pivot)
+            {
+                return new Vector3((x - pivot.x) * PixelSize, (y - pivot.y) * PixelSize, 0);
+            }
         }
     }
-}

@@ -11,10 +11,11 @@ namespace PuzzleEditor.Walls
 {
     [RequireComponent(typeof(Wall), typeof(IColorMatchService), typeof(ILockFeedbackService))]
     [RequireComponent(
-        typeof(IColorMatchService),
-        typeof(ICollisionHandler),
-        typeof(IBlockDestroySequence)
+    typeof(IColorMatchService),
+    typeof(ICollisionHandler),
+    typeof(IBlockDestroySequence)
     )]
+
     public class ColorCollisionHandler : MonoBehaviour
     {
         private IUnblocker _wall;
@@ -53,62 +54,62 @@ namespace PuzzleEditor.Walls
         }
 
         public bool Initialize(
-            IColorPrecision colorPrecision,
-            Messager hintKey,
-            ErrorPanel errorPanel,
-            IUnlockPolicy unlockPolicy
+        IColorPrecision colorPrecision,
+        Messager hintKey,
+        ErrorPanel errorPanel,
+        IUnlockPolicy unlockPolicy
         )
         {
             if (Validate(colorPrecision, hintKey, errorPanel, _lockHandler, unlockPolicy) == false)
-                return false;
+            return false;
 
             _lockHandler.SetHint(hintKey);
             _blockInteraction.SetPanelError(errorPanel);
             _colorMatch.Initialize(colorPrecision);
             _unlockPolicy = unlockPolicy;
             _collisionProcessor = new CollisionProcessor(
-                _colorMatch,
-                _blockInteraction,
-                _unlockPolicy
+            _colorMatch,
+            _blockInteraction,
+            _unlockPolicy
             );
 
             return true;
         }
 
         private bool Validate(
-            IColorPrecision colorPrecision,
-            Messager hintKey,
-            ErrorPanel errorPanel,
-            LockInteractionHandler lockHandler,
-            IUnlockPolicy bagUnlockPolicy
+        IColorPrecision colorPrecision,
+        Messager hintKey,
+        ErrorPanel errorPanel,
+        LockInteractionHandler lockHandler,
+        IUnlockPolicy bagUnlockPolicy
         )
         {
             if (_colorMatch == null)
-                return Log(nameof(_colorMatch));
+            return Log(nameof(_colorMatch));
 
             if (_lockFeedback == null)
-                return Log(nameof(_lockFeedback));
+            return Log(nameof(_lockFeedback));
 
             if (_collisionHandler == null)
-                return Log(nameof(_collisionHandler));
+            return Log(nameof(_collisionHandler));
 
             if (_destroySequence == null)
-                return Log(nameof(_destroySequence));
+            return Log(nameof(_destroySequence));
 
             if (colorPrecision == null)
-                return Log(nameof(colorPrecision));
+            return Log(nameof(colorPrecision));
 
             if (hintKey == null)
-                return Log(nameof(hintKey));
+            return Log(nameof(hintKey));
 
             if (errorPanel == null)
-                return Log(nameof(errorPanel));
+            return Log(nameof(errorPanel));
 
             if (lockHandler == null)
-                return Log(nameof(lockHandler));
+            return Log(nameof(lockHandler));
 
             if (bagUnlockPolicy == null)
-                return Log(nameof(bagUnlockPolicy));
+            return Log(nameof(bagUnlockPolicy));
 
             return true;
         }

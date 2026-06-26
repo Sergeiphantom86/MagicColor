@@ -7,10 +7,10 @@ using UnityEngine;
 namespace Wallets
 {
     [RequireComponent(typeof(Wallet), typeof(TextMeshProUGUI), typeof(Voiceover))]
+
     public class WalletAnimator : MonoBehaviour
     {
-        [SerializeField]
-        private AudioClip _audioClip;
+        [SerializeField] private AudioClip _audioClip;
 
         private float _soundTimer;
         private long _displayedBalance;
@@ -75,23 +75,23 @@ namespace Wallets
             _balanceTween?.Kill();
 
             _balanceTween = DOTween
-                .To(
-                    () => _displayedBalance,
-                    balance =>
-                    {
-                        _soundTimer += Time.unscaledDeltaTime;
+            .To(
+            () => _displayedBalance,
+            balance =>
+            {
+                _soundTimer += Time.unscaledDeltaTime;
 
-                        if (_soundTimer >= 0.05f)
-                        {
-                            _voiceover.PlayOneShot(_audioClip);
-                            _soundTimer = 0f;
-                        }
+                if (_soundTimer >= 0.05f)
+                {
+                    _voiceover.PlayOneShot(_audioClip);
+                    _soundTimer = 0f;
+                }
 
-                        _displayedBalance = balance;
-                        UpdateBalanceText();
-                    },
-                    newBalance,
-                    _animationDuration
+                _displayedBalance = balance;
+                UpdateBalanceText();
+                },
+                newBalance,
+                _animationDuration
                 )
                 .SetEase(Ease.OutQuad)
                 .SetUpdate(true)
@@ -99,7 +99,7 @@ namespace Wallets
                 {
                     _soundTimer = 0f;
                     Finished?.Invoke();
-                });
+                    });
+                }
+            }
         }
-    }
-}

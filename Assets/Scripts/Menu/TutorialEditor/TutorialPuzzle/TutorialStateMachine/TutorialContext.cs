@@ -21,33 +21,19 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         }
 
         public WaitForSeconds WaitFirstStop { get; }
-
         public WaitForSeconds WaitForSeconds { get; }
-
         public WaitForSeconds WaitUIDisabled { get; }
-
         public WaitForSeconds WaitStarTurnOff { get; }
-
         public Key Key { get; private set; }
-
         public Lock Lock { get; private set; }
-
         public Hints Hints { get; private set; }
-
         public Timer Timer { get; private set; }
-
         public Rotator Rotator { get; private set; }
-
         public HandMover HandMover { get; private set; }
-
         public BlockSpawner Container { get; private set; }
-
         public TouchVisualizer Visualizer { get; private set; }
-
         public StateTutorial StateTutorial { get; private set; }
-
         public TutorialAbilities TutorialAbilities { get; private set; }
-
         public void InitBase(HandMover handMover, TouchVisualizer visualizer)
         {
             HandMover = handMover;
@@ -55,14 +41,14 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         }
 
         public void InitScene(
-            Key key,
-            Lock @lock,
-            Hints hints,
-            Timer timer,
-            Rotator rotator,
-            BlockSpawner container,
-            StateTutorial stateTutorial,
-            TutorialAbilities tutorialAbilities
+        Key key,
+        Lock @lock,
+        Hints hints,
+        Timer timer,
+        Rotator rotator,
+        BlockSpawner container,
+        StateTutorial stateTutorial,
+        TutorialAbilities tutorialAbilities
         )
         {
             Key = key;
@@ -76,9 +62,9 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         }
 
         public void AdjustPositions(
-            Vector3? handPosition = null,
-            Vector3? visualizerPosition = null,
-            float yOffset = 0f
+        Vector3? handPosition = null,
+        Vector3? visualizerPosition = null,
+        float yOffset = 0f
         )
         {
             SetObjectPosition(GetTransform(HandMover), handPosition, 0, yOffset, 0);
@@ -91,11 +77,11 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         }
 
         private void SetObjectPosition(
-            Transform targetTransform,
-            Vector3? position,
-            float xOffset,
-            float yOffset,
-            float zOffset
+        Transform targetTransform,
+        Vector3? position,
+        float xOffset,
+        float yOffset,
+        float zOffset
         )
         {
             if (targetTransform != null && position.HasValue)

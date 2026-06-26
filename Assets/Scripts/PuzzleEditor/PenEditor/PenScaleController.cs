@@ -5,14 +5,9 @@ namespace PuzzleEditor.PenEditor
 {
     public class PenScaleController : MonoBehaviour
     {
-        [SerializeField]
-        private float _scaleMultiplier = 1.5f;
-
-        [SerializeField]
-        private float _scaleDuration = 0.3f;
-
-        [SerializeField]
-        private float _returnDuration = 0.2f;
+        [SerializeField] private float _scaleMultiplier = 1.5f;
+        [SerializeField] private float _scaleDuration = 0.3f;
+        [SerializeField] private float _returnDuration = 0.2f;
 
         private Vector3 _originalScale;
         private Tween _currentTween;

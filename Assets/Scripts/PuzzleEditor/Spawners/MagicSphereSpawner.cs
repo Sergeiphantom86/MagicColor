@@ -9,8 +9,7 @@ namespace PuzzleEditor.Spawners
 {
     public class MagicSphereSpawner : BaseSpawner<MagicSphere>
     {
-        [SerializeField]
-        private AudioClip _audioClip;
+        [SerializeField] private AudioClip _audioClip;
 
         private GridSystem _grid;
         private IInputHandler _input;
@@ -24,13 +23,13 @@ namespace PuzzleEditor.Spawners
             _voiceover = GetComponent<Voiceover>();
 
             if (_input == null)
-                Debug.LogError("InputHandler == null");
+            Debug.LogError("InputHandler == null");
         }
 
         private void Start()
         {
             if (_grid == null)
-                _grid = GridSystem.Instance;
+            _grid = GridSystem.Instance;
         }
 
         private void OnEnable()
@@ -54,15 +53,15 @@ namespace PuzzleEditor.Spawners
         private void OnTrySpawnAtWorldPos(Vector2 screenPos)
         {
             if (AbilitySelectionManager.Instance.HasSelection == false)
-                return;
+            return;
 
             Vector2Int origin = _grid.GetOriginFromCenter(
-                center: WorldToGrid(_input.Point),
-                size: Vector2Int.one
+            center: WorldToGrid(_input.Point),
+            size: Vector2Int.one
             );
 
             if (_input.Point == Vector3.zero)
-                return;
+            return;
 
             AbilitySelectionManager.Instance.Use();
             _voiceover.PlayOneShot(_audioClip);

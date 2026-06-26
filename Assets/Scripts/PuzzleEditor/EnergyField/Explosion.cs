@@ -5,17 +5,10 @@ namespace PuzzleEditor.EnergyField
 {
     public class Explosion : MonoBehaviour
     {
-        [SerializeField]
-        private float _radius = 5f;
-
-        [SerializeField]
-        private float _force = 700f;
-
-        [SerializeField]
-        private float _upwardModifier = 1f;
-
-        [SerializeField]
-        private LayerMask _affectedLayers;
+        [SerializeField] private float _radius = 5f;
+        [SerializeField] private float _force = 700f;
+        [SerializeField] private float _upwardModifier = 1f;
+        [SerializeField] private LayerMask _affectedLayers;
 
         private Collider[] _colliderBuffer;
 
@@ -27,10 +20,10 @@ namespace PuzzleEditor.EnergyField
         public void Explode()
         {
             int hitCount = Physics.OverlapSphereNonAlloc(
-                transform.position,
-                _radius,
-                _colliderBuffer,
-                _affectedLayers
+            transform.position,
+            _radius,
+            _colliderBuffer,
+            _affectedLayers
             );
 
             for (int i = 0; i < hitCount; i++)
@@ -58,11 +51,11 @@ namespace PuzzleEditor.EnergyField
             if (rigidbody != null)
             {
                 rigidbody.AddExplosionForce(
-                    _force,
-                    transform.position,
-                    _radius,
-                    _upwardModifier,
-                    ForceMode.Impulse
+                _force,
+                transform.position,
+                _radius,
+                _upwardModifier,
+                ForceMode.Impulse
                 );
             }
 

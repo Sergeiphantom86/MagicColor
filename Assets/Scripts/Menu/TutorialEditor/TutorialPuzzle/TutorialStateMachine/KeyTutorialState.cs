@@ -16,7 +16,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         private readonly IProgressSaver _progressSaver;
 
         public KeyTutorialState(StateMachine stateMachine, TutorialContext context)
-            : base(stateMachine, context)
+        : base(stateMachine, context)
         {
             _context = context;
             _stateMachine = stateMachine;

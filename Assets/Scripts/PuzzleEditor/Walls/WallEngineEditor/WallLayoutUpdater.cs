@@ -5,6 +5,7 @@ using UnityEngine;
 namespace PuzzleEditor.Walls.WallEngineEditor
 {
     [RequireComponent(typeof(Wall))]
+
     public class WallLayoutUpdater : MonoBehaviour
     {
         private Wall _wall;
@@ -17,7 +18,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         public void Initialize(Rotator rotator)
         {
             if (ValidateDependencies(rotator) == false)
-                return;
+            return;
 
             _rotator = rotator;
             _rotator.Rotated += OnRotated;
@@ -44,7 +45,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         private void OnDestroy()
         {
             if (_rotator != null)
-                _rotator.Rotated -= OnRotated;
+            _rotator.Rotated -= OnRotated;
         }
 
         private void OnRotated()
@@ -60,7 +61,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         private bool ValidateDependencies(Rotator rotator)
         {
             if (rotator == null)
-                return LogNull(nameof(rotator));
+            return LogNull(nameof(rotator));
 
             return true;
         }
@@ -68,8 +69,8 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         private bool LogNull(string dependencyName)
         {
             Debug.LogError(
-                $"{nameof(WallEngine)} initialization failed: {dependencyName} is NULL",
-                this
+            $"{nameof(WallEngine)} initialization failed: {dependencyName} is NULL",
+            this
             );
 
             return false;

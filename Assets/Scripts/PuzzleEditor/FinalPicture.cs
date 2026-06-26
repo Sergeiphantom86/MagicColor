@@ -8,26 +8,17 @@ namespace PuzzleEditor
 {
     public class FinalPicture : MonoBehaviour
     {
-        [SerializeField]
-        private float _moveYDuration;
+        [SerializeField] private float _moveYDuration;
+        [SerializeField] private float _targetYPosition;
+        [SerializeField] private float _targetZPosition;
+        [SerializeField] private float _scaleDuration;
+        [SerializeField] private float _scaleMultiplier;
 
         [SerializeField]
-        private float _targetYPosition;
 
-        [SerializeField]
-        private float _targetZPosition;
-
-        [SerializeField]
-        private float _scaleDuration;
-
-        [SerializeField]
-        private float _scaleMultiplier;
-
-        [SerializeField]
         private PenEditor.Activator _activator;
 
-        [SerializeField]
-        private AudioClip _clip;
+        [SerializeField] private AudioClip _clip;
 
         private Vector3 _targetScale;
         private Sequence _currentSequence;
@@ -67,7 +58,7 @@ namespace PuzzleEditor
         private void OnEnable()
         {
             if (_activator == null)
-                return;
+            return;
 
             _activator.PuzzleCompleted += OnDemonstrate;
             _activator.Approached += OnZoomIn;
@@ -96,61 +87,61 @@ namespace PuzzleEditor
             _currentSequence = DOTween.Sequence();
 
             GetCreatedSequence(time)
-                .SetEase(Ease.InElastic)
-                .OnComplete(() =>
-                {
-                    _activatable?.Deactivate();
-                    _currentSequence = null;
+            .SetEase(Ease.InElastic)
+            .OnComplete(() =>
+            {
+                _activatable?.Deactivate();
+                _currentSequence = null;
                 });
-        }
-
-        private void OnDemonstrate()
-        {
-            StopCurrentAnimation();
-
-            if (_voiceover != null)
-            {
-                _voiceover.Stop();
             }
 
-            _currentSequence = DOTween.Sequence();
-            GetCreatedSequence(_moveYDuration);
-        }
-
-        private Sequence GetCreatedSequence(float duration)
-        {
-            if (_currentSequence == null)
+            private void OnDemonstrate()
             {
-                Debug.LogWarning("Sequence is null!");
-                return null;
+                StopCurrentAnimation();
+
+                if (_voiceover != null)
+                {
+                    _voiceover.Stop();
+                }
+
+                _currentSequence = DOTween.Sequence();
+                GetCreatedSequence(_moveYDuration);
             }
 
-            if (duration <= 0f)
+            private Sequence GetCreatedSequence(float duration)
             {
-                Debug.LogWarning("Duration must be greater than 0");
-                duration = 0.01f;
-            }
+                if (_currentSequence == null)
+                {
+                    Debug.LogWarning("Sequence is null!");
+                    return null;
+                }
 
-            _currentSequence
+                if (duration <= 0f)
+                {
+                    Debug.LogWarning("Duration must be greater than 0");
+                    duration = 0.01f;
+                }
+
+                _currentSequence
                 .Join(transform.DOLocalMoveY(_targetYPosition, duration).SetEase(Ease.OutBack))
                 .Join(transform.DOLocalMoveZ(_targetZPosition, duration).SetEase(Ease.OutBack))
                 .Join(transform.DOScale(_targetScale, duration).SetEase(Ease.OutBack));
 
-            return _currentSequence;
-        }
+                return _currentSequence;
+            }
 
-        private void StopCurrentAnimation()
-        {
-            if (_currentSequence != null && _currentSequence.IsActive())
+            private void StopCurrentAnimation()
             {
-                _currentSequence.Kill();
-                _currentSequence = null;
+                if (_currentSequence != null && _currentSequence.IsActive())
+                {
+                    _currentSequence.Kill();
+                    _currentSequence = null;
+                }
+            }
+
+            private void OnDestroy()
+            {
+                StopCurrentAnimation();
             }
         }
-
-        private void OnDestroy()
-        {
-            StopCurrentAnimation();
-        }
     }
-}

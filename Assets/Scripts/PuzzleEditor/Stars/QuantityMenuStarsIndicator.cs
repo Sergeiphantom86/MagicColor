@@ -4,6 +4,7 @@ using UnityEngine;
 namespace PuzzleEditor.Stars
 {
     [RequireComponent(typeof(StarsController))]
+
     public class QuantityMenuStarsIndicator : MonoBehaviour
     {
         private StarsController _starsController;

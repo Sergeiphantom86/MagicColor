@@ -5,8 +5,7 @@ namespace Menu.TutorialEditor
 {
     public class EngineTutorialMenu : MonoBehaviour
     {
-        [SerializeField]
-        private RectTransform _target;
+        [SerializeField] private RectTransform _target;
 
         private Vector3 _originalScale;
         private Vector3 _targetScale;
@@ -49,7 +48,7 @@ namespace Menu.TutorialEditor
         public void StartAnimationClicks()
         {
             if (_isSetPosition)
-                return;
+            return;
 
             StopAnimation();
 

@@ -6,14 +6,9 @@ namespace PuzzleEditor.Walls.WallEngineEditor
 {
     public class WallMovement : MonoBehaviour
     {
-        [SerializeField]
-        private float _moveDuration = 0.3f;
-
-        [SerializeField]
-        private float _partialOpenPercent = 0.3f;
-
-        [SerializeField]
-        private float _fullOpenPercent = 0.9f;
+        [SerializeField] private float _moveDuration = 0.3f;
+        [SerializeField] private float _partialOpenPercent = 0.3f;
+        [SerializeField] private float _fullOpenPercent = 0.9f;
 
         private bool _isMoving;
         private Renderer _renderer;
@@ -36,15 +31,15 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         public void Push()
         {
             if (_isMoving)
-                return;
+            return;
 
             float distance = GetOpenDistance();
             _isMoving = true;
 
             transform
-                .DOMove(_startPosition + Vector3.down * distance, _moveDuration)
-                .SetEase(Ease.InOutQuad)
-                .OnComplete(ReturnToStart);
+            .DOMove(_startPosition + Vector3.down * distance, _moveDuration)
+            .SetEase(Ease.InOutQuad)
+            .OnComplete(ReturnToStart);
         }
 
         private float GetOpenDistance()
@@ -57,9 +52,9 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         private void ReturnToStart()
         {
             transform
-                .DOMove(_startPosition, _moveDuration)
-                .SetEase(Ease.InOutQuad)
-                .OnComplete(() => _isMoving = false);
+            .DOMove(_startPosition, _moveDuration)
+            .SetEase(Ease.InOutQuad)
+            .OnComplete(() => _isMoving = false);
         }
     }
 }

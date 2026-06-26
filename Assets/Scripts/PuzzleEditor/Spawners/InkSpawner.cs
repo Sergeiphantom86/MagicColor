@@ -6,10 +6,10 @@ using UnityEngine;
 namespace PuzzleEditor.Spawners
 {
     [RequireComponent(typeof(DropPooler))]
+
     public class InkSpawner : BaseSpawner<Drop>
     {
-        [SerializeField]
-        private Ink _ink;
+        [SerializeField] private Ink _ink;
 
         private float _delay;
         private int _quantity;
@@ -44,7 +44,7 @@ namespace PuzzleEditor.Spawners
             }
 
             if (_spawnRoutine != null)
-                StopCoroutine(_spawnRoutine);
+            StopCoroutine(_spawnRoutine);
 
             _spawnRoutine = StartCoroutine(SpawnAndActivateRoutine(color, duration));
         }
@@ -79,7 +79,7 @@ namespace PuzzleEditor.Spawners
         private void TrySetColor(Drop inkDrop, Color color)
         {
             if (inkDrop.TryGetComponent(out IColorable colorable))
-                colorable.SetColor(color);
+            colorable.SetColor(color);
         }
     }
 }

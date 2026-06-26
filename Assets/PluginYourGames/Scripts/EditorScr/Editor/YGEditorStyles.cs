@@ -1,5 +1,5 @@
 // YGEditorStyles.cs
-// Безопасная работа со стилями во время перекомпиляции/без активного GUI skin
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ GUI skin
 
 namespace YG.EditorScr
 {
@@ -10,7 +10,7 @@ namespace YG.EditorScr
     [InitializeOnLoad]
     public static class YGEditorStyles
     {
-        // кэш
+        // пїЅпїЅпїЅ
         private static GUIStyle _selectable;
         private static GUIStyle _deselectable;
         private static GUIStyle _box;
@@ -20,7 +20,7 @@ namespace YG.EditorScr
         private static GUIStyle _debutton;
         private static GUIStyle _warning;
 
-        // безопасная проверка, можно ли строить стили на базе EditorStyles/GUIskin
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ EditorStyles/GUIskin
         static bool CanBuildGUI =>
             GUI.skin != null &&
             Event.current != null &&
@@ -53,7 +53,7 @@ namespace YG.EditorScr
             _warning = null;
         }
 
-        // универсальный безопасный геттер
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         static GUIStyle GetOrMake(ref GUIStyle cache, System.Func<GUIStyle> factory)
         {
             if (cache != null) return cache;
@@ -61,7 +61,7 @@ namespace YG.EditorScr
             return cache;
         }
 
-        // публичные стили
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         public static GUIStyle selectable => GetOrMake(ref _selectable, Selectable);
         public static GUIStyle deselectable => GetOrMake(ref _deselectable, Deselectable);
         public static GUIStyle box => GetOrMake(ref _box, Box);
@@ -71,13 +71,13 @@ namespace YG.EditorScr
         public static GUIStyle button => GetOrMake(ref _button, Button);
         public static GUIStyle debutton => GetOrMake(ref _debutton, Debutton);
 
-        // фабрика безопасного базового helpBox
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ helpBox
         static GUIStyle BaseHelpBox()
         {
             return (GUI.skin != null ? new GUIStyle(EditorStyles.helpBox) : new GUIStyle());
         }
 
-        // фабрики стилей
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         public static GUIStyle Selectable()
         {
             var style = BaseHelpBox();
@@ -174,7 +174,7 @@ namespace YG.EditorScr
 
         public static GUIStyle Button()
         {
-            // для лайт-скина отдаём системную кнопку, для про — кастом
+            // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             if (!(GUI.skin != null && EditorGUIUtility.isProSkin))
                 return new GUIStyle(GUI.skin != null ? GUI.skin.button : new GUIStyle());
 
@@ -209,7 +209,7 @@ namespace YG.EditorScr
             return style;
         }
 
-        // генерация текстур (с флагами, чтобы не плодить ресурсы между reload)
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ reload)
         private static Texture2D MakeTex(Color col)
         {
             var result = new Texture2D(1, 1, TextureFormat.ARGB32, false)

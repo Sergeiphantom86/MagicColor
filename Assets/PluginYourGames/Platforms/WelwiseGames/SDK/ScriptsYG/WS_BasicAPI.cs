@@ -1,4 +1,3 @@
-﻿
 #if WelwiseGamesPlatform_yg
 namespace YG
 {

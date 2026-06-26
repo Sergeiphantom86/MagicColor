@@ -1,4 +1,4 @@
-﻿#if WelwiseGamesPlatform_yg && Localization_yg
+#if WelwiseGamesPlatform_yg && Localization_yg
 
 namespace YG
 {
