@@ -4,7 +4,7 @@ namespace Game
     {
         private const string Menu = nameof(Menu);
 
-        public override void PressButton()
+        public override void OnPressButton()
         {
             PauseMenu.Load(Menu);
         }

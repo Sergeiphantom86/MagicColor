@@ -17,15 +17,15 @@ namespace Wallets.WalletEditor
 
         private void OnEnable()
         {
-            _bag.OnBagChanged += Show;
+            _bag.BagChanged += OnShow;
         }
 
         private void OnDisable()
         {
-            _bag.OnBagChanged -= Show;
+            _bag.BagChanged -= OnShow;
         }
 
-        private void Show(int balance)
+        private void OnShow(int balance)
         {
             _textMeshProUGUI.text = balance.ToString();
         }

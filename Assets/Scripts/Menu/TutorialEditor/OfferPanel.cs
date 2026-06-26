@@ -40,9 +40,9 @@ namespace Menu.TutorialEditor
         private Scaler _scaling;
         private Voiceover _voiceover;
 
-        public event Action OnConsent;
+        public event Action Consent;
 
-        public event Action OnCancelled;
+        public event Action Cancelled;
 
         private void Awake()
         {
@@ -85,7 +85,7 @@ namespace Menu.TutorialEditor
 
             TurnOnSound(_click);
 
-            OnConsent?.Invoke();
+            Consent?.Invoke();
 
             TurnOff();
         }
@@ -94,7 +94,7 @@ namespace Menu.TutorialEditor
         {
             TurnOnSound(_click);
 
-            OnCancelled?.Invoke();
+            Cancelled?.Invoke();
 
             TurnOff();
         }

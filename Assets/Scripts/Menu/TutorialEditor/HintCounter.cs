@@ -15,7 +15,7 @@ namespace Menu.TutorialEditor
         private float _hintDelay;
         private IProgressSaver _progressSaver;
 
-        public event Action OnWorked;
+        public event Action Worked;
 
         public event Action Rested;
 
@@ -27,14 +27,14 @@ namespace Menu.TutorialEditor
 
         private void OnEnable()
         {
-            _container.OneDestroyed += StartTimer;
-            _container.EverythDestroyed += StopTimer;
+            _container.Destroyed += StartTimer;
+            _container.EverythDestroyed += OnStopTimer;
         }
 
         private void OnDisable()
         {
-            _container.OneDestroyed -= StartTimer;
-            _container.EverythDestroyed += StopTimer;
+            _container.Destroyed -= StartTimer;
+            _container.EverythDestroyed += OnStopTimer;
         }
 
         public void StartTimer()
@@ -49,7 +49,7 @@ namespace Menu.TutorialEditor
 
         public void ResetTimer()
         {
-            StopTimer();
+            OnStopTimer();
 
             _hintCoroutine = StartCoroutine(ShowHintAfterDelay());
         }
@@ -58,10 +58,10 @@ namespace Menu.TutorialEditor
         {
             yield return new WaitForSeconds(_hintDelay);
 
-            OnWorked?.Invoke();
+            Worked?.Invoke();
         }
 
-        private void StopTimer()
+        private void OnStopTimer()
         {
             if (_hintCoroutine != null)
             {

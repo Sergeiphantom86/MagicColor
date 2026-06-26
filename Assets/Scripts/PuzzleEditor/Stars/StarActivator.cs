@@ -13,15 +13,15 @@ namespace PuzzleEditor.Stars
 
         private void OnEnable()
         {
-            _animatorPuzzle.OnAnimationComplete += SetActive;
+            _animatorPuzzle.AnimationComplete += OnSetActive;
         }
 
         private void OnDisable()
         {
-            _animatorPuzzle.OnAnimationComplete -= SetActive;
+            _animatorPuzzle.AnimationComplete -= OnSetActive;
         }
 
-        private void SetActive()
+        private void OnSetActive()
         {
             _controller.SetActive(true);
         }

@@ -56,12 +56,12 @@ namespace Menu.TutorialEditor
 
         private void OnEnable()
         {
-            _rotate.OnRotated += TurnOnCollider;
+            _rotate.Rotated += OnTurnOnCollider;
         }
 
         private void OnDisable()
         {
-            _rotate.OnRotated -= TurnOnCollider;
+            _rotate.Rotated -= OnTurnOnCollider;
         }
 
         public void Play()
@@ -99,7 +99,7 @@ namespace Menu.TutorialEditor
             _firstPointTarget.y += _secondPointTarget.y * _heightMultiplier;
         }
 
-        private void TurnOnCollider()
+        private void OnTurnOnCollider()
         {
             _collider.enabled = true;
         }

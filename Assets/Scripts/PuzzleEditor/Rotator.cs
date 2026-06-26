@@ -24,7 +24,7 @@ namespace PuzzleEditor
         private float _targetY;
         private float _targetZ;
 
-        public event Action OnRotated;
+        public event Action Rotated;
 
         private void OnDestroy()
         {
@@ -53,7 +53,7 @@ namespace PuzzleEditor
 
             sequence.Join(GetTweenMove(_targetX, _targetY));
 
-            sequence.OnComplete(() => OnRotated?.Invoke());
+            sequence.OnComplete(() => Rotated?.Invoke());
 
             return sequence;
         }

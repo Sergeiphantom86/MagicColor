@@ -54,7 +54,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 
         public override void Exit()
         {
-            _input.OnTouchClick -= OnClick;
+            _input.Touched -= OnClick;
         }
 
         private void SetBlock(int index)
@@ -140,7 +140,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 
             DisableUnnecessaryComponents();
 
-            _input.OnTouchClick += OnClick;
+            _input.Touched += OnClick;
         }
     }
 }

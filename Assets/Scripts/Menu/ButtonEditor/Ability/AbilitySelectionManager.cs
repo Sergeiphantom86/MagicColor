@@ -12,7 +12,7 @@ namespace Menu.ButtonEditor.Ability
 
         public bool HasSelection => _currentAbility != null;
 
-        public event Action OnSelection;
+        public event Action Selection;
 
         private void Awake()
         {
@@ -42,7 +42,7 @@ namespace Menu.ButtonEditor.Ability
 
         public void Use()
         {
-            OnSelection?.Invoke();
+            Selection?.Invoke();
         }
     }
 }

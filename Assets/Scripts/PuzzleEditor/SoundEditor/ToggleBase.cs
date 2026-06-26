@@ -9,7 +9,7 @@ namespace PuzzleEditor.SoundEditor
     {
         private Toggle _toggle;
 
-        public event Action<bool> OnDisabling;
+        public event Action<bool> Disabling;
 
         private void Awake()
         {
@@ -40,7 +40,7 @@ namespace PuzzleEditor.SoundEditor
 
         public void TurnOff(bool isOn)
         {
-            OnDisabling?.Invoke(isOn);
+            Disabling?.Invoke(isOn);
         }
 
         public void TurnOn(bool isOn)

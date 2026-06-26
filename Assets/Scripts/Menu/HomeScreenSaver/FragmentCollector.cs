@@ -10,7 +10,7 @@ namespace Menu.HomeScreenSaver
     {
         private TextureInitializer _textureInitializer;
 
-        public event Action<List<Fragment>> OnPixelsRendered;
+        public event Action<List<Fragment>> PixelsRendered;
 
         private void Awake()
         {
@@ -21,7 +21,7 @@ namespace Menu.HomeScreenSaver
         {
             if (_textureInitializer != null)
             {
-                _textureInitializer.OnInitialize += Collect;
+                _textureInitializer.Initialize += OnCollect;
             }
         }
 
@@ -29,13 +29,13 @@ namespace Menu.HomeScreenSaver
         {
             if (_textureInitializer != null)
             {
-                _textureInitializer.OnInitialize -= Collect;
+                _textureInitializer.Initialize -= OnCollect;
             }
         }
 
-        private void Collect(int count)
+        private void OnCollect(int count)
         {
-            OnPixelsRendered.Invoke(_textureInitializer.FragmentsList);
+            PixelsRendered.Invoke(_textureInitializer.FragmentsList);
         }
     }
 }

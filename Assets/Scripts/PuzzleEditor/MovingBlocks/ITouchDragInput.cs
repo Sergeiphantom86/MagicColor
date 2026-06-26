@@ -5,11 +5,11 @@ namespace PuzzleEditor.MovingBlocks
 {
     public interface ITouchDragInput
     {
-        public event Action<Vector2> OnTouchClick;
+        public event Action<Vector2> Touched;
 
-        public event Action<Vector2> OnTouchDrag;
+        public event Action<Vector2> TouchDrag;
 
-        public event Action OnDropped;
+        public event Action Dropped;
 
         public bool IsSelected { get; }
 

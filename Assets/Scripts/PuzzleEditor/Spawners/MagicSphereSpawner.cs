@@ -37,7 +37,7 @@ namespace PuzzleEditor.Spawners
         {
             if (_input != null)
             {
-                _input.OnSelected += TrySpawnAtWorldPos;
+                _input.Selected += OnTrySpawnAtWorldPos;
             }
 
             DespawnAll();
@@ -47,11 +47,11 @@ namespace PuzzleEditor.Spawners
         {
             if (_input != null)
             {
-                _input.OnSelected -= TrySpawnAtWorldPos;
+                _input.Selected -= OnTrySpawnAtWorldPos;
             }
         }
 
-        private void TrySpawnAtWorldPos(Vector2 screenPos)
+        private void OnTrySpawnAtWorldPos(Vector2 screenPos)
         {
             if (AbilitySelectionManager.Instance.HasSelection == false)
                 return;

@@ -23,15 +23,15 @@ namespace Wallets
 
         private void OnEnable()
         {
-            _wallet.OnBalanceChanged += SavePlayerBalance;
+            _wallet.OnBalanceChanged += OnSavePlayerBalance;
         }
 
         private void OnDisable()
         {
-            _wallet.OnBalanceChanged -= SavePlayerBalance;
+            _wallet.OnBalanceChanged -= OnSavePlayerBalance;
         }
 
-        private void SavePlayerBalance(long balance, string walletName)
+        private void OnSavePlayerBalance(long balance, string walletName)
         {
             _leaderboardName = ConvertName(walletName);
 

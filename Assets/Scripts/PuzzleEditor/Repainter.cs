@@ -24,9 +24,9 @@ namespace PuzzleEditor
         private WaitForSeconds _waitForSeconds;
         private float _delay;
 
-        public event Action<List<IColorable>> OnRecoloredWalls;
+        public event Action<List<IColorable>> RecoloredWalls;
 
-        public event Action<List<IColorable>> OnRecoloredBlock;
+        public event Action<List<IColorable>> RecoloredBlock;
 
         private void Awake()
         {
@@ -41,12 +41,12 @@ namespace PuzzleEditor
 
         private void OnEnable()
         {
-            _textureInitializer.CanPaint += UpdateSystem;
+            _textureInitializer.CanPaint += OnUpdateSystem;
         }
 
         private void OnDisable()
         {
-            _textureInitializer.CanPaint -= UpdateSystem;
+            _textureInitializer.CanPaint -= OnUpdateSystem;
         }
 
         private List<IColorable> GetColorablesFromContainer(Transform container)
@@ -75,7 +75,7 @@ namespace PuzzleEditor
             return colorables;
         }
 
-        private void UpdateSystem(List<Color> colors)
+        private void OnUpdateSystem(List<Color> colors)
         {
             StartCoroutine(Wait(colors));
         }
@@ -158,10 +158,10 @@ namespace PuzzleEditor
             UpdateColors(colors);
 
             ReplaceColors(_walls);
-            OnRecoloredWalls?.Invoke(_walls);
+            RecoloredWalls?.Invoke(_walls);
 
             ReplaceColors(_blocks);
-            OnRecoloredBlock?.Invoke(_blocks);
+            RecoloredBlock?.Invoke(_blocks);
         }
     }
 }

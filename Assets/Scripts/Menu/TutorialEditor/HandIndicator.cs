@@ -19,10 +19,10 @@ namespace Menu.TutorialEditor
 
         private void OnEnable()
         {
-            _buttonBack.onClick.AddListener(TurnOff);
+            _buttonBack.onClick.AddListener(OnTurnOff);
         }
 
-        private void TurnOff()
+        private void OnTurnOff()
         {
             _handMover.OnDestroyed();
         }

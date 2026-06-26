@@ -46,17 +46,17 @@ namespace PuzzleEditor.SoundEditor
 
         private void OnEnable()
         {
-            _volumeSlider.onValueChanged.AddListener(SetVolume);
-            _toggleBase.OnDisabling += ToggleSoundsMute;
+            _volumeSlider.onValueChanged.AddListener(OnSetVolume);
+            _toggleBase.Disabling += ToggleSoundsMute;
         }
 
         private void OnDisable()
         {
-            _volumeSlider.onValueChanged.RemoveListener(SetVolume);
-            _toggleBase.OnDisabling -= ToggleSoundsMute;
+            _volumeSlider.onValueChanged.RemoveListener(OnSetVolume);
+            _toggleBase.Disabling -= ToggleSoundsMute;
         }
 
-        private void SetVolume(float volume)
+        private void OnSetVolume(float volume)
         {
             if (_isOn == false && _volumeSlider.value > 0)
             {

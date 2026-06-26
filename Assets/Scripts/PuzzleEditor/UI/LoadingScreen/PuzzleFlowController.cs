@@ -12,22 +12,22 @@ namespace PuzzleEditor.UI.LoadingScreen
         [SerializeField]
         private Timer _timer;
 
-        public event Action OnPuzzleCompleted;
+        public event Action PuzzleCompleted;
 
         private void OnEnable()
         {
-            _animator.OnAnimationComplete += OnComplete;
+            _animator.AnimationComplete += OnComplete;
         }
 
         private void OnDisable()
         {
-            _animator.OnAnimationComplete -= OnComplete;
+            _animator.AnimationComplete -= OnComplete;
         }
 
         private void OnComplete()
         {
             _timer.gameObject.SetActive(false);
-            OnPuzzleCompleted?.Invoke();
+            PuzzleCompleted?.Invoke();
         }
     }
 }

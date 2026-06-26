@@ -18,7 +18,7 @@ namespace Menu.TutorialEditor
         private Image _targetImage;
         private Color _originalColor;
 
-        public event Action OnCompleted;
+        public event Action Completed;
 
         private void Awake()
         {
@@ -42,7 +42,7 @@ namespace Menu.TutorialEditor
 
         private void OnEnable()
         {
-            _button.onClick.AddListener(GoNext);
+            _button.onClick.AddListener(OnGoNext);
         }
 
         private void OnDisable()
@@ -60,9 +60,9 @@ namespace Menu.TutorialEditor
                 .SetUpdate(true);
         }
 
-        private void GoNext()
+        private void OnGoNext()
         {
-            OnCompleted?.Invoke();
+            Completed?.Invoke();
             Stop();
         }
 

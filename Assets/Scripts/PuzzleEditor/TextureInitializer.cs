@@ -36,7 +36,7 @@ namespace PuzzleEditor
         private List<Fragment> _fragmentsList;
         private Dictionary<Color, Queue<Fragment>> _fragments;
 
-        public event Action<int> OnInitialize;
+        public event Action<int> Initialize;
 
         public event Action<List<Color>> CanPaint;
 
@@ -83,7 +83,7 @@ namespace PuzzleEditor
 
             gameObject.transform.localScale = Vector3.one * _scaleMultiplier;
 
-            OnInitialize?.Invoke(_fragments.Count);
+            Initialize?.Invoke(_fragments.Count);
 
             CanPaint?.Invoke(Fragments.Keys.ToList());
 

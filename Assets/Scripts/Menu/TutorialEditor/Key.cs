@@ -39,9 +39,9 @@ namespace Menu.TutorialEditor
         private ICollisionHandler _collisionHandler;
         private SpriteRenderer _spriteRenderer;
 
-        public event Action OnShift;
+        public event Action Shift;
 
-        public event Action OnSelected;
+        public event Action Selected;
 
         private void Awake()
         {
@@ -86,16 +86,16 @@ namespace Menu.TutorialEditor
 
         private void OnEnable()
         {
-            _inputHandler.OnSelected += Play;
-            _collisionHandler.OnExit += Show;
-            _collisionHandler.OnEnter += Hide;
+            _inputHandler.Selected += OnPlay;
+            _collisionHandler.Exit += OnShow;
+            _collisionHandler.Enter += OnHide;
         }
 
         private void OnDisable()
         {
-            _inputHandler.OnSelected -= Play;
-            _collisionHandler.OnExit -= Show;
-            _collisionHandler.OnEnter -= Hide;
+            _inputHandler.Selected -= OnPlay;
+            _collisionHandler.Exit -= OnShow;
+            _collisionHandler.Enter -= OnHide;
         }
 
         public void Activate()
@@ -108,7 +108,7 @@ namespace Menu.TutorialEditor
             gameObject.SetActive(false);
         }
 
-        private void Play(Vector2 vector)
+        private void OnPlay(Vector2 vector)
         {
             if (_isDragging)
                 return;
@@ -119,7 +119,7 @@ namespace Menu.TutorialEditor
 
             StartCoroutine(WaitAudioPlayback(_flight));
 
-            OnSelected?.Invoke();
+            Selected?.Invoke();
         }
 
         private IEnumerator WaitAudioPlayback(AudioClip clip)
@@ -131,7 +131,7 @@ namespace Menu.TutorialEditor
             _voiceover.PlayOneShot(clip);
         }
 
-        private void Hide(Collider collider)
+        private void OnHide(Collider collider)
         {
             if (collider.TryGetComponent(out Block _) == false)
                 return;
@@ -150,7 +150,7 @@ namespace Menu.TutorialEditor
             _spriteRenderer.enabled = true;
         }
 
-        private void Show(Collider collider)
+        private void OnShow(Collider collider)
         {
             if (collider.TryGetComponent(out Block block) == false)
                 return;
@@ -166,7 +166,7 @@ namespace Menu.TutorialEditor
 
             _voiceover.PlayOneShot(_appearance);
 
-            OnShift?.Invoke();
+            Shift?.Invoke();
         }
 
         private void CreateAnimationSequences()

@@ -37,12 +37,12 @@ namespace PuzzleEditor.RouletteEditor
 
         private void OnEnable()
         {
-            _wheelAnimator.OnThresholdPassed += PlayRotation;
+            _wheelAnimator.ThresholdPassed += PlayRotation;
         }
 
         private void OnDisable()
         {
-            _wheelAnimator.OnThresholdPassed -= PlayRotation;
+            _wheelAnimator.ThresholdPassed -= PlayRotation;
 
             ResetRotation();
         }

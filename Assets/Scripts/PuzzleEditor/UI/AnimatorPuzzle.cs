@@ -19,7 +19,7 @@ namespace PuzzleEditor.UI
         [SerializeField]
         private FireworksController _fireworks;
 
-        public event System.Action OnAnimationComplete;
+        public event System.Action AnimationComplete;
 
         private void Awake()
         {
@@ -32,14 +32,14 @@ namespace PuzzleEditor.UI
             if (_activator == null)
                 return;
 
-            _activator.PuzzleCompleted += LaunchFinal;
-            _activator.Approached += Remove;
+            _activator.PuzzleCompleted += OnLaunchFinal;
+            _activator.Approached += OnRemove;
         }
 
         private void OnDisable()
         {
-            _activator.PuzzleCompleted -= LaunchFinal;
-            _activator.Approached -= Remove;
+            _activator.PuzzleCompleted -= OnLaunchFinal;
+            _activator.Approached -= OnRemove;
         }
 
         public void StartGame()
@@ -47,14 +47,14 @@ namespace PuzzleEditor.UI
             _puzzle.StartRotation();
         }
 
-        private void Remove(float time)
+        private void OnRemove(float time)
         {
             _puzzle.Return(time);
         }
 
-        private void LaunchFinal()
+        private void OnLaunchFinal()
         {
-            OnAnimationComplete?.Invoke();
+            AnimationComplete?.Invoke();
             _victoryPlaque.TurnOn();
             _fireworks.Play();
         }

@@ -45,7 +45,7 @@ namespace PuzzleEditor
 
         public event Action EverythDestroyed;
 
-        public event Action OneDestroyed;
+        public event Action Destroyed;
 
         public Transform Transform => transform;
 
@@ -62,17 +62,17 @@ namespace PuzzleEditor
 
         private void OnEnable()
         {
-            _repainter.OnRecoloredBlock += Subscribe;
-            _blockSpawner.BlockSpawned += Register;
+            _repainter.RecoloredBlock += OnSubscribe;
+            _blockSpawner.BlockSpawned += OnRegister;
         }
 
         private void OnDisable()
         {
-            _repainter.OnRecoloredBlock -= Subscribe;
-            _blockSpawner.BlockSpawned -= Register;
+            _repainter.RecoloredBlock -= OnSubscribe;
+            _blockSpawner.BlockSpawned -= OnRegister;
         }
 
-        private void Register(Block block)
+        private void OnRegister(Block block)
         {
             _blocks.Add(block);
 
@@ -100,7 +100,7 @@ namespace PuzzleEditor
             }
         }
 
-        private void Subscribe(List<IColorable> colorableObjects)
+        private void OnSubscribe(List<IColorable> colorableObjects)
         {
             foreach (var block in _blocks)
             {
@@ -108,17 +108,17 @@ namespace PuzzleEditor
 
                 if (block.IsRepainted)
                 {
-                    block.OnDestroyed += HandleBlockDestroyed;
+                    block.Destroyed += OnHandleBlockDestroyed;
                     _initialBlocksCount++;
                 }
             }
         }
 
-        private void HandleBlockDestroyed(Block block)
+        private void OnHandleBlockDestroyed(Block block)
         {
             _initialBlocksCount--;
 
-            OneDestroyed?.Invoke();
+            Destroyed?.Invoke();
 
             if (_initialBlocksCount == 0)
             {
@@ -127,7 +127,7 @@ namespace PuzzleEditor
 
             _blocks.Remove(block);
 
-            block.OnDestroyed -= HandleBlockDestroyed;
+            block.Destroyed -= OnHandleBlockDestroyed;
         }
     }
 }

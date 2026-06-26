@@ -12,8 +12,7 @@ namespace PuzzleEditor.SoundEditor
         private const float DBLinearRatio = 20f;
         private const float MinVolume = 0.0001f;
 
-        [SerializeField]
-        private AudioClip _backgroundMusic;
+        [SerializeField] private AudioClip _backgroundMusic;
 
         [SerializeField]
         private AudioMixerGroup _soundMixerGroup;
@@ -51,14 +50,14 @@ namespace PuzzleEditor.SoundEditor
 
         private void OnEnable()
         {
-            _musicVolumeChanger.OnVolumeChange += SetVolume;
-            _sounVolumeChanger.OnVolumeChange += SetVolume;
+            _musicVolumeChanger.OnVolumeChange += OnSetVolume;
+            _sounVolumeChanger.OnVolumeChange += OnSetVolume;
         }
 
         private void OnDisable()
         {
-            _musicVolumeChanger.OnVolumeChange -= SetVolume;
-            _sounVolumeChanger.OnVolumeChange -= SetVolume;
+            _musicVolumeChanger.OnVolumeChange -= OnSetVolume;
+            _sounVolumeChanger.OnVolumeChange -= OnSetVolume;
         }
 
         public void PlayButtonClickSound(AudioClip audioClip)
@@ -127,7 +126,7 @@ namespace PuzzleEditor.SoundEditor
             _musicSource.Play();
         }
 
-        private void SetVolume(VolumeChanger volumeChanger, float volume)
+        private void OnSetVolume(VolumeChanger volumeChanger, float volume)
         {
             Debug.Log(volume);
 

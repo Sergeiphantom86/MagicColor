@@ -24,12 +24,12 @@ namespace Menu.TutorialEditor
 
         private void OnEnable()
         {
-            _rotation.OnRotated += SetStartPosition;
+            _rotation.Rotated += OnSetStartPosition;
         }
 
         private void OnDisable()
         {
-            _rotation.OnRotated -= SetStartPosition;
+            _rotation.Rotated -= OnSetStartPosition;
         }
 
         public void Play()
@@ -40,7 +40,7 @@ namespace Menu.TutorialEditor
             Rotate();
         }
 
-        private void SetStartPosition()
+        private void OnSetStartPosition()
         {
             _initialRotation = transform.eulerAngles;
         }

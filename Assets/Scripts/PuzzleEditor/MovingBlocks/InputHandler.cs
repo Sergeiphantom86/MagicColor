@@ -9,9 +9,9 @@ namespace PuzzleEditor.MovingBlocks
 
         public Vector3 Point { get; private set; }
 
-        public event Action<Vector2> OnSelected;
-        public event Action<Vector2> OnMoved;
-        public event Action OnThrowed;
+        public event Action<Vector2> Selected;
+        public event Action<Vector2> Moved;
+        public event Action Throwed;
 
         private void Update()
         {
@@ -36,12 +36,12 @@ namespace PuzzleEditor.MovingBlocks
                     break;
 
                 case TouchPhase.Moved:
-                    OnMoved?.Invoke(_touch.position);
+                    Moved?.Invoke(_touch.position);
                     break;
 
                 case TouchPhase.Ended:
                 case TouchPhase.Canceled:
-                    OnThrowed?.Invoke();
+                    Throwed?.Invoke();
                     Debug.Log(Input.imeIsSelected);
                     break;
             }
@@ -57,11 +57,11 @@ namespace PuzzleEditor.MovingBlocks
             }
             else if (Input.GetMouseButton(0))
             {
-                OnMoved?.Invoke(currentMousePosition);
+                Moved?.Invoke(currentMousePosition);
             }
             else if (Input.GetMouseButtonUp(0))
             {
-                OnThrowed?.Invoke();
+                Throwed?.Invoke();
             }
         }
 
@@ -69,7 +69,7 @@ namespace PuzzleEditor.MovingBlocks
         {
             if (IsTouchingThisObject(position))
             {
-                OnSelected?.Invoke(position);
+                Selected?.Invoke(position);
             }
         }
 

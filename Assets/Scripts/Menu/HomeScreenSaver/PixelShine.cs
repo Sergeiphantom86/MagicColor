@@ -36,19 +36,19 @@ namespace Menu.HomeScreenSaver
 
         private void OnEnable()
         {
-            _appearanceAnimator.AppearanceCompleted += StartShineAnimation;
+            _appearanceAnimator.AppearanceCompleted += OnStartShineAnimation;
         }
 
         private void OnDisable()
         {
-            _appearanceAnimator.AppearanceCompleted -= StartShineAnimation;
+            _appearanceAnimator.AppearanceCompleted -= OnStartShineAnimation;
         }
 
         public void PauseAnimations() => DOTweenExtensions.SafePause(_shineSequence);
 
         public void ResumeAnimations() => DOTweenExtensions.SafePlay(_shineSequence);
 
-        private void StartShineAnimation()
+        private void OnStartShineAnimation()
         {
             if (_appearanceAnimator.Fragments.Count == 0)
                 return;

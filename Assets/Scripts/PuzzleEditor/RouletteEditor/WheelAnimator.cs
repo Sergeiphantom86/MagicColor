@@ -21,7 +21,7 @@ namespace PuzzleEditor.RouletteEditor
         private float _nextThreshold;
         private bool _firstThresholdPassed;
 
-        public event Action OnThresholdPassed;
+        public event Action ThresholdPassed;
 
         private void Awake()
         {
@@ -88,7 +88,7 @@ namespace PuzzleEditor.RouletteEditor
         {
             if (Mathf.Abs(_accumulatedRotation - _startRotation) >= _nextThreshold)
             {
-                OnThresholdPassed?.Invoke();
+                ThresholdPassed?.Invoke();
 
                 if (_firstThresholdPassed == false)
                 {

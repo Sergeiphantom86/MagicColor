@@ -25,8 +25,8 @@ namespace PuzzleEditor.UI.LoadingScreen
         {
             if (_offerPanel != null)
             {
-                _offerPanel.OnConsent += ShowAd;
-                _offerPanel.OnCancelled += Complete;
+                _offerPanel.Consent += ShowAd;
+                _offerPanel.Cancelled += Complete;
             }
 
             _progressSaver.SubscribeADSReward(
@@ -41,8 +41,8 @@ namespace PuzzleEditor.UI.LoadingScreen
         {
             if (_offerPanel != null)
             {
-                _offerPanel.OnConsent -= ShowAd;
-                _offerPanel.OnCancelled -= Complete;
+                _offerPanel.Consent -= ShowAd;
+                _offerPanel.Cancelled -= Complete;
             }
 
             _progressSaver.UnsubscribeADSReward(

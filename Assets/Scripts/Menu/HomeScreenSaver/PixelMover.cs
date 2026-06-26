@@ -31,19 +31,19 @@ namespace Menu.HomeScreenSaver
 
         private void OnEnable()
         {
-            _sorter.HasSorted += Animate;
+            _sorter.HasSorted += OnAnimate;
         }
 
         private void OnDisable()
         {
-            _sorter.HasSorted -= Animate;
+            _sorter.HasSorted -= OnAnimate;
         }
 
         public void PauseAnimations() => DOTweenExtensions.SafePause(_currentSequence);
 
         public void ResumeAnimations() => DOTweenExtensions.SafePlay(_currentSequence);
 
-        private void Animate()
+        private void OnAnimate()
         {
             _currentSequence = DOTween.Sequence();
 

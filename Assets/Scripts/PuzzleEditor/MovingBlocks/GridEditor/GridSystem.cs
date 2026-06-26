@@ -13,7 +13,7 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
         private Grid _unityGrid;
         private GameObject[,] _grid;
 
-        public event Action OnInitialized;
+        public event Action Initialized;
 
         public float CellSize => _unityGrid.cellSize.x;
 
@@ -51,7 +51,7 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
 
             IsInitialized = true;
 
-            OnInitialized?.Invoke();
+            Initialized?.Invoke();
         }
 
         public Vector3 GridToWorldPosition(Vector2Int gridPosition)

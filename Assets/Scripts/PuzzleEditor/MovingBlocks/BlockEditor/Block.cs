@@ -42,7 +42,7 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
         private ITouchDragInput _touchDragInput;
         private Outline _outline;
 
-        public event Action<Block> OnDestroyed;
+        public event Action<Block> Destroyed;
 
         public event Action BlockSpawned;
 
@@ -78,16 +78,16 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
         {
             InitializeComponents();
 
-            _gridDragMovement.Moved += ShowEffectMovement;
-            _magnifier.OnDropped += PlayFallingSound;
-            _magnifier.OnRaised += PlayFallingSound;
+            _gridDragMovement.Moved += OnShowEffectMovement;
+            _magnifier.Dropped += OnPlayFallingSound;
+            _magnifier.Raised += OnPlayFallingSound;
         }
 
         private void OnDisable()
         {
-            _gridDragMovement.Moved -= ShowEffectMovement;
-            _magnifier.OnDropped -= PlayFallingSound;
-            _magnifier.OnRaised -= PlayFallingSound;
+            _gridDragMovement.Moved -= OnShowEffectMovement;
+            _magnifier.Dropped -= OnPlayFallingSound;
+            _magnifier.Raised -= OnPlayFallingSound;
         }
 
         public void Initialize(
@@ -156,7 +156,7 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
 
         private void ExecuteDestruction()
         {
-            OnDestroyed?.Invoke(this);
+            Destroyed?.Invoke(this);
 
             if (GridSystem.Instance != null)
             {
@@ -197,7 +197,7 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
             _scaler.GetTwinResiz(Vector3.zero, _duration).SetEase(Ease.InOutElastic);
         }
 
-        private void ShowEffectMovement()
+        private void OnShowEffectMovement()
         {
             _voiceover.PlayOneShot(_soundDragg);
             _effectSmock.CraeteParticles(
@@ -207,7 +207,7 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
             );
         }
 
-        private void PlayFallingSound()
+        private void OnPlayFallingSound()
         {
             _voiceover.PlayOneShot(_soundRaise);
         }

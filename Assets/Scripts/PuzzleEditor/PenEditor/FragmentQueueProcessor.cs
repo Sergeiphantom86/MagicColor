@@ -42,13 +42,13 @@ namespace PuzzleEditor.PenEditor
 
             if (_blocksContainer != null)
             {
-                _blocksContainer.EverythDestroyed += RequestSpeedBoost;
+                _blocksContainer.EverythDestroyed += OnRequestSpeedBoost;
             }
         }
 
-        public event Action OnFragmentActivated;
+        public event Action FragmentActivated;
 
-        public event Action<float> OnIncreaseSpeed;
+        public event Action<float> IncreaseSpeed;
 
         public event Action<Color> ColorHasChanged;
 
@@ -56,7 +56,7 @@ namespace PuzzleEditor.PenEditor
         {
             if (_blocksContainer != null)
             {
-                _blocksContainer.EverythDestroyed -= RequestSpeedBoost;
+                _blocksContainer.EverythDestroyed -= OnRequestSpeedBoost;
             }
         }
 
@@ -96,7 +96,7 @@ namespace PuzzleEditor.PenEditor
 
                 TryRequestSpeedIncrease();
 
-                OnFragmentActivated?.Invoke();
+                FragmentActivated?.Invoke();
             }
         }
 
@@ -105,7 +105,7 @@ namespace PuzzleEditor.PenEditor
             _currentDuration = Mathf.Max(_minDuration, _currentDuration - _durationStep);
         }
 
-        private void RequestSpeedBoost()
+        private void OnRequestSpeedBoost()
         {
             _needSpeedBoost = true;
             _isSoundOn = false;
@@ -118,7 +118,7 @@ namespace PuzzleEditor.PenEditor
 
             _needSpeedBoost = false;
 
-            OnIncreaseSpeed?.Invoke(CalculateRemainingTime());
+            IncreaseSpeed?.Invoke(CalculateRemainingTime());
         }
 
         private float CalculateRemainingTime()

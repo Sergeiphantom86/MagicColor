@@ -19,7 +19,7 @@ namespace PuzzleEditor.RouletteEditor
 
         public event Func<bool> GlobalInteractableCondition;
 
-        public event Action OnTurned;
+        public event Action Turned;
 
         private void Awake()
         {
@@ -28,13 +28,13 @@ namespace PuzzleEditor.RouletteEditor
                 Debug.LogError("Button �� ��������!!!");
             }
 
-            _button.onClick.AddListener(HandleClick);
+            _button.onClick.AddListener(OnHandleClick);
         }
 
         public void Initialize(Func<bool> globalInteractableCondition, Action onClickAction = null)
         {
             GlobalInteractableCondition = globalInteractableCondition;
-            OnTurned = onClickAction;
+            Turned = onClickAction;
 
             UpdateState();
         }
@@ -54,11 +54,11 @@ namespace PuzzleEditor.RouletteEditor
             _button.interactable = isInteractable;
         }
 
-        private void HandleClick()
+        private void OnHandleClick()
         {
             if (_button.interactable)
             {
-                OnTurned?.Invoke();
+                Turned?.Invoke();
                 _isSpin = true;
             }
         }

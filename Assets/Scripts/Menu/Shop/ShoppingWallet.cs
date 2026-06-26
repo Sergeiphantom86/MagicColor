@@ -16,15 +16,15 @@ namespace Menu.Shop
 
         private void OnEnable()
         {
-            _purchaseButton.CoinPurchased += SpendFunds;
+            _purchaseButton.CoinPurchased += OnSpendFunds;
         }
 
         private void OnDisable()
         {
-            _purchaseButton.CoinPurchased -= SpendFunds;
+            _purchaseButton.CoinPurchased -= OnSpendFunds;
         }
 
-        private void SpendFunds(long pay)
+        private void OnSpendFunds(long pay)
         {
             if (_wallet.SpendFunds(pay) == false)
                 return;

@@ -57,17 +57,17 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 
             _context.HandMover.EnableMoveAnimationZ();
             _gridDragMovement.Moved += OnMirageMovement;
-            _input.OnTouchClick += StopPulsation;
-            _input.OnDropped += StartPulsation;
-            _block.OnDestroyed += OnMirageCompleted;
+            _input.Touched += OnStopPulsation;
+            _input.Dropped += OnStartPulsation;
+            _block.Destroyed += OnMirageCompleted;
         }
 
         public override void Exit()
         {
             _gridDragMovement.Moved -= OnMirageMovement;
-            _block.OnDestroyed -= OnMirageCompleted;
-            _input.OnTouchClick -= StopPulsation;
-            _input.OnDropped -= StartPulsation;
+            _block.Destroyed -= OnMirageCompleted;
+            _input.Touched -= OnStopPulsation;
+            _input.Dropped -= OnStartPulsation;
         }
 
         private void OnMirageMovement()
@@ -80,10 +80,10 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         {
             _progressSaver.SetTutorialBasics();
             _stateMachine.ChangeState(new CompletionState(_stateMachine, _context));
-            StopPulsation(Vector2.zero);
+            OnStopPulsation(Vector2.zero);
         }
 
-        private void StopPulsation(Vector2 vector2)
+        private void OnStopPulsation(Vector2 vector2)
         {
             _isMoving = true;
 
@@ -94,7 +94,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
             }
         }
 
-        private void StartPulsation()
+        private void OnStartPulsation()
         {
             _isMoving = false;
 

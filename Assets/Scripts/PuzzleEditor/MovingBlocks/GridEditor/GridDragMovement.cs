@@ -36,14 +36,14 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
 
         private void OnEnable()
         {
-            _touchDragInput.OnTouchClick += BeginInteraction;
-            _touchDragInput.OnTouchDrag += ProcessInput;
+            _touchDragInput.Touched += BeginInteraction;
+            _touchDragInput.TouchDrag += ProcessInput;
         }
 
         private void OnDisable()
         {
-            _touchDragInput.OnTouchClick -= BeginInteraction;
-            _touchDragInput.OnTouchDrag -= ProcessInput;
+            _touchDragInput.Touched -= BeginInteraction;
+            _touchDragInput.TouchDrag -= ProcessInput;
         }
 
         public void BeginInteraction(Vector2 screenTouchPos)

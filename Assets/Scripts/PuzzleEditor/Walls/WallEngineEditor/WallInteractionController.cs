@@ -30,7 +30,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
 
             _wall = wall ?? throw new ArgumentNullException(nameof(wall));
 
-            _inputHandler.OnSelected += OnSelected;
+            _inputHandler.Selected += OnSelected;
 
             _initialized = true;
         }
@@ -40,7 +40,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
             if (_initialized == false)
                 return;
 
-            _inputHandler.OnSelected -= OnSelected;
+            _inputHandler.Selected -= OnSelected;
         }
 
         private void OnSelected(Vector2 screenPosition)

@@ -25,10 +25,10 @@ namespace Menu.ButtonEditor
 
         private void Start()
         {
-            _button.onClick.AddListener(Show);
+            _button.onClick.AddListener(OnShow);
         }
 
-        private void Show()
+        private void OnShow()
         {
             Showed?.Invoke(transform.position);
             _button.interactable = false;

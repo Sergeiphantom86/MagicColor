@@ -60,12 +60,12 @@ namespace PuzzleEditor.UI.LoadingScreen
 
         private void OnEnable()
         {
-            _puzzleFlow.OnPuzzleCompleted += OnPuzzleCompleted;
+            _puzzleFlow.PuzzleCompleted += OnPuzzleCompleted;
         }
 
         private void OnDisable()
         {
-            _puzzleFlow.OnPuzzleCompleted -= OnPuzzleCompleted;
+            _puzzleFlow.PuzzleCompleted -= OnPuzzleCompleted;
         }
 
         private void OnAnyButton() { }

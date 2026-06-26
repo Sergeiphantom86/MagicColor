@@ -19,11 +19,11 @@ namespace PuzzleEditor.MovingBlocks
 
         public bool IsSelected => _isSelected;
 
-        public event Action<Vector2> OnTouchClick;
+        public event Action<Vector2> Touched;
 
-        public event Action<Vector2> OnTouchDrag;
+        public event Action<Vector2> TouchDrag;
 
-        public event Action OnDropped;
+        public event Action Dropped;
 
         private void Awake()
         {
@@ -57,33 +57,33 @@ namespace PuzzleEditor.MovingBlocks
 
         private void OnEnable()
         {
-            _inputHandler.OnSelected += SelectBlock;
-            _inputHandler.OnMoved += Move;
-            _inputHandler.OnThrowed += ThrowOff;
+            _inputHandler.Selected += OnSelectBlock;
+            _inputHandler.Moved += OnMove;
+            _inputHandler.Throwed += ThrowOff;
         }
 
         private void OnDisable()
         {
-            _inputHandler.OnSelected -= SelectBlock;
-            _inputHandler.OnMoved -= Move;
-            _inputHandler.OnThrowed -= ThrowOff;
+            _inputHandler.Selected -= OnSelectBlock;
+            _inputHandler.Moved -= OnMove;
+            _inputHandler.Throwed -= ThrowOff;
         }
 
-        private void SelectBlock(Vector2 position)
+        private void OnSelectBlock(Vector2 position)
         {
             _isSelected = true;
             _outline.enabled = true;
             _colorable.SetRenderQueueSelectedItem();
             _selectable.Select();
             _colorable.AssignOriginal();
-            OnTouchClick?.Invoke(position);
+            Touched?.Invoke(position);
         }
 
-        private void Move(Vector2 position)
+        private void OnMove(Vector2 position)
         {
             if (_isSelected)
             {
-                OnTouchDrag?.Invoke(position);
+                TouchDrag?.Invoke(position);
             }
         }
 
@@ -96,7 +96,7 @@ namespace PuzzleEditor.MovingBlocks
                 _selectable.Deselect();
                 _colorable.Disable();
                 _colorable.SetStartRenderQueueSelectedItem();
-                OnDropped?.Invoke();
+                Dropped?.Invoke();
             }
         }
     }

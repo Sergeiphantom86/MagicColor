@@ -29,15 +29,15 @@ namespace PuzzleEditor.UI
 
         private void OnEnable()
         {
-            _animatorPuzzle.OnAnimationComplete += TupnOffUI;
+            _animatorPuzzle.AnimationComplete += OnTupnOffUI;
         }
 
         private void OnDisable()
         {
-            _animatorPuzzle.OnAnimationComplete -= TupnOffUI;
+            _animatorPuzzle.AnimationComplete -= OnTupnOffUI;
         }
 
-        private void TupnOffUI()
+        private void OnTupnOffUI()
         {
             _timer.gameObject.SetActive(false);
             _bagKey.gameObject.SetActive(false);

@@ -12,7 +12,7 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
         private Sequence _firstSequence;
         private Sequence _secondSequence;
 
-        private event Action OnCompleteCallback;
+        private event Action CompleteCallback;
 
         private void OnDestroy()
         {
@@ -31,7 +31,7 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
             _randomPosition = randomPosition;
             _targetPosition = targetPosition;
             _settings = settings;
-            OnCompleteCallback = onComplete;
+            CompleteCallback = onComplete;
 
             RunAnimation();
         }
@@ -84,7 +84,7 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
 
             _secondSequence.OnComplete(() =>
             {
-                OnCompleteCallback?.Invoke();
+                CompleteCallback?.Invoke();
                 transform.DOKill();
                 Destroy(gameObject);
             });

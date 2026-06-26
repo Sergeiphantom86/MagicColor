@@ -7,11 +7,11 @@ namespace Wallets.WalletEditor
     {
         private int _balance;
 
-        public event Action<int> OnBagChanged;
+        public event Action<int> BagChanged;
 
         private void Start()
         {
-            OnBagChanged?.Invoke(_balance);
+            BagChanged?.Invoke(_balance);
         }
 
         public void Add(int amount = 1)
@@ -21,7 +21,7 @@ namespace Wallets.WalletEditor
 
             _balance += amount;
 
-            OnBagChanged?.Invoke(_balance);
+            BagChanged?.Invoke(_balance);
         }
 
         public bool TryApply(int amount = 1)
@@ -42,7 +42,7 @@ namespace Wallets.WalletEditor
 
             _balance -= amount;
 
-            OnBagChanged?.Invoke(_balance);
+            BagChanged?.Invoke(_balance);
         }
 
         private bool ProcessTransaction(long amount, long balance)

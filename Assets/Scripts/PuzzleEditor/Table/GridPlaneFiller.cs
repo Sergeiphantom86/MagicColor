@@ -9,9 +9,7 @@ namespace PuzzleEditor.Table
         [SerializeField]
         private GameObject _planePrefab;
 
-        [SerializeField]
-        [Min(0.1f)]
-        private float _planeHeight;
+        [SerializeField][Min(0.1f)] private float _planeHeight;
 
         [SerializeField]
         [Min(1)]
@@ -45,18 +43,18 @@ namespace PuzzleEditor.Table
 
         private void OnEnable()
         {
-            _grid.OnInitialized += StartSpawn;
+            _grid.Initialized += OnStartSpawn;
 
             if (_grid.IsInitialized)
-                StartSpawn();
+                OnStartSpawn();
         }
 
         private void OnDisable()
         {
-            _grid.OnInitialized -= StartSpawn;
+            _grid.Initialized -= OnStartSpawn;
         }
 
-        public void StartSpawn()
+        public void OnStartSpawn()
         {
             if (_planePrefab == null)
             {

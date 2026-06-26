@@ -4,9 +4,9 @@ namespace Game
 {
     public class PauseButton : ButtonMenu
     {
-        public override void PressButton()
+        public override void OnPressButton()
         {
-            base.PressButton();
+            base.OnPressButton();
 
             PauseMenu.Stop();
         }

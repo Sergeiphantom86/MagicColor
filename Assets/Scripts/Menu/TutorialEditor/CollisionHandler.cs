@@ -5,18 +5,18 @@ namespace Menu.TutorialEditor
 {
     public class CollisionHandler : MonoBehaviour, ICollisionHandler
     {
-        public event Action<Collider> OnEnter;
+        public event Action<Collider> Enter;
 
-        public event Action<Collider> OnExit;
+        public event Action<Collider> Exit;
 
         private void OnTriggerEnter(Collider other)
         {
-            OnEnter?.Invoke(other);
+            Enter?.Invoke(other);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            OnExit?.Invoke(other);
+            Exit?.Invoke(other);
         }
     }
 }

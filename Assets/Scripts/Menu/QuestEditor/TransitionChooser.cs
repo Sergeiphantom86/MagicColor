@@ -21,20 +21,20 @@ namespace Menu.QuestEditor
 
         private void OnEnable()
         {
-            _offerPanel.OnConsent += LoadTutorial;
-            _offerPanelMobile.OnConsent += LoadTutorial;
+            _offerPanel.Consent += LoadTutorial;
+            _offerPanelMobile.Consent += LoadTutorial;
 
-            _offerPanel.OnCancelled += LoadPuzzle;
-            _offerPanelMobile.OnCancelled += LoadPuzzle;
+            _offerPanel.Cancelled += LoadPuzzle;
+            _offerPanelMobile.Cancelled += LoadPuzzle;
         }
 
         private void OnDisable()
         {
-            _offerPanel.OnConsent -= LoadTutorial;
-            _offerPanelMobile.OnConsent -= LoadTutorial;
+            _offerPanel.Consent -= LoadTutorial;
+            _offerPanelMobile.Consent -= LoadTutorial;
 
-            _offerPanel.OnCancelled -= LoadPuzzle;
-            _offerPanelMobile.OnCancelled -= LoadPuzzle;
+            _offerPanel.Cancelled -= LoadPuzzle;
+            _offerPanelMobile.Cancelled -= LoadPuzzle;
         }
 
         public void Initialize(

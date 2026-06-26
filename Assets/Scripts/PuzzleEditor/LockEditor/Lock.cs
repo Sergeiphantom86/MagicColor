@@ -26,7 +26,7 @@ namespace PuzzleEditor.LockEditor
         private Collider _collider;
         private bool _isUsed;
 
-        public event Action OnUnblocking;
+        public event Action Unblocking;
 
         public bool IsUsed => _isUsed;
 
@@ -88,7 +88,7 @@ namespace PuzzleEditor.LockEditor
 
             SetColor();
 
-            OnUnblocking?.Invoke();
+            Unblocking?.Invoke();
 
             StartCoroutine(WaitTurnOff());
         }

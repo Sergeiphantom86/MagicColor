@@ -50,19 +50,19 @@ namespace Wallets
 
         private void OnEnable()
         {
-            _wallet.OnBalanceChanged += HandleBalanceChanged;
+            _wallet.OnBalanceChanged += OnHandleBalanceChanged;
         }
 
         private void OnDestroy()
         {
-            _wallet.OnBalanceChanged -= HandleBalanceChanged;
+            _wallet.OnBalanceChanged -= OnHandleBalanceChanged;
 
             _balanceTween?.Kill();
         }
 
-        private void HandleBalanceChanged(long newBalance, string name)
+        private void OnHandleBalanceChanged(long newBalance, string name)
         {
-            HandleBalanceChanged(newBalance);
+            OnHandleBalanceChanged(newBalance);
         }
 
         private void UpdateBalanceText()
@@ -70,7 +70,7 @@ namespace Wallets
             _textMeshPro.text = _numberFormatter.FormatNumber(_displayedBalance);
         }
 
-        private void HandleBalanceChanged(long newBalance)
+        private void OnHandleBalanceChanged(long newBalance)
         {
             _balanceTween?.Kill();
 

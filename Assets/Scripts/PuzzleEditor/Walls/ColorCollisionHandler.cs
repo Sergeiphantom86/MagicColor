@@ -40,15 +40,15 @@ namespace PuzzleEditor.Walls
 
         private void OnEnable()
         {
-            _collisionHandler.OnEnter += Enter;
-            _collisionHandler.OnExit += Exit;
+            _collisionHandler.Enter += OnEnter;
+            _collisionHandler.Exit += OnExit;
             _destroySequence.IsTouched += UnblockWall;
         }
 
         private void OnDisable()
         {
-            _collisionHandler.OnEnter -= Enter;
-            _collisionHandler.OnExit -= Exit;
+            _collisionHandler.Enter -= OnEnter;
+            _collisionHandler.Exit -= OnExit;
             _destroySequence.IsTouched -= UnblockWall;
         }
 
@@ -119,14 +119,14 @@ namespace PuzzleEditor.Walls
             return false;
         }
 
-        private void Enter(Collider other)
+        private void OnEnter(Collider other)
         {
             _collisionProcessor.ProcessEnter(other);
 
             _lockHandler.Set(other);
         }
 
-        private void Exit(Collider other)
+        private void OnExit(Collider other)
         {
             _collisionProcessor.ProcessExit(other);
         }

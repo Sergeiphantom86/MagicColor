@@ -35,48 +35,48 @@ namespace Menu.TutorialEditor
 
         private void OnEnable()
         {
-            _hintCounter.Rested += DisableEveryth;
-            _hintCounter.OnWorked += TurnOnBacklightPause;
-            _handMover.Destroyed += ResetTimer;
-            _activator.PuzzleCompleted += DisableEveryth;
+            _hintCounter.Rested += OnDisableEveryth;
+            _hintCounter.Worked += OnTurnOnBacklightPause;
+            _handMover.Destroyed += OnResetTimer;
+            _activator.PuzzleCompleted += OnDisableEveryth;
 
-            _backlightAbility.OnCompleted += Complete;
-            _backlightPause.OnCompleted += TurnOnBacklightPurchase;
-            _backlightPurchase.OnCompleted += TurnOnBacklightAbility;
+            _backlightAbility.Completed += OnComplete;
+            _backlightPause.Completed += OnTurnOnBacklightPurchase;
+            _backlightPurchase.Completed += OnTurnOnBacklightAbility;
         }
 
         private void OnDisable()
         {
-            _hintCounter.Rested += DisableEveryth;
-            _hintCounter.OnWorked -= TurnOnBacklightPause;
-            _handMover.Destroyed -= ResetTimer;
-            _activator.PuzzleCompleted -= DisableEveryth;
+            _hintCounter.Rested += OnDisableEveryth;
+            _hintCounter.Worked -= OnTurnOnBacklightPause;
+            _handMover.Destroyed -= OnResetTimer;
+            _activator.PuzzleCompleted -= OnDisableEveryth;
 
-            _backlightAbility.OnCompleted -= Complete;
-            _backlightPause.OnCompleted -= TurnOnBacklightPurchase;
-            _backlightPurchase.OnCompleted -= TurnOnBacklightAbility;
+            _backlightAbility.Completed -= OnComplete;
+            _backlightPause.Completed -= OnTurnOnBacklightPurchase;
+            _backlightPurchase.Completed -= OnTurnOnBacklightAbility;
         }
 
-        private void TurnOnBacklightPause()
+        private void OnTurnOnBacklightPause()
         {
             _backlightPause.Activate();
             TurnOnHand(_backlightPause.gameObject.transform);
         }
 
-        private void TurnOnBacklightPurchase()
+        private void OnTurnOnBacklightPurchase()
         {
             _backlightPurchase.Activate();
             TurnOnHand(_backlightPurchase.gameObject.transform);
         }
 
-        private void TurnOnBacklightAbility()
+        private void OnTurnOnBacklightAbility()
         {
             _backlightAbility.Activate();
             TurnOnHand(_backlightAbility.gameObject.transform);
-            ResetTimer();
+            OnResetTimer();
         }
 
-        private void Complete()
+        private void OnComplete()
         {
             TurnOffHand();
         }
@@ -95,7 +95,7 @@ namespace Menu.TutorialEditor
             _handMover.EnableScaleAnimation();
         }
 
-        private void DisableEveryth()
+        private void OnDisableEveryth()
         {
             _backlightAbility.Stop();
             _backlightPause.Stop();
@@ -104,9 +104,9 @@ namespace Menu.TutorialEditor
             TurnOffHand();
         }
 
-        private void ResetTimer()
+        private void OnResetTimer()
         {
-            DisableEveryth();
+            OnDisableEveryth();
             _hintCounter.StartTimer();
         }
     }

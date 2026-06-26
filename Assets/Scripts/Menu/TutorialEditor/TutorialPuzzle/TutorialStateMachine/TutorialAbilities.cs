@@ -60,17 +60,17 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 
             _text.text = TemporaryPrice;
 
-            _pauseButton.Button.onClick.AddListener(Move);
+            _pauseButton.Button.onClick.AddListener(OnMove);
         }
 
         public override void Exit()
         {
-            _pauseButton.Button.onClick.RemoveListener(Move);
-            _purchaseButton.Button.onClick.RemoveListener(CloseMenu);
-            _closeGame.Button.onClick.RemoveListener(GoToUse);
-            _bagAbilities.Button.onClick.RemoveListener(UseAbility);
+            _pauseButton.Button.onClick.RemoveListener(OnMove);
+            _purchaseButton.Button.onClick.RemoveListener(OnCloseMenu);
+            _closeGame.Button.onClick.RemoveListener(OnGoToUse);
+            _bagAbilities.Button.onClick.RemoveListener(OnUseAbility);
 
-            _input.OnSelected -= Apply;
+            _input.Selected -= OnApply;
 
             _handMoverUI.Stop();
             _handMoverUI.gameObject.SetActive(false);
@@ -84,37 +84,37 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
             _handMoverUI.EnableScaleAnimation();
         }
 
-        private void Move()
+        private void OnMove()
         {
             MoveTarget(_purchaseButton.transform.position);
 
             _text.text = Price;
 
-            _purchaseButton.Button.onClick.AddListener(CloseMenu);
+            _purchaseButton.Button.onClick.AddListener(OnCloseMenu);
         }
 
-        private void CloseMenu()
+        private void OnCloseMenu()
         {
             MoveTarget(_closeGame.transform.position);
 
-            _closeGame.Button.onClick.AddListener(GoToUse);
+            _closeGame.Button.onClick.AddListener(OnGoToUse);
         }
 
-        private void GoToUse()
+        private void OnGoToUse()
         {
             MoveTarget(_bagAbilities.transform.position);
 
-            _bagAbilities.Button.onClick.AddListener(UseAbility);
+            _bagAbilities.Button.onClick.AddListener(OnUseAbility);
         }
 
-        private void UseAbility()
+        private void OnUseAbility()
         {
             _handMoverUI.gameObject.SetActive(false);
             _hintsUI.gameObject.SetActive(true);
-            _input.OnSelected += Apply;
+            _input.Selected += OnApply;
         }
 
-        private void Apply(Vector2 position)
+        private void OnApply(Vector2 position)
         {
             _stateMachine.ChangeState(new CompletionState(_stateMachine, _context));
         }

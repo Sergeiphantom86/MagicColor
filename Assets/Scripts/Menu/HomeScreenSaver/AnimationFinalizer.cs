@@ -21,15 +21,15 @@ namespace Menu.HomeScreenSaver
 
         private void OnEnable()
         {
-            _animator.Exploded += StartNewAnimation;
+            _animator.Exploded += OnStartNewAnimation;
         }
 
         private void OnDisable()
         {
-            _animator.Exploded -= StartNewAnimation;
+            _animator.Exploded -= OnStartNewAnimation;
         }
 
-        private void StartNewAnimation()
+        private void OnStartNewAnimation()
         {
             _textureInitializer.ClearAllFragments();
 

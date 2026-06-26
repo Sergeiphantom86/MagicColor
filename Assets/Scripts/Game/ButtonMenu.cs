@@ -23,14 +23,14 @@ namespace Game
 
         private void OnEnable()
         {
-            _button.onClick.AddListener(PressButton);
+            _button.onClick.AddListener(OnPressButton);
         }
 
         private void OnDisable()
         {
-            _button.onClick.RemoveListener(PressButton);
+            _button.onClick.RemoveListener(OnPressButton);
         }
 
-        public virtual void PressButton() { }
+        public virtual void OnPressButton() { }
     }
 }

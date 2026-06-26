@@ -18,10 +18,10 @@ namespace CameraEditor
 
         private void Start()
         {
-            _button.onClick.AddListener(TurnOn);
+            _button.onClick.AddListener(OnTurnOn);
         }
 
-        private void TurnOn()
+        private void OnTurnOn()
         {
             _progressSaver.SetDefaultValues();
             _progressSaver.SaveProgress();

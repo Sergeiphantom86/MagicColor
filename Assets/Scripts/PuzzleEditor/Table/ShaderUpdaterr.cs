@@ -16,15 +16,15 @@ namespace PuzzleEditor.Table
 
         private void OnEnable()
         {
-            _gridPlaneFiller.HasChanged += UpdateGridAfterScale;
+            _gridPlaneFiller.HasChanged += OnUpdateGridAfterScale;
         }
 
         private void OnDisable()
         {
-            _gridPlaneFiller.HasChanged -= UpdateGridAfterScale;
+            _gridPlaneFiller.HasChanged -= OnUpdateGridAfterScale;
         }
 
-        private void UpdateGridAfterScale(
+        private void OnUpdateGridAfterScale(
             Material material,
             int gridSizeX,
             int gridSizeY,

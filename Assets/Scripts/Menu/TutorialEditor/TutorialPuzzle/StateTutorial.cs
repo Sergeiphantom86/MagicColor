@@ -15,7 +15,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         private TouchVisualizer _visualizer;
         private bool _isClick;
 
-        public event Action OnCompleted;
+        public event Action Completed;
 
         private void OnDisable()
         {
@@ -25,9 +25,9 @@ namespace Menu.TutorialEditor.TutorialPuzzle
             if (_lock == null)
                 return;
 
-            _key.OnShift -= MovePointer;
-            _key.OnSelected -= MovePointerClick;
-            _lock.OnUnblocking -= Complete;
+            _key.Shift -= OnMovePointer;
+            _key.Selected -= OnMovePointerClick;
+            _lock.Unblocking -= OnComplete;
         }
 
         public void Initialization(
@@ -49,9 +49,9 @@ namespace Menu.TutorialEditor.TutorialPuzzle
 
         private void SubscribeEvents()
         {
-            _key.OnShift += MovePointer;
-            _key.OnSelected += MovePointerClick;
-            _lock.OnUnblocking += Complete;
+            _key.Shift += OnMovePointer;
+            _key.Selected += OnMovePointerClick;
+            _lock.Unblocking += OnComplete;
         }
 
         private void Begin()
@@ -59,12 +59,12 @@ namespace Menu.TutorialEditor.TutorialPuzzle
             _handMover.EnableLoopingAnimationZ();
         }
 
-        private void MovePointerClick()
+        private void OnMovePointerClick()
         {
             SetPositionsEquipment(_lock.transform.position);
         }
 
-        private void MovePointer()
+        private void OnMovePointer()
         {
             if (_isClick == false)
             {
@@ -79,12 +79,12 @@ namespace Menu.TutorialEditor.TutorialPuzzle
             }
         }
 
-        private void Complete()
+        private void OnComplete()
         {
             _visualizer.gameObject.SetActive(false);
             _handMover.gameObject.SetActive(false);
 
-            OnCompleted?.Invoke();
+            Completed?.Invoke();
 
             _textSwitcher.gameObject.SetActive(true);
             _textSwitcher.TurnOffDesiredOne(false);

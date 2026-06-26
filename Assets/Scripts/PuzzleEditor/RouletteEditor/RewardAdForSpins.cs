@@ -18,7 +18,7 @@ namespace PuzzleEditor.RouletteEditor
         private Button _button;
         private IProgressSaver _progressSaver;
 
-        public event Action OnSpinsAdded;
+        public event Action SpinsAdded;
 
         private void Awake()
         {
@@ -31,7 +31,7 @@ namespace PuzzleEditor.RouletteEditor
                 return;
             }
 
-            _button.onClick.AddListener(ShowRewardedAd);
+            _button.onClick.AddListener(OnShowRewardedAd);
 
             _progressSaver.SubscribeADSReward(OnRewardReceived, OnAdOpened, OnAdClosed, OnAdError);
         }
@@ -46,7 +46,7 @@ namespace PuzzleEditor.RouletteEditor
             _button.interactable = false;
         }
 
-        private void ShowRewardedAd()
+        private void OnShowRewardedAd()
         {
             _button.interactable = false;
 
@@ -59,7 +59,7 @@ namespace PuzzleEditor.RouletteEditor
             {
                 for (int i = 0; i < ParseTextToInt(); i++)
                 {
-                    OnSpinsAdded?.Invoke();
+                    SpinsAdded?.Invoke();
 
                     gameObject.SetActive(false);
                 }
@@ -100,7 +100,7 @@ namespace PuzzleEditor.RouletteEditor
             );
 
             if (_button != null)
-                _button.onClick.RemoveListener(ShowRewardedAd);
+                _button.onClick.RemoveListener(OnShowRewardedAd);
         }
     }
 }

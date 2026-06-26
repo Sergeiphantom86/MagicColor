@@ -14,7 +14,6 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         private Vector3 _targetScale;
         private Sequence _sequence;
         private float _distanceZ;
-        private float _distanceX;
         private float _duration;
         private float _overshoot;
         private int _scaleMultiplier;
@@ -26,7 +25,6 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         private void Awake()
         {
             _distanceZ = 2;
-            _distanceX = 3;
             _overshoot = 5;
             _duration = 0.7f;
             _scaleMultiplier = 20;

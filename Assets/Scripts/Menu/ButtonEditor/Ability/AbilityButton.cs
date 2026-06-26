@@ -50,7 +50,7 @@ namespace Menu.ButtonEditor.Ability
                 gameObject.SetActive(false);
             }
 
-            AbilitySelectionManager.Instance.OnSelection += Use;
+            AbilitySelectionManager.Instance.Selection += OnUse;
         }
 
         private void OnEnable()
@@ -61,7 +61,7 @@ namespace Menu.ButtonEditor.Ability
         private void OnDisable()
         {
             _button.onClick.RemoveListener(OnClick);
-            AbilitySelectionManager.Instance.OnSelection -= Use;
+            AbilitySelectionManager.Instance.Selection -= OnUse;
         }
 
         public void SetHighlight(bool value)
@@ -83,7 +83,7 @@ namespace Menu.ButtonEditor.Ability
             AbilitySelectionManager.Instance.Select(this);
         }
 
-        private void Use()
+        private void OnUse()
         {
             _bag.Use();
         }

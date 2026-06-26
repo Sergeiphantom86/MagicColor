@@ -105,12 +105,12 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 
             _timerFringe = _timer.GetComponentInChildren<TimerFringe>(true);
 
-            _timerFringe.Button.onClick.AddListener(FinishClick);
+            _timerFringe.Button.onClick.AddListener(OnFinishClick);
 
             _starsCounter = _timerFringe.StarsCounter;
         }
 
-        private void FinishClick()
+        private void OnFinishClick()
         {
             if (_coroutine != null)
             {

@@ -20,15 +20,15 @@ namespace Menu
 
         private void OnEnable()
         {
-            _languageMenu.Initialized += TurnOff;
+            _languageMenu.Initialized += OnTurnOff;
         }
 
         private void OnDisable()
         {
-            _languageMenu.Initialized -= TurnOff;
+            _languageMenu.Initialized -= OnTurnOff;
         }
 
-        private void TurnOff()
+        private void OnTurnOff()
         {
             gameObject.SetActive(false);
         }

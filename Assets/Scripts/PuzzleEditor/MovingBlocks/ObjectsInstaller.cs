@@ -42,17 +42,17 @@ namespace PuzzleEditor.MovingBlocks
 
         private void OnEnable()
         {
-            _repainter.OnRecoloredWalls += PlaceLockOnRepaintedWalls;
-            _repainter.OnRecoloredBlock += PlaceKeyOnUnrepaintedBlock;
+            _repainter.RecoloredWalls += OnPlaceLockOnRepaintedWalls;
+            _repainter.RecoloredBlock += OnPlaceKeyOnUnrepaintedBlock;
         }
 
         private void OnDisable()
         {
-            _repainter.OnRecoloredWalls -= PlaceLockOnRepaintedWalls;
-            _repainter.OnRecoloredBlock -= PlaceKeyOnUnrepaintedBlock;
+            _repainter.RecoloredWalls -= OnPlaceLockOnRepaintedWalls;
+            _repainter.RecoloredBlock -= OnPlaceKeyOnUnrepaintedBlock;
         }
 
-        private void PlaceLockOnRepaintedWalls(List<IColorable> colorables)
+        private void OnPlaceLockOnRepaintedWalls(List<IColorable> colorables)
         {
             if (_isTutorial == false)
                 return;
@@ -60,7 +60,7 @@ namespace PuzzleEditor.MovingBlocks
             _lockInstaller.TryPlaceLock(colorables);
         }
 
-        private void PlaceKeyOnUnrepaintedBlock(List<IColorable> colorables)
+        private void OnPlaceKeyOnUnrepaintedBlock(List<IColorable> colorables)
         {
             if (_isTutorial == false)
                 return;

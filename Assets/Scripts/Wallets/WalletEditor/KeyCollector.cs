@@ -17,15 +17,15 @@ namespace Wallets.WalletEditor
 
         private void OnEnable()
         {
-            _collisionHandler.OnEnter += Add;
+            _collisionHandler.Enter += OnAdd;
         }
 
         private void OnDisable()
         {
-            _collisionHandler.OnEnter -= Add;
+            _collisionHandler.Enter -= OnAdd;
         }
 
-        private void Add(Collider collider)
+        private void OnAdd(Collider collider)
         {
             if (collider.TryGetComponent(out Key key))
             {

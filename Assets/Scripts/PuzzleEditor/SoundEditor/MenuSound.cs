@@ -56,14 +56,14 @@ namespace PuzzleEditor.SoundEditor
 
         private void OnEnable()
         {
-            _musicVolumeChanger.OnVolumeChange += SetVolume;
-            _sounVolumeChanger.OnVolumeChange += SetVolume;
+            _musicVolumeChanger.OnVolumeChange += OnSetVolume;
+            _sounVolumeChanger.OnVolumeChange += OnSetVolume;
         }
 
         private void OnDisable()
         {
-            _musicVolumeChanger.OnVolumeChange -= SetVolume;
-            _sounVolumeChanger.OnVolumeChange -= SetVolume;
+            _musicVolumeChanger.OnVolumeChange -= OnSetVolume;
+            _sounVolumeChanger.OnVolumeChange -= OnSetVolume;
 
             _progressSaver.SetMusicTime(_musicSource.time);
         }
@@ -151,7 +151,7 @@ namespace PuzzleEditor.SoundEditor
             _musicSource.Play();
         }
 
-        private void SetVolume(VolumeChanger volumeChanger, float volume)
+        private void OnSetVolume(VolumeChanger volumeChanger, float volume)
         {
             UpdateMixerVolume(volumeChanger.name, volume);
             ChangeValuesAudioSource(volumeChanger, volume);

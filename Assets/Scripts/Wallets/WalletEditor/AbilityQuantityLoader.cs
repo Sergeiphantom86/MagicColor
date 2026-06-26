@@ -28,7 +28,7 @@ namespace Wallets.WalletEditor
                 Debug.LogError("BagAbilities == null");
             }
 
-            UpdateBalance(GetBalance());
+            OnUpdateBalance(GetBalance());
         }
 
         private void Start()
@@ -38,14 +38,14 @@ namespace Wallets.WalletEditor
 
         private void OnEnable()
         {
-            _bagAbilities.OnBagChanged += UpdateBalance;
-            _purchaseButton.Clicked += Add;
+            _bagAbilities.BagChanged += OnUpdateBalance;
+            _purchaseButton.Clicked += OnAdd;
         }
 
         private void OnDisable()
         {
-            _bagAbilities.OnBagChanged -= UpdateBalance;
-            _purchaseButton.Clicked -= Add;
+            _bagAbilities.BagChanged -= OnUpdateBalance;
+            _purchaseButton.Clicked -= OnAdd;
         }
 
         private void OnDestroy()
@@ -58,7 +58,7 @@ namespace Wallets.WalletEditor
             return _progressSaver.Saves.QuantityAbilities;
         }
 
-        private void UpdateBalance(int balance)
+        private void OnUpdateBalance(int balance)
         {
             _balance = balance;
         }
@@ -68,7 +68,7 @@ namespace Wallets.WalletEditor
             _progressSaver.SetQuantityAbilities(_balance);
         }
 
-        private void Add()
+        private void OnAdd()
         {
             if (_bagAbilities != null)
                 _bagAbilities.Add();

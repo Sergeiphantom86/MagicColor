@@ -36,12 +36,12 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 
             _stateTutorial.Initialization(_handMover, _visualizer, _key, _lock);
 
-            _stateTutorial.OnCompleted += OnTutorialCompleted;
+            _stateTutorial.Completed += OnTutorialCompleted;
         }
 
         public override void Exit()
         {
-            _stateTutorial.OnCompleted -= OnTutorialCompleted;
+            _stateTutorial.Completed -= OnTutorialCompleted;
             DOTween.Kill(this);
         }
 

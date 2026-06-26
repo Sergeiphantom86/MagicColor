@@ -77,17 +77,17 @@ namespace Menu.Shop
 
         private void Start()
         {
-            _button.onClick.AddListener(Buy);
+            _button.onClick.AddListener(OnBuy);
         }
 
         private void OnEnable()
         {
-            _walletAnimator.Finished += TurnOnButton;
+            _walletAnimator.Finished += OnTurnOnButton;
         }
 
         private void OnDisable()
         {
-            _walletAnimator.Finished -= TurnOnButton;
+            _walletAnimator.Finished -= OnTurnOnButton;
         }
 
         public void Click()
@@ -101,7 +101,7 @@ namespace Menu.Shop
             StartCoroutine(WaitTurnOnButton(_audioClip.length));
         }
 
-        private void Buy()
+        private void OnBuy()
         {
             if (_currentPaymentType == PaymentType.Ads)
             {
@@ -127,7 +127,7 @@ namespace Menu.Shop
             TryChangeTypePayment();
         }
 
-        private void TurnOnButton()
+        private void OnTurnOnButton()
         {
             StartCoroutine(WaitTurnOnButton());
         }

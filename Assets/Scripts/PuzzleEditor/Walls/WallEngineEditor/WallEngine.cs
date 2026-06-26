@@ -28,10 +28,10 @@ namespace PuzzleEditor.Walls.WallEngineEditor
 
         private void OnDisable()
         {
-            _blockDestroySequence.IsTouched -= Move;
+            _blockDestroySequence.IsTouched -= OnMove;
 
             if (_rotation != null)
-                _rotation.OnRotated -= _movement.CacheStartPosition;
+                _rotation.Rotated -= _movement.CacheStartPosition;
         }
 
         public bool Initialize(
@@ -90,7 +90,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
                 _voiceover.PlayOneShot(_audioClip);
         }
 
-        private void Move()
+        private void OnMove()
         {
             PushMovement();
         }
@@ -115,7 +115,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
             collisionHandler.Initialize(colorPrecision, hintKey, errorPanel, bagUnlockPolicy);
 
             _blockDestroySequence.Initialize(activator);
-            _blockDestroySequence.IsTouched += Move;
+            _blockDestroySequence.IsTouched += OnMove;
         }
 
         private void InitMovement()
@@ -124,7 +124,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
                 return;
 
             _movement.CacheStartPosition();
-            _rotation.OnRotated += _movement.CacheStartPosition;
+            _rotation.Rotated += _movement.CacheStartPosition;
         }
 
         private bool ValidateDependencies(

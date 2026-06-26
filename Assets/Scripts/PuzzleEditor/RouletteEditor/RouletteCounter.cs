@@ -26,12 +26,12 @@ namespace PuzzleEditor.RouletteEditor
 
         private void OnEnable()
         {
-            _rewardAdForSpins.OnSpinsAdded += AddSpin;
+            _rewardAdForSpins.SpinsAdded += OnAddSpin;
         }
 
         private void OnDisable()
         {
-            _rewardAdForSpins.OnSpinsAdded -= AddSpin;
+            _rewardAdForSpins.SpinsAdded -= OnAddSpin;
         }
 
         private void Awake()
@@ -89,7 +89,7 @@ namespace PuzzleEditor.RouletteEditor
             _displayedCount = _initialCount;
         }
 
-        private void AddSpin()
+        private void OnAddSpin()
         {
             SwitchVisibility(true);
 

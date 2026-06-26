@@ -20,7 +20,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
                 return;
 
             _rotator = rotator;
-            _rotator.OnRotated += OnRotated;
+            _rotator.Rotated += OnRotated;
         }
 
         private void Awake()
@@ -44,7 +44,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         private void OnDestroy()
         {
             if (_rotator != null)
-                _rotator.OnRotated -= OnRotated;
+                _rotator.Rotated -= OnRotated;
         }
 
         private void OnRotated()

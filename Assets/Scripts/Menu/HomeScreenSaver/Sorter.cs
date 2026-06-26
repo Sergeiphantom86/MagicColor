@@ -59,15 +59,15 @@ namespace Menu.HomeScreenSaver
 
         private void OnEnable()
         {
-            _fragmentCollector.OnPixelsRendered += SortFragments;
+            _fragmentCollector.PixelsRendered += OnSortFragments;
         }
 
         private void OnDisable()
         {
-            _fragmentCollector.OnPixelsRendered -= SortFragments;
+            _fragmentCollector.PixelsRendered -= OnSortFragments;
         }
 
-        private void SortFragments(List<Fragment> fragments)
+        private void OnSortFragments(List<Fragment> fragments)
         {
             if (fragments == null || fragments.Count == 0)
                 return;

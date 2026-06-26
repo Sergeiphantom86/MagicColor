@@ -28,7 +28,7 @@ namespace PuzzleEditor.RouletteEditor
 
         private void Start()
         {
-            _nextPuzzle.onClick.AddListener(SetValue);
+            _nextPuzzle.onClick.AddListener(OnSetValue);
         }
 
         public void SetProgressSaver(
@@ -76,7 +76,7 @@ namespace PuzzleEditor.RouletteEditor
             Show();
         }
 
-        private void SetValue()
+        private void OnSetValue()
         {
             _spriteTransmitter.SetAutomaticTransition(true);
             ButtonHome.GoMenu();

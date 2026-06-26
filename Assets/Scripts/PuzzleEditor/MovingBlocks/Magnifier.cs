@@ -16,9 +16,9 @@ namespace PuzzleEditor.MovingBlocks
         private Tween _scaleTween;
         private Transform _transform;
 
-        public event Action OnRaised;
+        public event Action Raised;
 
-        public event Action OnDropped;
+        public event Action Dropped;
 
         private void Awake()
         {
@@ -29,14 +29,14 @@ namespace PuzzleEditor.MovingBlocks
         public Tween Select()
         {
             _scaleTween = ChangeSize(_originalScale * _selectedScale);
-            OnRaised?.Invoke();
+            Raised?.Invoke();
             return _scaleTween;
         }
 
         public Tween Deselect()
         {
             _scaleTween = ChangeSize(_originalScale);
-            OnDropped?.Invoke();
+            Dropped?.Invoke();
             return _scaleTween;
         }
 

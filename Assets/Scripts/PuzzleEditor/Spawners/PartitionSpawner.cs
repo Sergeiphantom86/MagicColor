@@ -40,18 +40,18 @@ namespace PuzzleEditor.Spawners
 
         private void OnEnable()
         {
-            _gridSystem.OnInitialized += SpawnRandom;
+            _gridSystem.Initialized += OnSpawnRandom;
 
             if (_gridSystem.IsInitialized)
-                SpawnRandom();
+                OnSpawnRandom();
         }
 
         private void OnDisable()
         {
-            _gridSystem.OnInitialized -= SpawnRandom;
+            _gridSystem.Initialized -= OnSpawnRandom;
         }
 
-        private void SpawnRandom()
+        private void OnSpawnRandom()
         {
             _gridHelper = new GridPositionHelper(_gridSystem);
             _chainSpawner = new PartitionChainSpawner(_gridSystem);
@@ -115,13 +115,13 @@ namespace PuzzleEditor.Spawners
             );
         }
 
-        private void ClearCell(IGridOccupant gridOccupant)
+        private void OnClearCell(IGridOccupant gridOccupant)
         {
             _gridSystem.ClearCell(gridOccupant);
 
             if (gridOccupant is Partition partition)
             {
-                partition.Destroyed -= ClearCell;
+                partition.Destroyed -= OnClearCell;
             }
         }
 
@@ -152,7 +152,7 @@ namespace PuzzleEditor.Spawners
             partition.transform.position = worldPos;
             partition.SetGridPosition(origin);
 
-            partition.Destroyed += ClearCell;
+            partition.Destroyed += OnClearCell;
         }
     }
 }

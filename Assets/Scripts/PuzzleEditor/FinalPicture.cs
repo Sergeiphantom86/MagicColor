@@ -69,22 +69,22 @@ namespace PuzzleEditor
             if (_activator == null)
                 return;
 
-            _activator.PuzzleCompleted += Demonstrate;
-            _activator.Approached += ZoomIn;
+            _activator.PuzzleCompleted += OnDemonstrate;
+            _activator.Approached += OnZoomIn;
         }
 
         private void OnDisable()
         {
             if (_activator != null)
             {
-                _activator.PuzzleCompleted -= Demonstrate;
-                _activator.Approached -= ZoomIn;
+                _activator.PuzzleCompleted -= OnDemonstrate;
+                _activator.Approached -= OnZoomIn;
             }
 
             StopCurrentAnimation();
         }
 
-        private void ZoomIn(float time)
+        private void OnZoomIn(float time)
         {
             StopCurrentAnimation();
 
@@ -104,7 +104,7 @@ namespace PuzzleEditor
                 });
         }
 
-        private void Demonstrate()
+        private void OnDemonstrate()
         {
             StopCurrentAnimation();
 

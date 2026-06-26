@@ -22,12 +22,12 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
             _context.Visualizer.gameObject.SetActive(false);
             _context.Hints.gameObject.SetActive(false);
 
-            _context.Rotator.OnRotated += OnRotated;
+            _context.Rotator.Rotated += OnRotated;
         }
 
         public override void Exit()
         {
-            _context.Rotator.OnRotated -= OnRotated;
+            _context.Rotator.Rotated -= OnRotated;
         }
 
         private void OnRotated()

@@ -4,9 +4,9 @@ namespace Game
 {
     public class Restarter : ButtonMenu
     {
-        public override void PressButton()
+        public override void OnPressButton()
         {
-            base.PressButton();
+            base.OnPressButton();
             PauseMenu.Load(SceneManager.GetActiveScene().name);
         }
     }
