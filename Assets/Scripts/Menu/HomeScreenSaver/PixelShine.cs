@@ -121,8 +121,7 @@ namespace Menu.HomeScreenSaver
                 .Append(
                 renderer
                 .DOColor(Color.white + Color.yellow, _shineDuration)
-                .SetEase(Ease.OutQuad)
-                )
+                .SetEase(Ease.OutQuad))
                 .Append(renderer.DOColor(renderer.color, _shineDuration).SetEase(Ease.InQuad));
             }
 

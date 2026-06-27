@@ -6,8 +6,6 @@ namespace PuzzleEditor.MovingBlocks
 {
     public class PathMover : MonoBehaviour
     {
-        [Header("Movement Settings")]
-        [SerializeField] private Ease _moveEase = Ease.InOutBounce;
         [SerializeField] private float _durationToWaypoint = 0.1f;
         [SerializeField] private float _durationToEnd = 0.2f;
 

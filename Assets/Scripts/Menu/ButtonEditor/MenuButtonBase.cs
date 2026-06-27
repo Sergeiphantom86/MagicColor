@@ -7,17 +7,16 @@ namespace Menu.ButtonEditor
 {
     public abstract class MenuButtonBase : IMenuButton
     {
-        protected Button _button;
-        protected HandlerButtonWindowInteraction _handler;
-        protected ButtonSoundHandler _soundHandler;
-        protected AudioClip _audioClip;
+        private Button _button;
+        private HandlerButtonWindowInteraction _handler;
+        private ButtonSoundHandler _soundHandler;
+        private AudioClip _audioClip;
 
         public virtual void Configure(
         Button button,
         HandlerButtonWindowInteraction handlerButtonWindowInteraction,
         ButtonSoundHandler buttonSound,
-        AudioClip audioClip
-        )
+        AudioClip audioClip)
         {
             if (button == null)
             throw new ArgumentNullException(nameof(button));
@@ -41,8 +40,7 @@ namespace Menu.ButtonEditor
         Button button,
         HandlerButtonWindowInteraction handlerButtonWindowInteraction,
         ButtonSoundHandler buttonSound,
-        AudioClip audioClip
-        )
+        AudioClip audioClip)
         {
             handlerButtonWindowInteraction.OnButtonClicked(button);
             buttonSound.PlayButtonSound(audioClip);

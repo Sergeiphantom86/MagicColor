@@ -86,9 +86,7 @@ namespace Menu.HomeScreenSaver
                 _transitionSequence
                 .AppendCallback(() =>
                 _textureInitializer.SpawnPixelsFromTexture(
-                _spriteSequence[nextIndex].texture
-                )
-                )
+                _spriteSequence[nextIndex].texture))
                 .OnComplete(() => _isTransitioning = false);
             }
             else

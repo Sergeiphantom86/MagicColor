@@ -1,19 +1,17 @@
-using Game.SaveEditor;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using YG;
 
 namespace Menu
 {
     public class Icon : MonoBehaviour
     {
         private TextMeshProUGUI _textMeshProUGUI;
-        private IProgressSaver _progressSaver;
 
         private void Awake()
         {
             _textMeshProUGUI = GetComponentInChildren<TextMeshProUGUI>();
-            _progressSaver = new ProgressSaver();
 
             SetRank(SetLexel().ToString().NullIfEmpty());
         }
@@ -30,7 +28,7 @@ namespace Menu
         {
             int value = 1;
 
-            value += _progressSaver.Saves.MaxReachedQuestIndex;
+            value += YG2.saves.MaxReachedQuestIndex;
 
             return value;
         }

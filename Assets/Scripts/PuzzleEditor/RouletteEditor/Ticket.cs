@@ -1,6 +1,6 @@
-using Game.SaveEditor;
 using UnityEngine;
 using Wallets;
+using YG;
 
 namespace PuzzleEditor.RouletteEditor
 {
@@ -9,7 +9,6 @@ namespace PuzzleEditor.RouletteEditor
         private TextAnimator _textAnimator;
         private Currency _currency;
         private long _fullReward;
-        private IProgressSaver _progressSaver;
 
         public long FullReward => _fullReward;
 
@@ -17,7 +16,6 @@ namespace PuzzleEditor.RouletteEditor
         {
             _currency = GetComponent<Currency>();
             _textAnimator = GetComponentInChildren<TextAnimator>();
-            _progressSaver = new ProgressSaver();
 
             if (_currency == null)
             {
@@ -37,7 +35,7 @@ namespace PuzzleEditor.RouletteEditor
 
         private void Show()
         {
-            _fullReward = _progressSaver.Saves.Reward * _progressSaver.Saves.CountStars;
+            _fullReward = YG2.saves.Reward * YG2.saves.Stars;
 
             _textAnimator.AnimateToValue(_fullReward);
         }

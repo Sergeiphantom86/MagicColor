@@ -56,8 +56,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle
 
             _sequence
             .Append(
-            transform.DOScale(_targetScale, _duration).SetEase(Ease.OutBack, _overshoot)
-            )
+            transform.DOScale(_targetScale, _duration).SetEase(Ease.OutBack, _overshoot))
             .SetLoops(-1, LoopType.Restart)
             .SetUpdate(true);
         }

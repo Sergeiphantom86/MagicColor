@@ -1,6 +1,6 @@
-using Game.SaveEditor;
 using UnityEngine;
 using UnityEngine.Audio;
+using YG;
 
 namespace PuzzleEditor.SoundEditor
 {
@@ -16,12 +16,10 @@ namespace PuzzleEditor.SoundEditor
         [SerializeField] private AudioMixerGroup _sfxGroup;
 
         private AudioSource _sfxSource;
-        private IProgressSaver _progressSaver;
 
         private void Awake()
         {
             _sfxSource = GetComponent<AudioSource>();
-            _progressSaver = new ProgressSaver();
             _sfxSource.outputAudioMixerGroup = _sfxGroup;
 
             LoadVolumeSettings();
@@ -29,12 +27,7 @@ namespace PuzzleEditor.SoundEditor
 
         public void PlayOneShot(AudioClip clip)
         {
-            if (
-            clip == false
-            || _sfxSource == false
-            || _sfxSource.enabled == false
-            || gameObject.activeInHierarchy == false
-            )
+            if (clip == false|| _sfxSource == false|| _sfxSource.enabled == false|| gameObject.activeInHierarchy == false)
             return;
 
             _sfxSource.PlayOneShot(clip);
@@ -53,7 +46,7 @@ namespace PuzzleEditor.SoundEditor
 
         public void SetVolume(float vfd)
         {
-            float dbVolume = Mathf.Log10(_progressSaver.Saves.SoundVolume * vfd) * DBMultiplier;
+            float dbVolume = Mathf.Log10(YG2.saves.SoundVolume * vfd) * DBMultiplier;
 
             _sfxGroup.audioMixer.SetFloat(SoundVolume, dbVolume);
         }
@@ -61,7 +54,7 @@ namespace PuzzleEditor.SoundEditor
         private void LoadVolumeSettings()
         {
             float clampedVolume = Mathf.Clamp(
-            _progressSaver.Saves.SoundVolume,
+            YG2.saves.SoundVolume,
             MinVolume,
             MaxVolume
             );

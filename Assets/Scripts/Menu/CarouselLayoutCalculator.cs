@@ -18,8 +18,7 @@ namespace Menu
         Vector2[] originalPositions,
         float centerScale,
         float sideScale,
-        float distanceFromCenter
-        )
+        float distanceFromCenter)
         {
             _buttons = buttons;
             _originalPositions = originalPositions;

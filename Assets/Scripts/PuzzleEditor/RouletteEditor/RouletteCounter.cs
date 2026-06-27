@@ -1,8 +1,8 @@
 using DG.Tweening;
-using Game.SaveEditor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 namespace PuzzleEditor.RouletteEditor
 {
@@ -19,7 +19,6 @@ namespace PuzzleEditor.RouletteEditor
         private Tween _countTween;
         private TextMeshProUGUI _counterText;
         private ButtonController _buttonController;
-        private IProgressSaver _progressSaver;
         private Image _image;
 
         public bool HasAttempts => _currentCount > 0;
@@ -42,8 +41,6 @@ namespace PuzzleEditor.RouletteEditor
             _counterText = GetComponentInChildren<TextMeshProUGUI>();
             _image = GetComponent<Image>();
 
-            _progressSaver = new ProgressSaver();
-
             if (_counterText == null)
             {
                 Debug.LogError("TextMeshProUGUI ��� � �����!!!");
@@ -64,11 +61,6 @@ namespace PuzzleEditor.RouletteEditor
                 Debug.LogError("ButtonController �� ��������!", this);
             }
 
-            if (_progressSaver == null)
-            {
-                Debug.LogError("ProgressSaver == null");
-            }
-
             SetCoutSpins();
 
             _rewardAdForSpins.gameObject.SetActive(false);
@@ -81,7 +73,7 @@ namespace PuzzleEditor.RouletteEditor
 
         private void SetCoutSpins()
         {
-            _initialCount = _progressSaver.Saves.Spins;
+            _initialCount = YG2.saves.Spins;
 
             _initialCount++;
 
@@ -106,7 +98,7 @@ namespace PuzzleEditor.RouletteEditor
         public void DecreaseCount()
         {
             if (_currentCount <= 0)
-            return;
+                return;
 
             _currentCount--;
             AnimateCounterChange();
@@ -130,29 +122,25 @@ namespace PuzzleEditor.RouletteEditor
         {
             _countTween?.Kill();
 
-            _countTween = DOTween
-            .To(
-            () => _displayedCount,
-            currentValue =>
+            _countTween = DOTween.To(() => _displayedCount, currentValue =>
             {
                 _displayedCount = currentValue;
+
                 UpdateText();
-                },
-                _currentCount,
-                _animationDuration
-                )
+            },
+                _currentCount, _animationDuration)
                 .SetEase(Ease.OutQuad);
-            }
+        }
 
-            private void UpdateText()
-            {
-                _counterText.text = _displayedCount.ToString();
-            }
+        private void UpdateText()
+        {
+            _counterText.text = _displayedCount.ToString();
+        }
 
-            private void OnDestroy()
-            {
-                _progressSaver.SaveSpinsCount(_currentCount);
-                _countTween?.Kill();
-            }
+        private void OnDestroy()
+        {
+            YG2.saves.Spins = _currentCount;
+            _countTween?.Kill();
         }
     }
+}

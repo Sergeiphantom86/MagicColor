@@ -48,8 +48,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         Rotator rotator,
         BlockSpawner container,
         StateTutorial stateTutorial,
-        TutorialAbilities tutorialAbilities
-        )
+        TutorialAbilities tutorialAbilities)
         {
             Key = key;
             Lock = @lock;
@@ -64,8 +63,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         public void AdjustPositions(
         Vector3? handPosition = null,
         Vector3? visualizerPosition = null,
-        float yOffset = 0f
-        )
+        float yOffset = 0f)
         {
             SetObjectPosition(GetTransform(HandMover), handPosition, 0, yOffset, 0);
             SetObjectPosition(GetTransform(Visualizer), visualizerPosition, 0, yOffset, 0);
@@ -81,8 +79,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         Vector3? position,
         float xOffset,
         float yOffset,
-        float zOffset
-        )
+        float zOffset)
         {
             if (targetTransform != null && position.HasValue)
             {

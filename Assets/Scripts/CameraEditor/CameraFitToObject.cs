@@ -41,7 +41,7 @@ namespace CameraEditor
         private void Start()
         {
             if (_zoomChanger.IsMobileWithTallScreen())
-            return;
+                return;
 
             _baseFov = 33;
 
@@ -78,7 +78,7 @@ namespace CameraEditor
         private float GetTargetFov()
         {
             if (_currentAspect >= _referenceAspect)
-            return _baseFov;
+                return _baseFov;
 
             return Mathf.Clamp(GetVerticalFov(_currentAspect) * Mathf.Rad2Deg, _baseFov, _maxFov);
         }
@@ -112,20 +112,20 @@ namespace CameraEditor
 
         private float GetHorizontalFov()
         {
-            return _angleDivider
-            * Mathf.Atan(Mathf.Tan(GetBaseFovRad() / _angleDivider) * _referenceAspect);
+            return _angleDivider * Mathf.Atan(Mathf.Tan(GetBaseFovRad() / _angleDivider) * _referenceAspect);
         }
 
         private float GetVerticalFov(float aspect)
         {
-            return _angleDivider
-            * Mathf.Atan(Mathf.Tan(GetHorizontalFov() / _angleDivider) / aspect);
+            return _angleDivider * Mathf.Atan(Mathf.Tan(GetHorizontalFov() / _angleDivider) / aspect);
         }
 
         private void StartRecalculate()
         {
             if (_recalculateRoutine != null)
-            StopCoroutine(_recalculateRoutine);
+            {
+                StopCoroutine(_recalculateRoutine);
+            }
 
             _recalculateRoutine = StartCoroutine(RecalculateDelayed());
         }

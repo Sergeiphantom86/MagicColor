@@ -8,7 +8,7 @@ namespace PuzzleEditor.UI
 
     public class AnimatorPuzzle : MonoBehaviour
     {
-        [SerializeField] private Puzzle1 _puzzle;
+        [SerializeField] private GameArea _puzzle;
         [SerializeField] private Activator _activator;
         [SerializeField] private VictoryPlaque _victoryPlaque;
         [SerializeField] private FireworksController _fireworks;

@@ -1,7 +1,8 @@
+using Menu.TutorialEditor.TutorialPuzzle;
 using System;
-using Game.SaveEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 namespace Menu.QuestEditor
 {
@@ -17,7 +18,6 @@ namespace Menu.QuestEditor
         private bool _isTutorial;
         private Button _questButton;
         private PuzzleSelector _selector;
-        private IProgressSaver _progressSaver;
 
         public event Action<Quest> Selected;
 
@@ -35,7 +35,6 @@ namespace Menu.QuestEditor
             _lockImage = GetComponentInChildren<LockImage>();
             _selector = GetComponentInChildren<PuzzleSelector>();
             _activeIndicator = GetComponentInChildren<ActiveIndicator>();
-            _progressSaver = new ProgressSaver();
 
             _questButton.onClick.AddListener(OnClick);
             _isTutorial = true;
@@ -79,6 +78,16 @@ namespace Menu.QuestEditor
             _activeIndicator.gameObject.SetActive(active);
         }
 
+        public void OnClick()
+        {
+            if (_isUnlocked == false || _isCompleted)
+            return;
+
+            SetReward(_reward);
+
+            Selected?.Invoke(this);
+        }
+
         private void UpdateVisualState()
         {
             _lockImage.gameObject.SetActive(!_isUnlocked);
@@ -86,15 +95,12 @@ namespace Menu.QuestEditor
             _questButton.interactable = _isUnlocked && _isCompleted == false;
         }
 
-        public void OnClick()
+        private void SetReward(int reward)
         {
-            if (_isUnlocked == false || _isCompleted)
-            return;
-
-            _progressSaver.SetReward(_reward);
-            _progressSaver.Saves.IndexPuzzle = _indexPuzzle;
-
-            Selected?.Invoke(this);
+            if (reward > 0)
+            {
+                YG2.saves.Reward = reward;
+            }
         }
     }
 }

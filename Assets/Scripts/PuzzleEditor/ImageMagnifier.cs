@@ -44,8 +44,7 @@ namespace PuzzleEditor
             _zoomChanger.IsMobileWithTallScreen()
             && _multiplier > 0
             && _isStandardSize
-            && _camera.fieldOfView > 116
-            )
+            && _camera.fieldOfView > 116)
             {
                 transform.localScale = Vector3.one * _multiplier;
                 _rectTransform.position = _positoonZ;
@@ -54,8 +53,7 @@ namespace PuzzleEditor
             else if (
             _isStandardSize == false
             && _zoomChanger.IsMobileWithTallScreen() == false
-            && _camera.fieldOfView < 116
-            )
+            && _camera.fieldOfView < 116)
             {
                 transform.localScale = Vector3.one * _startSize;
                 _rectTransform.position = _startPositoonZ;

@@ -10,6 +10,7 @@ namespace PuzzleEditor.Spawners
     public class MagicSphereSpawner : BaseSpawner<MagicSphere>
     {
         [SerializeField] private AudioClip _audioClip;
+        [SerializeField] private AbilitySelectionManager _abilitySelectionManager;
 
         private GridSystem _grid;
         private IInputHandler _input;
@@ -52,7 +53,7 @@ namespace PuzzleEditor.Spawners
 
         private void OnTrySpawnAtWorldPos(Vector2 screenPos)
         {
-            if (AbilitySelectionManager.Instance.HasSelection == false)
+            if (_abilitySelectionManager.HasSelection == false)
             return;
 
             Vector2Int origin = _grid.GetOriginFromCenter(
@@ -63,7 +64,7 @@ namespace PuzzleEditor.Spawners
             if (_input.Point == Vector3.zero)
             return;
 
-            AbilitySelectionManager.Instance.Use();
+            _abilitySelectionManager.Use();
             _voiceover.PlayOneShot(_audioClip);
 
             Vector3 spawnPos = _grid.GetWorldPosition(origin, Vector2Int.one);
@@ -74,7 +75,7 @@ namespace PuzzleEditor.Spawners
 
             _grid.PlaceObject(origin, sphere);
 
-            AbilitySelectionManager.Instance.ClearSelection();
+            _abilitySelectionManager.ClearSelection();
         }
 
         private Vector2Int WorldToGrid(Vector3 worldPos)

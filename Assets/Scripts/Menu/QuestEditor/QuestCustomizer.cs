@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using Game.SaveEditor;
+using YG;
 
 namespace Menu.QuestEditor
 {
     public class QuestCustomizer
     {
-        private readonly IProgressSaver _progressSaver;
         private readonly int _indexTutorialBasics = 0;
         private readonly int _indexAbilityTutorial;
         private readonly int _indexUnblockingTutorial;
@@ -13,16 +12,14 @@ namespace Menu.QuestEditor
         private readonly bool _isUnblockingTutorial;
         private readonly bool _isAbilityTutorial;
 
-        public QuestCustomizer(IProgressSaver progressSaver)
+        public QuestCustomizer()
         {
-            _progressSaver = progressSaver;
+            _indexUnblockingTutorial = YG2.saves.IndexSecondQuest;
+            _indexAbilityTutorial = YG2.saves.ObstacleDeactivatIndex;
 
-            _indexUnblockingTutorial = _progressSaver.Saves.IndexSecondQuest;
-            _indexAbilityTutorial = _progressSaver.Saves.ObstacleDeactivatIndex;
-
-            _isTutorialBasics = _progressSaver.Saves.IsTutorialBasics;
-            _isUnblockingTutorial = _progressSaver.Saves.IsUnblockingTutorial;
-            _isAbilityTutorial = _progressSaver.Saves.IsAbilityTutorial;
+            _isTutorialBasics = YG2.saves.IsTutorialBasics;
+            _isUnblockingTutorial = YG2.saves.IsUnblockingTutorial;
+            _isAbilityTutorial = YG2.saves.IsAbilityTutorial;
         }
 
         public void Apply(List<Quest> quests)
@@ -32,7 +29,7 @@ namespace Menu.QuestEditor
                 quests[i].SetIndex(i);
             }
 
-            if (_progressSaver.Saves.MaxReachedQuestIndex >= _indexAbilityTutorial)
+            if (YG2.saves.MaxReachedQuestIndex >= _indexAbilityTutorial)
             {
                 EnableAllTutorials();
                 return;
@@ -61,9 +58,9 @@ namespace Menu.QuestEditor
 
         private void EnableAllTutorials()
         {
-            _progressSaver.SetTutorialBasics();
-            _progressSaver.SetUnblockingTutorial();
-            _progressSaver.SetAbilityTutorial();
+            YG2.saves.IsTutorialBasics = true;
+            YG2.saves.IsUnblockingTutorial = true;
+            YG2.saves.IsAbilityTutorial = true;
         }
     }
 }

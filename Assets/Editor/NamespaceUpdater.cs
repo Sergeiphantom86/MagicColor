@@ -6,88 +6,131 @@ using UnityEngine;
 
 public static class NamespaceUpdater
 {
-    // Путь к папке со скриптами (относительно Assets) 11111111111
     private const string RootFolder = "Assets/Scripts";
-    private static readonly string[] ExcludeFolders = { "/Editor/", "/Plugins/", "/Tests/" };
+
+    private static readonly string[] ExcludeFolders =
+    {
+        "/Editor/",
+        "/Plugins/",
+        "/Tests/"
+    };
 
     //[MenuItem("Tools/Update Namespaces (fix)")]
     public static void UpdateAllNamespaces()
     {
-        string rootFullPath = Path.Combine(Application.dataPath, RootFolder.Substring("Assets/".Length));
-        if (!Directory.Exists(rootFullPath))
+        string rootPath = GetRootPath();
+
+        if (!Directory.Exists(rootPath))
         {
             Debug.LogError($"Папка '{RootFolder}' не найдена!");
             return;
         }
 
-        string[] csFiles = Directory.GetFiles(rootFullPath, "*.cs", SearchOption.AllDirectories);
+        string[] files = Directory.GetFiles(rootPath, "*.cs", SearchOption.AllDirectories);
+
         int processed = 0;
 
-        foreach (string filePath in csFiles)
+        foreach (string file in files)
         {
-            bool skip = false;
-            foreach (string exclude in ExcludeFolders)
-                if (filePath.Contains(exclude)) { skip = true; break; }
-            if (skip) continue;
+            if (IsExcluded(file))
+                continue;
 
-            if (FixNamespace(filePath))
+            if (FixNamespace(file, rootPath))
                 processed++;
         }
 
-        Debug.Log($"✅ Исправлено namespace в {processed} файлах из {csFiles.Length}.");
+        Debug.Log($"✅ Исправлено namespace в {processed} файлах из {files.Length}.");
+
         AssetDatabase.Refresh();
     }
 
-    private static bool FixNamespace(string filePath)
+    private static string GetRootPath()
     {
-        // Получаем относительный путь от корня Scripts
-        string rootFull = Path.Combine(Application.dataPath, RootFolder.Substring("Assets/".Length));
-        string relativePath = filePath.Substring(rootFull.Length)
-                                    .TrimStart('/', '\\')
-                                    .Replace('\\', '/'); // унифицируем разделители
+        return Path.Combine(Application.dataPath, RootFolder.Substring("Assets/".Length));
+    }
 
-        // Берём только папки (без имени файла)
-        string folderPath = Path.GetDirectoryName(relativePath)?.Replace('\\', '/') ?? "";
-        // Преобразуем слэши в точки
-        string newNamespace = folderPath.Replace('/', '.').Replace('\\', '.');
-        // Если файл в корне Scripts – пространство имён будет пустым, но лучше дать "Scripts"
-        if (string.IsNullOrEmpty(newNamespace))
-            newNamespace = "Scripts";
+    private static bool IsExcluded(string filePath)
+    {
+        foreach (string folder in ExcludeFolders)
+        {
+            if (filePath.Replace('\\', '/').Contains(folder))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static bool FixNamespace(string filePath, string rootPath)
+    {
+        string relativePath = filePath
+            .Substring(rootPath.Length)
+            .TrimStart('/', '\\')
+            .Replace('\\', '/');
+
+        string folder = Path.GetDirectoryName(relativePath)?.Replace('\\', '/') ?? string.Empty;
+
+        string newNamespace = string.IsNullOrEmpty(folder)
+            ? "Scripts"
+            : folder.Replace('/', '.');
 
         string content = File.ReadAllText(filePath);
 
-        // Ищем существующее объявление namespace
-        var nsMatch = Regex.Match(content, @"namespace\s+([^\s{;]+)");
-        if (nsMatch.Success)
-        {
-            string oldNs = nsMatch.Groups[1].Value;
-            // Если уже правильное – пропускаем
-            if (oldNs == newNamespace)
-                return false;
+        Match match = Regex.Match(content, @"namespace\s+([^\s{;]+)");
 
-            // Заменяем старое на новое (учитываем, что может быть с точками или слешами)
-            content = Regex.Replace(content, @"namespace\s+" + Regex.Escape(oldNs), $"namespace {newNamespace}");
-            File.WriteAllText(filePath, content);
-            return true;
-        }
-        else
-        {
-            // Вставляем namespace после всех using
-            int insertIdx = content.LastIndexOf("using ", StringComparison.Ordinal);
-            if (insertIdx >= 0)
-            {
-                int endLine = content.IndexOf('\n', insertIdx);
-                if (endLine == -1) endLine = insertIdx;
-                insertIdx = endLine + 1;
-            }
-            else
-            {
-                insertIdx = 0;
-            }
+        if (match.Success)
+            return ReplaceNamespace(filePath, content, match.Groups[1].Value, newNamespace);
 
-            string newContent = content.Insert(insertIdx, $"namespace {newNamespace}\n{{\n") + "\n}";
-            File.WriteAllText(filePath, newContent);
-            return true;
-        }
+        return InsertNamespace(filePath, content, newNamespace);
+    }
+
+    private static bool ReplaceNamespace(
+        string filePath,
+        string content,
+        string oldNamespace,
+        string newNamespace)
+    {
+        if (oldNamespace == newNamespace)
+            return false;
+
+        content = Regex.Replace(
+            content,
+            @"namespace\s+" + Regex.Escape(oldNamespace),
+            $"namespace {newNamespace}");
+
+        File.WriteAllText(filePath, content);
+
+        return true;
+    }
+
+    private static bool InsertNamespace(
+        string filePath,
+        string content,
+        string newNamespace)
+    {
+        int insertIndex = GetInsertIndex(content);
+
+        content = content.Insert(
+            insertIndex,
+            $"namespace {newNamespace}\n{{\n");
+
+        content += "\n}";
+
+        File.WriteAllText(filePath, content);
+
+        return true;
+    }
+
+    private static int GetInsertIndex(string content)
+    {
+        int lastUsing = content.LastIndexOf("using ", StringComparison.Ordinal);
+
+        if (lastUsing < 0)
+            return 0;
+
+        int endLine = content.IndexOf('\n', lastUsing);
+
+        return endLine < 0
+            ? content.Length
+            : endLine + 1;
     }
 }

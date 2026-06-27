@@ -70,7 +70,6 @@ public static class UnityCodeFormatter
         var result = new List<string>();
 
         int indent = 0;
-        bool lastWasOpenBrace = false;
 
         foreach (var raw in lines)
         {
@@ -82,7 +81,6 @@ public static class UnityCodeFormatter
                 continue;
             }
 
-            // закрывающая скобка
             if (line == "}")
             {
                 indent = Math.Max(0, indent - 1);
@@ -91,15 +89,10 @@ public static class UnityCodeFormatter
             string indentSpaces = new string(' ', indent * 4);
             result.Add(indentSpaces + line);
 
-            // открывающая скобка
+
             if (line.EndsWith("{"))
             {
                 indent++;
-                lastWasOpenBrace = true;
-            }
-            else
-            {
-                lastWasOpenBrace = false;
             }
         }
 

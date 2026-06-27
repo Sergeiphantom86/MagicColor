@@ -44,8 +44,6 @@ namespace PuzzleEditor.Spawners
             _waitBeforePuttPlace = new WaitForSeconds(_delayAppearance);
             _timeInterval = new WaitForSeconds(_delay);
 
-            CurrentPrefabIndex = _index;
-
             if (_gridSystem == null)
             {
                 Debug.LogError("GridSystem not found");

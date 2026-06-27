@@ -2,13 +2,13 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 {
     public abstract class TutorialStater : ITutorialState
     {
-        protected StateMachine StateMachine;
-        protected TutorialContext Context;
+        private StateMachine _stateMachine;
+        private TutorialContext _context;
 
         protected TutorialStater(StateMachine stateMachine, TutorialContext context)
         {
-            StateMachine = stateMachine;
-            Context = context;
+            _stateMachine = stateMachine;
+            _context = context;
         }
 
         public abstract void Enter();

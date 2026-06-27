@@ -97,8 +97,7 @@ namespace Menu.TutorialEditor
         Vector3 position,
         Vector3 angleRotation,
         float moveDuration,
-        float rotationDuration
-        )
+        float rotationDuration)
         {
             Rotate(angleRotation, rotationDuration);
 

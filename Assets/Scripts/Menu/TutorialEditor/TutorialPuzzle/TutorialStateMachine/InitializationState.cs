@@ -1,17 +1,15 @@
-using Game.SaveEditor;
+using YG;
 
 namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 {
     public class InitializationState : TutorialStater
     {
-        private readonly IProgressSaver _progressSaver;
         private readonly StateMachine _stateMachine;
         private readonly TutorialContext _context;
 
         public InitializationState(StateMachine stateMachine, TutorialContext context)
         : base(stateMachine, context)
         {
-            _progressSaver = new ProgressSaver();
 
             _context = context;
             _stateMachine = stateMachine;
@@ -32,15 +30,15 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 
         private void OnRotated()
         {
-            if (_progressSaver.Saves.IsTutorialBasics == false)
+            if (YG2.saves.IsTutorialBasics == false)
             {
                 _stateMachine.ChangeState(new UITutorialState(_stateMachine, _context));
             }
-            else if (_progressSaver.Saves.IsUnblockingTutorial == false)
+            else if (YG2.saves.IsUnblockingTutorial == false)
             {
                 _stateMachine.ChangeState(new KeyTutorialState(_stateMachine, _context));
             }
-            else if (_progressSaver.Saves.IsAbilityTutorial == false)
+            else if (YG2.saves.IsAbilityTutorial == false)
             {
                 _stateMachine.ChangeState(_context.TutorialAbilities);
             }

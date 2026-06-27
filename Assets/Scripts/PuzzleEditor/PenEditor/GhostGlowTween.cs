@@ -37,8 +37,7 @@ namespace PuzzleEditor.PenEditor
                 _material.SetColor(EmissionColor, color);
                 },
                 1f,
-                _duration
-                )
+                _duration)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(Ease.InOutSine)
                 .SetTarget(this);

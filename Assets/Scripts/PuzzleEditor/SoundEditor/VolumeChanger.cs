@@ -1,7 +1,7 @@
 using System;
-using Game.SaveEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 namespace PuzzleEditor.SoundEditor
 {
@@ -9,7 +9,6 @@ namespace PuzzleEditor.SoundEditor
 
     public class VolumeChanger : MonoBehaviour
     {
-        private IProgressSaver _progressSaver;
         private ToggleBase _toggleBase;
         private Slider _volumeSlider;
         private float _temporaryVolume;
@@ -19,7 +18,6 @@ namespace PuzzleEditor.SoundEditor
 
         private void Awake()
         {
-            _progressSaver = new ProgressSaver();
             _volumeSlider = GetComponent<Slider>();
             _toggleBase = GetComponentInChildren<ToggleBase>();
 
@@ -37,11 +35,11 @@ namespace PuzzleEditor.SoundEditor
 
             if (this is MusicVolumeController)
             {
-                _volumeSlider.value = _progressSaver.Saves.MusicVolume;
+                _volumeSlider.value = YG2.saves.MusicVolume;
             }
             else
             {
-                _volumeSlider.value = _progressSaver.Saves.SoundVolume;
+                _volumeSlider.value = YG2.saves.SoundVolume;
             }
         }
 
@@ -66,7 +64,7 @@ namespace PuzzleEditor.SoundEditor
 
             OnVolumeChange?.Invoke(this, volume);
 
-            _progressSaver.SetVolume(this, volume);
+            YG2.saves.SetVolume(this, volume);
         }
 
         public void ToggleSoundsMute(bool isOn)

@@ -1,5 +1,5 @@
-using Game.SaveEditor;
 using UnityEngine;
+using YG;
 
 namespace PuzzleEditor.Stars
 {
@@ -8,12 +8,10 @@ namespace PuzzleEditor.Stars
     public class QuantityMenuStarsIndicator : MonoBehaviour
     {
         private StarsController _starsController;
-        private IProgressSaver _progressSaver;
 
         private void Awake()
         {
             _starsController = GetComponent<StarsController>();
-            _progressSaver = new ProgressSaver();
         }
 
         private void Start()
@@ -23,9 +21,9 @@ namespace PuzzleEditor.Stars
 
         private void ShowQuantity()
         {
-            if (_progressSaver.Saves.CountStars != 0)
+            if (YG2.saves.Stars != 0)
             {
-                _starsController.ShowWithAnimation(_progressSaver.Saves.CountStars);
+                _starsController.ShowWithAnimation(YG2.saves.Stars);
             }
         }
     }

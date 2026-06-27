@@ -41,8 +41,7 @@ namespace PuzzleEditor.ObjectPool
         {
             if (
             _objectToPrefabIndex != null
-            && _objectToPrefabIndex.TryGetValue(item, out int prefabIndex)
-            )
+            && _objectToPrefabIndex.TryGetValue(item, out int prefabIndex))
             {
                 if (_prefabPools.TryGetValue(prefabIndex, out var specificPool))
                 {

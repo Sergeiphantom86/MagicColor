@@ -57,8 +57,7 @@ namespace PuzzleEditor.Walls
         IColorPrecision colorPrecision,
         Messager hintKey,
         ErrorPanel errorPanel,
-        IUnlockPolicy unlockPolicy
-        )
+        IUnlockPolicy unlockPolicy)
         {
             if (Validate(colorPrecision, hintKey, errorPanel, _lockHandler, unlockPolicy) == false)
             return false;
@@ -81,8 +80,7 @@ namespace PuzzleEditor.Walls
         Messager hintKey,
         ErrorPanel errorPanel,
         LockInteractionHandler lockHandler,
-        IUnlockPolicy bagUnlockPolicy
-        )
+        IUnlockPolicy bagUnlockPolicy)
         {
             if (_colorMatch == null)
             return Log(nameof(_colorMatch));

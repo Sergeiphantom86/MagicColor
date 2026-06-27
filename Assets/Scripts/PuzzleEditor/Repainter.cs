@@ -33,6 +33,7 @@ namespace PuzzleEditor
             _blocks = new List<IColorable>();
             _waitForSeconds = new WaitForSeconds(_delay);
             _iBlocksContainer = _blocksContainer;
+
             _textureInitializer = GetComponent<TextureInitializer>();
         }
 
@@ -52,7 +53,7 @@ namespace PuzzleEditor
 
             if (container == null)
             {
-                Debug.LogWarning($"��������� {container.name} ������!", this);
+                Debug.LogWarning($"container == null, this");
                 return list;
             }
 
@@ -83,7 +84,7 @@ namespace PuzzleEditor
 
             if (_colors.Count == 0)
             {
-                Debug.LogWarning("� Color Analyzer ��� ��������� ������!", this);
+                Debug.LogWarning("_colors.Count = 0", this);
             }
         }
 
@@ -102,14 +103,11 @@ namespace PuzzleEditor
             return colorables.Count > 0 && _colors.Count > 0;
         }
 
-        private (List<Color> Colors, List<IColorable> Objects) PreparePaintingData(
-        List<IColorable> colorables
-        )
+        private (List<Color> Colors, List<IColorable> Objects) PreparePaintingData(List<IColorable> colorables)
         {
             return (
             Colors: ShuffleColors(_colors),
-            Objects: SelectRandomColorables(colorables, _colors.Count)
-            );
+            Objects: SelectRandomColorables(colorables, _colors.Count));
         }
 
         private List<Color> ShuffleColors(List<Color> colors)
@@ -149,7 +147,7 @@ namespace PuzzleEditor
 
             if (_blocks.Count == 0)
             {
-                Debug.LogError("AssignOriginal");
+                Debug.LogError("_blocks.Count = 0");
             }
 
             UpdateColors(colors);

@@ -1,6 +1,6 @@
-using Game.SaveEditor;
 using UnityEngine;
 using UnityEngine.Audio;
+using YG;
 
 namespace PuzzleEditor.SoundEditor
 {
@@ -17,13 +17,11 @@ namespace PuzzleEditor.SoundEditor
         [SerializeField] private AudioClip _backgroundMusic;
 
         private AudioSource _musicSource;
-        private IProgressSaver _progressSaver;
         private float _volumeDB;
 
         private void Awake()
         {
             _musicSource = GetComponent<AudioSource>();
-            _progressSaver = new ProgressSaver();
 
             if (_musicSource == null)
             {
@@ -35,19 +33,19 @@ namespace PuzzleEditor.SoundEditor
 
         private void Start()
         {
-            UpdateMixerVolume(MusicVolume, _progressSaver.Saves.MusicVolume);
+            UpdateMixerVolume(MusicVolume, YG2.saves.MusicVolume);
 
-            PlayBackgroundMusic(_progressSaver.Saves.MusicTime);
+            PlayBackgroundMusic(YG2.saves.MusicTime);
         }
 
         private void OnDisable()
         {
-            _progressSaver.SetMusicTime(_musicSource.time);
+            YG2.saves.MusicTime = _musicSource.time;
         }
 
         private void OnDestroy()
         {
-            _progressSaver.SaveProgress();
+            YG2.SaveProgress();
         }
 
         private void PlayBackgroundMusic(float time)

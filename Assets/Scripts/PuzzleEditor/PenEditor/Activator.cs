@@ -18,14 +18,11 @@ namespace PuzzleEditor.PenEditor
         private float _delay;
         private float _duration;
         private float _transitionReducing;
-
         private bool _isProcessing;
         private int _totalCountPixel;
-
         private Voiceover _voiceover;
         private WaitForSeconds _delayWait;
         private IColorPrecision _colorPrecision;
-
         private FragmentQueueProcessor _queueProcessor;
         private PuzzleProgressTracker _progressTracker;
         private FillSpeedController _speedController;
@@ -52,13 +49,7 @@ namespace PuzzleEditor.PenEditor
             IMover mover = GetComponent<IMover>();
             IFragmentAnimator animator = GetComponent<IFragmentAnimator>();
 
-            _queueProcessor = new FragmentQueueProcessor(
-            _voiceover,
-            _pixelSound,
-            mover,
-            animator,
-            _blocksContainer
-            );
+            _queueProcessor = new FragmentQueueProcessor(_voiceover, _pixelSound, mover, animator, _blocksContainer);
         }
 
         private void OnEnable()
@@ -97,7 +88,7 @@ namespace PuzzleEditor.PenEditor
         public void EnqueueFragments(Color color)
         {
             if (_textureInitializer == null)
-            return;
+                return;
 
             InitProgressIfNeeded();
 
@@ -114,7 +105,7 @@ namespace PuzzleEditor.PenEditor
         private void InitProgressIfNeeded()
         {
             if (_totalCountPixel > 0)
-            return;
+                return;
 
             _totalCountPixel = _textureInitializer.TotalCount;
             _progressTracker.Init(_totalCountPixel);

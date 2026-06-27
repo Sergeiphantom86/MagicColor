@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using Game.SaveEditor;
 using PuzzleEditor;
 using UnityEngine;
+using YG;
 
 namespace Menu.TutorialEditor
 {
@@ -12,7 +12,6 @@ namespace Menu.TutorialEditor
 
         private Coroutine _hintCoroutine;
         private float _hintDelay;
-        private IProgressSaver _progressSaver;
 
         public event Action Worked;
 
@@ -21,7 +20,6 @@ namespace Menu.TutorialEditor
         private void Awake()
         {
             _hintDelay = 60;
-            _progressSaver = new ProgressSaver();
         }
 
         private void OnEnable()
@@ -40,7 +38,7 @@ namespace Menu.TutorialEditor
         {
             Rested?.Invoke();
 
-            if (_progressSaver.Saves.IsUnlockAbilities && _progressSaver.Saves.CurrentCoin >= 3000)
+            if (YG2.saves.IsUnlockAbilities && YG2.saves.CurrentCoin >= 3000)
             {
                 ResetTimer();
             }

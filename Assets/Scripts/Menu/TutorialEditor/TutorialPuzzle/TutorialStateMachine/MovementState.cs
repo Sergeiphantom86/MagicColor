@@ -1,10 +1,10 @@
 using System.Collections;
 using DG.Tweening;
-using Game.SaveEditor;
 using PuzzleEditor.MovingBlocks;
 using PuzzleEditor.MovingBlocks.BlockEditor;
 using PuzzleEditor.MovingBlocks.GridEditor;
 using UnityEngine;
+using YG;
 
 namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 {
@@ -12,7 +12,6 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
     {
         private readonly Block _block;
         private readonly ITouchDragInput _input;
-        private readonly IProgressSaver _progressSaver;
         private readonly TutorialContext _context;
         private readonly StateMachine _stateMachine;
         private readonly GridDragMovement _gridDragMovement;
@@ -29,8 +28,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         TutorialContext context,
         Block block,
         GridDragMovement gridDragMovement,
-        ITouchDragInput input
-        )
+        ITouchDragInput input)
         : base(stateMachine, context)
         {
             _block = block;
@@ -43,7 +41,6 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
             _scaleMultiplier = 1.1f;
             _duration = 0.1f;
             _yOffset = 0.5f;
-            _progressSaver = new ProgressSaver();
         }
 
         public override void Enter()
@@ -78,7 +75,8 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 
         private void OnMirageCompleted(Block block)
         {
-            _progressSaver.SetTutorialBasics();
+            YG2.saves.IsTutorialBasics = true;
+
             _stateMachine.ChangeState(new CompletionState(_stateMachine, _context));
             OnStopPulsation(Vector2.zero);
         }

@@ -1,6 +1,6 @@
-using Game.SaveEditor;
 using Menu.Shop;
 using UnityEngine;
+using YG;
 
 namespace Wallets.WalletEditor
 {
@@ -10,17 +10,10 @@ namespace Wallets.WalletEditor
 
         private int _balance;
         private BagAbilities _bagAbilities;
-        private IProgressSaver _progressSaver;
 
         private void Awake()
         {
-            _progressSaver = new ProgressSaver();
             _bagAbilities = GetComponent<BagAbilities>();
-
-            if (_progressSaver == null)
-            {
-                Debug.LogError("ProgressSaver == null");
-            }
 
             if (_bagAbilities == null)
             {
@@ -54,7 +47,7 @@ namespace Wallets.WalletEditor
 
         private int GetBalance()
         {
-            return _progressSaver.Saves.QuantityAbilities;
+            return YG2.saves.QuantityAbilities;
         }
 
         private void OnUpdateBalance(int balance)
@@ -64,7 +57,7 @@ namespace Wallets.WalletEditor
 
         private void SaveToFile()
         {
-            _progressSaver.SetQuantityAbilities(_balance);
+            YG2.saves.QuantityAbilities = _balance;
         }
 
         private void OnAdd()

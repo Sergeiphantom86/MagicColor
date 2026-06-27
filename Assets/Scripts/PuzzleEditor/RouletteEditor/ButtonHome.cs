@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
-using Game.SaveEditor;
 using PuzzleEditor.SoundEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 namespace PuzzleEditor.RouletteEditor
 {
@@ -21,7 +21,6 @@ namespace PuzzleEditor.RouletteEditor
         private Voiceover _voiceover;
         private MenuLoader _menuLoader;
         private Button _button;
-        private IProgressSaver _progressSaver;
 
         public Button Button => _button;
 
@@ -30,7 +29,6 @@ namespace PuzzleEditor.RouletteEditor
             _button = GetComponent<Button>();
             _voiceover = GetComponent<Voiceover>();
             _menuLoader = GetComponent<MenuLoader>();
-            _progressSaver = new ProgressSaver();
 
             if (_button == null)
             {
@@ -64,21 +62,14 @@ namespace PuzzleEditor.RouletteEditor
             {
                 if (_buttonController.IsSpin == false)
                 {
-                    _progressSaver.SetCurrency(_coin, _ticket.FullReward);
+                    YG2.saves.SetCurrency(_coin, _ticket.FullReward);
                 }
             }
 
-            StartCoroutine(
-            WaitForWindowClose(_audioClip, true, 0, () => _menuLoader.TargetScene(Menu))
-            );
+            StartCoroutine(WaitForWindowClose(_audioClip, true, 0, () => _menuLoader.TargetScene(Menu)));
         }
 
-        private IEnumerator WaitForWindowClose(
-        AudioClip clip,
-        bool isOn,
-        int duration,
-        Action callback
-        )
+        private IEnumerator WaitForWindowClose(AudioClip clip, bool isOn, int duration, Action callback)
         {
             _voiceover.PlayOneShot(clip);
 

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Game.SaveEditor;
 using Menu.TutorialEditor;
 using PuzzleEditor.LockEditor;
 using UnityEngine;
+using YG;
 
 namespace PuzzleEditor.MovingBlocks
 {
@@ -16,7 +16,6 @@ namespace PuzzleEditor.MovingBlocks
         private Repainter _repainter;
         private KeyInstaller _keyInstaller;
         private LockInstaller _lockInstaller;
-        private IProgressSaver _progressSaver;
         private bool _isTutorial;
 
         private void Awake()
@@ -24,9 +23,8 @@ namespace PuzzleEditor.MovingBlocks
             _repainter = GetComponent<Repainter>();
             _keyInstaller = GetComponent<KeyInstaller>();
             _lockInstaller = GetComponent<LockInstaller>();
-            _progressSaver = new ProgressSaver();
 
-            _isTutorial = _progressSaver.Saves.IsUnlockKey;
+            _isTutorial = YG2.saves.IsUnlockKey;
 
             if (_repainter == null)
             {

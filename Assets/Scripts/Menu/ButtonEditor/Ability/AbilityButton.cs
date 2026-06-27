@@ -1,7 +1,7 @@
-using Game.SaveEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Wallets.WalletEditor;
+using YG;
 
 namespace Menu.ButtonEditor.Ability
 {
@@ -11,13 +11,13 @@ namespace Menu.ButtonEditor.Ability
     {
         [SerializeField] private Ability _ability;
         [SerializeField] private Image _highlightImage;
+        [SerializeField] private AbilitySelectionManager _abilitySelectionManager;
 
         private Button _button;
         private Image _image;
         private BagAbilities _bag;
         private bool _isUsed;
         private Blocker _blocker;
-        private IProgressSaver _progressSaver;
 
         public Button Button => _button;
 
@@ -29,7 +29,6 @@ namespace Menu.ButtonEditor.Ability
             _image = GetComponent<Image>();
             _bag = GetComponentInChildren<BagAbilities>();
             _blocker = GetComponentInChildren<Blocker>();
-            _progressSaver = new ProgressSaver();
 
             _highlightImage.enabled = false;
 
@@ -41,14 +40,14 @@ namespace Menu.ButtonEditor.Ability
 
         private void Start()
         {
-            if (_blocker != null && _progressSaver.Saves.IsUnlockAbilities == false)
+            if (_blocker != null && YG2.saves.IsUnlockAbilities == false)
             {
                 _blocker.gameObject.SetActive(true);
                 _button.interactable = false;
                 gameObject.SetActive(false);
             }
 
-            AbilitySelectionManager.Instance.Selection += OnUse;
+            _abilitySelectionManager.Selected += OnUse;
         }
 
         private void OnEnable()
@@ -59,7 +58,7 @@ namespace Menu.ButtonEditor.Ability
         private void OnDisable()
         {
             _button.onClick.RemoveListener(OnClick);
-            AbilitySelectionManager.Instance.Selection -= OnUse;
+            _abilitySelectionManager.Selected -= OnUse;
         }
 
         public void SetHighlight(bool value)
@@ -78,7 +77,7 @@ namespace Menu.ButtonEditor.Ability
 
             _isUsed = true;
 
-            AbilitySelectionManager.Instance.Select(this);
+            _abilitySelectionManager.Select(this);
         }
 
         private void OnUse()

@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using Game.SaveEditor;
 using Menu.HomeScreenSaver;
+using System.Collections.Generic;
 using UnityEngine;
+using YG;
 
 namespace Menu.QuestEditor
 {
@@ -13,29 +13,32 @@ namespace Menu.QuestEditor
 
         private List<Quest> _allQuests;
         private List<Sprite> _spritesQuests;
-        private IProgressSaver _progressSaver;
         private QuestCustomizer _questCustomizer;
 
         private void Awake()
         {
             _allQuests = new List<Quest>();
             _spritesQuests = new List<Sprite>();
-
             ValidateDependencies();
         }
 
-        public void Initialize(IProgressSaver progressSaver, SpriteTransmitter spriteTransmitter)
+        private void Start()
         {
-            _progressSaver = progressSaver;
-            _questCustomizer = new QuestCustomizer(progressSaver);
+            Initialize();
+        }
+
+
+        public void Initialize()
+        {
+            _questCustomizer = new QuestCustomizer();
 
             ClearCollections();
             CollectQuests();
             SaveQuestProgress();
-            SetupSprites(spriteTransmitter);
+            SetupSprites();
 
             _questCustomizer.Apply(_allQuests);
-            _questSystem.Initialize(_allQuests, progressSaver, spriteTransmitter);
+            _questSystem.Initialize(_allQuests);
         }
 
         private void ClearCollections()
@@ -44,20 +47,28 @@ namespace Menu.QuestEditor
             _spritesQuests.Clear();
         }
 
-        private void SetupSprites(SpriteTransmitter spriteTransmitter)
+        private void SetupSprites()
         {
-            SetLatestSprite(spriteTransmitter);
+            SetLatestSprite();
             _viewer.AddSprite(_spritesQuests);
         }
 
         private void SaveQuestProgress()
         {
-            _progressSaver.SetCountQuest(_spritesQuests.Count);
+            YG2.saves.CountQuest = _spritesQuests.Count;
         }
 
         private void CollectQuests()
         {
-            foreach (Transform child in _contender.transform)
+            Transform[] childs = _contender.AllChildren;
+
+            if (childs.Length <= 0)
+            {
+                Debug.LogWarning("AllChildren.Length = 0 ");
+                return;
+            }
+
+            foreach (Transform child in childs)
             {
                 if (child.TryGetComponent(out Quest quest))
                 {
@@ -67,26 +78,26 @@ namespace Menu.QuestEditor
             }
         }
 
-        private void SetLatestSprite(SpriteTransmitter spriteTransmitter)
+        private void SetLatestSprite()
         {
             if (_spritesQuests == null || _spritesQuests.Count == 0)
-            return;
+                return;
 
-            int index = Mathf.Clamp(_progressSaver.Saves.QuestIndex, 0, _spritesQuests.Count - 1);
+            int index = Mathf.Clamp(YG2.saves.QuestIndex, 0, _spritesQuests.Count - 1);
 
-            spriteTransmitter.SetNew(_spritesQuests[index]);
+            YG2.saves.SetNew(_spritesQuests[index]);
         }
 
         private void ValidateDependencies()
         {
             if (_questSystem == null)
-            Debug.LogError("QuestSystem is not assigned!");
+                Debug.LogError("QuestSystem is not assigned!");
 
             if (_viewer == null)
-            Debug.LogError("Viewer is not assigned!");
+                Debug.LogError("Viewer is not assigned!");
 
             if (_contender == null)
-            Debug.LogError("Contender is not assigned!");
+                Debug.LogError("Contender is not assigned!");
         }
     }
 }

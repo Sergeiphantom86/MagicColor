@@ -81,8 +81,7 @@ namespace PuzzleEditor.PoolEffects
         ParticleSystem particles,
         Vector3 position,
         Quaternion quaternion,
-        float scale
-        )
+        float scale)
         {
             particles.transform.SetPositionAndRotation(position, quaternion);
             particles.transform.localScale = Vector3.one * scale;

@@ -13,8 +13,7 @@ namespace PuzzleEditor.UI
         RectTransform canvasRect,
         float normalizedX,
         float normalizedY,
-        float _ = 0
-        )
+        float _ = 0)
         {
             if (ValidateInput(elementRect, canvasRect, duration) == false)
             return CreateEmptySequence();
@@ -33,8 +32,7 @@ namespace PuzzleEditor.UI
         float duration,
         float normalizedScaleX = 1,
         float normalizedScaleY = 1,
-        float normalizedScaleZ = 1
-        )
+        float normalizedScaleZ = 1)
         {
             if (ValidateInput(elementRect, duration) == false)
             return CreateEmptySequence();
@@ -86,8 +84,7 @@ namespace PuzzleEditor.UI
         private bool ValidateInput(
         RectTransform elementRect,
         RectTransform canvasRect,
-        float duration
-        )
+        float duration)
         {
             if (ValidateInput(elementRect, duration) == false)
             return false;
@@ -104,8 +101,7 @@ namespace PuzzleEditor.UI
         private Vector2 GetTargetPosition(
         RectTransform canvasRect,
         float normalizedX,
-        float normalizedY
-        )
+        float normalizedY)
         {
             normalizedX = Mathf.Clamp01(normalizedX);
             normalizedY = Mathf.Clamp01(normalizedY);
@@ -120,8 +116,7 @@ namespace PuzzleEditor.UI
         RectTransform elementRect,
         float normalizedScaleX,
         float normalizedScaleY,
-        float normalizedScaleZ
-        )
+        float normalizedScaleZ)
         {
             normalizedScaleX = Mathf.Max(0.01f, normalizedScaleX);
             normalizedScaleY = Mathf.Max(0.01f, normalizedScaleY);

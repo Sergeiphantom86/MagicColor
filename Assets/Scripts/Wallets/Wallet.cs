@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using Game.SaveEditor;
 using UnityEngine;
 using Wallets.WalletEditor;
+using YG;
 
 namespace Wallets
 {
@@ -15,7 +15,6 @@ namespace Wallets
         private float _callDelay;
         private bool isInitialized;
         private WaitForSeconds _waitFor;
-        private IProgressSaver _progressSaver;
         private IProcessTransacter _transacter;
 
         public event Action<long, string> OnBalanceChanged;
@@ -29,13 +28,12 @@ namespace Wallets
             _delay = 1.5f;
             _callDelay = 0.1f;
             _waitFor = new WaitForSeconds(_delay);
-            _progressSaver = new ProgressSaver();
             _transacter = new ProcessTransacter();
         }
 
         private void Start()
         {
-            if (autoLoadFromSave && _progressSaver.Saves != null)
+            if (autoLoadFromSave)
             {
                 LoadFromSave();
             }
@@ -43,17 +41,17 @@ namespace Wallets
 
         private void OnEnable()
         {
-            if (autoLoadFromSave && _progressSaver.Saves != null)
+            if (autoLoadFromSave)
             {
-                _progressSaver.SubscribeSDKData(OnYGDataLoaded);
+                YG2.onGetSDKData += OnYGDataLoaded;
             }
         }
 
         private void OnDisable()
         {
-            if (autoLoadFromSave && _progressSaver.Saves != null)
+            if (autoLoadFromSave)
             {
-                _progressSaver.UnsubscribeSDKData(OnYGDataLoaded);
+                YG2.onGetSDKData -= OnYGDataLoaded;
             }
         }
 
@@ -68,7 +66,8 @@ namespace Wallets
             {
                 _balance -= amount;
 
-                _progressSaver.SaveBalanceAfterPurchase(_balance);
+                YG2.saves.CurrentCoin = _balance;
+
                 OnBalanceChanged?.Invoke(_balance, Name);
             }
             else
@@ -91,16 +90,14 @@ namespace Wallets
 
         private void LoadFromSave()
         {
-            if (_progressSaver.Saves == null)
-            return;
 
             if (this is CoinWallet)
             {
-                SetInitialBalance(_progressSaver.Saves.CurrentCoin);
+                SetInitialBalance(YG2.saves.CurrentCoin);
             }
             else if (this is CrystalWallet)
             {
-                StartCoroutine(Wait(_progressSaver.Saves.CurrentCrystal));
+                StartCoroutine(Wait(YG2.saves.CurrentCrystal));
             }
 
             isInitialized = true;

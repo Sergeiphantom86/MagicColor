@@ -85,6 +85,7 @@ MonoBehaviour:
   _repainter: {fileID: 0}
   _soundDragg: {fileID: 8300000, guid: 78ad99fd0a0a5144280b07bbdba84815, type: 3}
   _soundRaise: {fileID: 8300000, guid: 9562176ebf17efe46a0f08480b095fcf, type: 3}
+  _matchSound: {fileID: 0}
   _soundDestruction: {fileID: 8300000, guid: 1d74880bed4586644a16a79a2d9dc8af, type: 3}
   _effectImpact: {fileID: 0}
   _effectDestruct: {fileID: 0}
@@ -102,9 +103,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _count: 5
+  _index: 2
   _gridSystem: {fileID: 6139807748750443920}
   _effectFalling: {fileID: 0}
-  _index: 2
 --- !u!114 &5851241615451368534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,8 +193,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a70e8811ee491f49b4c65ba2170fd47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridSizeX: 38
-  _gridSizeY: 26
 --- !u!114 &4726746442913591167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,9 +205,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 578e7f4ef3deac442a7bbafdb5bbf8d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridColor: {r: 0, g: 1, b: 0, a: 1}
-  _occupiedColor: {r: 1, g: 0, b: 0, a: 0.4}
-  _yOffset: 0.01
 --- !u!114 &4838646993863673020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,6 +379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioClip: {fileID: 8300000, guid: b7f8695cf65a4f24eb37544298821146, type: 3}
+  _abilitySelectionManager: {fileID: 0}
 --- !u!114 &2507037119287450182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -535,7 +532,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5990377251435251764}
   - component: {fileID: 3806007372933884527}
-  - component: {fileID: 8032641052365780357}
   - component: {fileID: 5705886142906926127}
   - component: {fileID: 7382220782107655334}
   - component: {fileID: 9194813501944726025}
@@ -587,18 +583,6 @@ MonoBehaviour:
   _targetAngleX: 15
   _rotateMode: 0
   _easeType: 27
---- !u!114 &8032641052365780357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6808126985308331753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc2fc1861304fb2448198f8f492ac03c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5705886142906926127
 MonoBehaviour:
   m_ObjectHideFlags: 0

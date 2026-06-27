@@ -1,5 +1,5 @@
-using Game.SaveEditor;
 using UnityEngine;
+using YG;
 
 namespace Wallets
 {
@@ -12,12 +12,10 @@ namespace Wallets
 
         private Wallet _wallet;
         private string _leaderboardName;
-        private IProgressSaver _progressSaver;
 
         private void Awake()
         {
             _wallet = GetComponent<Wallet>();
-            _progressSaver = new ProgressSaver();
 
             _leaderboardName = ConvertName(_wallet.Name);
         }
@@ -42,7 +40,7 @@ namespace Wallets
                 return;
             }
 
-            _progressSaver.SetLeaderboard(_leaderboardName, (int)balance);
+            YG2.SetLeaderboard(_leaderboardName, (int)balance);
         }
 
         private string ConvertName(string original)

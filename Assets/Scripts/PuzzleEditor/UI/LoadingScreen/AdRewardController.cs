@@ -1,7 +1,7 @@
-using System;
-using Game.SaveEditor;
 using Menu.TutorialEditor;
+using System;
 using UnityEngine;
+using YG;
 
 namespace PuzzleEditor.UI.LoadingScreen
 {
@@ -11,14 +11,7 @@ namespace PuzzleEditor.UI.LoadingScreen
 
         [SerializeField] private OfferPanel _offerPanel;
 
-        private IProgressSaver _progressSaver;
-
         private Action OnComplete;
-
-        private void Awake()
-        {
-            _progressSaver = new ProgressSaver();
-        }
 
         private void OnEnable()
         {
@@ -28,12 +21,8 @@ namespace PuzzleEditor.UI.LoadingScreen
                 _offerPanel.Cancelled += Complete;
             }
 
-            _progressSaver.SubscribeADSReward(
-            onRewardReceived: null,
-            onAdOpened: null,
-            onAdClosed: Complete,
-            onAdError: Complete
-            );
+            YG2.onCloseRewardedAdv += Complete;
+            YG2.onErrorRewardedAdv += Complete;
         }
 
         private void OnDisable()
@@ -44,12 +33,8 @@ namespace PuzzleEditor.UI.LoadingScreen
                 _offerPanel.Cancelled -= Complete;
             }
 
-            _progressSaver.UnsubscribeADSReward(
-            onRewardReceived: null,
-            onAdOpened: null,
-            onAdClosed: Complete,
-            onAdError: Complete
-            );
+            YG2.onCloseRewardedAdv -= Complete;
+            YG2.onErrorRewardedAdv -= Complete;
         }
 
         public void ShowRewardAd(Action onComplete)
@@ -57,16 +42,16 @@ namespace PuzzleEditor.UI.LoadingScreen
             OnComplete = onComplete;
 
             if (_offerPanel == null)
-            return;
+                return;
 
             _offerPanel.TurnOn();
         }
 
         public void ShowAd()
         {
-            if (_progressSaver.CanShowAd())
+            if (YG2.nowRewardAdv == false && YG2.nowAdsShow == false)
             {
-                _progressSaver.RewardedAdvShow(RewardID, null);
+                YG2.RewardedAdvShow(RewardID, null);
             }
             else
             {

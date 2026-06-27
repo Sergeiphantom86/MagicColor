@@ -29,7 +29,7 @@ namespace PuzzleEditor
         private List<Fragment> _fragmentsList;
         private Dictionary<Color, Queue<Fragment>> _fragments;
 
-        public event Action<int> Initialize;
+        public event Action Initialize;
 
         public event Action<List<Color>> CanPaint;
 
@@ -63,6 +63,8 @@ namespace PuzzleEditor
                 return;
             }
 
+            EnsureInitialized();
+
             EditMobile();
 
             _pixels = texture.GetPixels();
@@ -76,7 +78,7 @@ namespace PuzzleEditor
 
             gameObject.transform.localScale = Vector3.one * _scaleMultiplier;
 
-            Initialize?.Invoke(_fragments.Count);
+            Initialize?.Invoke();
 
             CanPaint?.Invoke(Fragments.Keys.ToList());
 
@@ -97,18 +99,12 @@ namespace PuzzleEditor
 
         private void EditMobile()
         {
-            if (
-            _zoomChanger.IsMobileWithTallScreen()
-            && SceneManager.GetActiveScene().name == "Menu"
-            )
+            if (_zoomChanger.IsMobileWithTallScreen() && SceneManager.GetActiveScene().name == "Menu")
             {
                 _scaleMultiplier = 25;
             }
 
-            if (
-            _zoomChanger.IsMobileWithTallScreen()
-            && SceneManager.GetActiveScene().name != "Menu"
-            )
+            if (_zoomChanger.IsMobileWithTallScreen() && SceneManager.GetActiveScene().name != "Menu")
             {
                 transform.position = _mobilePosition;
             }
@@ -119,64 +115,73 @@ namespace PuzzleEditor
             Enumerable
             .Range(0, height)
             .SelectMany(y => Enumerable.Range(0, width), (y, x) => (x, y))
-            .Select(position =>
-            (position.x, position.y, pixelColor: _pixels[position.y * width + position.x])
-            )
+            .Select(position => (position.x, position.y, pixelColor: _pixels[position.y * width + position.x]))
             .Where(positon => positon.pixelColor.a >= IgnoredTransparency)
             .ToList()
             .ForEach(position =>
             {
                 SpawnPixel(position.x, position.y, position.pixelColor, pivot);
                 _totalCount++;
-                });
-            }
+            });
+        }
 
-            private void SetPivot(int width, int height)
-            {
-                _pivot = new Vector2(width * AlignmentMultiplier, height * AlignmentMultiplier);
-            }
+        private void SetPivot(int width, int height)
+        {
+            _pivot = new Vector2(width * AlignmentMultiplier, height * AlignmentMultiplier);
+        }
 
-            private void SpawnPixel(int x, int y, Color color, Vector2 pivot)
+        private void SpawnPixel(int x, int y, Color color, Vector2 pivot)
+        {
+            if (_pixelPool.Pool.Get().TryGetComponent(out Fragment fragment))
             {
-                if (_pixelPool.Pool.Get().TryGetComponent(out Fragment fragment))
+                color = _precision.Reduce(color);
+
+                fragment.transform.SetParent(transform != null ? transform : transform);
+
+                fragment.transform.SetLocalPositionAndRotation(GetPosition(x, y, pivot), Quaternion.identity);
+                fragment.transform.localScale = Vector3.one;
+                fragment.SetColor(color);
+
+                if (_isSaveCollections)
                 {
-                    color = _precision.Reduce(color);
-
-                    fragment.transform.SetParent(transform != null ? transform : transform);
-
-                    fragment.transform.SetLocalPositionAndRotation(
-                    GetPosition(x, y, pivot),
-                    Quaternion.identity
-                    );
-                    fragment.transform.localScale = Vector3.one;
-                    fragment.SetColor(color);
-
-                    if (_isSaveCollections)
-                    {
-                        AddToDictionaries(color, fragment);
-                    }
-                    else
-                    {
-                        _fragmentsList.Add(fragment);
-                    }
+                    AddToDictionaries(color, fragment);
                 }
-            }
-
-            private void AddToDictionaries(Color color, Fragment fragment)
-            {
-                if (_fragments.ContainsKey(color) == false)
+                else
                 {
-                    _fragments[color] = new Queue<Fragment>();
+                    _fragmentsList.Add(fragment);
                 }
-
-                _fragments[color].Enqueue(fragment);
-
-                fragment.TurnOnTransparency();
-            }
-
-            private Vector3 GetPosition(int x, int y, Vector2 pivot)
-            {
-                return new Vector3((x - pivot.x) * PixelSize, (y - pivot.y) * PixelSize, 0);
             }
         }
+
+        private void AddToDictionaries(Color color, Fragment fragment)
+        {
+            if (_fragments.ContainsKey(color) == false)
+            {
+                _fragments[color] = new Queue<Fragment>();
+            }
+
+            _fragments[color].Enqueue(fragment);
+
+            fragment.TurnOnTransparency();
+        }
+
+        private Vector3 GetPosition(int x, int y, Vector2 pivot)
+        {
+            return new Vector3((x - pivot.x) * PixelSize, (y - pivot.y) * PixelSize, 0);
+        }
+
+        private void EnsureInitialized()
+        {
+            _zoomChanger ??= new ZoomChanger();
+
+            _fragmentsList ??= new List<Fragment>();
+
+            _fragments ??= new Dictionary<Color, Queue<Fragment>>();
+
+            _precision ??= new ColorPrecision();
+
+            if (_pixelPool == null)
+                _pixelPool = GetComponent<PixelPool>();
+        }
     }
+}

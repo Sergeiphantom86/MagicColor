@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using Game.SaveEditor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 namespace PuzzleEditor.RouletteEditor
 {
@@ -16,14 +16,12 @@ namespace PuzzleEditor.RouletteEditor
         [SerializeField] private TextMeshProUGUI _textMeshPro;
 
         private Button _button;
-        private IProgressSaver _progressSaver;
 
         public event Action SpinsAdded;
 
         private void Awake()
         {
             _button = GetComponent<Button>();
-            _progressSaver = new ProgressSaver();
 
             if (_button == null)
             {
@@ -33,7 +31,10 @@ namespace PuzzleEditor.RouletteEditor
 
             _button.onClick.AddListener(OnShowRewardedAd);
 
-            _progressSaver.SubscribeADSReward(OnRewardReceived, OnAdOpened, OnAdClosed, OnAdError);
+            YG2.onRewardAdv += OnRewardReceived;
+            YG2.onOpenRewardedAdv += OnAdOpened;
+            YG2.onCloseRewardedAdv += OnAdClosed;
+            YG2.onErrorRewardedAdv += OnAdError;
         }
 
         private void OnEnable()
@@ -50,7 +51,7 @@ namespace PuzzleEditor.RouletteEditor
         {
             _button.interactable = false;
 
-            _progressSaver.RewardedAdvShow(_rewardID);
+            YG2.RewardedAdvShow(_rewardID);
         }
 
         private void OnRewardReceived(string id)
@@ -92,15 +93,13 @@ namespace PuzzleEditor.RouletteEditor
 
         private void OnDestroy()
         {
-            _progressSaver.UnsubscribeADSReward(
-            OnRewardReceived,
-            OnAdOpened,
-            OnAdClosed,
-            OnAdError
-            );
+            YG2.onRewardAdv -= OnRewardReceived;
+            YG2.onOpenRewardedAdv -= OnAdOpened;
+            YG2.onCloseRewardedAdv -= OnAdClosed;
+            YG2.onErrorRewardedAdv -= OnAdError;
 
             if (_button != null)
-            _button.onClick.RemoveListener(OnShowRewardedAd);
+                _button.onClick.RemoveListener(OnShowRewardedAd);
         }
     }
 }

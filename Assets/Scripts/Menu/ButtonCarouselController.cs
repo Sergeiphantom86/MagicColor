@@ -30,7 +30,7 @@ namespace Menu
         public void ShowRelative(int direction)
         {
             if (_isInitialized == false)
-            return;
+                return;
 
             ScrollToButton(_currentIndex + direction);
         }
@@ -38,15 +38,16 @@ namespace Menu
         public void ScrollToButton(int targetIndex)
         {
             if (_isInitialized == false)
-            return;
+                return;
 
             if (targetIndex < 0 || targetIndex >= _data.Buttons.Length)
-            return;
+                return;
 
             if (targetIndex == _currentIndex)
-            return;
+                return;
 
             _currentIndex = targetIndex;
+
             UpdateAllButtons(false);
         }
 
@@ -64,13 +65,7 @@ namespace Menu
 
             _currentIndex = Mathf.Clamp(_defaultIndex, 0, _data.Buttons.Length - 1);
 
-            _layout = new CarouselLayoutCalculator(
-            _data.Buttons,
-            _data.OriginalPositions,
-            _centerScale,
-            _sideScale,
-            _distanceFromCenter
-            );
+            _layout = new CarouselLayoutCalculator(_data.Buttons, _data.OriginalPositions, _centerScale, _sideScale, _distanceFromCenter);
 
             _animator = new CarouselAnimator(_animationDuration);
 
@@ -82,7 +77,9 @@ namespace Menu
         private void UpdateAllButtons(bool instant)
         {
             for (int i = 0; i < _data.Buttons.Length; i++)
-            UpdateButton(i, instant);
+            {
+                UpdateButton(i, instant);
+            }
         }
 
         private void UpdateButton(int index, bool instant)
@@ -96,24 +93,12 @@ namespace Menu
         {
             if (instant)
             {
-                _animator.ApplyImmediate(
-                _data.Buttons[index],
-                _data.CanvasGroups[index],
-                state.PositionX,
-                state.Scale,
-                state.Alpha
-                );
+                _animator.ApplyImmediate(_data.Buttons[index], _data.CanvasGroups[index], state.PositionX, state.Scale, state.Alpha);
 
                 return;
             }
 
-            _animator.ApplyAnimated(
-            _data.Buttons[index],
-            _data.CanvasGroups[index],
-            state.PositionX,
-            state.Scale,
-            state.Alpha
-            );
+            _animator.ApplyAnimated(_data.Buttons[index], _data.CanvasGroups[index], state.PositionX, state.Scale, state.Alpha);
         }
 
         private ButtonVisualState CalculateVisualState(int index)
@@ -125,14 +110,14 @@ namespace Menu
                 PositionX = _layout.GetTargetPositionX(index, _currentIndex),
                 Scale = isCenter ? _centerScale : _sideScale,
                 Alpha = isCenter ? _centerAlpha : _sideAlpha,
-                };
-            }
+            };
+        }
 
-            private struct ButtonVisualState
-            {
-                public float PositionX;
-                public float Scale;
-                public float Alpha;
-            }
+        private struct ButtonVisualState
+        {
+            public float PositionX;
+            public float Scale;
+            public float Alpha;
         }
     }
+}

@@ -1,5 +1,5 @@
-using Game.SaveEditor;
 using UnityEngine;
+using YG;
 
 namespace Menu.TutorialEditor
 {
@@ -9,7 +9,6 @@ namespace Menu.TutorialEditor
     {
         private bool _isFinished;
         private EngineTutorialMenu _engineTutorialMenu;
-        private IProgressSaver _progressSaver;
 
         public bool IsSwipeAllowed { get; private set; }
         public bool IsClickAllowed { get; private set; }
@@ -18,9 +17,8 @@ namespace Menu.TutorialEditor
         private void Awake()
         {
             _engineTutorialMenu = GetComponent<EngineTutorialMenu>();
-            _progressSaver = new ProgressSaver();
 
-            _isFinished = _progressSaver.Saves.IsMenuTutorial;
+            _isFinished = YG2.saves.IsMenuTutorial;
 
             if (_isFinished)
             {
@@ -68,7 +66,7 @@ namespace Menu.TutorialEditor
             IsSwipeAllowed = false;
             IsClickAllowed = false;
 
-            _progressSaver.DisableTutorialMenu();
+            YG2.saves.IsMenuTutorial = true;
         }
     }
 }

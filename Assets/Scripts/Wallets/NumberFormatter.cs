@@ -1,5 +1,5 @@
 using System;
-using Game.SaveEditor;
+using YG;
 
 namespace Wallets
 {
@@ -13,7 +13,6 @@ namespace Wallets
         private readonly string[] _suffixesEN = { string.Empty, "K", "M", "B", "T", "Q" };
         private readonly string[] _suffixesRU = { string.Empty, "�", "�", "��", "�", "�" };
         private readonly string[] _suffixesTR = { string.Empty, "B", "M", "Mr", "Tr", "Kn" };
-        private readonly IProgressSaver _progressSaver = new ProgressSaver();
 
         public string FormatNumber(long number)
         {
@@ -35,7 +34,7 @@ namespace Wallets
 
         private string[] GetSuffixesForCurrentLanguage()
         {
-            return _progressSaver.Saves.CurrentLanguage switch
+            return YG2.saves.CurrentLanguage switch
             {
                 "ru" => _suffixesRU,
                 "tr" => _suffixesTR,
@@ -69,8 +68,7 @@ namespace Wallets
 
             private (int suffixIndex, double scaledValue) ScaleNumber(
             double absNumber,
-            string[] suffixes
-            )
+            string[] suffixes)
             {
                 int suffixIndex = 0;
                 double scaledValue = absNumber;
@@ -100,8 +98,7 @@ namespace Wallets
             string value,
             int suffixIndex,
             bool isNegative,
-            string[] suffixes
-            )
+            string[] suffixes)
             {
                 return isNegative
                 ? $"-{value} {suffixes[suffixIndex]}"

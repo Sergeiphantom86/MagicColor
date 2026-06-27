@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Linq;
-using Game.SaveEditor;
 using PuzzleEditor.Counter;
 using PuzzleEditor.SoundEditor;
 using UnityEngine;
+using YG;
 
 namespace PuzzleEditor.Stars
 {
     public class StarsDeactivator : MonoBehaviour
     {
+        private const int MinIndexValue = 0;
+
         [SerializeField] private AudioClip _audioClip;
         [SerializeField] private Timer _timer;
 
@@ -17,7 +19,6 @@ namespace PuzzleEditor.Stars
         private Voiceover _voiceover;
         private WaitForSeconds _waitForSeconds;
         private float _delay;
-        private IProgressSaver _progressSaver;
         private bool _isPlaying;
 
         private void Awake()
@@ -26,7 +27,6 @@ namespace PuzzleEditor.Stars
             _starsCounter = GetComponent<StarsCounter>();
             _voiceover = GetComponent<Voiceover>();
             _waitForSeconds = new WaitForSeconds(_delay);
-            _progressSaver = new ProgressSaver();
 
             _stars = GetComponentsInChildren<StarIndicator>(true)
             .OrderBy(s => s.transform.GetSiblingIndex())
@@ -77,22 +77,34 @@ namespace PuzzleEditor.Stars
 
                     int count = _starsCounter.GetCountStars(_timer.CurrentTimeSeconds);
                     return count <= i;
-                    });
+                });
 
-                    _stars[i].SetInactive();
-                    _voiceover.PlayOneShot(_audioClip);
-                }
-            }
-
-            private void SaveCurrentStars()
-            {
-                if (_timer.IsRunning == false && _isPlaying == false)
-                {
-                    _isPlaying = true;
-                    int starsLeft = _stars.Count(s => s.IsActive);
-                    starsLeft = Mathf.Max(starsLeft, _starsCounter.MinStars);
-                    _progressSaver.SetCountStars(starsLeft);
-                }
+                _stars[i].SetInactive();
+                _voiceover.PlayOneShot(_audioClip);
             }
         }
+
+        private void SaveCurrentStars()
+        {
+            if (_timer.IsRunning == false && _isPlaying == false)
+            {
+                _isPlaying = true;
+                int starsLeft = _stars.Count(s => s.IsActive);
+                starsLeft = Mathf.Max(starsLeft, _starsCounter.MinStars);
+                SetCountStars(starsLeft);
+            }
+        }
+
+        private void SetCountStars(int count)
+        {
+            if (count < 0)
+            {
+                Debug.LogWarning($"SetCountStars: количество звёзд {count} выходит за допустимый диапазон");
+                YG2.saves.Stars = MinIndexValue;
+                return;
+            }
+
+            YG2.saves.Stars = count;
+        }
     }
+}

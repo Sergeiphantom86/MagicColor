@@ -28,8 +28,7 @@ namespace PuzzleEditor.PenEditor
         AudioClip pixelActivation,
         IMover mover,
         IFragmentAnimator fragmentAnimator,
-        IBlocksContainer blocksContainer
-        )
+        IBlocksContainer blocksContainer)
         {
             _mover = mover;
             _voiceover = voiceover;

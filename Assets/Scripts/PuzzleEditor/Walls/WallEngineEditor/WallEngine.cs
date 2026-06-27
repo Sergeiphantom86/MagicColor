@@ -43,8 +43,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         Lock @lock,
         ErrorPanel errorPanel,
         Activator activator,
-        AudioClip audioClip
-        )
+        AudioClip audioClip)
         {
             if (ValidateDependencies(colorPrecision, bag, rotator, hintKey, @lock) == false)
             return false;
@@ -55,8 +54,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
             out WallInteractionController interactionController,
             out LockFeedbackService lockFeedback,
             out BlockDestroySequence blockDestroySequence
-            ) == false
-            )
+            ) == false)
             {
                 return false;
             }
@@ -105,8 +103,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         Messager hintKey,
         Lock @lock,
         ErrorPanel errorPanel,
-        Activator activator
-        )
+        Activator activator)
         {
             _layoutUpdater.Initialize(_rotation);
 
@@ -133,8 +130,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         BagKey bag,
         Rotator rotator,
         Messager hintKey,
-        Lock @lock
-        )
+        Lock @lock)
         {
             if (colorPrecision == null)
             return LogNull(nameof(colorPrecision));
@@ -158,8 +154,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         out ColorCollisionHandler collisionHandler,
         out WallInteractionController interactionController,
         out LockFeedbackService lockFeedback,
-        out BlockDestroySequence blockDestroySequence
-        )
+        out BlockDestroySequence blockDestroySequence)
         {
             collisionHandler = GetComponent<ColorCollisionHandler>();
             interactionController = GetComponent<WallInteractionController>();

@@ -18,7 +18,7 @@ namespace CameraEditor
 
         private void Awake()
         {
-            _camera = GetComponent<UnityEngine.Camera>();
+            _camera = GetComponent<Camera>();
             _zoomChanger = new ZoomChanger();
 
             _startPositionY = 12;
@@ -58,7 +58,7 @@ namespace CameraEditor
         private void StartRecalculate()
         {
             if (_recalculateRoutine != null)
-            StopCoroutine(_recalculateRoutine);
+                StopCoroutine(_recalculateRoutine);
 
             _recalculateRoutine = StartCoroutine(RecalculateDelayed());
         }

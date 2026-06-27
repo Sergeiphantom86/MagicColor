@@ -1,5 +1,4 @@
 using Game.LoadingScreen;
-using Game.SaveEditor;
 using Menu.TutorialEditor;
 using UnityEngine;
 
@@ -34,17 +33,9 @@ namespace Menu.QuestEditor
             _offerPanelMobile.Cancelled -= LoadPuzzle;
         }
 
-        public void Initialize(
-        IProgressSaver progressSaver,
-        ZoomChanger zoomChanger,
-        SpriteTransmitter spriteTransmitter
-        )
+        public void Initialize(ZoomChanger zoomChanger)
         {
-            _transitionService = new QuestTransitionService(
-            progressSaver,
-            zoomChanger,
-            spriteTransmitter
-            );
+            _transitionService = new QuestTransitionService(zoomChanger);
         }
 
         public void ChoosePuzzle(Quest quest, bool isAutomaticTransition)
@@ -66,9 +57,11 @@ namespace Menu.QuestEditor
             LoadScene(result.SceneName, isAutomaticTransition);
         }
 
-        private void LoadPuzzle() => LoadScene(Puzzle);
+        private void LoadPuzzle() => 
+            LoadScene(Puzzle);
 
-        private void LoadTutorial() => LoadScene(Tutorial);
+        private void LoadTutorial() => 
+            LoadScene(Tutorial);
 
         private void LoadScene(string sceneName, bool isAutomaticTransition = false)
         {

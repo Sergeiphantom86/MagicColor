@@ -1,10 +1,10 @@
 using System.Collections;
 using DG.Tweening;
-using Game.SaveEditor;
 using PuzzleEditor.InkEditor;
 using PuzzleEditor.MovingBlocks.BlockEditor;
 using PuzzleEditor.Walls;
 using UnityEngine;
+using YG;
 
 namespace PuzzleEditor
 {
@@ -31,7 +31,6 @@ namespace PuzzleEditor
         private Indicator _indicator;
         private Coroutine _coroutine;
         private WaitForSeconds _waitForSeconds;
-        private IProgressSaver _progressSaver;
 
         public bool IsRepainted => _isRepainted;
 
@@ -45,7 +44,6 @@ namespace PuzzleEditor
 
             _indicator = GetComponent<Indicator>();
 
-            _progressSaver = new ProgressSaver();
             _waitForSeconds = new WaitForSeconds(_delay);
 
             InitializeRenderer();
@@ -165,8 +163,7 @@ namespace PuzzleEditor
         public void EnableEmission(
         Color emissionColor,
         float intensity = 0.01f,
-        float brightness = 0.5f
-        )
+        float brightness = 0.5f)
         {
             if (_material == null && _material == null)
             return;
@@ -209,8 +206,7 @@ namespace PuzzleEditor
             _originalColor.b,
             _valueTransparency
             ),
-            _fadeDuration
-            )
+            _fadeDuration)
             .SetEase(Ease.Linear);
         }
 
@@ -234,7 +230,7 @@ namespace PuzzleEditor
         {
             yield return _waitForSeconds;
 
-            if (_progressSaver.Saves.IsTransparency)
+            if (YG2.saves.IsTransparency)
             {
                 _material.color = Color.white;
                 SetAlpha(_valueTransparency);

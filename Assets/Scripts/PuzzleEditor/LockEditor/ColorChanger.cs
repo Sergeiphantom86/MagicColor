@@ -72,8 +72,7 @@ namespace PuzzleEditor.LockEditor
         GradientColorKey startColorKey,
         GradientColorKey endColorKey,
         GradientAlphaKey startAlphaKey,
-        GradientAlphaKey endAlphaKey
-        )
+        GradientAlphaKey endAlphaKey)
         {
             Gradient gradient = new()
             {

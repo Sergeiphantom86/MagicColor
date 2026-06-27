@@ -1,9 +1,9 @@
-using Game.SaveEditor;
 using Menu.TutorialEditor.TutorialPuzzle;
 using PuzzleEditor.SoundEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Wallets;
+using YG;
 
 namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
 {
@@ -26,7 +26,6 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
         private float _moveToTargetDuration;
         private float _explosionDistanceMultiplier;
         private Voiceover _voiceover;
-        private IProgressSaver _progressSaver;
 
         private void Awake()
         {
@@ -37,7 +36,6 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
             _explosionDistanceMultiplier = 20f;
             _directionRange = new Vector2(-2f, 2f);
             _voiceover = GetComponent<Voiceover>();
-            _progressSaver = new ProgressSaver();
         }
 
         public void ActivateAtPosition(Currency item)
@@ -111,7 +109,7 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
             }
             else
             {
-                return item.Value * _progressSaver.Saves.Reward * _progressSaver.Saves.CountStars;
+                return item.Value * YG2.saves.Reward * YG2.saves.Stars;
             }
         }
 

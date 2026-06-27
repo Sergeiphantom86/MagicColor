@@ -54,8 +54,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         {
             return _rewards
             .Where(reward =>
-            reward.Currency != null && reward.Currency.GetType() == currency.GetType()
-            )
+            reward.Currency != null && reward.Currency.GetType() == currency.GetType())
             .ToList();
         }
 

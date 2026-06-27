@@ -71,8 +71,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
             placeholder
             .transform.DOLocalMove(
             GetPosition(placeholder.transform.localPosition, GetHeightIncrease(occupancy)),
-            _duration
-            )
+            _duration)
             .SetEase(Ease.OutQuad);
         }
 

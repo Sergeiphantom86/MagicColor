@@ -17,8 +17,7 @@ namespace Menu
         CanvasGroup canvas,
         float positionX,
         float scale,
-        float alpha
-        )
+        float alpha)
         {
             rect.anchoredPosition = new Vector2(positionX, rect.anchoredPosition.y);
             rect.localScale = Vector3.one * scale;
@@ -30,8 +29,7 @@ namespace Menu
         CanvasGroup canvas,
         float positionX,
         float scale,
-        float alpha
-        )
+        float alpha)
         {
             rect.DOKill();
             canvas.DOKill();

@@ -1,7 +1,7 @@
-using Game.SaveEditor;
 using PuzzleEditor.RouletteEditor;
 using UnityEngine;
 using Wallets;
+using YG;
 
 namespace Menu.TutorialEditor.TutorialPuzzle
 {
@@ -13,7 +13,6 @@ namespace Menu.TutorialEditor.TutorialPuzzle
 
         private Currency _currency;
         private TextAnimator _textAnimator;
-        private IProgressSaver _progressSaver;
 
         public Currency Currency => _currency;
 
@@ -21,7 +20,6 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         {
             _currency = GetComponent<Currency>();
             _textAnimator = GetComponentInChildren<TextAnimator>(true);
-            _progressSaver = new ProgressSaver();
         }
 
         public void SetValue(int value)
@@ -41,7 +39,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         {
             if (_currency != null)
             {
-                _progressSaver.SetCurrency(_currency, _textAnimator.Value);
+                YG2.saves.SetCurrency(_currency, _textAnimator.Value);
             }
         }
     }

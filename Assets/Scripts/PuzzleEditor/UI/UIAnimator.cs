@@ -47,8 +47,7 @@ namespace PuzzleEditor.UI
         RectTransform canvasRect,
         float positionX,
         float positionY,
-        float positionZ
-        )
+        float positionZ)
         {
             return _moverUI.EnableMotionAnimation(
             _rectTransform,

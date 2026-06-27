@@ -33,17 +33,17 @@ public static class AutoFixEventNaming
     [MenuItem("Tools/Auto Fix Event Naming")]
     public static void FixAll()
     {
-        if (!EditorUtility.DisplayDialog("Предупреждение",
-                "Инструмент переименует события (удалит On) и методы-обработчики (добавит On).\n\n" +
-                "Будут созданы резервные копии.\n\n" +
-                "Убедитесь, что код закоммичен! Продолжить?",
-                "Продолжить", "Отмена"))
+        if (!EditorUtility.DisplayDialog("Warning",
+                "Tool will rename events (remove On) and handler methods (add On).\n\n" +
+                "Backups will be created.\n\n" +
+                "Make sure code is committed! Continue?",
+                "Continue", "Cancel"))
             return;
 
         string rootFullPath = Path.Combine(Application.dataPath, RootFolder.Substring("Assets/".Length));
         if (!Directory.Exists(rootFullPath))
         {
-            Debug.LogError($"Папка '{RootFolder}' не найдена!");
+            Debug.LogError($"Folder '{RootFolder}' not found!");
             return;
         }
 
@@ -57,7 +57,7 @@ public static class AutoFixEventNaming
 
         if (csFiles.Length == 0)
         {
-            Debug.Log("Нет файлов для обработки.");
+            Debug.Log("No files to process.");
             return;
         }
 
@@ -68,7 +68,6 @@ public static class AutoFixEventNaming
         {
             string content = File.ReadAllText(file);
 
-            // События (убираем On)
             string eventPattern = @"\bevent\s+[\w<>.]+\s+On(\w+)\s*[;=({]";
             foreach (Match m in Regex.Matches(content, eventPattern))
             {
@@ -79,7 +78,6 @@ public static class AutoFixEventNaming
                 AddRename(eventRenames, file, oldName, newName);
             }
 
-            // Методы-обработчики (добавляем On) – только если метод НЕ override и НЕ public/protected/internal
             string handlerPattern = @"(?:\+=|-=|\.AddListener\s*\()\s*(\w+)\s*[;)]";
             foreach (Match m in Regex.Matches(content, handlerPattern))
             {
@@ -89,16 +87,14 @@ public static class AutoFixEventNaming
                 if (methodName.StartsWith("On") || IsUnityMethod(methodName))
                     continue;
 
-                // Пропускаем, если метод не является приватным (или имеет override)
                 if (!IsMethodPrivateAndNotOverride(content, methodName))
                     continue;
 
                 string newName = "On" + methodName;
 
-                // Проверяем, нет ли уже поля/свойства с таким именем в этом классе
                 if (HasFieldOrProperty(content, newName))
                 {
-                    Debug.LogWarning($"В файле {Path.GetFileName(file)} пропущен метод {methodName} – существует поле/свойство с именем {newName}");
+                    Debug.LogWarning($"In file {Path.GetFileName(file)} skipped method {methodName} – field/property named {newName} already exists");
                     continue;
                 }
 
@@ -108,13 +104,12 @@ public static class AutoFixEventNaming
 
         if (eventRenames.Count == 0 && methodRenames.Count == 0)
         {
-            Debug.Log("✅ Нарушений не найдено.");
+            Debug.Log("No violations found.");
             return;
         }
 
-        Debug.Log($"Найдено переименований событий: {eventRenames.Count}, методов: {methodRenames.Count}");
+        Debug.Log($"Found event renames: {eventRenames.Count}, method renames: {methodRenames.Count}");
 
-        // Бэкап всех файлов
         foreach (string file in csFiles)
         {
             string relativePath = GetRelativePath(file, rootFullPath);
@@ -123,12 +118,11 @@ public static class AutoFixEventNaming
             File.Copy(file, backupFilePath, true);
         }
 
-        // Применяем замены
         ApplyRenames(csFiles, eventRenames);
         ApplyRenames(csFiles, methodRenames);
 
         AssetDatabase.Refresh();
-        Debug.Log($"✅ Автоматическое исправление завершено. Проверьте изменения в папке {backupFolder}");
+        Debug.Log($"Auto fix completed. Check changes in backup folder: {backupFolder}");
     }
 
     private static void AddRename(Dictionary<string, string> dict, string file, string oldName, string newName)
@@ -173,7 +167,6 @@ public static class AutoFixEventNaming
 
     private static bool IsMethodPrivateAndNotOverride(string content, string methodName)
     {
-        // Ищем объявление метода
         string pattern = @"\b(void|[\w<>]+)\s+" + Regex.Escape(methodName) + @"\s*\([^)]*\)\s*[({]";
         var match = Regex.Match(content, pattern);
         if (!match.Success) return false;
@@ -181,11 +174,9 @@ public static class AutoFixEventNaming
         int start = match.Index;
         string before = content.Substring(0, start);
 
-        // Если есть override – пропускаем
         if (Regex.IsMatch(before, @"\boverride\s+$", RegexOptions.Multiline))
             return false;
 
-        // Если есть public, protected, internal – пропускаем
         if (Regex.IsMatch(before, @"\b(public|protected|internal)\s+$", RegexOptions.Multiline))
             return false;
 
@@ -194,7 +185,6 @@ public static class AutoFixEventNaming
 
     private static bool HasFieldOrProperty(string content, string name)
     {
-        // Ищем объявление поля или свойства с точно таким именем
         string pattern = @"\b(private|public|protected|internal)?\s+(?:\w+\s+)*" + Regex.Escape(name) + @"\s*[=;({]";
         return Regex.IsMatch(content, pattern);
     }

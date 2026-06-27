@@ -33,8 +33,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         HandMover handMover,
         TouchVisualizer touchVisualizer,
         Key key,
-        Lock @lock
-        )
+        Lock @lock)
         {
             _key = key;
             _lock = @lock;

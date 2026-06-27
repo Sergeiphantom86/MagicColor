@@ -78,8 +78,7 @@ namespace PuzzleEditor.EnergyField
                 SetAlpha(_startMaterial, alpha);
                 },
                 AnimationEndValue,
-                _duration
-                )
+                _duration)
                 .SetEase(Ease.Linear)
                 .OnComplete(() =>
                 {

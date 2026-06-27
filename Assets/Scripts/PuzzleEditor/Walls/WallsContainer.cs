@@ -29,8 +29,7 @@ namespace PuzzleEditor.Walls
         Lock @lock,
         ErrorPanel errorPanel,
         Activator activator,
-        AudioClip audioClip
-        )
+        AudioClip audioClip)
         {
             if (_walls == null)
             _walls = new List<WallEngine>();
@@ -46,8 +45,7 @@ namespace PuzzleEditor.Walls
             @lock,
             errorPanel,
             activator
-            ) == false
-            )
+            ) == false)
             return;
 
             foreach (Transform child in transform)
@@ -67,8 +65,7 @@ namespace PuzzleEditor.Walls
                 errorPanel,
                 activator,
                 audioClip
-                ) == false
-                )
+                ) == false)
                 {
                     Debug.LogError("WallEngine failed to initialize", _wall);
                     continue;
@@ -85,8 +82,7 @@ namespace PuzzleEditor.Walls
         Messager hintKey,
         Lock @lock,
         ErrorPanel errorPanel,
-        Activator activator
-        )
+        Activator activator)
         {
             if (colorPrecision == null)
             return LogNull(nameof(colorPrecision));

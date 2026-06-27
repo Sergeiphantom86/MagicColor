@@ -1,27 +1,20 @@
-using Game.SaveEditor;
 using UnityEngine;
+using YG;
 
 namespace Menu.QuestEditor
 {
     public class QuestTransitionService : IQuestTransitionService
     {
         private const string Puzzle = nameof(Puzzle);
+        private const int MinIndexValue = 0;
 
-        private readonly SpriteTransmitter _spriteTransmitter;
-        private readonly IProgressSaver _progressSaver;
         private readonly ZoomChanger _zoomChanger;
         private readonly int _transparentIndex = 2;
 
         private TransitionResult _result;
 
-        public QuestTransitionService(
-        IProgressSaver progressSaver,
-        ZoomChanger zoomChanger,
-        SpriteTransmitter spriteTransmitter
-        )
+        public QuestTransitionService(ZoomChanger zoomChanger)
         {
-            _spriteTransmitter = spriteTransmitter;
-            _progressSaver = progressSaver;
             _zoomChanger = zoomChanger;
             _result = new();
         }
@@ -30,13 +23,13 @@ namespace Menu.QuestEditor
         {
             if (quest.Index == _transparentIndex)
             {
-                _progressSaver.MakeTransparent(true);
+                YG2.saves.IsTransparency = true;
             }
 
             if (quest.IsTutorial == false)
             {
                 quest.SetTutorial(true);
-                _progressSaver.SetTutorial(quest.Index);
+                SetTutorial(quest.Index);
 
                 _result.ShowOffer = true;
                 _result.UseMobilePanel = _zoomChanger.IsMobileWithTallScreen();
@@ -44,12 +37,12 @@ namespace Menu.QuestEditor
                 return _result;
             }
 
-            _progressSaver.ObstacleSwitch(true);
+            YG2.saves.IsUnlockAbilities = true;
 
-            if (quest.Index < _progressSaver.Saves.ObstacleDeactivatIndex)
-            _progressSaver.ObstacleSwitch(false);
+            if (quest.Index < YG2.saves.ObstacleDeactivatIndex)
+                YG2.saves.IsUnlockAbilities = false;
             else
-            _progressSaver.ObstacleSwitch(true);
+                YG2.saves.IsUnlockAbilities = true;
 
             _result.SceneName = Puzzle;
 
@@ -60,11 +53,30 @@ namespace Menu.QuestEditor
         {
             if (sprite != null)
             {
-                _spriteTransmitter.SetCurrent(sprite);
+                YG2.saves.SetCurrent(sprite);
             }
             else
             {
                 Debug.LogWarning("Cached sprite is null during transition.");
+            }
+        }
+
+        private void SetTutorial(int index)
+        {
+            if (index < MinIndexValue)
+            {
+                Debug.LogWarning($"SetTutorial: индекс {index} вне допустимого диапазона туториалов");
+                return;
+            }
+
+            if (index >= YG2.saves.IndexSecondQuest)
+            {
+                YG2.saves.IsUnlockKey = true;
+            }
+
+            if (index >= YG2.saves.ObstacleDeactivatIndex)
+            {
+                YG2.saves.IsUnlockAbilities = true;
             }
         }
     }

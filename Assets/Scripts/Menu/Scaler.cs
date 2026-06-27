@@ -7,12 +7,7 @@ namespace Menu
     {
         private Tweener _currentTween;
 
-        public Tweener GetTwinResiz(
-        Vector3 scale,
-        float duration,
-        float delay = 1,
-        float overshoot = 1
-        )
+        public Tweener GetTwinResiz(Vector3 scale, float duration, float delay = 1, float overshoot = 1)
         {
             _currentTween?.Kill();
 

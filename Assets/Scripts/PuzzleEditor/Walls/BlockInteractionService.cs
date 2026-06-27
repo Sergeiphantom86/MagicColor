@@ -16,8 +16,7 @@ namespace PuzzleEditor.Walls
         public BlockInteractionService(
         IUnblocker wall,
         IBlockDestroySequence destroySequence,
-        ILockFeedbackService lockFeedbackService
-        )
+        ILockFeedbackService lockFeedbackService)
         {
             _wall = wall;
             _destroySequence = destroySequence;

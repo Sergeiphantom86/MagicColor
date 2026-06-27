@@ -5,13 +5,13 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 {
     public class StateMachine : MonoBehaviour
     {
-        protected TutorialContext Context;
+        private TutorialContext _context;
         private ITutorialState _currentState;
 
         private void Awake()
         {
-            Context = CreateContext();
-            ChangeState(new InitializationState(this, Context));
+            _context = CreateContext();
+            ChangeState(new InitializationState(this, _context));
         }
 
         protected virtual TutorialContext CreateContext()
@@ -20,8 +20,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 
             context.InitBase(
             handMover: GetComponentInChildren<HandMover>(true),
-            visualizer: GetComponentInChildren<TouchVisualizer>(true)
-            );
+            visualizer: GetComponentInChildren<TouchVisualizer>(true));
 
             return context;
         }

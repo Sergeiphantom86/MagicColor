@@ -179,16 +179,13 @@ namespace Menu.TutorialEditor
             _startPoint.transform.position,
             _movementDuration,
             transform.localScale.x * _zoomIn,
-            Ease.OutBounce
-            )
-            )
+            Ease.OutBounce))
             .Append(
             BuildMove(
             _endPoint.transform.position,
             _movementDuration * 4,
             transform.localScale.x * _zoomOut,
-            Ease.InOutBack
-            )
+            Ease.InOutBack)
             );
 
             _movementSequence.Pause();
@@ -198,8 +195,7 @@ namespace Menu.TutorialEditor
         Vector3 position,
         float duration,
         float scaleMultiplier,
-        Ease ease
-        )
+        Ease ease)
         {
             return DOTween
             .Sequence()

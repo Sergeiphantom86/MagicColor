@@ -1,5 +1,4 @@
 using System.Linq;
-using Game.SaveEditor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +11,6 @@ namespace PuzzleEditor.RouletteEditor
         [SerializeField] private Image _image;
 
         private WeightCalculator _weightCalculator;
-        private IProgressSaver _progressSaver;
         private int _value;
         private int _weight;
         private int _divider;
@@ -35,7 +33,6 @@ namespace PuzzleEditor.RouletteEditor
             _weightCalculator = new WeightCalculator();
             _textMeshPro = GetComponentInChildren<TextMeshProUGUI>();
             _image = GetComponentInChildren<Image>();
-            _progressSaver = new ProgressSaver();
 
             if (_textMeshPro == null)
             {

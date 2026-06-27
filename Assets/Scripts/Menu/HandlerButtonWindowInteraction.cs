@@ -1,11 +1,11 @@
-using System;
-using System.Collections;
-using Game.SaveEditor;
 using Menu.ButtonEditor;
 using Menu.TutorialEditor;
 using PuzzleEditor.SoundEditor;
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 namespace Menu
 {
@@ -20,7 +20,6 @@ namespace Menu
         private ButtonSoundHandler _buttonSoundHandler;
         private WindowInitializer _windowInitializer;
         private ICarousel _carousel;
-        private IProgressSaver _progressSaver;
 
         private void Awake()
         {
@@ -28,11 +27,10 @@ namespace Menu
             _buttonKeeper = GetComponent<ButtonKeeper>();
             _windowInitializer = GetComponent<WindowInitializer>();
             _carousel = GetComponent<ICarousel>();
-            _progressSaver = new ProgressSaver();
 
             _windowInitializer.Initialize();
 
-            _progressSaver.StartInitYG2();
+            YG2.StartInit();
         }
 
         private void Start()
@@ -78,8 +76,7 @@ namespace Menu
             }
 
             if (
-            _windowInitializer.WindowActions.TryGetValue(windowName, out Action action) == false
-            )
+            _windowInitializer.WindowActions.TryGetValue(windowName, out Action action) == false)
             {
                 Debug.LogError($"Unknown window action: {windowName}");
                 return;

@@ -5,19 +5,12 @@ namespace Menu.ButtonEditor.Ability
 {
     public class AbilitySelectionManager : MonoBehaviour
     {
-        public static AbilitySelectionManager Instance;
-
         private Ability _currentAbility;
         private AbilityButton _currentButton;
 
         public bool HasSelection => _currentAbility != null;
 
-        public event Action Selection;
-
-        private void Awake()
-        {
-            Instance = this;
-        }
+        public event Action Selected;
 
         public void Select(AbilityButton button)
         {
@@ -42,7 +35,7 @@ namespace Menu.ButtonEditor.Ability
 
         public void Use()
         {
-            Selection?.Invoke();
+            Selected?.Invoke();
         }
     }
 }

@@ -1,10 +1,10 @@
 using Game;
-using Game.SaveEditor;
 using Menu.ButtonEditor.Ability;
 using Menu.Shop;
 using PuzzleEditor.MovingBlocks;
 using TMPro;
 using UnityEngine;
+using YG;
 
 namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 {
@@ -23,7 +23,6 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         private readonly AbilityButton _bagAbilities;
         private readonly PurchaseButton _purchaseButton;
         private readonly StateMachine _stateMachine;
-        private readonly IProgressSaver _progressSaver;
 
         public TutorialAbilities(
         StateMachine stateMachine,
@@ -35,8 +34,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         PurchaseButton purchaseButton,
         CloseGameButton closeGame,
         AbilityButton bagAbilities,
-        Hints hintsUI
-        )
+        Hints hintsUI)
         : base(stateMachine, context)
         {
             _input = input;
@@ -49,12 +47,11 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
             _stateMachine = stateMachine;
             _bagAbilities = bagAbilities;
             _purchaseButton = purchaseButton;
-            _progressSaver = new ProgressSaver();
         }
 
         public override void Enter()
         {
-            _progressSaver.SetAbilityTutorial();
+            YG2.saves.IsAbilityTutorial = true;
 
             MoveTarget(_pauseButton.transform.position);
 

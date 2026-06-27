@@ -1,6 +1,6 @@
 using DG.Tweening;
-using Game.SaveEditor;
 using PuzzleEditor.LockEditor;
+using YG;
 
 namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 {
@@ -13,7 +13,6 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         private readonly HandMover _handMover;
         private readonly Lock _lock;
         private readonly Key _key;
-        private readonly IProgressSaver _progressSaver;
 
         public KeyTutorialState(StateMachine stateMachine, TutorialContext context)
         : base(stateMachine, context)
@@ -26,8 +25,8 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
             _handMover = _context.HandMover;
             _lock = _context.Lock;
             _key = _context.Key;
-            _progressSaver = new ProgressSaver();
-            _progressSaver.SetUnblockingTutorial();
+
+            YG2.saves.IsUnblockingTutorial = true;
         }
 
         public override void Enter()
@@ -47,7 +46,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 
         private void OnTutorialCompleted()
         {
-            _stateMachine.ChangeState(new CompletionState(StateMachine, Context));
+            _stateMachine.ChangeState(new CompletionState(_stateMachine, _context));
         }
     }
 }

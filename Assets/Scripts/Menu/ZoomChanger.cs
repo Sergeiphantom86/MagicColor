@@ -1,5 +1,5 @@
-using Game.SaveEditor;
 using UnityEngine;
+using YG;
 
 namespace Menu
 {
@@ -8,7 +8,6 @@ namespace Menu
         private readonly Vector2 _referenceResolution = new(1014f, 570f);
         private readonly float _referenceAspect = 1014f / 570f;
         private readonly float _mobileAspectRatio = 1.5f;
-        private readonly IProgressSaver _progressSaver = new ProgressSaver();
 
         private float _currentAspect;
         private float _width;
@@ -39,7 +38,7 @@ namespace Menu
 
         public bool IsMobileWithTallScreen()
         {
-            return _progressSaver.IdentifyDevice() && IsMobileLike();
+            return YG2.envir.isMobile && IsMobileLike();
         }
 
         private bool IsMobileLike()

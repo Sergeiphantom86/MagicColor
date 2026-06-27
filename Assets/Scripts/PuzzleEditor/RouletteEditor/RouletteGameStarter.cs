@@ -1,4 +1,3 @@
-using Game.SaveEditor;
 using UnityEngine;
 
 namespace PuzzleEditor.RouletteEditor
@@ -7,12 +6,9 @@ namespace PuzzleEditor.RouletteEditor
     {
         [SerializeField] private AutomaticTransitionInstaller _automaticTransitionInstaller;
 
-        public void SetProgressSaver(
-        IProgressSaver progressSaver,
-        SpriteTransmitter spriteTransmitter
-        )
+        public void SetProgressSaver()
         {
-            _automaticTransitionInstaller.SetProgressSaver(progressSaver, spriteTransmitter);
+            Debug.Log("Нужно удалить");
         }
     }
 }

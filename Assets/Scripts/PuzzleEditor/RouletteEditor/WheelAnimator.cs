@@ -107,8 +107,7 @@ namespace PuzzleEditor.RouletteEditor
                 getter: GetCurrentRotation,
                 setter: UpdateRotation,
                 endValue: GetTotalRotation(CalculateRequiredRotation(sectorAngle)),
-                duration: _spinDuration
-                )
+                duration: _spinDuration)
                 .SetEase(Ease.OutCubic);
             }
 

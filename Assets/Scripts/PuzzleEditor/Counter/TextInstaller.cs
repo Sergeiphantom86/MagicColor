@@ -1,6 +1,6 @@
-using Game.SaveEditor;
 using TMPro;
 using UnityEngine;
+using YG;
 
 namespace PuzzleEditor.Counter
 {
@@ -11,18 +11,15 @@ namespace PuzzleEditor.Counter
         [SerializeField] private TextMeshProUGUI _countStars;
 
         private TMP_Text _text;
-        private IProgressSaver _progressSaver;
 
         private void Awake()
         {
             _text = GetComponent<TMP_Text>();
-            _progressSaver = new ProgressSaver();
         }
 
         private void Start()
         {
-            _text.text =
-            $"{_completionTime.text} {_timer.TimerText.text}, {_countStars.text} {_progressSaver.Saves.CountStars}";
+            _text.text = $"{_completionTime.text} {_timer.TimerText.text}, {_countStars.text} {YG2.saves.Stars}";
         }
     }
 }

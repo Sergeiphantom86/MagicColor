@@ -91,8 +91,7 @@ namespace Wallets
                 UpdateBalanceText();
                 },
                 newBalance,
-                _animationDuration
-                )
+                _animationDuration)
                 .SetEase(Ease.OutQuad)
                 .SetUpdate(true)
                 .OnComplete(() =>

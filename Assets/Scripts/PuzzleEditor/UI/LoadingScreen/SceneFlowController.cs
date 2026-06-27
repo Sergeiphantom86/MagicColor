@@ -1,8 +1,8 @@
-using Game.SaveEditor;
 using Menu.TutorialEditor;
 using PuzzleEditor.RouletteEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using YG;
 
 namespace PuzzleEditor.UI.LoadingScreen
 {
@@ -17,7 +17,6 @@ namespace PuzzleEditor.UI.LoadingScreen
         [SerializeField] private TutorialPuzzle1 _tutorialPuzzle;
 
         private string _sceneName;
-        private IProgressSaver _progressSaver;
         private AdRewardController _adRewardController;
 
         private void Awake()
@@ -26,42 +25,36 @@ namespace PuzzleEditor.UI.LoadingScreen
             _adRewardController = GetComponent<AdRewardController>();
 
             if (_textureInitializer == null)
-            Debug.LogError(
-            $"[SceneFlowController] TextureInitializer �� �������� � ���������� �� ������� {gameObject.name}"
-            );
+                Debug.LogError($"[SceneFlowController] TextureInitializer �� �������� � ���������� �� ������� {gameObject.name}");
+
             if (_menuLoader == null)
-            Debug.LogError(
-            $"[SceneFlowController] MenuLoader �� �������� �� ������� {gameObject.name}"
-            );
+                Debug.LogError($"[SceneFlowController] MenuLoader �� �������� �� ������� {gameObject.name}");
+
             if (_adRewardController == null)
-            Debug.LogWarning(
-            $"[SceneFlowController] AdRewardController ����������� �� ������� {gameObject.name}"
-            );
+                Debug.LogWarning($"[SceneFlowController] AdRewardController ����������� �� ������� {gameObject.name}");
         }
 
-        public void Initialize(Sprite sprite, IProgressSaver progressSaver)
+        private void Start()
         {
-            if (sprite == null)
-            {
-                Debug.LogError($"Sprite == null �� ������� {gameObject.name}");
-                return;
-            }
+            Initialize();
+        }
 
-            if (progressSaver == null)
-            {
-                Debug.LogError($"IProgressSaver == null �� ������� {gameObject.name}");
-                return;
-            }
-
-            _progressSaver = progressSaver;
-
-            sprite = TryGetSprite(sprite);
+        public void Initialize()
+        {
+            Sprite sprite = TryGetSprite(YG2.saves.Current);
 
             if (sprite == null)
             {
-                Debug.Log(sprite);
+                Debug.LogError($"Sprite == null на объекте {gameObject.name}");
+                return;
             }
 
+            if (sprite.texture == null)
+            {
+                Debug.LogError($"Sprite.texture == null на объекте {gameObject.name}");
+                return;
+            }
+            
             _textureInitializer.SpawnPixelsFromTexture(sprite.texture);
         }
 
@@ -70,7 +63,7 @@ namespace PuzzleEditor.UI.LoadingScreen
             if (_sceneName != Tutorial)
             {
                 _adRewardController.ShowRewardAd(LoadRoulette);
-                _progressSaver.SaveProgress();
+                YG2.SaveProgress();
 
                 return;
             }

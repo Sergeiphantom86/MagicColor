@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Game.SaveEditor;
 using Menu.ButtonEditor;
 using PuzzleEditor;
 using PuzzleEditor.SoundEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 namespace Menu.LanguageManager
 {
@@ -17,7 +17,6 @@ namespace Menu.LanguageManager
         [SerializeField] private AudioClip _clickSound;
 
         private LanguageBar _languageBar;
-        private IProgressSaver _progressSaver;
         private List<LanguageButton> _buttons;
         private bool _uiInitialized;
         private string _title;
@@ -26,14 +25,13 @@ namespace Menu.LanguageManager
 
         private void Awake()
         {
-            _progressSaver = new ProgressSaver();
             _languageBar = GetComponent<LanguageBar>();
 
             SetButtons();
 
-            _progressSaver.SetCurrentLanguage(_progressSaver.GetTranslationLanguage());
+            YG2.saves.CurrentLanguage = YG2.lang;
 
-            FindButtonForLanguage(_progressSaver.Saves.CurrentLanguage);
+            FindButtonForLanguage(YG2.lang);
         }
 
         private void Start()
@@ -53,14 +51,14 @@ namespace Menu.LanguageManager
                 return;
             }
 
-            _progressSaver.SubscribeSwitchLang(FindButtonForLanguage);
+            YG2.onSwitchLang += FindButtonForLanguage;
 
             ClickOnSelectionButton();
         }
 
         private void OnDisable()
         {
-            _progressSaver.UnsubscribeSwitchLang(FindButtonForLanguage);
+            YG2.onSwitchLang -= FindButtonForLanguage;
         }
 
         public void Activate() => gameObject.SetActive(true);
@@ -88,8 +86,7 @@ namespace Menu.LanguageManager
 
                 if (
                 button != null
-                && string.Equals(button.name, language, StringComparison.OrdinalIgnoreCase)
-                )
+                && string.Equals(button.name, language, StringComparison.OrdinalIgnoreCase))
                 {
                     languageButton = button;
                 }
@@ -101,12 +98,12 @@ namespace Menu.LanguageManager
         private void ClickOnSelectionButton()
         {
             if (_buttons.Count <= 0 && _buttons[0] == null)
-            return;
+                return;
 
             foreach (LanguageButton button in _buttons)
             {
                 if (button == null)
-                continue;
+                    continue;
 
                 string lang = button.name.ToLower();
 
@@ -114,20 +111,19 @@ namespace Menu.LanguageManager
                 {
                     _buttonSound.PlayButtonSound(_clickSound);
                     ChangeLanguage(lang);
-                    });
-                }
-            }
-
-            private void ChangeLanguage(string langCode)
-            {
-                if (_title == langCode)
-                return;
-
-                _progressSaver.SwitchLanguage(langCode);
-
-                _progressSaver.SaveProgress();
-
-                _title = langCode;
+                });
             }
         }
+
+        private void ChangeLanguage(string langCode)
+        {
+            if (_title == langCode)
+                return;
+
+            YG2.SwitchLanguage(langCode);
+            YG2.SaveProgress();
+
+            _title = langCode;
+        }
     }
+}

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Game.SaveEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 namespace Menu.QuestEditor
 {
@@ -16,9 +16,7 @@ namespace Menu.QuestEditor
         private ZoomChanger _zoomChanger;
         private List<Quest> _subscribedQuests;
         private IReadOnlyList<Quest> _quests;
-        private IProgressSaver _progressSaver;
         private TransitionChooser _transitionChooser;
-        private SpriteTransmitter _spriteTransmitter;
         private bool _isActivate;
         private bool _isOn;
 
@@ -35,34 +33,16 @@ namespace Menu.QuestEditor
             }
         }
 
-        public void Initialize(
-        IReadOnlyList<Quest> quests,
-        IProgressSaver progressSaver,
-        SpriteTransmitter spriteTransmitter
-        )
+        public void Initialize(IReadOnlyList<Quest> quests)
         {
             if (quests == null || quests.Count == 0)
-            return;
-
-            if (progressSaver.Saves == null)
-            {
-                Debug.LogError("IProgressSaver not found!");
                 return;
-            }
 
-            if (spriteTransmitter == null)
-            {
-                Debug.LogError("SpriteTransmitter not found!");
-                return;
-            }
-
-            _spriteTransmitter = spriteTransmitter;
-            _progressSaver = progressSaver;
             _quests = quests;
 
-            _isOn = spriteTransmitter.IsAutomaticallyNewLevel;
+            _isOn = YG2.saves.IsAutomaticallyNewLevel;
 
-            _transitionChooser.Initialize(progressSaver, _zoomChanger, spriteTransmitter);
+            _transitionChooser.Initialize(_zoomChanger);
 
             ProcessSavedProgress();
 
@@ -83,7 +63,7 @@ namespace Menu.QuestEditor
         private void ProcessSavedProgress()
         {
             if (IsQuestListValid() == false)
-            return;
+                return;
 
             UnlockQuestsUpToSavedIndex();
             SetActiveQuestIndicator();
@@ -118,7 +98,7 @@ namespace Menu.QuestEditor
             _active = _quests[index];
 
             if (_active.IsUnlocked)
-            return;
+                return;
 
             _active.Unlock();
             SubscribeToQuest(_active);
@@ -138,20 +118,20 @@ namespace Menu.QuestEditor
         private void SetActiveQuestIndicator()
         {
             if (_active != null)
-            _active.SetActiveIndicator(true);
+                _active.SetActiveIndicator(true);
         }
 
         public void TryAutoTransition()
         {
             if (_isOn == false || _active == null)
-            return;
+                return;
             _isActivate = true;
             _active.OnClick();
         }
 
         private int GetIndex()
         {
-            return Mathf.Clamp(_progressSaver.Saves.MaxReachedQuestIndex, 0, _quests.Count - 1);
+            return Mathf.Clamp(YG2.saves.MaxReachedQuestIndex, 0, _quests.Count - 1);
         }
 
         private void OnSelect(Quest quest)
@@ -160,16 +140,17 @@ namespace Menu.QuestEditor
             {
                 if (_next != null)
                 {
-                    _spriteTransmitter.SetNew(_next.Sprite);
+                    YG2.saves.SetNew(_next.Sprite);
                 }
             }
 
-            _progressSaver.SetQuestIndex(quest.Index);
+            YG2.saves.QuestIndex = quest.Index;
 
             if (_transitionChooser != null)
             {
                 _transitionChooser.ChoosePuzzle(quest, _isOn);
-                _spriteTransmitter.SetAutomaticTransition(false);
+
+                YG2.saves.IsAutomaticallyNewLevel = false;
             }
         }
 
@@ -185,7 +166,7 @@ namespace Menu.QuestEditor
 
             _isActivate = false;
             _subscribedQuests.Clear();
-            _progressSaver.SaveProgress();
+            YG2.SaveProgress();
         }
     }
 }

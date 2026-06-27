@@ -1,7 +1,7 @@
 using System.Collections;
-using Game.SaveEditor;
 using UnityEngine;
 using UnityEngine.Audio;
+using YG;
 
 namespace PuzzleEditor.SoundEditor
 {
@@ -26,12 +26,9 @@ namespace PuzzleEditor.SoundEditor
         private float _currentSounVolume = 1f;
         private Coroutine _coroutineSaving;
         private Coroutine _coroutine;
-        private IProgressSaver _progressSaver;
 
         private void Awake()
         {
-            _progressSaver = new ProgressSaver();
-
             SetupAudioSources();
 
             LoadVolumeSettings();
@@ -90,8 +87,7 @@ namespace PuzzleEditor.SoundEditor
         AudioSource audioSource,
         bool isOnLoop,
         AudioMixerGroup audioMixerGroup,
-        float volume
-        )
+        float volume)
         {
             audioSource.outputAudioMixerGroup = audioMixerGroup;
             audioSource.playOnAwake = false;
@@ -101,10 +97,10 @@ namespace PuzzleEditor.SoundEditor
 
         private void LoadVolumeSettings()
         {
-            if (_progressSaver.Saves != null)
+            if (YG2.saves != null)
             {
-                _currentMusicVolume = _progressSaver.Saves.MusicVolume;
-                _currentSounVolume = _progressSaver.Saves.SoundVolume;
+                _currentMusicVolume = YG2.saves.MusicVolume;
+                _currentSounVolume = YG2.saves.SoundVolume;
             }
         }
 
@@ -122,7 +118,7 @@ namespace PuzzleEditor.SoundEditor
             Debug.Log(volume);
 
             UpdateMixerVolume(volumeChanger.name, volume);
-            _progressSaver.SetVolume(volumeChanger, volume);
+            YG2.saves.SetVolume(volumeChanger, volume);
             SaveVolumeSettings();
         }
 
@@ -147,7 +143,7 @@ namespace PuzzleEditor.SoundEditor
 
             yield return new WaitForSeconds(delay);
 
-            _progressSaver.SaveProgress();
+            YG2.SaveProgress();
             _coroutineSaving = null;
         }
 

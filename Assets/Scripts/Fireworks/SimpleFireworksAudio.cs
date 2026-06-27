@@ -41,7 +41,7 @@ namespace Fireworks
         public void StartFireworks()
         {
             if (_isRunning)
-            return;
+                return;
 
             _isRunning = true;
 
@@ -96,7 +96,7 @@ namespace Fireworks
         private IEnumerator PlaySingleFirework()
         {
             if (_soundPack == null)
-            yield break;
+                yield break;
 
             yield return _waitSoundGlow;
             yield return _waitSoundGlow;

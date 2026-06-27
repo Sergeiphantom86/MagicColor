@@ -1,14 +1,14 @@
-using System;
-using System.Collections;
-using Game.SaveEditor;
 using Menu.TutorialEditor.TutorialPuzzle;
 using PuzzleEditor;
 using PuzzleEditor.SoundEditor;
+using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Wallets;
 using Wallets.WalletEditor;
+using YG;
 
 namespace Menu.Shop
 {
@@ -26,7 +26,6 @@ namespace Menu.Shop
 
         private Voiceover _voiceover;
         private Button _button;
-        private IProgressSaver _progressSaver;
         private IActivatable _activatable;
         private PaymentType _currentPaymentType;
         private long _result;
@@ -41,7 +40,6 @@ namespace Menu.Shop
         {
             _button = GetComponent<Button>();
             _voiceover = GetComponent<Voiceover>();
-            _progressSaver = new ProgressSaver();
             _button.interactable = true;
 
             if (long.TryParse(_paymentCoin.text, out long result))
@@ -52,7 +50,7 @@ namespace Menu.Shop
             _activatable = _blocker;
             _activatable.Deactivate();
 
-            if (_blocker != null && _progressSaver.Saves.IsUnlockAbilities == false)
+            if (_blocker != null && YG2.saves.IsUnlockAbilities == false)
             {
                 _activatable.Activate();
                 _button.enabled = false;
@@ -94,9 +92,9 @@ namespace Menu.Shop
             {
                 _button.interactable = false;
 
-                if (_progressSaver.CanShowAd())
+                if (YG2.nowRewardAdv == false && YG2.nowAdsShow == false)
                 {
-                    _progressSaver.RewardedAdvShow(RewardID, null);
+                    YG2.RewardedAdvShow(RewardID, null);
                     Click();
                 }
                 else
@@ -128,16 +126,13 @@ namespace Menu.Shop
 
         private void TryChangeTypePayment()
         {
-            if (_progressSaver == null)
-            return;
-
             if (_paymentCoin == null)
             return;
 
             if (_paymentAdv == null)
             return;
 
-            if (_progressSaver.Saves.CurrentCoin >= _result)
+            if (YG2.saves.CurrentCoin >= _result)
             {
                 _currentPaymentType = PaymentType.Coins;
 

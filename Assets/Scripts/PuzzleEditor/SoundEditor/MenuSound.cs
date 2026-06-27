@@ -1,7 +1,7 @@
 using System.Collections;
-using Game.SaveEditor;
 using UnityEngine;
 using UnityEngine.Audio;
+using YG;
 
 namespace PuzzleEditor.SoundEditor
 {
@@ -28,7 +28,6 @@ namespace PuzzleEditor.SoundEditor
         private float _volumeDB;
         private int _delay;
         private float _playbackTime;
-        private IProgressSaver _progressSaver;
         private WaitForSeconds _waitForSeconds;
         private WaitForSeconds _waitStop;
 
@@ -38,10 +37,9 @@ namespace PuzzleEditor.SoundEditor
             _playbackTime = 0.5f;
             _waitForSeconds = new WaitForSeconds(_delay);
             _waitStop = new WaitForSeconds(_playbackTime);
-            _progressSaver = new ProgressSaver();
 
             SetupAudioSources();
-            PlayBackgroundMusic(_progressSaver.Saves.MusicTime);
+            PlayBackgroundMusic(YG2.saves.MusicTime);
         }
 
         private void OnEnable()
@@ -55,12 +53,12 @@ namespace PuzzleEditor.SoundEditor
             _musicVolumeChanger.OnVolumeChange -= OnSetVolume;
             _sounVolumeChanger.OnVolumeChange -= OnSetVolume;
 
-            _progressSaver.SetMusicTime(_musicSource.time);
+            YG2.saves.MusicTime = _musicSource.time;
         }
 
         private void OnDestroy()
         {
-            _progressSaver.SaveProgress();
+            YG2.SaveProgress();
         }
 
         public void PlayButtonClick(AudioClip audioClip)
@@ -113,8 +111,7 @@ namespace PuzzleEditor.SoundEditor
         AudioSource audioSource,
         bool isOn,
         AudioMixerGroup audioMixerGroup,
-        float volume
-        )
+        float volume)
         {
             audioSource.outputAudioMixerGroup = audioMixerGroup;
             audioSource.playOnAwake = false;
@@ -124,10 +121,10 @@ namespace PuzzleEditor.SoundEditor
 
         private void LoadVolumeSettings()
         {
-            if (_progressSaver.Saves != null)
+            if (YG2.saves != null)
             {
-                _currentMusicVolume = _progressSaver.Saves.MusicVolume;
-                _currentSounVolume = _progressSaver.Saves.SoundVolume;
+                _currentMusicVolume = YG2.saves.MusicVolume;
+                _currentSounVolume = YG2.saves.SoundVolume;
             }
         }
 
@@ -179,7 +176,7 @@ namespace PuzzleEditor.SoundEditor
         {
             yield return _waitForSeconds;
 
-            _progressSaver.SaveProgress();
+            YG2.SaveProgress();
             _coroutineSaving = null;
         }
     }

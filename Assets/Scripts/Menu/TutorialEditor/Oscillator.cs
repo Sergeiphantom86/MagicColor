@@ -62,15 +62,13 @@ namespace Menu.TutorialEditor
         private void CreateSequence(
         float amplitudeX = 0,
         float amplitudeY = 0,
-        float amplitudeZ = 0
-        )
+        float amplitudeZ = 0)
         {
             _sequence.Append(
             transform
             .DORotate(
             transform.eulerAngles + new Vector3(amplitudeX, amplitudeY, amplitudeZ),
-            _duration
-            )
+            _duration)
             .SetEase(Ease.InSine)
             );
         }

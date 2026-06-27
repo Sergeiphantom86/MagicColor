@@ -1,13 +1,12 @@
 using DG.Tweening;
-using Game.SaveEditor;
 using UnityEngine;
+using YG;
 
 namespace PuzzleEditor
 {
-    public class Puzzle1 : MonoBehaviour
+    public class GameArea : MonoBehaviour
     {
         private Rotator _rotation;
-        private IProgressSaver _progressSaver;
         private Tween _moveTween;
         private float _positionX;
         private float _durationDivider;
@@ -17,12 +16,11 @@ namespace PuzzleEditor
             _positionX = 50;
             _durationDivider = 10;
             _rotation = GetComponent<Rotator>();
-            _progressSaver = new ProgressSaver();
         }
 
         private void Start()
         {
-            _progressSaver.SaveProgress();
+            YG2.SaveProgress();
         }
 
         public void Return(float duration)
@@ -32,6 +30,8 @@ namespace PuzzleEditor
 
         public void StartRotation()
         {
+            _rotation = GetComponent<Rotator>();
+
             _rotation.StartRotation();
         }
 

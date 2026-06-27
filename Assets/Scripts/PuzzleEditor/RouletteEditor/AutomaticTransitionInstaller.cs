@@ -1,19 +1,17 @@
-using Game.SaveEditor;
 using Menu;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 namespace PuzzleEditor.RouletteEditor
 {
     public class AutomaticTransitionInstaller : MonoBehaviour
     {
-        [SerializeField] protected ButtonHome ButtonHome;
+        [SerializeField] private ButtonHome ButtonHome;
 
         private Sprite _newSprite;
         private Button _nextPuzzle;
         private PuzzleSelector _selector;
-        private IProgressSaver _progressSaver;
-        private SpriteTransmitter _spriteTransmitter;
         private int _firstTutorial;
         private int _secondTutorial;
         private int _thirdTutorial;
@@ -23,6 +21,8 @@ namespace PuzzleEditor.RouletteEditor
         {
             _nextPuzzle = GetComponent<Button>();
             _selector = GetComponentInChildren<PuzzleSelector>();
+
+            Initialized();
         }
 
         private void Start()
@@ -30,30 +30,14 @@ namespace PuzzleEditor.RouletteEditor
             _nextPuzzle.onClick.AddListener(OnSetValue);
         }
 
-        public void SetProgressSaver(
-        IProgressSaver progressSaver,
-        SpriteTransmitter spriteTransmitter
-        )
+        private void Initialized()
         {
-            Initialized(progressSaver, spriteTransmitter);
-        }
-
-        private void Initialized(IProgressSaver progressSaver, SpriteTransmitter spriteTransmitter)
-        {
-            if (progressSaver == null)
-            {
-                Debug.LogError("IProgressSaver == null");
-                return;
-            }
-
-            _spriteTransmitter = spriteTransmitter;
-            _newSprite = spriteTransmitter.New;
-            _progressSaver = progressSaver;
+            _newSprite = YG2.saves.New;
 
             _firstTutorial = 0;
-            _secondTutorial = _progressSaver.Saves.IndexSecondQuest;
-            _thirdTutorial = _progressSaver.Saves.ObstacleDeactivatIndex;
-            _maxReachedQuestIndex = _progressSaver.Saves.MaxReachedQuestIndex;
+            _secondTutorial = YG2.saves.IndexSecondQuest;
+            _thirdTutorial = YG2.saves.ObstacleDeactivatIndex;
+            _maxReachedQuestIndex = YG2.saves.MaxReachedQuestIndex;
 
             if (_nextPuzzle == null)
             {
@@ -77,23 +61,23 @@ namespace PuzzleEditor.RouletteEditor
 
         private void OnSetValue()
         {
-            _spriteTransmitter.SetAutomaticTransition(true);
+            YG2.saves.IsAutomaticallyNewLevel = true;
             ButtonHome.GoMenu();
         }
 
         private void Show()
         {
-            if (
-            _progressSaver.TryEnableFollowingQuest(_maxReachedQuestIndex)
-            || HasMatchingQuestIndex()
-            )
+            if (TryEnableFollowingQuest(_maxReachedQuestIndex) || HasMatchingQuestIndex())
             {
                 gameObject.SetActive(false);
             }
 
             _selector.SetSprite(_newSprite);
 
-            _progressSaver.SetMaxReachedQuestIndex();
+            if (YG2.saves.QuestIndex >= YG2.saves.MaxReachedQuestIndex)
+            {
+                YG2.saves.MaxReachedQuestIndex++;
+            }
         }
 
         private bool HasMatchingQuestIndex()
@@ -101,6 +85,11 @@ namespace PuzzleEditor.RouletteEditor
             return _firstTutorial == _maxReachedQuestIndex
             || _secondTutorial == _maxReachedQuestIndex
             || _thirdTutorial == _maxReachedQuestIndex;
+        }
+
+        private bool TryEnableFollowingQuest(int indexCurrentQuest)
+        {
+            return indexCurrentQuest >= YG2.saves.CountQuest;
         }
     }
 }

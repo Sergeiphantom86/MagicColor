@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Game.SaveEditor;
 using PuzzleEditor.MovingBlocks.GridEditor;
 using PuzzleEditor.Walls.Partitions;
 using UnityEngine;
+using YG;
 
 namespace PuzzleEditor.Spawners
 {
@@ -18,13 +18,10 @@ namespace PuzzleEditor.Spawners
         private PartitionChainSpawner _chainSpawner;
         private GridPositionHelper _gridHelper;
         private ChainSpawnData _chainSpawnData;
-        private IProgressSaver _progressSaver;
 
         protected override void Awake()
         {
             base.Awake();
-
-            _progressSaver = new ProgressSaver();
         }
 
         private void OnEnable()
@@ -60,7 +57,7 @@ namespace PuzzleEditor.Spawners
                 Debug.LogError("GridSystem: GridHelper is null");
             }
 
-            if (_progressSaver.Saves.IsUnlockAbilities == false)
+            if (YG2.saves.IsUnlockAbilities == false)
             return;
 
             for (int i = 0; i < _chainCount; i++)

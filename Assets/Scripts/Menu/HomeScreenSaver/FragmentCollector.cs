@@ -34,7 +34,7 @@ namespace Menu.HomeScreenSaver
             }
         }
 
-        private void OnCollect(int count)
+        private void OnCollect()
         {
             PixelsRendered.Invoke(_textureInitializer.FragmentsList);
         }

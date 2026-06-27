@@ -97,8 +97,7 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
         AudioClip soundDestruction,
         AudioClip soundDragg,
         AudioClip soundRaise,
-        AudioClip matchSound
-        )
+        AudioClip matchSound)
         {
             _soundDragg = soundDragg;
             _soundRaise = soundRaise;

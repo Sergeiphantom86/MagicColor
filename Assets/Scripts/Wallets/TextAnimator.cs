@@ -52,8 +52,7 @@ namespace Wallets
                     UpdateText();
                     },
                     _targetValue,
-                    customDuration
-                    )
+                    customDuration)
                     .SetEase(Ease.OutQuad);
                 }
                 else
