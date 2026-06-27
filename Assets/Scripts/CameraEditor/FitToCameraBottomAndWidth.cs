@@ -69,7 +69,9 @@ namespace CameraEditor
             {
                 _camera.orthographic = true;
                 _camera.orthographicSize = GetTargetOrthogonal();
-                SetStartPosition(_startPosition.y + _camera.orthographicSize * 0.4f);
+                SetStartPosition(_startPosition.y + 
+                    _camera.orthographicSize * 
+                    0.4f);
             }
         }
 

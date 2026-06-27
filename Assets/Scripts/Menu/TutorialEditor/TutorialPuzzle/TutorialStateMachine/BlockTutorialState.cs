@@ -23,7 +23,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         private GridDragMovement _movement;
         private bool _isAnimationChange;
 
-        public BlockTutorialState(StateMachine stateMachine,TutorialContext context,StarsCounter starsCounter)
+        public BlockTutorialState(StateMachine stateMachine, TutorialContext context, StarsCounter starsCounter)
         : base(stateMachine, context)
         {
             _stateMachine = stateMachine;
@@ -109,9 +109,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
             {
                 _isAnimationChange = true;
 
-                _stateMachine.ChangeState(
-                new MovementState(_stateMachine, _context, _block, _movement, _input)
-                );
+                _stateMachine.ChangeState(new MovementState(_stateMachine, _context, _block, _movement, _input));
             }
         }
 
@@ -121,11 +119,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 
             _context.Visualizer.gameObject.SetActive(true);
 
-            _context.AdjustPositions(
-            _block.transform.position,
-            _block.transform.position,
-            yOffset: _yOffset
-            );
+            _context.AdjustPositions(_block.transform.position, _block.transform.position, yOffset: _yOffset);
 
             _context.HandMover.EnableScaleAnimation();
 

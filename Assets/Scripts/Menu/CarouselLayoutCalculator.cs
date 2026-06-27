@@ -13,8 +13,7 @@ namespace Menu
         private readonly float _sideScale;
         private readonly float _distanceFromCenter;
 
-        public CarouselLayoutCalculator(
-        RectTransform[] buttons,
+        public CarouselLayoutCalculator(RectTransform[] buttons,
         Vector2[] originalPositions,
         float centerScale,
         float sideScale,

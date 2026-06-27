@@ -25,13 +25,13 @@ namespace PuzzleEditor.UI.LoadingScreen
             _adRewardController = GetComponent<AdRewardController>();
 
             if (_textureInitializer == null)
-                Debug.LogError($"[SceneFlowController] TextureInitializer �� �������� � ���������� �� ������� {gameObject.name}");
+                Debug.LogError($"[SceneFlowController] TextureInitializer is missing on object '{gameObject.name}'", this);
 
             if (_menuLoader == null)
-                Debug.LogError($"[SceneFlowController] MenuLoader �� �������� �� ������� {gameObject.name}");
+                Debug.LogError($"[SceneFlowController] MenuLoader is missing on object '{gameObject.name}'", this);
 
             if (_adRewardController == null)
-                Debug.LogWarning($"[SceneFlowController] AdRewardController ����������� �� ������� {gameObject.name}");
+                Debug.LogWarning($"[SceneFlowController] AdRewardController not found on object '{gameObject.name}'", this);
         }
 
         private void Start()
@@ -45,16 +45,16 @@ namespace PuzzleEditor.UI.LoadingScreen
 
             if (sprite == null)
             {
-                Debug.LogError($"Sprite == null на объекте {gameObject.name}");
+                Debug.LogError($"Sprite is null on object '{gameObject.name}'", this);
                 return;
             }
 
             if (sprite.texture == null)
             {
-                Debug.LogError($"Sprite.texture == null на объекте {gameObject.name}");
+                Debug.LogError($"Sprite.texture is null on object '{gameObject.name}'", this);
                 return;
             }
-            
+
             _textureInitializer.SpawnPixelsFromTexture(sprite.texture);
         }
 
@@ -78,7 +78,9 @@ namespace PuzzleEditor.UI.LoadingScreen
 
         private Sprite TryGetSprite(Sprite sprite)
         {
-            return _tutorialPuzzle != null ? _tutorialPuzzle.Sprite : sprite;
+            return _tutorialPuzzle != null 
+                ? _tutorialPuzzle.Sprite 
+                : sprite;
         }
     }
 }

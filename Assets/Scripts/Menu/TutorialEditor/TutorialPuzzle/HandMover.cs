@@ -54,9 +54,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
 
-            _sequence
-            .Append(
-            transform.DOScale(_targetScale, _duration).SetEase(Ease.OutBack, _overshoot))
+            _sequence.Append(transform.DOScale(_targetScale, _duration).SetEase(Ease.OutBack, _overshoot))
             .SetLoops(-1, LoopType.Restart)
             .SetUpdate(true);
         }

@@ -53,7 +53,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
 
             if (color == null)
             {
-                Debug.LogError("�olor for the appearance is null!", this);
+                Debug.LogError("Color for the appearance is null!", this);
                 return;
             }
 

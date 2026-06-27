@@ -27,8 +27,8 @@ namespace PuzzleEditor.SoundEditor
 
         public void PlayOneShot(AudioClip clip)
         {
-            if (clip == false|| _sfxSource == false|| _sfxSource.enabled == false|| gameObject.activeInHierarchy == false)
-            return;
+            if (clip == false || _sfxSource == false || _sfxSource.enabled == false || gameObject.activeInHierarchy == false)
+                return;
 
             _sfxSource.PlayOneShot(clip);
         }
@@ -53,11 +53,7 @@ namespace PuzzleEditor.SoundEditor
 
         private void LoadVolumeSettings()
         {
-            float clampedVolume = Mathf.Clamp(
-            YG2.saves.SoundVolume,
-            MinVolume,
-            MaxVolume
-            );
+            float clampedVolume = Mathf.Clamp(YG2.saves.SoundVolume, MinVolume, MaxVolume);
             float dbVolume = Mathf.Log10(clampedVolume) * DBMultiplier;
 
             if (_sfxGroup != null)
@@ -69,7 +65,7 @@ namespace PuzzleEditor.SoundEditor
         private void OnValidate()
         {
             if (_sfxSource != null && _sfxGroup != null)
-            _sfxSource.outputAudioMixerGroup = _sfxGroup;
+                _sfxSource.outputAudioMixerGroup = _sfxGroup;
         }
     }
 }

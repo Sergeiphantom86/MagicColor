@@ -34,7 +34,7 @@ namespace Menu.TutorialEditor
         public void Play()
         {
             if (_sequence != null && _sequence.IsPlaying())
-            return;
+                return;
 
             Rotate();
         }
@@ -59,18 +59,11 @@ namespace Menu.TutorialEditor
             _sequence.SetEase(Ease.Linear);
         }
 
-        private void CreateSequence(
-        float amplitudeX = 0,
-        float amplitudeY = 0,
-        float amplitudeZ = 0)
+        private void CreateSequence(float amplitudeX = 0, float amplitudeY = 0, float amplitudeZ = 0)
         {
-            _sequence.Append(
-            transform
-            .DORotate(
-            transform.eulerAngles + new Vector3(amplitudeX, amplitudeY, amplitudeZ),
-            _duration)
-            .SetEase(Ease.InSine)
-            );
+            _sequence.Append(transform
+            .DORotate(transform.eulerAngles + new Vector3(amplitudeX, amplitudeY, amplitudeZ), _duration)
+            .SetEase(Ease.InSine));
         }
 
         private void OnDestroy()

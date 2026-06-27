@@ -23,8 +23,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         private Vector3 _startScale;
         private bool _isMoving;
 
-        public MovementState(
-        StateMachine stateMachine,
+        public MovementState(StateMachine stateMachine,
         TutorialContext context,
         Block block,
         GridDragMovement gridDragMovement,

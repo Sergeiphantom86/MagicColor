@@ -18,7 +18,7 @@ namespace PuzzleEditor.SoundEditor
 
             if (_toggle == null)
             {
-                Debug.LogError("Toggle �� ��������!");
+                Debug.LogError($"Toggle is not assigned on '{gameObject.name}'!", this);
                 return;
             }
         }
@@ -26,7 +26,7 @@ namespace PuzzleEditor.SoundEditor
         private void OnEnable()
         {
             if (_toggle == null)
-            return;
+                return;
 
             _toggle.onValueChanged.AddListener(TurnOff);
         }
@@ -34,7 +34,7 @@ namespace PuzzleEditor.SoundEditor
         private void OnDisable()
         {
             if (_toggle == null)
-            return;
+                return;
 
             _toggle.onValueChanged.RemoveListener(TurnOff);
         }

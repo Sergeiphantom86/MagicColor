@@ -99,7 +99,7 @@ namespace PuzzleEditor.Stars
         {
             if (count < 0)
             {
-                Debug.LogWarning($"SetCountStars: количество звёзд {count} выходит за допустимый диапазон");
+                Debug.LogWarning($"SetCountStars: star count {count} is out of valid range (minimum: {MinIndexValue}). Clamping to {MinIndexValue}.");
                 YG2.saves.Stars = MinIndexValue;
                 return;
             }

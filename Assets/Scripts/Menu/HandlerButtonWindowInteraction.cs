@@ -75,8 +75,7 @@ namespace Menu
                 return;
             }
 
-            if (
-            _windowInitializer.WindowActions.TryGetValue(windowName, out Action action) == false)
+            if (_windowInitializer.WindowActions.TryGetValue(windowName, out Action action) == false)
             {
                 Debug.LogError($"Unknown window action: {windowName}");
                 return;

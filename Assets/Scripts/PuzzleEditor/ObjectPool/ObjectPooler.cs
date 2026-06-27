@@ -39,9 +39,7 @@ namespace PuzzleEditor.ObjectPool
 
         public void Release(T item)
         {
-            if (
-            _objectToPrefabIndex != null
-            && _objectToPrefabIndex.TryGetValue(item, out int prefabIndex))
+            if (_objectToPrefabIndex != null && _objectToPrefabIndex.TryGetValue(item, out int prefabIndex))
             {
                 if (_prefabPools.TryGetValue(prefabIndex, out var specificPool))
                 {
@@ -63,8 +61,7 @@ namespace PuzzleEditor.ObjectPool
             actionOnDestroy: OnDestroyPoolObject,
             collectionCheck: _collectionCheck,
             defaultCapacity: _defaultPoolSize,
-            maxSize: _maxPoolSize
-            );
+            maxSize: _maxPoolSize);
 
             if (_fallbackPrefabs != null && _fallbackPrefabs.Count > 1)
             {
@@ -81,8 +78,8 @@ namespace PuzzleEditor.ObjectPool
                     actionOnDestroy: OnDestroyPoolObject,
                     collectionCheck: _collectionCheck,
                     defaultCapacity: _defaultPoolSize,
-                    maxSize: _maxPoolSize
-                    );
+                    maxSize: _maxPoolSize);
+
                     _prefabPools[i] = pool;
                 }
             }
@@ -137,7 +134,7 @@ namespace PuzzleEditor.ObjectPool
         private void OnDestroyPoolObject(T item)
         {
             if (item == null)
-            return;
+                return;
 
             _objectToPrefabIndex?.Remove(item);
 

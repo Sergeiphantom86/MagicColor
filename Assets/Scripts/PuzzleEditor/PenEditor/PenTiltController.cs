@@ -22,11 +22,7 @@ namespace PuzzleEditor.PenEditor
 
             if (Mathf.Approximately(targetAngle, _currentAngle) == false)
             {
-                _currentAngle = Mathf.Lerp(
-                _currentAngle,
-                targetAngle,
-                Time.deltaTime / _tiltDuration
-                );
+                _currentAngle = Mathf.Lerp(_currentAngle, targetAngle, Time.deltaTime / _tiltDuration);
 
                 transform.localEulerAngles = new Vector3(0, 0, _currentAngle);
             }

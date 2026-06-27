@@ -23,20 +23,9 @@ namespace PuzzleEditor.Table
             _gridPlaneFiller.HasChanged -= OnUpdateGridAfterScale;
         }
 
-        private void OnUpdateGridAfterScale(
-        Material material,
-        int gridSizeX,
-        int gridSizeY,
-        float cellSize)
+        private void OnUpdateGridAfterScale(Material material, int gridSizeX, int gridSizeY, float cellSize)
         {
-            material.SetVector(
-            "_GridSize",
-            new Vector4(
-            cellSize * gridSizeX / _multiplier,
-            cellSize * gridSizeY / _multiplier,
-            0,
-            0)
-            );
+            material.SetVector("_GridSize", new Vector4(cellSize * gridSizeX / _multiplier, cellSize * gridSizeY / _multiplier, 0, 0));
         }
     }
 }

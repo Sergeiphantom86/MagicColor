@@ -29,7 +29,7 @@ namespace Menu.TutorialEditor
 
             if (_targetImage == null)
             {
-                Debug.LogError("Blinker: ��� ���������� Image �� ������� " + gameObject.name);
+                Debug.LogError("Blinker: Не удалось найти Image на объекте " + gameObject.name);
                 enabled = false;
                 return;
             }

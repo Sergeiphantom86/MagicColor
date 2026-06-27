@@ -32,9 +32,8 @@ namespace PuzzleEditor.InkEditor
             Sequence sequence = DOTween.Sequence();
             sequence.SetDelay(delay);
 
-            sequence.Append(
-            transform.DOJump(target, jumpPower, 1, _duration).SetEase(Ease.OutBounce)
-            );
+            sequence.Append(transform.DOJump(target, jumpPower, 1, _duration)
+                .SetEase(Ease.OutBounce));
         }
 
         private Vector3 GetTargetPosition(Vector3 origin)

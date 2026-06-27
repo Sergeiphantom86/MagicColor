@@ -17,7 +17,7 @@ namespace Wallets
         public string FormatNumber(long number)
         {
             if (number == 0)
-            return "0";
+                return "0";
 
             bool isNegative = number < 0;
             double absNumber = Math.Abs(number);
@@ -39,70 +39,59 @@ namespace Wallets
                 "ru" => _suffixesRU,
                 "tr" => _suffixesTR,
                 _ => _suffixesEN,
-                };
-            }
+            };
+        }
 
-            private bool ShouldUseDirectFormatting(double absNumber)
+        private bool ShouldUseDirectFormatting(double absNumber)
+        {
+            return absNumber < ScalingThreshold;
+        }
+
+        private string FormatDirect(double absNumber, bool isNegative)
+        {
+            return isNegative ? $"-{absNumber:0}" : absNumber.ToString("0");
+        }
+
+        private string FormatWithSuffix(double absNumber, bool isNegative, string[] suffixes)
+        {
+            (int suffixIndex, double scaledValue) = ScaleNumber(absNumber, suffixes);
+
+            scaledValue = Math.Round(scaledValue, MaxFractionDigits);
+
+            return AddSignAndSuffix(FormatRoundedValue(scaledValue), suffixIndex, isNegative, suffixes);
+        }
+
+        private (int suffixIndex, double scaledValue) ScaleNumber(double absNumber, string[] suffixes)
+        {
+            int suffixIndex = 0;
+            double scaledValue = absNumber;
+
+            while (ShouldContinueScaling(scaledValue, suffixIndex, suffixes))
             {
-                return absNumber < ScalingThreshold;
+                scaledValue /= ScalingFactor;
+                suffixIndex++;
             }
 
-            private string FormatDirect(double absNumber, bool isNegative)
-            {
-                return isNegative ? $"-{absNumber:0}" : absNumber.ToString("0");
-            }
+            return (suffixIndex, scaledValue);
+        }
 
-            private string FormatWithSuffix(double absNumber, bool isNegative, string[] suffixes)
-            {
-                (int suffixIndex, double scaledValue) = ScaleNumber(absNumber, suffixes);
+        private bool ShouldContinueScaling(double value, int suffixIndex, string[] suffixes)
+        {
+            return value >= ScalingFactor && suffixIndex < suffixes.Length - 1;
+        }
 
-                scaledValue = Math.Round(scaledValue, MaxFractionDigits);
+        private string FormatRoundedValue(double value)
+        {
+            return Math.Abs(value - Math.Round(value, 0)) < RoundingEpsilon
+            ? value.ToString("0")
+            : value.ToString("0.0");
+        }
 
-                return AddSignAndSuffix(
-                FormatRoundedValue(scaledValue),
-                suffixIndex,
-                isNegative,
-                suffixes
-                );
-            }
-
-            private (int suffixIndex, double scaledValue) ScaleNumber(
-            double absNumber,
-            string[] suffixes)
-            {
-                int suffixIndex = 0;
-                double scaledValue = absNumber;
-
-                while (ShouldContinueScaling(scaledValue, suffixIndex, suffixes))
-                {
-                    scaledValue /= ScalingFactor;
-                    suffixIndex++;
-                }
-
-                return (suffixIndex, scaledValue);
-            }
-
-            private bool ShouldContinueScaling(double value, int suffixIndex, string[] suffixes)
-            {
-                return value >= ScalingFactor && suffixIndex < suffixes.Length - 1;
-            }
-
-            private string FormatRoundedValue(double value)
-            {
-                return Math.Abs(value - Math.Round(value, 0)) < RoundingEpsilon
-                ? value.ToString("0")
-                : value.ToString("0.0");
-            }
-
-            private string AddSignAndSuffix(
-            string value,
-            int suffixIndex,
-            bool isNegative,
-            string[] suffixes)
-            {
-                return isNegative
-                ? $"-{value} {suffixes[suffixIndex]}"
-                : $"{value} {suffixes[suffixIndex]}";
-            }
+        private string AddSignAndSuffix(string value, int suffixIndex, bool isNegative, string[] suffixes)
+        {
+            return isNegative
+            ? $"-{value} {suffixes[suffixIndex]}"
+            : $"{value} {suffixes[suffixIndex]}";
         }
     }
+}

@@ -14,6 +14,7 @@ namespace PuzzleEditor.MovingBlocks
         private float _scaleReturnDuration;
         private float _scaleDownFactor;
         private float _scaleUpFactor;
+        private float _period;
         private Sequence _pathSequence;
         private Vector3 _originalScale;
 
@@ -24,6 +25,7 @@ namespace PuzzleEditor.MovingBlocks
             _scaleReturnDuration = 0.1f;
             _scaleDownFactor = 0.8f;
             _scaleUpFactor = 1.2f;
+            _period = 0.3f;
             _originalScale = transform.localScale;
         }
 
@@ -32,28 +34,24 @@ namespace PuzzleEditor.MovingBlocks
             _originalScale = transform.localScale;
 
             if (_pathSequence != null && _pathSequence.IsActive())
-            _pathSequence.Kill();
+                _pathSequence.Kill();
 
             _pathSequence = DOTween.Sequence();
-            _pathSequence.Append(
-            transform
+
+            _pathSequence.Append(transform
             .DOScale(_originalScale * _scaleDownFactor, _scaleDownDuration)
-            .SetEase(Ease.OutQuad)
-            );
-            _pathSequence.Append(
-            transform
+            .SetEase(Ease.OutQuad));
+
+            _pathSequence.Append(transform
             .DOScale(_originalScale * _scaleUpFactor, _scaleUpDuration)
-            .SetEase(Ease.OutBack)
-            );
+            .SetEase(Ease.OutBack));
 
             AddMovePoint(_pathSequence, waypoint, _durationToWaypoint);
             AddMovePoint(_pathSequence, endPoint, _durationToEnd);
 
-            _pathSequence.Append(
-            transform
+            _pathSequence.Append(transform
             .DOScale(_originalScale, _scaleReturnDuration)
-            .SetEase(Ease.OutElastic, 0.8f, 0.3f)
-            );
+            .SetEase(Ease.OutElastic, _scaleDownFactor, _period));
 
             _pathSequence.OnComplete(() => onComplete?.Invoke());
             _pathSequence.Play();

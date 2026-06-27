@@ -25,7 +25,7 @@ namespace PuzzleEditor.RouletteEditor
 
             if (_button == null)
             {
-                Debug.LogError("Button �� ��������!!!");
+                Debug.LogError($"Button reference is null on '{gameObject.name}'!");
                 return;
             }
 
@@ -69,9 +69,7 @@ namespace PuzzleEditor.RouletteEditor
 
         public int ParseTextToInt()
         {
-            string numericText = new string(
-            _textMeshPro.text.Where(c => char.IsDigit(c) || c == '-').ToArray()
-            );
+            string numericText = new(_textMeshPro.text.Where(c => char.IsDigit(c) || c == '-').ToArray());
 
             return int.TryParse(numericText, out int result) ? result : 0;
         }

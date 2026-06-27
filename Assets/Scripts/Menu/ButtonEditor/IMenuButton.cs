@@ -6,11 +6,6 @@ namespace Menu.ButtonEditor
 {
     public interface IMenuButton
     {
-        void Configure(
-        Button uiButton,
-        HandlerButtonWindowInteraction manager,
-        ButtonSoundHandler buttonSoundHandler,
-        AudioClip audioClip
-        );
+        void Configure(Button uiButton, HandlerButtonWindowInteraction manager, ButtonSoundHandler buttonSoundHandler, AudioClip audioClip);
     }
 }

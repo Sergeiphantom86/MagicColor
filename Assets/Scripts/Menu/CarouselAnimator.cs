@@ -12,8 +12,7 @@ namespace Menu
             _duration = duration;
         }
 
-        public void ApplyImmediate(
-        RectTransform rect,
+        public void ApplyImmediate(RectTransform rect,
         CanvasGroup canvas,
         float positionX,
         float scale,
@@ -24,8 +23,7 @@ namespace Menu
             canvas.alpha = alpha;
         }
 
-        public void ApplyAnimated(
-        RectTransform rect,
+        public void ApplyAnimated(RectTransform rect,
         CanvasGroup canvas,
         float positionX,
         float scale,

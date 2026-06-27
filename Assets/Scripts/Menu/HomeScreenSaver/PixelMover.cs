@@ -47,12 +47,9 @@ namespace Menu.HomeScreenSaver
 
             for (int i = 0; i < _sortedPixels.Count; i++)
             {
-                _currentSequence.Insert(
-                GetDelayPixels(i),
-                GetPixelTransform(_sortedPixels, i)
+                _currentSequence.Insert(GetDelayPixels(i), GetPixelTransform(_sortedPixels, i)
                 .DOMove(GetTargetPosition(_sortedPixels, i), _animationDuration)
-                .SetEase(Ease.InOutFlash)
-                );
+                .SetEase(Ease.InOutFlash));
             }
         }
 

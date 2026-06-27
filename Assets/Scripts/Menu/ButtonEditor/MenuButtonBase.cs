@@ -12,8 +12,7 @@ namespace Menu.ButtonEditor
         private ButtonSoundHandler _soundHandler;
         private AudioClip _audioClip;
 
-        public virtual void Configure(
-        Button button,
+        public virtual void Configure(Button button,
         HandlerButtonWindowInteraction handlerButtonWindowInteraction,
         ButtonSoundHandler buttonSound,
         AudioClip audioClip)
@@ -36,8 +35,7 @@ namespace Menu.ButtonEditor
             button.onClick.AddListener(OnButtonClick);
         }
 
-        public virtual void Press(
-        Button button,
+        public virtual void Press(Button button,
         HandlerButtonWindowInteraction handlerButtonWindowInteraction,
         ButtonSoundHandler buttonSound,
         AudioClip audioClip)

@@ -22,24 +22,25 @@ namespace PuzzleEditor.RouletteEditor
         private void Awake()
         {
             if (_wheelAnimator == null)
-            Debug.LogError($"{nameof(WheelAnimator)} ������ �� �����������!", this);
+                Debug.LogError($"{nameof(WheelAnimator)} reference is not assigned!", this);
+
             if (_spinButtonController == null)
-            Debug.LogError($"{nameof(ButtonController)} ������ �� �����������!", this);
+                Debug.LogError($"{nameof(ButtonController)} reference is not assigned!", this);
+
             if (_itemCollector == null)
-            Debug.LogError($"{nameof(ItemCollector)} ������ �� �����������!", this);
+                Debug.LogError($"{nameof(ItemCollector)} reference is not assigned!", this);
+
             if (_counter == null)
-            Debug.LogError($"{nameof(RouletteCounter)} ������ �� �����������!", this);
+                Debug.LogError($"{nameof(RouletteCounter)} reference is not assigned!", this);
         }
 
         private void Start()
         {
-            _spinButtonController.Initialize(
-            globalInteractableCondition: () => _counter.HasAttempts,
-            onClickAction: Spin
-            );
+            _spinButtonController.Initialize(() =>
+            _counter.HasAttempts, onClickAction: Spin);
 
             if (_itemCollector == null)
-            return;
+                return;
 
             _items = _itemCollector.Items;
 
@@ -67,16 +68,13 @@ namespace PuzzleEditor.RouletteEditor
 
             Currency result = GetPrize();
 
-            _wheelAnimator.SpinToTarget(
-            result.GetAngle(),
-            () =>
+            _wheelAnimator.SpinToTarget(result.GetAngle(), () =>
             {
                 _isSpinning = false;
                 _spinButtonController.SetLocalBlock(false);
                 _rewardAnimator.ActivateAtPosition(result);
                 _buttonHome.Button.interactable = true;
-            }
-            );
+            });
         }
 
         private Currency GetPrize()
@@ -88,7 +86,7 @@ namespace PuzzleEditor.RouletteEditor
                 cumulative += item.Weight;
 
                 if (GetRandomValue(GetTotalWeight()) <= cumulative)
-                return item;
+                    return item;
             }
 
             Debug.LogWarning("Prize selection failed, returning first item");

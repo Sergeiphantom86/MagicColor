@@ -51,7 +51,7 @@ namespace PuzzleEditor.SoundEditor
         public void PlayButtonClickSound(AudioClip audioClip)
         {
             if (audioClip == null)
-            return;
+                return;
 
             _soundSource.PlayOneShot(audioClip);
 
@@ -83,11 +83,7 @@ namespace PuzzleEditor.SoundEditor
             SetAudioSource(_musicSource, isOnLoop: true, _musicMixerGroup, _currentMusicVolume);
         }
 
-        private void SetAudioSource(
-        AudioSource audioSource,
-        bool isOnLoop,
-        AudioMixerGroup audioMixerGroup,
-        float volume)
+        private void SetAudioSource(AudioSource audioSource, bool isOnLoop, AudioMixerGroup audioMixerGroup, float volume)
         {
             audioSource.outputAudioMixerGroup = audioMixerGroup;
             audioSource.playOnAwake = false;
@@ -107,7 +103,7 @@ namespace PuzzleEditor.SoundEditor
         public void PlayBackgroundMusic()
         {
             if (_backgroundMusic == null || _musicSource.isPlaying)
-            return;
+                return;
 
             _musicSource.clip = _backgroundMusic;
             _musicSource.Play();

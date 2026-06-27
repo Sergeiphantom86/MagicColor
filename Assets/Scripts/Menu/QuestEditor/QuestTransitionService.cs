@@ -65,7 +65,7 @@ namespace Menu.QuestEditor
         {
             if (index < MinIndexValue)
             {
-                Debug.LogWarning($"SetTutorial: индекс {index} вне допустимого диапазона туториалов");
+                Debug.LogWarning($"SetTutorial: index {index} is out of the valid tutorial range");
                 return;
             }
 

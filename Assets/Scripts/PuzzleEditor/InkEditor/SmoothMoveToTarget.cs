@@ -40,19 +40,19 @@ namespace PuzzleEditor.InkEditor
         private void Update()
         {
             if (IsMoving == false)
-            return;
+                return;
 
             ProcessMovementDelay();
 
             StartCoroutine(Wait());
 
             if (_isMoving == false || _target == null)
-            return;
+                return;
 
             UpdatePosition();
 
             if (CheckWaypointArrival())
-            return;
+                return;
         }
 
         public void BeginMovement()
@@ -77,17 +77,13 @@ namespace PuzzleEditor.InkEditor
 
         private void UpdatePosition()
         {
-            transform.position = Vector3.MoveTowards(
-            transform.position,
-            DetermineDestination(),
-            _movementSpeed * Time.deltaTime
-            );
+            transform.position = Vector3.MoveTowards(transform.position, DetermineDestination(), _movementSpeed * Time.deltaTime);
         }
 
         private bool CheckWaypointArrival()
         {
             if (_reachedWaypoint || _waypoint == null)
-            return false;
+                return false;
 
             if (CalculateDistance(transform.position, _modifiedWaypointPosition) <= _minDistance)
             {
@@ -108,7 +104,7 @@ namespace PuzzleEditor.InkEditor
         private Vector3 DetermineDestination()
         {
             if (_reachedWaypoint || _waypoint == null)
-            return _target.transform.position;
+                return _target.transform.position;
 
             return _modifiedWaypointPosition;
         }
@@ -116,7 +112,7 @@ namespace PuzzleEditor.InkEditor
         private void ProcessMovementDelay()
         {
             if (_isMoving)
-            return;
+                return;
 
             _delayTimer -= Time.deltaTime;
 

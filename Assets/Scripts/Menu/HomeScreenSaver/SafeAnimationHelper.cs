@@ -9,16 +9,14 @@ namespace Menu.HomeScreenSaver
         public static void SafeDelayedCall(this MonoBehaviour behaviour, float delay, Action action)
         {
             if (behaviour == null)
-            return;
+                return;
 
-            DOVirtual.DelayedCall(
-            delay,
+            DOVirtual.DelayedCall(delay,
             () =>
             {
                 if (behaviour != null && behaviour.isActiveAndEnabled)
-                action?.Invoke();
-            }
-            );
+                    action?.Invoke();
+            });
         }
     }
 }

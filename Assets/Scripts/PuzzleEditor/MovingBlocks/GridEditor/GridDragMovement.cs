@@ -48,10 +48,7 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
 
         public void BeginInteraction(Vector2 screenTouchPos)
         {
-            _currentCenterCell = new Vector2Int(
-            _block.GridPosition.x + (_block.SizeInCells.x - 1) / 2,
-            _block.GridPosition.y + (_block.SizeInCells.y - 1) / 2
-            );
+            _currentCenterCell = new Vector2Int(_block.GridPosition.x + (_block.SizeInCells.x - 1) / 2,_block.GridPosition.y + (_block.SizeInCells.y - 1) / 2);
 
             _lastWorldTouch = ScreenToWorld(screenTouchPos);
             _accumulatedDelta = Vector3.zero;
@@ -91,10 +88,7 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
 
             if (_grid.CanPlaceBlock(targetOrigin, _block.SizeInCells) == false)
             {
-                Vector2Int currentOrigin = _grid.GetOriginFromCenter(
-                _currentCenterCell,
-                _block.SizeInCells
-                );
+                Vector2Int currentOrigin = _grid.GetOriginFromCenter(_currentCenterCell,_block.SizeInCells);
 
                 _grid.PlaceObject(currentOrigin, _block);
                 _accumulatedDelta = Vector3.zero;

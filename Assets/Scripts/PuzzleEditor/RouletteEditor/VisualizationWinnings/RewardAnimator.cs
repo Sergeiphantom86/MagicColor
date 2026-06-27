@@ -61,12 +61,7 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
 
         private void CreateParticle(Currency item)
         {
-            GameObject particle = Instantiate(
-            _spritePrefab,
-            transform.position,
-            Quaternion.Euler(0, 0, Random.Range(0, 360f)),
-            transform
-            );
+            GameObject particle = Instantiate(_spritePrefab, transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360f)), transform);
 
             particle.transform.localScale = Vector3.zero;
 
@@ -77,23 +72,18 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
 
             ParticleAnimation anim = particle.AddComponent<ParticleAnimation>();
 
-            anim.Initialize(
-            randomPosition: CalculateRandomPosition(),
-            targetPosition: _rewards.transform.position,
-            settings: GetParticleAnimation()
-            );
+            anim.Initialize(randomPosition: CalculateRandomPosition(), targetPosition: _rewards.transform.position, settings: GetParticleAnimation());
         }
 
         private ParticleAnimation.Settings GetParticleAnimation()
         {
             return new ParticleAnimation.Settings(
-            minScale: _minScale,
-            maxScale: _maxScale,
-            scaleUpDuration: _duration,
-            moveToRandomDuration: _duration,
-            moveToTargetDuration: _moveToTargetDuration,
-            firstPhaseRatio: _firstPhaseRatio
-            );
+                minScale: _minScale,
+                maxScale: _maxScale,
+                scaleUpDuration: _duration,
+                moveToRandomDuration: _duration,
+                moveToTargetDuration: _moveToTargetDuration,
+                firstPhaseRatio: _firstPhaseRatio);
         }
 
         private void HandleParticleComplete(Currency item)
@@ -123,11 +113,7 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
 
         private Vector3 GetRandomDirection()
         {
-            return new Vector3(
-            Random.Range(_directionRange.x, _directionRange.y),
-            _directionValueY,
-            0
-            ).normalized;
+            return new Vector3(Random.Range(_directionRange.x, _directionRange.y), _directionValueY, 0).normalized;
         }
     }
 }

@@ -12,10 +12,10 @@ public static class NamespaceUpdater
     {
         "/Editor/",
         "/Plugins/",
-        "/Tests/"
+        "/Tests/",
     };
 
-    //[MenuItem("Tools/Update Namespaces (fix)")]
+    //[MenuItem("Обновить пространства имен")]
     public static void UpdateAllNamespaces()
     {
         string rootPath = GetRootPath();

@@ -43,20 +43,9 @@ namespace PuzzleEditor.UI
             _moverUI.EnableAnimationResizing(_rectTransform, _duration, _scale, _scale);
         }
 
-        private Sequence GetSequence(
-        RectTransform canvasRect,
-        float positionX,
-        float positionY,
-        float positionZ)
+        private Sequence GetSequence(RectTransform canvasRect, float positionX, float positionY, float positionZ)
         {
-            return _moverUI.EnableMotionAnimation(
-            _rectTransform,
-            _duration,
-            canvasRect,
-            positionX,
-            positionY,
-            positionZ
-            );
+            return _moverUI.EnableMotionAnimation(_rectTransform, _duration, canvasRect, positionX, positionY, positionZ);
         }
 
         private void OnDestroy()

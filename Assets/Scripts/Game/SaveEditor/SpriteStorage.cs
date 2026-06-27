@@ -12,7 +12,7 @@ public class SpriteStorage
     {
         if (sprite == null)
         {
-            Debug.LogWarning("SpriteStorage: попытка установить null спрайт");
+            Debug.LogWarning("SpriteStorage: null sprite assignment ignored");
             return;
         }
 
@@ -25,7 +25,7 @@ public class SpriteStorage
     {
         if (sprite == null)
         {
-            Debug.LogWarning("SpriteStorage: попытка установить null спрайт");
+            Debug.LogWarning("SpriteStorage: attempt to set a null sprite");
             return;
         }
 

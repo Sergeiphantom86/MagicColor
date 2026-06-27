@@ -19,18 +19,17 @@ namespace Menu.TutorialEditor.TutorialPuzzle
         private void OnDisable()
         {
             if (_key == null)
-            return;
+                return;
 
             if (_lock == null)
-            return;
+                return;
 
             _key.Shift -= OnMovePointer;
             _key.Selected -= OnMovePointerClick;
             _lock.Unblocking -= OnComplete;
         }
 
-        public void Initialization(
-        HandMover handMover,
+        public void Initialization(HandMover handMover,
         TouchVisualizer touchVisualizer,
         Key key,
         Lock @lock)

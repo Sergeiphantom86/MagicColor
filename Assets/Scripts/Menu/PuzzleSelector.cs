@@ -17,7 +17,7 @@ namespace Menu
 
             if (_puzzleImage == null)
             {
-                Debug.LogError("Image �� ��������");
+                Debug.LogError("Image: Изображение не найдено!");
                 return;
             }
         }

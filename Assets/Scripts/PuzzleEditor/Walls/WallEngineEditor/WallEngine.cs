@@ -32,29 +32,27 @@ namespace PuzzleEditor.Walls.WallEngineEditor
             _blockDestroySequence.IsTouched -= OnMove;
 
             if (_rotation != null)
-            _rotation.Rotated -= _movement.CacheStartPosition;
+                _rotation.Rotated -= _movement.CacheStartPosition;
         }
 
         public bool Initialize(
-        IColorPrecision colorPrecision,
-        BagKey bag,
-        Rotator rotator,
-        Messager hintKey,
-        Lock @lock,
-        ErrorPanel errorPanel,
-        Activator activator,
-        AudioClip audioClip)
+            IColorPrecision colorPrecision,
+            BagKey bag,
+            Rotator rotator,
+            Messager hintKey,
+            Lock @lock,
+            ErrorPanel errorPanel,
+            Activator activator,
+            AudioClip audioClip)
         {
             if (ValidateDependencies(colorPrecision, bag, rotator, hintKey, @lock) == false)
-            return false;
+                return false;
 
-            if (
-            ValidateComponents(
-            out ColorCollisionHandler collisionHandler,
-            out WallInteractionController interactionController,
-            out LockFeedbackService lockFeedback,
-            out BlockDestroySequence blockDestroySequence
-            ) == false)
+            if (ValidateComponents(
+                out ColorCollisionHandler collisionHandler,
+                out WallInteractionController interactionController,
+                out LockFeedbackService lockFeedback,
+                out BlockDestroySequence blockDestroySequence) == false)
             {
                 return false;
             }
@@ -66,16 +64,15 @@ namespace PuzzleEditor.Walls.WallEngineEditor
             InitMovement();
 
             InitSystems(
-            collisionHandler,
-            interactionController,
-            lockFeedback,
-            colorPrecision,
-            bag,
-            hintKey,
-            @lock,
-            errorPanel,
-            activator
-            );
+                collisionHandler,
+                interactionController,
+                lockFeedback, 
+                colorPrecision,
+                bag,
+                hintKey,
+                @lock,
+                errorPanel,
+                activator);
 
             _audioClip = audioClip;
             return true;
@@ -86,7 +83,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
             _movement.Push();
 
             if (_voiceover != null && _audioClip != null)
-            _voiceover.PlayOneShot(_audioClip);
+                _voiceover.PlayOneShot(_audioClip);
         }
 
         private void OnMove()
@@ -95,15 +92,14 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         }
 
         private void InitSystems(
-        ColorCollisionHandler collisionHandler,
-        WallInteractionController interactionController,
-        LockFeedbackService lockFeedback,
-        IColorPrecision colorPrecision,
-        BagKey bag,
-        Messager hintKey,
-        Lock @lock,
-        ErrorPanel errorPanel,
-        Activator activator)
+            ColorCollisionHandler collisionHandler,
+            WallInteractionController interactionController,
+            LockFeedbackService lockFeedback,
+            IColorPrecision colorPrecision,
+            BagKey bag, Messager hintKey,
+            Lock @lock,
+            ErrorPanel errorPanel,
+            Activator activator)
         {
             _layoutUpdater.Initialize(_rotation);
 
@@ -119,42 +115,37 @@ namespace PuzzleEditor.Walls.WallEngineEditor
         private void InitMovement()
         {
             if (_movement == null)
-            return;
+                return;
 
             _movement.CacheStartPosition();
             _rotation.Rotated += _movement.CacheStartPosition;
         }
 
-        private bool ValidateDependencies(
-        IColorPrecision colorPrecision,
-        BagKey bag,
-        Rotator rotator,
-        Messager hintKey,
-        Lock @lock)
+        private bool ValidateDependencies(IColorPrecision colorPrecision, BagKey bag, Rotator rotator, Messager hintKey, Lock @lock)
         {
             if (colorPrecision == null)
-            return LogNull(nameof(colorPrecision));
+                return LogNull(nameof(colorPrecision));
 
             if (bag == null)
-            return LogNull(nameof(bag));
+                return LogNull(nameof(bag));
 
             if (rotator == null)
-            return LogNull(nameof(rotator));
+                return LogNull(nameof(rotator));
 
             if (hintKey == null)
-            return LogNull(nameof(hintKey));
+                return LogNull(nameof(hintKey));
 
             if (@lock == null)
-            return LogNull(nameof(@lock));
+                return LogNull(nameof(@lock));
 
             return true;
         }
 
         private bool ValidateComponents(
-        out ColorCollisionHandler collisionHandler,
-        out WallInteractionController interactionController,
-        out LockFeedbackService lockFeedback,
-        out BlockDestroySequence blockDestroySequence)
+            out ColorCollisionHandler collisionHandler,
+            out WallInteractionController interactionController,
+            out LockFeedbackService lockFeedback,
+            out BlockDestroySequence blockDestroySequence)
         {
             collisionHandler = GetComponent<ColorCollisionHandler>();
             interactionController = GetComponent<WallInteractionController>();
@@ -162,29 +153,26 @@ namespace PuzzleEditor.Walls.WallEngineEditor
             blockDestroySequence = GetComponent<BlockDestroySequence>();
 
             if (collisionHandler == null)
-            return LogNull(nameof(ColorCollisionHandler));
+                return LogNull(nameof(ColorCollisionHandler));
 
             if (interactionController == null)
-            return LogNull(nameof(WallInteractionController));
+                return LogNull(nameof(WallInteractionController));
 
             if (_layoutUpdater == null)
-            return LogNull(nameof(WallLayoutUpdater));
+                return LogNull(nameof(WallLayoutUpdater));
 
             if (lockFeedback == null)
-            return LogNull(nameof(LockFeedbackService));
+                return LogNull(nameof(LockFeedbackService));
 
             if (blockDestroySequence == null)
-            return LogNull(nameof(BlockDestroySequence));
+                return LogNull(nameof(BlockDestroySequence));
 
             return true;
         }
 
         private bool LogNull(string dependencyName)
         {
-            Debug.LogError(
-            $"[{nameof(WallEngine)}] Initialization failed: {dependencyName} missing",
-            this
-            );
+            Debug.LogError($"[{nameof(WallEngine)}] Initialization failed: {dependencyName} missing", this);
 
             return false;
         }

@@ -40,14 +40,16 @@ namespace Game.LoadingScreen
             _isFirstLoad = true;
             _canvasGroup = GetComponent<CanvasGroup>();
             _panelFader = GetComponent<PanelFader>();
+
             _canvasGroup.alpha = _isFirstLoad ? 1f : 0f;
+
             _canvasGroup.interactable = false;
             _canvasGroup.blocksRaycasts = false;
 
             LoadSceneAsyncWithSplash(Menu);
         }
 
-        public void LoadSceneAsyncWithSplash(string sceneName, float extraTime = 0)
+        public void LoadSceneAsyncWithSplash(string sceneName)
         {
             if (_loadingCoroutine != null)
             {

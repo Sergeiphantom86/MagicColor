@@ -9,7 +9,7 @@ public static class UnityCodeFormatter
     private const string RootFolder = "Assets/Scripts";
     private static readonly string[] ExcludeFolders = { "/Editor/", "/Plugins/", "/Tests/" };
 
-    [MenuItem("Tools/Format Code (Unity Safe)")]
+    [MenuItem("Tools/Форматирование кода (Unity Safe)")]
     public static void FormatAll()
     {
         string rootFullPath = Path.Combine(Application.dataPath, RootFolder.Substring("Assets/".Length));

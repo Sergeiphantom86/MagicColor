@@ -24,8 +24,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         private readonly PurchaseButton _purchaseButton;
         private readonly StateMachine _stateMachine;
 
-        public TutorialAbilities(
-        StateMachine stateMachine,
+        public TutorialAbilities(StateMachine stateMachine,
         TutorialContext context,
         IInputHandler input,
         PauseButton pauseButton,

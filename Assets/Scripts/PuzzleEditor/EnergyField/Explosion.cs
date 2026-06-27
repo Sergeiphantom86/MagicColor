@@ -19,12 +19,7 @@ namespace PuzzleEditor.EnergyField
 
         public void Explode()
         {
-            int hitCount = Physics.OverlapSphereNonAlloc(
-            transform.position,
-            _radius,
-            _colliderBuffer,
-            _affectedLayers
-            );
+            int hitCount = Physics.OverlapSphereNonAlloc(transform.position, _radius, _colliderBuffer, _affectedLayers);
 
             for (int i = 0; i < hitCount; i++)
             {
@@ -50,13 +45,7 @@ namespace PuzzleEditor.EnergyField
 
             if (rigidbody != null)
             {
-                rigidbody.AddExplosionForce(
-                _force,
-                transform.position,
-                _radius,
-                _upwardModifier,
-                ForceMode.Impulse
-                );
+                rigidbody.AddExplosionForce(_force, transform.position, _radius, _upwardModifier, ForceMode.Impulse);
             }
 
             if (partition != null)

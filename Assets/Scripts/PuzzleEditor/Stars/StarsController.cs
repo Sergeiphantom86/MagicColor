@@ -54,10 +54,8 @@ namespace PuzzleEditor.Stars
             for (int i = 0; i < activeCount; i++)
             {
                 int index = i;
-                _animationSequence.InsertCallback(
-                _initialDelay + GetDelay(i),
-                () => _stars[index].TurnOn()
-                );
+                _animationSequence.InsertCallback(_initialDelay + GetDelay(i), () =>
+                _stars[index].TurnOn());
             }
         }
 

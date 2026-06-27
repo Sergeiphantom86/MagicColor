@@ -36,7 +36,7 @@ namespace Wallets
 
             if (_leaderboardName == Default)
             {
-                Debug.LogError($"�� ������� ������������� ��� ��������: {walletName}");
+                Debug.LogError($"Leaderboard name is not set for wallet: {walletName}", this);
                 return;
             }
 
@@ -46,10 +46,10 @@ namespace Wallets
         private string ConvertName(string original)
         {
             if (string.IsNullOrEmpty(original))
-            return Default;
+                return Default;
 
             if (original.EndsWith(Suffix))
-            return original[..^Suffix.Length];
+                return original[..^Suffix.Length];
 
             return original;
         }

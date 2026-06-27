@@ -23,24 +23,18 @@ namespace PuzzleEditor.PenEditor
             _material.EnableKeyword(Emission);
 
             if (_material.HasProperty(EmissionColor))
-            _material.SetColor(EmissionColor, Color.black);
+                _material.SetColor(EmissionColor, Color.black);
         }
 
         private void Start()
         {
-            DOTween
-            .To(
-            () => 0f,
+            DOTween.To(() =>
+            0f,
             time =>
             {
                 Color color = _gradient.Evaluate(time) * _emissionMultiplier;
                 _material.SetColor(EmissionColor, color);
-                },
-                1f,
-                _duration)
-                .SetLoops(-1, LoopType.Yoyo)
-                .SetEase(Ease.InOutSine)
-                .SetTarget(this);
-            }
+            }, 1f, _duration).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine).SetTarget(this);
         }
     }
+}

@@ -32,7 +32,7 @@ namespace PuzzleEditor.Table
             _grid.Initialized += OnStartSpawn;
 
             if (_grid.IsInitialized)
-            OnStartSpawn();
+                OnStartSpawn();
         }
 
         private void OnDisable()
@@ -78,19 +78,11 @@ namespace PuzzleEditor.Table
                 SetScale();
                 SetPosition();
 
-                HasChanged?.Invoke(
-                _renderer.material,
-                _grid.GridSizeX,
-                _grid.GridSizeY,
-                _grid.CellSize
-                );
+                HasChanged?.Invoke(_renderer.material, _grid.GridSizeX, _grid.GridSizeY, _grid.CellSize);
             }
             catch (Exception exception)
             {
-                Debug.LogError(
-                $"{nameof(GridPlaneFiller)}: Failed to spawn plane. Error: {exception.Message}",
-                this
-                );
+                Debug.LogError($"{nameof(GridPlaneFiller)}: Failed to spawn plane. Error: {exception.Message}", this);
                 CleanupInstance();
             }
         }
@@ -101,28 +93,19 @@ namespace PuzzleEditor.Table
 
             if (_grid.GridSizeX <= 0)
             {
-                Debug.LogError(
-                $"{nameof(GridPlaneFiller)}: GridSizeX must be greater than 0. Current value: {_grid.GridSizeX}",
-                this
-                );
+                Debug.LogError($"{nameof(GridPlaneFiller)}: GridSizeX must be greater than 0. Current value: {_grid.GridSizeX}", this);
                 isValid = false;
             }
 
             if (_grid.GridSizeY <= 0)
             {
-                Debug.LogError(
-                $"{nameof(GridPlaneFiller)}: GridSizeY must be greater than 0. Current value: {_grid.GridSizeY}",
-                this
-                );
+                Debug.LogError($"{nameof(GridPlaneFiller)}: GridSizeY must be greater than 0. Current value: {_grid.GridSizeY}", this);
                 isValid = false;
             }
 
             if (_grid.CellSize <= 0)
             {
-                Debug.LogError(
-                $"{nameof(GridPlaneFiller)}: CellSize must be greater than 0. Current value: {_grid.CellSize}",
-                this
-                );
+                Debug.LogError($"{nameof(GridPlaneFiller)}: CellSize must be greater than 0. Current value: {_grid.CellSize}", this);
                 isValid = false;
             }
 
@@ -135,19 +118,13 @@ namespace PuzzleEditor.Table
 
             if (_renderer == null)
             {
-                Debug.LogError(
-                $"{nameof(GridPlaneFiller)}: Plane prefab must have a Renderer component!",
-                this
-                );
+                Debug.LogError($"{nameof(GridPlaneFiller)}: Plane prefab must have a Renderer component!", this);
                 return false;
             }
 
             if (_renderer.material == null)
             {
-                Debug.LogWarning(
-                $"{nameof(GridPlaneFiller)}: Renderer material is null. Using default material.",
-                this
-                );
+                Debug.LogWarning($"{nameof(GridPlaneFiller)}: Renderer material is null. Using default material.", this);
             }
 
             return true;
@@ -157,9 +134,7 @@ namespace PuzzleEditor.Table
         {
             if (divider <= 0)
             {
-                Debug.LogWarning(
-                $"{nameof(GridPlaneFiller)}: Divider is 0 or negative. Using default value 1."
-                );
+                Debug.LogWarning($"{nameof(GridPlaneFiller)}: Divider is 0 or negative. Using default value 1.");
                 divider = 1;
             }
 
@@ -170,19 +145,14 @@ namespace PuzzleEditor.Table
         {
             try
             {
-                float scaleX =
-                GetScreenDimensions(_grid.GridSizeX, _scaleMultiplier) * _scaleMultiplierX;
-                float scaleZ =
-                GetScreenDimensions(_grid.GridSizeY, _scaleMultiplier) * _scaleMultiplierZ;
+                float scaleX = GetScreenDimensions(_grid.GridSizeX, _scaleMultiplier) * _scaleMultiplierX;
+                float scaleZ = GetScreenDimensions(_grid.GridSizeY, _scaleMultiplier) * _scaleMultiplierZ;
 
                 _planeInstance.transform.localScale = new Vector3(scaleX, _positionY, scaleZ);
             }
             catch (Exception exception)
             {
-                Debug.LogError(
-                $"{nameof(GridPlaneFiller)}: Failed to set scale. Error: {exception.Message}",
-                this
-                );
+                Debug.LogError($"{nameof(GridPlaneFiller)}: Failed to set scale. Error: {exception.Message}", this);
                 _planeInstance.transform.localScale = Vector3.one;
             }
         }
@@ -198,10 +168,7 @@ namespace PuzzleEditor.Table
             }
             catch (Exception exception)
             {
-                Debug.LogError(
-                $"{nameof(GridPlaneFiller)}: Failed to set position. Error: {exception.Message}",
-                this
-                );
+                Debug.LogError($"{nameof(GridPlaneFiller)}: Failed to set position. Error: {exception.Message}", this);
                 _planeInstance.transform.localPosition = Vector3.zero;
             }
         }

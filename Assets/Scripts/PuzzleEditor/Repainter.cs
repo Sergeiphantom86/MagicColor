@@ -91,7 +91,7 @@ namespace PuzzleEditor
         private void ReplaceColors(List<IColorable> colorables)
         {
             if (ShouldRepaint(colorables) == false)
-            return;
+                return;
 
             var (colors, objects) = PreparePaintingData(colorables);
 
@@ -105,9 +105,7 @@ namespace PuzzleEditor
 
         private (List<Color> Colors, List<IColorable> Objects) PreparePaintingData(List<IColorable> colorables)
         {
-            return (
-            Colors: ShuffleColors(_colors),
-            Objects: SelectRandomColorables(colorables, _colors.Count));
+            return (Colors: ShuffleColors(_colors), Objects: SelectRandomColorables(colorables, _colors.Count));
         }
 
         private List<Color> ShuffleColors(List<Color> colors)

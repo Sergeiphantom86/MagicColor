@@ -53,8 +53,7 @@ namespace PuzzleEditor.PoolEffects
             actionOnDestroy: OnDestroyPoolObject,
             collectionCheck: _collectionCheck,
             defaultCapacity: _defaultPoolSize,
-            maxSize: _maxPoolSize
-            );
+            maxSize: _maxPoolSize);
         }
 
         private void Return(ParticleSystem particles)
@@ -77,11 +76,7 @@ namespace PuzzleEditor.PoolEffects
             }
         }
 
-        private void SetLocation(
-        ParticleSystem particles,
-        Vector3 position,
-        Quaternion quaternion,
-        float scale)
+        private void SetLocation(ParticleSystem particles, Vector3 position, Quaternion quaternion, float scale)
         {
             particles.transform.SetPositionAndRotation(position, quaternion);
             particles.transform.localScale = Vector3.one * scale;

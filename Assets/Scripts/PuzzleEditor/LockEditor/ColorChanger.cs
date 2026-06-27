@@ -35,7 +35,7 @@ namespace PuzzleEditor.LockEditor
         private void ChangeParticleColor(Color newColor)
         {
             if (_monochrome == null)
-            return;
+                return;
 
             Gradient gradient = CreateColorToWhiteGradient(newColor);
 
@@ -61,36 +61,35 @@ namespace PuzzleEditor.LockEditor
         private Gradient CreateColorToWhiteGradient(Color color)
         {
             return CreateGradient(
-            CreateColorKey(color, GradientStart),
-            CreateColorKey(Color.white, GradientEnd),
-            CreateAlphaKey(color.a, GradientStart),
-            CreateAlphaKey(FullyTransparent, FullyOpaque)
-            );
+                CreateColorKey(color, GradientStart),
+                CreateColorKey(Color.white, GradientEnd),
+                CreateAlphaKey(color.a, GradientStart),
+                CreateAlphaKey(FullyTransparent, FullyOpaque));
         }
 
         private Gradient CreateGradient(
-        GradientColorKey startColorKey,
-        GradientColorKey endColorKey,
-        GradientAlphaKey startAlphaKey,
-        GradientAlphaKey endAlphaKey)
+            GradientColorKey startColorKey,
+            GradientColorKey endColorKey,
+            GradientAlphaKey startAlphaKey,
+            GradientAlphaKey endAlphaKey)
         {
             Gradient gradient = new()
             {
                 colorKeys = new GradientColorKey[] { startColorKey, endColorKey },
                 alphaKeys = new GradientAlphaKey[] { startAlphaKey, endAlphaKey },
-                };
+            };
 
-                return gradient;
-            }
+            return gradient;
+        }
 
-            private GradientColorKey CreateColorKey(Color color, float time)
-            {
-                return new GradientColorKey(color, time);
-            }
+        private GradientColorKey CreateColorKey(Color color, float time)
+        {
+            return new GradientColorKey(color, time);
+        }
 
-            private GradientAlphaKey CreateAlphaKey(float alpha, float time)
-            {
-                return new GradientAlphaKey(alpha, time);
-            }
+        private GradientAlphaKey CreateAlphaKey(float alpha, float time)
+        {
+            return new GradientAlphaKey(alpha, time);
         }
     }
+}

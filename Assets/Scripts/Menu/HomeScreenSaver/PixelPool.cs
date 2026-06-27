@@ -37,8 +37,7 @@ namespace Menu.HomeScreenSaver
             actionOnDestroy: OnDestroyPoolObject,
             collectionCheck: _collectionCheck,
             defaultCapacity: _defaultPoolSize,
-            maxSize: _maxPoolSize
-            );
+            maxSize: _maxPoolSize);
         }
 
         private Fragment CreatePooledItem()

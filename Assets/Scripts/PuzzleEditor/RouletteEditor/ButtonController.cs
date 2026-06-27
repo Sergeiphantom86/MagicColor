@@ -22,7 +22,7 @@ namespace PuzzleEditor.RouletteEditor
         {
             if (_button == null)
             {
-                Debug.LogError("Button �� ��������!!!");
+                Debug.LogError($"Button is null on {gameObject.name}!");
             }
 
             _button.onClick.AddListener(OnHandleClick);

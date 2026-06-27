@@ -24,13 +24,13 @@ namespace PuzzleEditor.Spawners
             _voiceover = GetComponent<Voiceover>();
 
             if (_input == null)
-            Debug.LogError("InputHandler == null");
+                Debug.LogError("InputHandler == null");
         }
 
         private void Start()
         {
             if (_grid == null)
-            _grid = GridSystem.Instance;
+                _grid = GridSystem.Instance;
         }
 
         private void OnEnable()
@@ -54,15 +54,12 @@ namespace PuzzleEditor.Spawners
         private void OnTrySpawnAtWorldPos(Vector2 screenPos)
         {
             if (_abilitySelectionManager.HasSelection == false)
-            return;
+                return;
 
-            Vector2Int origin = _grid.GetOriginFromCenter(
-            center: WorldToGrid(_input.Point),
-            size: Vector2Int.one
-            );
+            Vector2Int origin = _grid.GetOriginFromCenter(WorldToGrid(_input.Point), Vector2Int.one);
 
             if (_input.Point == Vector3.zero)
-            return;
+                return;
 
             _abilitySelectionManager.Use();
             _voiceover.PlayOneShot(_audioClip);

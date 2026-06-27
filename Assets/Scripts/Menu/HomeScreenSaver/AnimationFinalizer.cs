@@ -34,16 +34,13 @@ namespace Menu.HomeScreenSaver
         {
             _textureInitializer.ClearAllFragments();
 
-            this.SafeDelayedCall(
-            _delay,
-            () =>
+            this.SafeDelayedCall(_delay, () =>
             {
                 if (_viewer != null && isActiveAndEnabled)
                 {
                     _viewer.ShowNextSprite();
                 }
-            }
-            );
+            });
         }
     }
 }

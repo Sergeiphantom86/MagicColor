@@ -28,7 +28,7 @@ namespace PuzzleEditor.RouletteEditor
 
             if (_particleSystem == null)
             {
-                Debug.LogError("ParticleSystem �� ������!!!");
+                Debug.LogError($"ParticleSystem reference is missing on '{gameObject.name}'!", this);
                 return;
             }
 
@@ -48,7 +48,7 @@ namespace PuzzleEditor.RouletteEditor
         public void SpinToTarget(float sectorAngle, Action onComplete)
         {
             if (_isSpinning)
-            return;
+                return;
 
             _isSpinning = true;
             _spinSequence?.Kill();
@@ -80,82 +80,73 @@ namespace PuzzleEditor.RouletteEditor
 
                 _particleSystem.transform.position = _position;
                 _particleSystem.gameObject.SetActive(true);
-                });
-            }
+            });
+        }
 
-            private void CheckRotationProgress()
+        private void CheckRotationProgress()
+        {
+            if (Mathf.Abs(_accumulatedRotation - _startRotation) >= _nextThreshold)
             {
-                if (Mathf.Abs(_accumulatedRotation - _startRotation) >= _nextThreshold)
+                ThresholdPassed?.Invoke();
+
+                if (_firstThresholdPassed == false)
                 {
-                    ThresholdPassed?.Invoke();
-
-                    if (_firstThresholdPassed == false)
-                    {
-                        _firstThresholdPassed = true;
-                        _nextThreshold = 67.5f;
-                        return;
-                    }
-
-                    _nextThreshold += 45f;
+                    _firstThresholdPassed = true;
+                    _nextThreshold = 67.5f;
+                    return;
                 }
-            }
 
-            private Tween CreateRotationTween(float sectorAngle)
-            {
-                return DOTween
-                .To(
-                getter: GetCurrentRotation,
-                setter: UpdateRotation,
-                endValue: GetTotalRotation(CalculateRequiredRotation(sectorAngle)),
-                duration: _spinDuration)
-                .SetEase(Ease.OutCubic);
-            }
-
-            private void UpdateRotation(float currentRotation)
-            {
-                _accumulatedRotation = currentRotation;
-                transform.eulerAngles = new Vector3(
-                _transform.eulerAngles.x,
-                _transform.eulerAngles.y,
-                currentRotation
-                );
-            }
-
-            private float GetCurrentRotation() => _accumulatedRotation;
-
-            private void CompleteSpin(float sectorAngle)
-            {
-                float requiredRotation = CalculateRequiredRotation(sectorAngle);
-                _accumulatedRotation = GetAccumulatedSpin(requiredRotation);
-                _isSpinning = false;
-            }
-
-            private float GetAccumulatedSpin(float requiredRotation)
-            {
-                return _accumulatedRotation + requiredRotation;
-            }
-
-            private float GetTotalRotation(float requiredRotation)
-            {
-                return _accumulatedRotation + requiredRotation + 360f * _minFullRotations;
-            }
-
-            private float CalculateRequiredRotation(float sectorAngle)
-            {
-                float angleDifference = _pointerAngle - (_accumulatedRotation + sectorAngle) % 360f;
-
-                if (angleDifference > 180f)
-                angleDifference -= 360f;
-
-                if (angleDifference < -180f)
-                angleDifference += 360f;
-
-                return angleDifference;
-            }
-
-            private void OnDestroy()
-            {
-                _spinSequence?.Kill();
+                _nextThreshold += 45f;
             }
         }
+
+        private Tween CreateRotationTween(float sectorAngle)
+        {
+            return DOTween.To(GetCurrentRotation, UpdateRotation, GetTotalRotation(CalculateRequiredRotation(sectorAngle)), _spinDuration)
+            .SetEase(Ease.OutCubic);
+        }
+
+        private void UpdateRotation(float currentRotation)
+        {
+            _accumulatedRotation = currentRotation;
+            transform.eulerAngles = new Vector3(_transform.eulerAngles.x, _transform.eulerAngles.y, currentRotation);
+        }
+
+        private float GetCurrentRotation() => _accumulatedRotation;
+
+        private void CompleteSpin(float sectorAngle)
+        {
+            float requiredRotation = CalculateRequiredRotation(sectorAngle);
+            _accumulatedRotation = GetAccumulatedSpin(requiredRotation);
+            _isSpinning = false;
+        }
+
+        private float GetAccumulatedSpin(float requiredRotation)
+        {
+            return _accumulatedRotation + requiredRotation;
+        }
+
+        private float GetTotalRotation(float requiredRotation)
+        {
+            return _accumulatedRotation + requiredRotation + 360f * _minFullRotations;
+        }
+
+        private float CalculateRequiredRotation(float sectorAngle)
+        {
+            float angleDifference = _pointerAngle - (_accumulatedRotation + sectorAngle) % 360f;
+
+            if (angleDifference > 180f)
+                angleDifference -= 360f;
+
+            if (angleDifference < -180f)
+                angleDifference += 360f;
+
+            return angleDifference;
+        }
+
+        private void OnDestroy()
+        {
+            _spinSequence?.Kill();
+        }
     }
+}

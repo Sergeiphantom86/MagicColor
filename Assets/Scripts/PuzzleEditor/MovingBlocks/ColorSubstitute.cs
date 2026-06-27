@@ -30,21 +30,16 @@ namespace PuzzleEditor.MovingBlocks
             if (_useSaturationRange || _useValueRange)
             {
                 randomColor = Random.ColorHSV(
-                0f,
-                1f,
-                _useSaturationRange ? _minSaturation : 0f,
-                _useSaturationRange ? _maxSaturation : 1f,
-                _useValueRange ? _minValue : 0f,
-                _useValueRange ? _maxValue : 1f
-                );
+                    0f,
+                    1f,
+                    _useSaturationRange ? _minSaturation : 0f,
+                    _useSaturationRange ? _maxSaturation : 1f,
+                    _useValueRange ? _minValue : 0f,
+                    _useValueRange ? _maxValue : 1f);
             }
             else
             {
-                randomColor = new Color(
-                Random.Range(0f, 1f),
-                Random.Range(0f, 1f),
-                Random.Range(0f, 1f)
-                );
+                randomColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
             }
 
             SetColor(randomColor);

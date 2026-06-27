@@ -34,7 +34,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
         private void UpdatePenSize(int quantity, Placeholder placeholder)
         {
             if (placeholder == null || quantity < 0)
-            return;
+                return;
 
             Size = quantity;
             _currentOccupancy = GetQuantityOccupancy(quantity);
@@ -68,10 +68,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
 
         private void ChangePosition(Placeholder placeholder, float occupancy)
         {
-            placeholder
-            .transform.DOLocalMove(
-            GetPosition(placeholder.transform.localPosition, GetHeightIncrease(occupancy)),
-            _duration)
+            placeholder.transform.DOLocalMove(GetPosition(placeholder.transform.localPosition, GetHeightIncrease(occupancy)), _duration)
             .SetEase(Ease.OutQuad);
         }
 
@@ -106,7 +103,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
 
             if (quantity < 0)
             {
-                Debug.LogError("quantity ������ 0!");
+                Debug.LogError($"Quantity cannot be negative! (value: {quantity})");
                 return 0f;
             }
 

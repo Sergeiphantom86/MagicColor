@@ -91,13 +91,13 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
         }
 
         public void Initialize(
-        Effecter effectImpact,
-        Effecter effectSmock,
-        Effecter effectDestruct,
-        AudioClip soundDestruction,
-        AudioClip soundDragg,
-        AudioClip soundRaise,
-        AudioClip matchSound)
+            Effecter effectImpact,
+            Effecter effectSmock,
+            Effecter effectDestruct,
+            AudioClip soundDestruction,
+            AudioClip soundDragg,
+            AudioClip soundRaise,
+            AudioClip matchSound)
         {
             _soundDragg = soundDragg;
             _soundRaise = soundRaise;
@@ -130,11 +130,7 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
 
             SetRenderQueue();
 
-            _effectImpact.CraeteParticles(
-            transform.position,
-            Quaternion.identity,
-            _scaleImpactEffect
-            );
+            _effectImpact.CraeteParticles(transform.position, Quaternion.identity, _scaleImpactEffect);
 
             _touchDragInput.ThrowOff();
 
@@ -162,11 +158,7 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
                 GridSystem.Instance.ClearCell(this);
             }
 
-            _effectDestruct.CraeteParticles(
-            transform.position,
-            Quaternion.identity,
-            _scaleDestructEffect
-            );
+            _effectDestruct.CraeteParticles(transform.position, Quaternion.identity, _scaleDestructEffect);
 
             if (_inkSpawner == null)
             {
@@ -186,7 +178,7 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
             Tween fadeTween = TurnOffRenderer();
 
             if (fadeTween != null)
-            yield return fadeTween.WaitForCompletion();
+                yield return fadeTween.WaitForCompletion();
 
             _inkSpawner.ActivateInkDrops(GetColor(), _duration);
         }
@@ -199,11 +191,7 @@ namespace PuzzleEditor.MovingBlocks.BlockEditor
         private void OnShowEffectMovement()
         {
             _voiceover.PlayOneShot(_soundDragg);
-            _effectSmock.CraeteParticles(
-            transform.position,
-            Quaternion.identity,
-            _scaleSmockEffect
-            );
+            _effectSmock.CraeteParticles(transform.position, Quaternion.identity, _scaleSmockEffect);
         }
 
         private void OnPlayFallingSound()

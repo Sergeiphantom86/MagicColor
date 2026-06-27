@@ -59,15 +59,7 @@ namespace PuzzleEditor
         {
             _blocks.Add(block);
 
-            block.Initialize(
-            _effectImpact,
-            _effectSmock,
-            _effectDestruct,
-            _soundDestruction,
-            _soundDragg,
-            _soundRaise,
-            _matchSound
-            );
+            block.Initialize(_effectImpact, _effectSmock, _effectDestruct, _soundDestruction, _soundDragg, _soundRaise, _matchSound);
         }
 
         private void CalculateStartTimeGame(Block block)

@@ -11,10 +11,7 @@ namespace PuzzleEditor.Walls
         private readonly IBlockInteractionService _blockInteraction;
         private readonly IUnlockPolicy _unlockPolicy;
 
-        public CollisionProcessor(
-        IColorMatchService colorMatch,
-        IBlockInteractionService blockInteraction,
-        IUnlockPolicy unlockPolicy)
+        public CollisionProcessor(IColorMatchService colorMatch, IBlockInteractionService blockInteraction, IUnlockPolicy unlockPolicy)
         {
             _colorMatch = colorMatch;
             _unlockPolicy = unlockPolicy;
@@ -24,19 +21,19 @@ namespace PuzzleEditor.Walls
         public void ProcessEnter(Collider other)
         {
             if (other.TryGetComponent(out Block block) == false)
-            return;
+                return;
 
             if (block.TryGetComponent(out ITouchDragInput touchDragInput) == false)
-            return;
+                return;
 
             if (block.TryGetComponent(out IColorable colorable) == false)
-            return;
+                return;
 
             if (touchDragInput.IsSelected == false)
-            return;
+                return;
 
             if (_colorMatch.Match(colorable, out Color color) == false)
-            return;
+                return;
 
             _blockInteraction.TryHandle(colorable, color, _unlockPolicy);
         }
@@ -44,7 +41,7 @@ namespace PuzzleEditor.Walls
         public void ProcessExit(Collider other)
         {
             if (other.TryGetComponent(out Block _) == false)
-            return;
+                return;
 
             _colorMatch.Reset();
         }

@@ -7,7 +7,7 @@ public class FixClosingBracketFormat
 {
     private const string RootFolder = "Assets/Scripts";
 
-    [MenuItem("Tools/Fix Closing Bracket Format")]
+    [MenuItem("Tools/Исправлен формат закрывающей скобки")]
     public static void Fix()
     {
         string targetFolder = Path.Combine(Application.dataPath, RootFolder.Replace("Assets/", ""));

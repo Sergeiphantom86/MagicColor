@@ -64,7 +64,7 @@ namespace PuzzleEditor.SoundEditor
         public void PlayButtonClick(AudioClip audioClip)
         {
             if (audioClip == null)
-            return;
+                return;
 
             SetAudioClip(audioClip);
 
@@ -107,11 +107,7 @@ namespace PuzzleEditor.SoundEditor
             SetAudioSource(_musicSource, isOn: true, _musicMixerGroup, _currentMusicVolume);
         }
 
-        private void SetAudioSource(
-        AudioSource audioSource,
-        bool isOn,
-        AudioMixerGroup audioMixerGroup,
-        float volume)
+        private void SetAudioSource(AudioSource audioSource, bool isOn, AudioMixerGroup audioMixerGroup, float volume)
         {
             audioSource.outputAudioMixerGroup = audioMixerGroup;
             audioSource.playOnAwake = false;
@@ -131,7 +127,7 @@ namespace PuzzleEditor.SoundEditor
         private void PlayBackgroundMusic(float time)
         {
             if (_backgroundMusic == null || _musicSource.isPlaying)
-            return;
+                return;
 
             _musicSource.clip = _backgroundMusic;
             _musicSource.time = time;
@@ -148,7 +144,7 @@ namespace PuzzleEditor.SoundEditor
         private void SaveVolumeSettings()
         {
             if (_coroutineSaving != null)
-            return;
+                return;
 
             _coroutineSaving = StartCoroutine(WaitChangeCompleted());
         }

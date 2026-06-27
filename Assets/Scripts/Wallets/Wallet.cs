@@ -58,7 +58,7 @@ namespace Wallets
         public bool SpendFunds(long amount)
         {
             if (CanSpend(amount) == false)
-            return false;
+                return false;
 
             bool success = _transacter.ProcessTransaction(amount, _balance);
 
@@ -72,9 +72,7 @@ namespace Wallets
             }
             else
             {
-                Debug.LogWarning(
-                $"������������ �������! ������� ��������� {amount}, �� ������ ����� {_balance}"
-                );
+                Debug.LogWarning($"Insufficient balance! Attempted to withdraw {amount}, but current balance is {_balance}", this);
             }
 
             return success;

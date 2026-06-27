@@ -22,7 +22,7 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
             int maxY = totalCellsY - (blockSize.y - offset.y) - 1 - marginFromBorder;
 
             if (minX > maxX || minY > maxY)
-            return available;
+                return available;
 
             int width = maxX - minX + 1;
             int total = width * (maxY - minY + 1);
@@ -36,7 +36,7 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
                 Vector2Int origin = GridSystem.Instance.GetOriginFromCenter(center, blockSize);
 
                 if (GridSystem.Instance.CanPlaceBlock(origin, blockSize))
-                available.Add(center);
+                    available.Add(center);
             }
 
             return available;
@@ -53,7 +53,7 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
                     Vector2Int origin = new Vector2Int(x, y);
 
                     if (GridSystem.Instance.CanPlaceBlock(origin, blockSize))
-                    available.Add(origin);
+                        available.Add(origin);
                 }
             }
 
@@ -62,10 +62,7 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
 
         private Vector2Int GetCenterOffset(Vector2Int size)
         {
-            return new Vector2Int(
-            Mathf.FloorToInt((size.x - 1) / 2f),
-            Mathf.FloorToInt((size.y - 1) / 2f)
-            );
+            return new Vector2Int(Mathf.FloorToInt((size.x - 1) / 2f), Mathf.FloorToInt((size.y - 1) / 2f));
         }
     }
 }

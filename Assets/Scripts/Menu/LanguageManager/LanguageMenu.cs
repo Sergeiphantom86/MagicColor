@@ -47,7 +47,7 @@ namespace Menu.LanguageManager
         {
             if (_languageBar == null)
             {
-                Debug.LogError("LanguageMenu: �� ��������� ������ � ����������!");
+                Debug.LogError("LanguageMenu: Не удалось найти языковую панель!");
                 return;
             }
 
@@ -84,9 +84,7 @@ namespace Menu.LanguageManager
             {
                 button.TurnOffChoice();
 
-                if (
-                button != null
-                && string.Equals(button.name, language, StringComparison.OrdinalIgnoreCase))
+                if (button != null && string.Equals(button.name, language, StringComparison.OrdinalIgnoreCase))
                 {
                     languageButton = button;
                 }

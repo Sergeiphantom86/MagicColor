@@ -10,7 +10,7 @@ public static class UnusedScriptFinder
 {
     private const string RootFolder = "Assets/Scripts";
 
-    [MenuItem("Tools/Find Unused Scripts in " + RootFolder)]
+    [MenuItem("Tools/Найдите неиспользуемые скрипты в " + RootFolder)]
     public static void FindUnusedScripts()
     {
         var scriptTypes = GetMonoBehaviourTypes();

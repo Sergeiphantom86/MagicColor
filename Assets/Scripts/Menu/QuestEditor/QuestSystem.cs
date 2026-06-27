@@ -148,7 +148,7 @@ namespace Menu.QuestEditor
 
             if (_transitionChooser != null)
             {
-                _transitionChooser.ChoosePuzzle(quest, _isOn);
+                _transitionChooser.ChoosePuzzle(quest);
 
                 YG2.saves.IsAutomaticallyNewLevel = false;
             }

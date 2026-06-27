@@ -43,22 +43,20 @@ namespace PuzzleEditor.RouletteEditor
 
             if (_counterText == null)
             {
-                Debug.LogError("TextMeshProUGUI ��� � �����!!!");
+                Debug.LogError("TextMeshProUGUI reference is missing!", this);
                 return;
             }
 
             if (_buttonController != null)
             {
-                _buttonController.Initialize(
-                globalInteractableCondition: () => true,
-                onClickAction: DecreaseCount
-                );
+                _buttonController.Initialize(() => 
+                true, onClickAction: DecreaseCount);
 
                 _buttonController.UpdateState();
             }
             else
             {
-                Debug.LogError("ButtonController �� ��������!", this);
+                Debug.LogError("ButtonController is not assigned!", this);
             }
 
             SetCoutSpins();

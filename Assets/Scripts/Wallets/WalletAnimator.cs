@@ -74,9 +74,8 @@ namespace Wallets
         {
             _balanceTween?.Kill();
 
-            _balanceTween = DOTween
-            .To(
-            () => _displayedBalance,
+            _balanceTween = DOTween.To(() =>
+            _displayedBalance,
             balance =>
             {
                 _soundTimer += Time.unscaledDeltaTime;
@@ -89,16 +88,15 @@ namespace Wallets
 
                 _displayedBalance = balance;
                 UpdateBalanceText();
-                },
-                newBalance,
-                _animationDuration)
+            },
+                newBalance, _animationDuration)
                 .SetEase(Ease.OutQuad)
                 .SetUpdate(true)
                 .OnComplete(() =>
                 {
                     _soundTimer = 0f;
                     Finished?.Invoke();
-                    });
-                }
-            }
+                });
         }
+    }
+}

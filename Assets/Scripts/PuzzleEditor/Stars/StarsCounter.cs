@@ -40,21 +40,14 @@ namespace PuzzleEditor.Stars
         public int GetCountStars(int timeInSeconds)
         {
             if (timeInSeconds > _maxTimeSeconds)
-            return _minStars;
+                return _minStars;
 
-            return Mathf.Clamp(
-            GetStars(timeInSeconds, _maxTimeSeconds),
-            _minStars,
-            _currentMaxStars
-            );
+            return Mathf.Clamp(GetStars(timeInSeconds, _maxTimeSeconds), _minStars, _currentMaxStars);
         }
 
         private int GetStars(int timeInSeconds, int maxTimeSeconds)
         {
-            return Mathf.RoundToInt(
-            _minStars
-            + GetProgress(timeInSeconds, maxTimeSeconds) * (_currentMaxStars - _minStars)
-            );
+            return Mathf.RoundToInt(_minStars + GetProgress(timeInSeconds, maxTimeSeconds) * (_currentMaxStars - _minStars));
         }
 
         private float GetProgress(int timeInSeconds, int maxTimeSeconds)

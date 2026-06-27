@@ -38,7 +38,7 @@ namespace Menu.QuestEditor
             _transitionService = new QuestTransitionService(zoomChanger);
         }
 
-        public void ChoosePuzzle(Quest quest, bool isAutomaticTransition)
+        public void ChoosePuzzle(Quest quest)
         {
             _cachedSprite = quest.Sprite;
 
@@ -47,34 +47,27 @@ namespace Menu.QuestEditor
             if (result.ShowOffer)
             {
                 if (result.UseMobilePanel)
-                _offerPanelMobile.TurnOn();
+                    _offerPanelMobile.TurnOn();
                 else
-                _offerPanel.TurnOn();
+                    _offerPanel.TurnOn();
 
                 return;
             }
 
-            LoadScene(result.SceneName, isAutomaticTransition);
+            LoadScene(result.SceneName);
         }
 
-        private void LoadPuzzle() => 
+        private void LoadPuzzle() =>
             LoadScene(Puzzle);
 
-        private void LoadTutorial() => 
+        private void LoadTutorial() =>
             LoadScene(Tutorial);
 
-        private void LoadScene(string sceneName, bool isAutomaticTransition = false)
+        private void LoadScene(string sceneName)
         {
-            float extraTime = 0;
-
-            if (isAutomaticTransition)
-            {
-                extraTime = 0.2f;
-            }
-
             _transitionService.SaveSprite(_cachedSprite);
 
-            SceneLoader.Instance.LoadSceneAsyncWithSplash(sceneName, extraTime);
+            SceneLoader.Instance.LoadSceneAsyncWithSplash(sceneName);
         }
     }
 }

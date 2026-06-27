@@ -23,13 +23,13 @@ namespace PuzzleEditor.SoundEditor
 
             if (_toggleBase == null)
             {
-                Debug.LogError("Slider �� ��������!");
+                Debug.LogError($"{nameof(_toggleBase)} is not assigned!", this);
                 return;
             }
 
             if (_volumeSlider == null)
             {
-                Debug.LogError("Slider �� ��������!");
+                Debug.LogError($"{nameof(_volumeSlider)} is not assigned!", this);
                 return;
             }
 

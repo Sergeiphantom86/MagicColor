@@ -94,30 +94,24 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
                 return false;
             }
 
-            return ForEachCell(
-            origin,
-            size,
-            pos => IsValidGridPosition(pos) && _grid[pos.x, pos.y] == null
-            );
+            return ForEachCell(origin, size, pos =>
+            IsValidGridPosition(pos) && _grid[pos.x, pos.y] == null);
         }
 
         public void PlaceObject(Vector2Int origin, IGridOccupant occupant)
         {
             if (_grid == null)
-            Debug.LogError("GRID NULL WHEN PLACING");
+                Debug.LogError("GRID NULL WHEN PLACING");
 
-            ForEachCell(
-            origin,
-            occupant.SizeInCells,
-            pos =>
+            ForEachCell(origin, occupant.SizeInCells, pos =>
             {
                 if (IsValidGridPosition(pos) == false)
-                return false;
+                    return false;
 
                 _grid[pos.x, pos.y] = occupant.GameObject;
+
                 return true;
-            }
-            );
+            });
 
             occupant.SetGridPosition(origin);
         }
@@ -126,16 +120,12 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
         {
             Vector2Int origin = occupant.GridPosition;
 
-            ForEachCell(
-            origin,
-            occupant.SizeInCells,
-            pos =>
+            ForEachCell(origin, occupant.SizeInCells, pos =>
             {
                 if (IsValidGridPosition(pos))
-                _grid[pos.x, pos.y] = null;
+                    _grid[pos.x, pos.y] = null;
                 return true;
-            }
-            );
+            });
         }
 
         private bool ForEachCell(Vector2Int origin, Vector2Int size, Func<Vector2Int, bool> check)
@@ -143,7 +133,7 @@ namespace PuzzleEditor.MovingBlocks.GridEditor
             for (int i = 0; i < GetTotalCells(size); i++)
             {
                 if (check(GetPosition(origin, size, i)) == false)
-                return false;
+                    return false;
             }
 
             return true;

@@ -36,38 +36,36 @@ namespace Wallets
         public void AnimateToValue(long newValue, float customDuration = -1)
         {
             if (customDuration < 0)
-            customDuration = _animationDuration;
+                customDuration = _animationDuration;
 
             _balanceTween?.Kill();
             _targetValue = newValue;
 
             if (_useSmoothAnimation)
             {
-                _balanceTween = DOTween
-                .To(
-                () => _currentValue,
+                _balanceTween = DOTween.To(() =>
+                _currentValue,
                 animatedValue =>
                 {
                     _currentValue = animatedValue;
                     UpdateText();
-                    },
-                    _targetValue,
-                    customDuration)
-                    .SetEase(Ease.OutQuad);
-                }
-                else
-                {
-                    _currentValue = _targetValue;
-                    UpdateText();
-                }
-            }
 
-            private void UpdateText()
+                }, _targetValue, customDuration)
+                    .SetEase(Ease.OutQuad);
+            }
+            else
             {
-                if (_textMeshPro != null)
-                {
-                    _textMeshPro.text = $"{_numberFormatter.FormatNumber(_currentValue)}";
-                }
+                _currentValue = _targetValue;
+                UpdateText();
+            }
+        }
+
+        private void UpdateText()
+        {
+            if (_textMeshPro != null)
+            {
+                _textMeshPro.text = $"{_numberFormatter.FormatNumber(_currentValue)}";
             }
         }
     }
+}

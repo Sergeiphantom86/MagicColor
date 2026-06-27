@@ -40,10 +40,7 @@ namespace PuzzleEditor.Stars
 
             if (_zoomChanger.IsMobileWithTallScreen())
             {
-                _rectTransform.anchoredPosition = new Vector2(
-                _positionMobile,
-                _rectTransform.anchoredPosition.y
-                );
+                _rectTransform.anchoredPosition = new Vector2(_positionMobile, _rectTransform.anchoredPosition.y);
             }
         }
 
@@ -61,7 +58,7 @@ namespace PuzzleEditor.Stars
                 int stars = _starCounter.GetCountStars(time);
 
                 if (_starsToTimes.ContainsKey(stars) == false)
-                _starsToTimes[stars] = new List<int>();
+                    _starsToTimes[stars] = new List<int>();
 
                 _starsToTimes[stars].Add(time);
             }
@@ -119,7 +116,7 @@ namespace PuzzleEditor.Stars
         private void ClearContainer()
         {
             for (int i = transform.childCount - 1; i >= 0; i--)
-            Destroy(transform.GetChild(i).gameObject);
+                Destroy(transform.GetChild(i).gameObject);
         }
     }
 }

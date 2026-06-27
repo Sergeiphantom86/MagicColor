@@ -18,10 +18,7 @@ namespace Game.LoadingScreen
             _clockwise = true;
 
             DOTween.Init(recycleAllByDefault: false, useSafeMode: true, LogBehaviour.Default);
-            DOTween.SetTweensCapacity(
-            tweenersCapacity: _tweenersCapacity,
-            sequencesCapacity: _sequencesCapacity
-            );
+            DOTween.SetTweensCapacity(tweenersCapacity: _tweenersCapacity, sequencesCapacity: _sequencesCapacity);
         }
 
         private void Update()

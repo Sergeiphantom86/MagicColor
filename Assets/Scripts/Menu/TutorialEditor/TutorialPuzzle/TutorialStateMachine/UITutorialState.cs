@@ -34,7 +34,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         public override void Enter()
         {
             if (TryInitializeComponents() == false)
-            return;
+                return;
 
             _currentCountStars = _starsCounter.MaxStars;
 
@@ -59,9 +59,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 
             yield return _context.WaitUIDisabled;
 
-            _tutorialStateMachine.ChangeState(
-            new BlockTutorialState(_tutorialStateMachine, _context, _starsCounter)
-            );
+            _tutorialStateMachine.ChangeState(new BlockTutorialState(_tutorialStateMachine, _context, _starsCounter));
         }
 
         private IEnumerator WaitForOneStarLost()
@@ -86,15 +84,15 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
         private bool TryInitializeComponents()
         {
             if (_context.Timer == null)
-            return Fail("Context.Timer == null", _context.Timer);
+                return Fail("Context.Timer == null", _context.Timer);
 
             CacheComponents();
 
             if (_timerFringe == null)
-            return Fail("TimerFringe not found on Timer", _timerFringe);
+                return Fail("TimerFringe not found on Timer", _timerFringe);
 
             if (_starsCounter == null)
-            return Fail("StarsCounter == null in TimerFringe", _starsCounter);
+                return Fail("StarsCounter == null in TimerFringe", _starsCounter);
 
             return true;
         }
@@ -118,9 +116,8 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
             }
 
             _timer.transform.DOScale(_startScale, _duration);
-            _tutorialStateMachine.ChangeState(
-            new BlockTutorialState(_tutorialStateMachine, _context, _starsCounter)
-            );
+
+            _tutorialStateMachine.ChangeState(new BlockTutorialState(_tutorialStateMachine, _context, _starsCounter));
         }
 
         private bool Fail(string message, Object context)

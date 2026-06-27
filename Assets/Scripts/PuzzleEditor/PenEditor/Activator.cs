@@ -129,11 +129,7 @@ namespace PuzzleEditor.PenEditor
         {
             yield return _delayWait;
 
-            _speedController.TryAccelerate(
-            remainingTime,
-            Approached,
-            _queueProcessor.SpeedUpMovement
-            );
+            _speedController.TryAccelerate(remainingTime, Approached, _queueProcessor.SpeedUpMovement);
         }
 
         private void OnPuzzleFinished()

@@ -44,31 +44,21 @@ namespace Menu.TutorialEditor.TutorialPuzzle
             }
 
             if (ValidateReferences() == false)
-            return context;
+                return context;
 
             TutorialAbilities tutorialAbilities = new(
-            _tutorialStateMachin,
-            context,
-            _inputHandler,
-            _pauseButton,
-            _priceText,
-            _handMoverUI,
-            _purchaseButton,
-            _closeGame,
-            _bagAbilities,
-            _hintsUI
-            );
+                _tutorialStateMachin,
+                context,
+                _inputHandler,
+                _pauseButton,
+                _priceText,
+                _handMoverUI,
+                _purchaseButton,
+                _closeGame,
+                _bagAbilities,
+                _hintsUI);
 
-            context.InitScene(
-            _key,
-            _lock,
-            _hints,
-            _timer,
-            _rotator,
-            _container,
-            _stateTutorial,
-            tutorialAbilities
-            );
+            context.InitScene(_key, _lock, _hints, _timer, _rotator, _container, _stateTutorial, tutorialAbilities);
 
             return context;
         }

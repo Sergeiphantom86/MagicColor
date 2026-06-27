@@ -84,9 +84,7 @@ namespace Menu.HomeScreenSaver
             if (nextIndex >= MinIndex && nextIndex < _spriteSequence.Count)
             {
                 _transitionSequence
-                .AppendCallback(() =>
-                _textureInitializer.SpawnPixelsFromTexture(
-                _spriteSequence[nextIndex].texture))
+                .AppendCallback(() =>_textureInitializer.SpawnPixelsFromTexture(_spriteSequence[nextIndex].texture))
                 .OnComplete(() => _isTransitioning = false);
             }
             else

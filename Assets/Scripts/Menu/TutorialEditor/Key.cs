@@ -109,7 +109,7 @@ namespace Menu.TutorialEditor
         private void OnPlay(Vector2 vector)
         {
             if (_isDragging)
-            return;
+                return;
 
             _isDragging = true;
 
@@ -132,7 +132,7 @@ namespace Menu.TutorialEditor
         private void OnHide(Collider collider)
         {
             if (collider.TryGetComponent(out Block _) == false)
-            return;
+                return;
 
             TurnOffDisplay();
             _voiceover.PlayOneShot(_hiding);
@@ -151,7 +151,7 @@ namespace Menu.TutorialEditor
         private void OnShow(Collider collider)
         {
             if (collider.TryGetComponent(out Block block) == false)
-            return;
+                return;
 
             if (block.TryGetComponent(out Outline outline))
             {
@@ -174,31 +174,15 @@ namespace Menu.TutorialEditor
             _spriteRenderer.rendererPriority = 1;
 
             _movementSequence
-            .Append(
-            BuildMove(
-            _startPoint.transform.position,
-            _movementDuration,
-            transform.localScale.x * _zoomIn,
-            Ease.OutBounce))
-            .Append(
-            BuildMove(
-            _endPoint.transform.position,
-            _movementDuration * 4,
-            transform.localScale.x * _zoomOut,
-            Ease.InOutBack)
-            );
+            .Append(BuildMove(_startPoint.transform.position, _movementDuration, transform.localScale.x * _zoomIn, Ease.OutBounce))
+            .Append(BuildMove(_endPoint.transform.position, _movementDuration * 4, transform.localScale.x * _zoomOut, Ease.InOutBack));
 
             _movementSequence.Pause();
         }
 
-        private Sequence BuildMove(
-        Vector3 position,
-        float duration,
-        float scaleMultiplier,
-        Ease ease)
+        private Sequence BuildMove(Vector3 position, float duration, float scaleMultiplier, Ease ease)
         {
-            return DOTween
-            .Sequence()
+            return DOTween.Sequence()
             .Append(transform.DOMove(position, duration))
             .Join(transform.DOScale(scaleMultiplier, duration))
             .SetEase(ease);

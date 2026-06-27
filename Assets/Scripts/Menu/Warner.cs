@@ -22,13 +22,13 @@ namespace Menu
 
             if (_image == null)
             {
-                Debug.LogError("Image �����������!!!");
+                Debug.LogError("Image: компонент не найден!!!");
                 return;
             }
 
             if (_textMeshProUGUI == null)
             {
-                Debug.LogError("TextMeshProUGUI �����������!!!");
+                Debug.LogError("TextMeshProUGUI: компонент не найден!!!");
                 return;
             }
 

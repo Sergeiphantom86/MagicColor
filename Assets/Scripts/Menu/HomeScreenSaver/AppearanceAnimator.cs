@@ -62,53 +62,49 @@ namespace Menu.HomeScreenSaver
             _currentSequence.OnComplete(() =>
             {
                 AppearanceCompleted?.Invoke();
-                });
-            }
+            });
+        }
 
-            private void CustomizeFragment(int index, Fragment fragment)
+        private void CustomizeFragment(int index, Fragment fragment)
+        {
+            SetInitialSize(fragment);
+
+            fragment.TurnOn();
+
+            AddAnimation(index, fragment);
+        }
+
+        private void SetInitialSize(Fragment fragment)
+        {
+            fragment.transform.localScale = GetStartScale();
+        }
+
+        private Vector3 GetStartScale()
+        {
+            return Vector3.one / _startSizeMultiplier;
+        }
+
+        private void AddAnimation(int index, Fragment fragment)
+        {
+            _currentSequence.Insert(index * _delayBetweenObjects, fragment.transform.DOScale(_endScale, _animationDuration)
+            .SetEase(Ease.OutBack)
+            .SetLink(fragment.gameObject));
+        }
+
+        private void ResetAnimation()
+        {
+            DOTweenExtensions.SafeKill(_currentSequence);
+
+            if (_fragments != null)
             {
-                SetInitialSize(fragment);
-
-                fragment.TurnOn();
-
-                AddAnimation(index, fragment);
-            }
-
-            private void SetInitialSize(Fragment fragment)
-            {
-                fragment.transform.localScale = GetStartScale();
-            }
-
-            private Vector3 GetStartScale()
-            {
-                return Vector3.one / _startSizeMultiplier;
-            }
-
-            private void AddAnimation(int index, Fragment fragment)
-            {
-                _currentSequence.Insert(
-                index * _delayBetweenObjects,
-                fragment
-                .transform.DOScale(_endScale, _animationDuration)
-                .SetEase(Ease.OutBack)
-                .SetLink(fragment.gameObject)
-                );
-            }
-
-            private void ResetAnimation()
-            {
-                DOTweenExtensions.SafeKill(_currentSequence);
-
-                if (_fragments != null)
+                foreach (var fragment in _fragments)
                 {
-                    foreach (var fragment in _fragments)
-                    {
-                        if (fragment != null)
+                    if (fragment != null)
                         fragment.transform.DOKill();
-                    }
                 }
-
-                _currentSequence = null;
             }
+
+            _currentSequence = null;
         }
     }
+}
