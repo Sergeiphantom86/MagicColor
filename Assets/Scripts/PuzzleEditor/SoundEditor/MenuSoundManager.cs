@@ -83,7 +83,11 @@ namespace PuzzleEditor.SoundEditor
             SetAudioSource(_musicSource, isOnLoop: true, _musicMixerGroup, _currentMusicVolume);
         }
 
-        private void SetAudioSource(AudioSource audioSource, bool isOnLoop, AudioMixerGroup audioMixerGroup, float volume)
+        private void SetAudioSource(
+            AudioSource audioSource,
+            bool isOnLoop,
+            AudioMixerGroup audioMixerGroup,
+            float volume)
         {
             audioSource.outputAudioMixerGroup = audioMixerGroup;
             audioSource.playOnAwake = false;

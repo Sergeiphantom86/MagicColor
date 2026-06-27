@@ -49,7 +49,7 @@ namespace PuzzleEditor.RouletteEditor
 
             if (_buttonController != null)
             {
-                _buttonController.Initialize(() => 
+                _buttonController.Initialize(() =>
                 true, onClickAction: DecreaseCount);
 
                 _buttonController.UpdateState();

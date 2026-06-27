@@ -102,7 +102,11 @@ namespace PuzzleEditor.RouletteEditor
 
         private Tween CreateRotationTween(float sectorAngle)
         {
-            return DOTween.To(GetCurrentRotation, UpdateRotation, GetTotalRotation(CalculateRequiredRotation(sectorAngle)), _spinDuration)
+            return DOTween.To(
+                GetCurrentRotation,
+                UpdateRotation,
+                GetTotalRotation(
+                    CalculateRequiredRotation(sectorAngle)), _spinDuration)
             .SetEase(Ease.OutCubic);
         }
 

@@ -91,23 +91,18 @@ namespace PuzzleEditor.Table
         {
             bool isValid = true;
 
+            string errors = "";
             if (_grid.GridSizeX <= 0)
-            {
-                Debug.LogError($"{nameof(GridPlaneFiller)}: GridSizeX must be greater than 0. Current value: {_grid.GridSizeX}", this);
-                isValid = false;
-            }
+                errors += $"GridSizeX={_grid.GridSizeX} ";
 
             if (_grid.GridSizeY <= 0)
-            {
-                Debug.LogError($"{nameof(GridPlaneFiller)}: GridSizeY must be greater than 0. Current value: {_grid.GridSizeY}", this);
-                isValid = false;
-            }
+                errors += $"GridSizeY={_grid.GridSizeY} ";
 
             if (_grid.CellSize <= 0)
-            {
-                Debug.LogError($"{nameof(GridPlaneFiller)}: CellSize must be greater than 0. Current value: {_grid.CellSize}", this);
-                isValid = false;
-            }
+                errors += $"CellSize={_grid.CellSize} ";
+
+            if (string.IsNullOrEmpty(errors) == false)
+                Debug.LogError($"Invalid grid params: {errors}", this);
 
             return isValid;
         }
@@ -124,7 +119,7 @@ namespace PuzzleEditor.Table
 
             if (_renderer.material == null)
             {
-                Debug.LogWarning($"{nameof(GridPlaneFiller)}: Renderer material is null. Using default material.", this);
+                Debug.LogWarning($"{nameof(GridPlaneFiller)}: Renderer material is null.", this);
             }
 
             return true;

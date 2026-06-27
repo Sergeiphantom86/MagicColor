@@ -46,7 +46,15 @@ namespace PuzzleEditor.Walls
                 if (_wall == null)
                     continue;
 
-                if (_wall.Initialize(colorPrecision, bag, rotator, hintKey, @lock, errorPanel, activator, audioClip) == false)
+                if (_wall.Initialize(
+                    colorPrecision,
+                    bag,
+                    rotator,
+                    hintKey,
+                    @lock,
+                    errorPanel,
+                    activator,
+                    audioClip) == false)
                 {
                     Debug.LogError("WallEngine failed to initialize", _wall);
                     continue;
@@ -56,7 +64,12 @@ namespace PuzzleEditor.Walls
             }
         }
 
-        private bool ValidateDependencies(IColorPrecision colorPrecision, BagKey bag, Rotator rotator, Messager hintKey, Lock @lock, ErrorPanel errorPanel, Activator activator)
+        private bool ValidateDependencies(IColorPrecision colorPrecision,
+            BagKey bag, Rotator rotator,
+            Messager hintKey,
+            Lock @lock,
+            ErrorPanel errorPanel,
+            Activator activator)
         {
             if (colorPrecision == null)
                 return LogNull(nameof(colorPrecision));

@@ -27,7 +27,6 @@ namespace Menu.QuestEditor
             Initialize();
         }
 
-
         public void Initialize()
         {
             _questCustomizer = new QuestCustomizer();

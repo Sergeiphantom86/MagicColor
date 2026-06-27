@@ -11,7 +11,7 @@ public class DebugLogWarningChecker : EditorWindow
     private List<ProblemScript> problemScripts = new List<ProblemScript>();
     private string searchFilter = "";
 
-    [MenuItem("Tools/Проверка Debug.LogWarning")]
+    //[MenuItem("Tools/Проверка Debug.LogWarning")]
     public static void ShowWindow()
     {
         GetWindow<DebugLogWarningChecker>("Проверка логов");

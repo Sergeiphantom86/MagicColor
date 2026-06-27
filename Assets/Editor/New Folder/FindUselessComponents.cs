@@ -12,7 +12,7 @@ public class UselessComponentFinder : EditorWindow
     private Vector2 scrollPos;
     private List<FoundComponent> foundList = new List<FoundComponent>();
 
-    [MenuItem("Tools/Поиск бесполезных компонентов (текущая сцена)")]
+    //[MenuItem("Tools/Поиск бесполезных компонентов (текущая сцена)")]
     public static void ShowWindow()
     {
         GetWindow<UselessComponentFinder>("Useless Components");

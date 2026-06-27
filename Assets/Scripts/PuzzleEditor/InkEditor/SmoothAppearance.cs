@@ -63,7 +63,11 @@ namespace PuzzleEditor.InkEditor
             _sequence?.Kill();
 
             _sequence = DOTween.Sequence();
-            _sequence.Join(transform.DOScale(scale, duration).SetEase(Ease.InOutBack)).OnComplete(() => action?.Invoke());
+            _sequence.Join(transform
+                .DOScale(scale, duration)
+                .SetEase(Ease.InOutBack))
+                .OnComplete(() =>
+                action?.Invoke());
         }
     }
 }

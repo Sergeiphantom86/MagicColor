@@ -47,7 +47,11 @@ namespace PuzzleEditor.Walls
             _destroySequence.IsTouched -= UnblockWall;
         }
 
-        public bool Initialize(IColorPrecision colorPrecision, Messager hintKey, ErrorPanel errorPanel, IUnlockPolicy unlockPolicy)
+        public bool Initialize(
+            IColorPrecision colorPrecision,
+            Messager hintKey,
+            ErrorPanel errorPanel,
+            IUnlockPolicy unlockPolicy)
         {
             if (Validate(colorPrecision, hintKey, errorPanel, _lockHandler, unlockPolicy) == false)
                 return false;
@@ -57,12 +61,17 @@ namespace PuzzleEditor.Walls
             _colorMatch.Initialize(colorPrecision);
             _unlockPolicy = unlockPolicy;
 
-            _collisionProcessor = new CollisionProcessor(_colorMatch,_blockInteraction,_unlockPolicy);
+            _collisionProcessor = new CollisionProcessor(_colorMatch, _blockInteraction, _unlockPolicy);
 
             return true;
         }
 
-        private bool Validate(IColorPrecision colorPrecision, Messager hintKey, ErrorPanel errorPanel, LockInteractionHandler lockHandler, IUnlockPolicy bagUnlockPolicy)
+        private bool Validate(
+            IColorPrecision colorPrecision,
+            Messager hintKey,
+            ErrorPanel errorPanel,
+            LockInteractionHandler lockHandler,
+            IUnlockPolicy bagUnlockPolicy)
         {
             if (_colorMatch == null)
                 return Log(nameof(_colorMatch));

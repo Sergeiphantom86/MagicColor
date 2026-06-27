@@ -11,7 +11,7 @@ public class FluentChainBreakChecker : EditorWindow
     private List<Issue> issues = new List<Issue>();
     private string searchFilter = "";
 
-    [MenuItem("Tools/Code Checker (Chains + Length)")]
+    //[MenuItem("Tools/Средство проверки кода (цепочки + длина)")]
     public static void ShowWindow()
     {
         GetWindow<FluentChainBreakChecker>("Code Checker");

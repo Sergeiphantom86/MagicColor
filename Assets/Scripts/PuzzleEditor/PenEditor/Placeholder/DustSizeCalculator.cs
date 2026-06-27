@@ -29,7 +29,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
         {
             if (amount < 0)
             {
-                Debug.LogWarning($"VerifyAmount: amount ({amount}) is negative, expected non-negative value. " + "Clamping to 0 is recommended.");
+                Debug.LogWarning($"Negative amount {amount}, clamp to 0", this);
             }
         }
 
@@ -37,7 +37,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
         {
             if (upperLimit <= 0)
             {
-                Debug.LogError($"CheckUpperLimit: upperLimit ({upperLimit}) must be positive. " + "Default value (500) will be used.");
+                Debug.LogWarning($"UpperLimit {upperLimit} <=0, using 500", this);
             }
         }
 
@@ -60,7 +60,7 @@ namespace PuzzleEditor.PenEditor.Placeholder
         {
             if (_maxSize < _minSize)
             {
-                Debug.LogWarning($"VerifyBoundsConsistency: maximum size ({_maxSize}) must be at least minimum size ({_minSize}). " + "Resetting to default bounds (0.1, 1).");
+                Debug.LogWarning($"Max {_maxSize} < min {_minSize}, reset to (0.1, 1)", this);
                 _minSize = 0.1f;
                 _maxSize = 1f;
             }

@@ -108,7 +108,14 @@ namespace PuzzleEditor.Walls
 
         private void InitializeWalls()
         {
-            CurrentContainer.InitializeWalls(_colorPrecision, _bag, _rotation, _hintKey, _lock, _errorPanel, _activator, _audioClip);
+            CurrentContainer.InitializeWalls(
+                _colorPrecision,
+                _bag, _rotation,
+                _hintKey,
+                _lock,
+                _errorPanel,
+                _activator,
+                _audioClip);
         }
 
         private void SetGridSize()

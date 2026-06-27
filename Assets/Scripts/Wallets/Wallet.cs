@@ -72,7 +72,7 @@ namespace Wallets
             }
             else
             {
-                Debug.LogWarning($"Insufficient balance! Attempted to withdraw {amount}, but current balance is {_balance}", this);
+                Debug.LogWarning($"Insufficient: {amount} > {_balance}", this);
             }
 
             return success;

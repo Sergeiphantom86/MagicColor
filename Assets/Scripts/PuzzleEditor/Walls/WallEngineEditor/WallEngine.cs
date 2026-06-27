@@ -66,7 +66,7 @@ namespace PuzzleEditor.Walls.WallEngineEditor
             InitSystems(
                 collisionHandler,
                 interactionController,
-                lockFeedback, 
+                lockFeedback,
                 colorPrecision,
                 bag,
                 hintKey,
@@ -121,7 +121,11 @@ namespace PuzzleEditor.Walls.WallEngineEditor
             _rotation.Rotated += _movement.CacheStartPosition;
         }
 
-        private bool ValidateDependencies(IColorPrecision colorPrecision, BagKey bag, Rotator rotator, Messager hintKey, Lock @lock)
+        private bool ValidateDependencies(IColorPrecision colorPrecision,
+            BagKey bag,
+            Rotator rotator,
+            Messager hintKey,
+            Lock @lock)
         {
             if (colorPrecision == null)
                 return LogNull(nameof(colorPrecision));

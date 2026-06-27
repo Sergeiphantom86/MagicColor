@@ -174,8 +174,18 @@ namespace Menu.TutorialEditor
             _spriteRenderer.rendererPriority = 1;
 
             _movementSequence
-            .Append(BuildMove(_startPoint.transform.position, _movementDuration, transform.localScale.x * _zoomIn, Ease.OutBounce))
-            .Append(BuildMove(_endPoint.transform.position, _movementDuration * 4, transform.localScale.x * _zoomOut, Ease.InOutBack));
+            .Append(
+                BuildMove(
+                    _startPoint.transform.position,
+                    _movementDuration,
+                    transform.localScale.x * _zoomIn,
+                    Ease.OutBounce))
+            .Append(
+                BuildMove(
+                    _endPoint.transform.position,
+                    _movementDuration * 4,
+                    transform.localScale.x * _zoomOut,
+                    Ease.InOutBack));
 
             _movementSequence.Pause();
         }

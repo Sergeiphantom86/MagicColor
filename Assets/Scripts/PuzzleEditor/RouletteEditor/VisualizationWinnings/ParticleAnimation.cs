@@ -21,7 +21,10 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
             transform.DOKill();
         }
 
-        public void Initialize(Vector3 randomPosition, Vector3 targetPosition, Settings settings, Action onComplete = null)
+        public void Initialize(Vector3 randomPosition,
+            Vector3 targetPosition,
+            Settings settings,
+            Action onComplete = null)
         {
             _randomPosition = randomPosition;
             _targetPosition = targetPosition;
@@ -35,11 +38,19 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
         {
             _firstSequence = DOTween.Sequence();
 
-            _firstSequence.Join(transform.DOScale(UnityEngine.Random.Range(_settings.MinScale, _settings.MaxScale), _settings.ScaleUpDuration));
+            _firstSequence.Join(
+                transform.DOScale(UnityEngine.Random.Range(_settings.MinScale,
+                _settings.MaxScale),
+                _settings.ScaleUpDuration));
 
-            _firstSequence.Join(transform.DOMove(_randomPosition, _settings.MoveToRandomDuration));
+            _firstSequence.Join(
+                transform.DOMove(_randomPosition,
+                _settings.MoveToRandomDuration));
 
-            _firstSequence.Join(transform.DORotate(new Vector3(0, 0, 360f), _settings.MoveToRandomDuration, RotateMode.FastBeyond360));
+            _firstSequence.Join(
+                transform.DORotate(new Vector3(0, 0, 360f),
+                _settings.MoveToRandomDuration,
+                RotateMode.FastBeyond360));
 
             _firstSequence.AppendCallback(MoveToTarget);
         }
@@ -54,7 +65,10 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
             .DOMove(_targetPosition, _settings.MoveToTargetDuration * (1 - _settings.FirstPhaseRatio))
             .SetEase(Ease.InQuad));
 
-            _secondSequence.Join(transform.DOScale(0f, _settings.MoveToTargetDuration * (1 - _settings.FirstPhaseRatio)));
+            _secondSequence.Join(
+                transform.DOScale(
+                    0f,
+                    _settings.MoveToTargetDuration * (1 - _settings.FirstPhaseRatio)));
 
             _secondSequence.OnComplete(() =>
             {
@@ -83,7 +97,13 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
             public readonly float MoveToTargetDuration;
             public readonly float FirstPhaseRatio;
 
-            public Settings(float minScale, float maxScale, float scaleUpDuration, float moveToRandomDuration, float moveToTargetDuration, float firstPhaseRatio)
+            public Settings(
+                float minScale,
+                float maxScale,
+                float scaleUpDuration,
+                float moveToRandomDuration,
+                float moveToTargetDuration,
+                float firstPhaseRatio)
             {
                 MinScale = minScale;
                 MaxScale = maxScale;

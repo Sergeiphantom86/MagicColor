@@ -86,9 +86,12 @@ namespace Menu.HomeScreenSaver
 
         private void AddAnimation(int index, Fragment fragment)
         {
-            _currentSequence.Insert(index * _delayBetweenObjects, fragment.transform.DOScale(_endScale, _animationDuration)
-            .SetEase(Ease.OutBack)
-            .SetLink(fragment.gameObject));
+            _currentSequence.Insert(
+                index * _delayBetweenObjects,
+                fragment.transform
+                .DOScale(_endScale, _animationDuration)
+                .SetEase(Ease.OutBack)
+                .SetLink(fragment.gameObject));
         }
 
         private void ResetAnimation()

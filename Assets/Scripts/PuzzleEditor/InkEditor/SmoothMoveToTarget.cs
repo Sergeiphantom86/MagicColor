@@ -77,7 +77,10 @@ namespace PuzzleEditor.InkEditor
 
         private void UpdatePosition()
         {
-            transform.position = Vector3.MoveTowards(transform.position, DetermineDestination(), _movementSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                DetermineDestination(),
+                _movementSpeed * Time.deltaTime);
         }
 
         private bool CheckWaypointArrival()

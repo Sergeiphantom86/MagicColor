@@ -7,7 +7,12 @@ namespace PuzzleEditor.UI
     {
         private Sequence _sequence;
 
-        public Sequence EnableMotionAnimation(RectTransform elementRect, float duration, RectTransform canvasRect, float normalizedX, float normalizedY, float _ = 0)
+        public Sequence EnableMotionAnimation(
+            RectTransform elementRect,
+            float duration,
+            RectTransform canvasRect,
+            float normalizedX,
+            float normalizedY, float _ = 0)
         {
             if (ValidateInput(elementRect, canvasRect, duration) == false)
                 return CreateEmptySequence();
@@ -21,7 +26,12 @@ namespace PuzzleEditor.UI
             return _sequence;
         }
 
-        public Sequence EnableAnimationResizing(RectTransform elementRect, float duration, float normalizedScaleX = 1, float normalizedScaleY = 1, float normalizedScaleZ = 1)
+        public Sequence EnableAnimationResizing(
+            RectTransform elementRect,
+            float duration,
+            float normalizedScaleX = 1,
+            float normalizedScaleY = 1,
+            float normalizedScaleZ = 1)
         {
             if (ValidateInput(elementRect, duration) == false)
                 return CreateEmptySequence();
@@ -84,16 +94,25 @@ namespace PuzzleEditor.UI
             normalizedX = Mathf.Clamp01(normalizedX);
             normalizedY = Mathf.Clamp01(normalizedY);
 
-            return new Vector2(canvasRect.sizeDelta.x * (normalizedX - 0.5f), canvasRect.sizeDelta.y * (normalizedY - 0.5f));
+            return new Vector2(
+                canvasRect.sizeDelta.x * (normalizedX - 0.5f),
+                canvasRect.sizeDelta.y * (normalizedY - 0.5f));
         }
 
-        private Vector3 GetTargetScale(RectTransform elementRect, float normalizedScaleX, float normalizedScaleY, float normalizedScaleZ)
+        private Vector3 GetTargetScale(
+            RectTransform elementRect,
+            float normalizedScaleX,
+            float normalizedScaleY,
+            float normalizedScaleZ)
         {
             normalizedScaleX = Mathf.Max(0.01f, normalizedScaleX);
             normalizedScaleY = Mathf.Max(0.01f, normalizedScaleY);
             normalizedScaleZ = Mathf.Max(0.01f, normalizedScaleZ);
 
-            return new Vector3(elementRect.localScale.x * normalizedScaleX, elementRect.localScale.y * normalizedScaleY, elementRect.localScale.z * normalizedScaleZ);
+            return new Vector3(
+                elementRect.localScale.x * normalizedScaleX,
+                elementRect.localScale.y * normalizedScaleY,
+                elementRect.localScale.z * normalizedScaleZ);
         }
 
         private void CreateSequence()

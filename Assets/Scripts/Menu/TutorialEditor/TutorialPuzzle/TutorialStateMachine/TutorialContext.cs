@@ -59,7 +59,10 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
             TutorialAbilities = tutorialAbilities;
         }
 
-        public void AdjustPositions(Vector3? handPosition = null, Vector3? visualizerPosition = null, float yOffset = 0f)
+        public void AdjustPositions(
+            Vector3? handPosition = null,
+            Vector3? visualizerPosition = null,
+            float yOffset = 0f)
         {
             SetObjectPosition(GetTransform(HandMover), handPosition, 0, yOffset, 0);
             SetObjectPosition(GetTransform(Visualizer), visualizerPosition, 0, yOffset, 0);
@@ -70,7 +73,12 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
             return component != null ? component.transform : null;
         }
 
-        private void SetObjectPosition(Transform targetTransform, Vector3? position, float xOffset, float yOffset, float zOffset)
+        private void SetObjectPosition(
+            Transform targetTransform,
+            Vector3? position,
+            float xOffset,
+            float yOffset,
+            float zOffset)
         {
             if (targetTransform != null && position.HasValue)
             {

@@ -27,7 +27,7 @@ namespace PuzzleEditor.SoundEditor
 
         public void PlayOneShot(AudioClip clip)
         {
-            if (clip == false || _sfxSource == false || _sfxSource.enabled == false || gameObject.activeInHierarchy == false)
+            if (clip == false || _sfxSource == false || gameObject.activeInHierarchy == false)
                 return;
 
             _sfxSource.PlayOneShot(clip);

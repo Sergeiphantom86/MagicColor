@@ -12,15 +12,9 @@ namespace Menu.QuestEditor
                 Transform[] children = new Transform[count];
                 for (int i = 0; i < count; i++)
                     children[i] = transform.GetChild(i);
-                
+
                 return children;
             }
-        }
-
-        // Если нужно сразу получить компоненты Quest у детей
-        public Quest[] AllQuests
-        {
-            get { return GetComponentsInChildren<Quest>(); }
         }
     }
 }

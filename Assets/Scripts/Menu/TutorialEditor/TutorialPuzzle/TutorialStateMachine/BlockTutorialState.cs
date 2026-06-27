@@ -54,7 +54,7 @@ namespace Menu.TutorialEditor.TutorialPuzzle.TutorialStateMachine
 
         private void SetBlock(int index)
         {
-            if (_context.Container.SpawnedBlocks == null || index < 0 || index >= _context.Container.SpawnedBlocks.Count)
+            if (index < 0 || index >= _context.Container.SpawnedBlocks.Count)
             {
                 Debug.LogError($"Invalid block index: {index} or SpawnedBlocks null");
                 return;

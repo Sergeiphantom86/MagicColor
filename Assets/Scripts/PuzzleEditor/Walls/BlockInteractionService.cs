@@ -13,7 +13,10 @@ namespace PuzzleEditor.Walls
 
         private ErrorPanel _errorPanel;
 
-        public BlockInteractionService(IUnblocker wall, IBlockDestroySequence destroySequence, ILockFeedbackService lockFeedbackService)
+        public BlockInteractionService(
+            IUnblocker wall,
+            IBlockDestroySequence destroySequence,
+            ILockFeedbackService lockFeedbackService)
         {
             _wall = wall;
             _destroySequence = destroySequence;

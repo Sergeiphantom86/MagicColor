@@ -35,13 +35,13 @@ namespace Wallets
 
             if (_wallet == null)
             {
-                Debug.Log("Wallet == null");
+                Debug.LogWarning("Wallet == null");
                 return;
             }
 
             if (_textMeshPro == null)
             {
-                Debug.Log("TextMeshProUGUI == null");
+                Debug.LogWarning("TextMeshProUGUI == null");
                 return;
             }
 

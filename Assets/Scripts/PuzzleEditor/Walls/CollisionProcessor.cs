@@ -11,7 +11,10 @@ namespace PuzzleEditor.Walls
         private readonly IBlockInteractionService _blockInteraction;
         private readonly IUnlockPolicy _unlockPolicy;
 
-        public CollisionProcessor(IColorMatchService colorMatch, IBlockInteractionService blockInteraction, IUnlockPolicy unlockPolicy)
+        public CollisionProcessor(
+            IColorMatchService colorMatch,
+            IBlockInteractionService blockInteraction,
+            IUnlockPolicy unlockPolicy)
         {
             _colorMatch = colorMatch;
             _unlockPolicy = unlockPolicy;

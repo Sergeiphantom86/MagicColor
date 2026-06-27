@@ -195,7 +195,12 @@ namespace PuzzleEditor
 
             return DOTween.To(() =>
             _material.color, color =>
-            _material.color = color, new Color(_originalColor.r, _originalColor.g, _originalColor.b, _valueTransparency), _fadeDuration)
+            _material.color = color, new Color(
+                _originalColor.r,
+                _originalColor.g,
+                _originalColor.b,
+                _valueTransparency),
+                _fadeDuration)
             .SetEase(Ease.Linear);
         }
 

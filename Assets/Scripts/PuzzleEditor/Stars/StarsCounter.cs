@@ -47,7 +47,9 @@ namespace PuzzleEditor.Stars
 
         private int GetStars(int timeInSeconds, int maxTimeSeconds)
         {
-            return Mathf.RoundToInt(_minStars + GetProgress(timeInSeconds, maxTimeSeconds) * (_currentMaxStars - _minStars));
+            return Mathf.RoundToInt(_minStars + GetProgress(
+                timeInSeconds,
+                maxTimeSeconds) * (_currentMaxStars - _minStars));
         }
 
         private float GetProgress(int timeInSeconds, int maxTimeSeconds)

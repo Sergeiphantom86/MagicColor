@@ -15,7 +15,10 @@ namespace PuzzleEditor.Spawners
             _grid = grid;
         }
 
-        public void TrySpawnChain(ChainSpawnData chainSpawnData, Func<Partition> spawnFunc, Action<Partition, Vector2Int> placeFunc)
+        public void TrySpawnChain(
+            ChainSpawnData chainSpawnData,
+            Func<Partition> spawnFunc,
+            Action<Partition, Vector2Int> placeFunc)
         {
             List<Vector2Int> directions = GetDirections(chainSpawnData.Direction);
 
@@ -25,7 +28,11 @@ namespace PuzzleEditor.Spawners
             }
         }
 
-        private void TrySpawnSingleDirectionChain(ChainSpawnData chainSpawnData, Vector2Int direction, Func<Partition> spawnFunc, Action<Partition, Vector2Int> placeFunc)
+        private void TrySpawnSingleDirectionChain(
+            ChainSpawnData chainSpawnData,
+            Vector2Int direction,
+            Func<Partition> spawnFunc,
+            Action<Partition, Vector2Int> placeFunc)
         {
             Vector2Int currentOrigin = chainSpawnData.StartOrigin;
 
@@ -36,7 +43,11 @@ namespace PuzzleEditor.Spawners
             }
         }
 
-        private bool TrySpawnNext(ChainSpawnData chainSpawnData, Vector2Int direction, Func<Partition> spawnFunc, Action<Partition, Vector2Int> placeFunc)
+        private bool TrySpawnNext(
+            ChainSpawnData chainSpawnData,
+            Vector2Int direction,
+            Func<Partition> spawnFunc,
+            Action<Partition, Vector2Int> placeFunc)
         {
             Vector2Int nextOrigin = chainSpawnData.StartOrigin + direction * chainSpawnData.Spacing;
 

@@ -59,17 +59,30 @@ namespace PuzzleEditor.EnergyField
             _pulseTween = DOTween.To(() => 0f,
             time =>
             {
-                _scaleMultiplier = GetConfirmatTimeChange(time, _scaleBoostThreshold) ? _scaleMultiplier : _boostedScaleMultiplier;
+                _scaleMultiplier = GetConfirmatTimeChange(
+                    time,
+                    _scaleBoostThreshold) ? _scaleMultiplier : _boostedScaleMultiplier;
 
-                transform.localScale = Vector3.Lerp(_startScale, _startScale * _scaleMultiplier, time);
+                transform.localScale = Vector3.Lerp(
+                    _startScale,
+                    _startScale * _scaleMultiplier,
+                    time);
 
-                float alpha = GetConfirmatTimeChange(time, _timeDivider) ? GetMaxAlpha(0, _maxAlpha, time) : GetMaxAlpha(_maxAlpha, 0, time - _alphaPeakTime);
+                float alpha = GetConfirmatTimeChange(
+                    time,
+                    _timeDivider) ? GetMaxAlpha(
+                        0,
+                        _maxAlpha,
+                        time) : GetMaxAlpha(
+                            _maxAlpha,
+                            0,
+                            time - _alphaPeakTime);
 
                 SetAlpha(_startMaterial, alpha);
 
             }, AnimationEndValue, _duration)
                 .SetEase(Ease.Linear)
-                .OnComplete(() => 
+                .OnComplete(() =>
                 _magicSphere.EnableEndEffect());
         }
 

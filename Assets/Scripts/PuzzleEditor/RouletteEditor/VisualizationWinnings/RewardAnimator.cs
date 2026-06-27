@@ -61,7 +61,11 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
 
         private void CreateParticle(Currency item)
         {
-            GameObject particle = Instantiate(_spritePrefab, transform.position, Quaternion.Euler(0, 0, Random.Range(0, 360f)), transform);
+            GameObject particle = Instantiate(
+                _spritePrefab,
+                transform.position,
+                Quaternion.Euler(0, 0, Random.Range(0, 360f)),
+                transform);
 
             particle.transform.localScale = Vector3.zero;
 
@@ -72,7 +76,7 @@ namespace PuzzleEditor.RouletteEditor.VisualizationWinnings
 
             ParticleAnimation anim = particle.AddComponent<ParticleAnimation>();
 
-            anim.Initialize(randomPosition: CalculateRandomPosition(), targetPosition: _rewards.transform.position, settings: GetParticleAnimation());
+            anim.Initialize(CalculateRandomPosition(), _rewards.transform.position, GetParticleAnimation());
         }
 
         private ParticleAnimation.Settings GetParticleAnimation()

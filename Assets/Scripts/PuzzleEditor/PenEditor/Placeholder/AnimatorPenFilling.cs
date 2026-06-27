@@ -68,7 +68,9 @@ namespace PuzzleEditor.PenEditor.Placeholder
 
         private void ChangePosition(Placeholder placeholder, float occupancy)
         {
-            placeholder.transform.DOLocalMove(GetPosition(placeholder.transform.localPosition, GetHeightIncrease(occupancy)), _duration)
+            placeholder.transform.DOLocalMove(
+                GetPosition(placeholder.transform.localPosition,
+                GetHeightIncrease(occupancy)), _duration)
             .SetEase(Ease.OutQuad);
         }
 

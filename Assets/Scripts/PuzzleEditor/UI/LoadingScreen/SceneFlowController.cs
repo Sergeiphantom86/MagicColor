@@ -25,13 +25,13 @@ namespace PuzzleEditor.UI.LoadingScreen
             _adRewardController = GetComponent<AdRewardController>();
 
             if (_textureInitializer == null)
-                Debug.LogError($"[SceneFlowController] TextureInitializer is missing on object '{gameObject.name}'", this);
+                Debug.LogError($"TextureInitializer missing on {gameObject.name}", this);
 
             if (_menuLoader == null)
-                Debug.LogError($"[SceneFlowController] MenuLoader is missing on object '{gameObject.name}'", this);
+                Debug.LogError($"MenuLoader missing on {gameObject.name}", this);
 
             if (_adRewardController == null)
-                Debug.LogWarning($"[SceneFlowController] AdRewardController not found on object '{gameObject.name}'", this);
+                Debug.LogWarning($"AdRewardController missing on {gameObject.name}", this);
         }
 
         private void Start()
@@ -78,8 +78,8 @@ namespace PuzzleEditor.UI.LoadingScreen
 
         private Sprite TryGetSprite(Sprite sprite)
         {
-            return _tutorialPuzzle != null 
-                ? _tutorialPuzzle.Sprite 
+            return _tutorialPuzzle != null
+                ? _tutorialPuzzle.Sprite
                 : sprite;
         }
     }

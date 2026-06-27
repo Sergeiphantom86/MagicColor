@@ -96,7 +96,10 @@ namespace Menu.HomeScreenSaver
 
             if (_destruction != null)
             {
-                _destruction.CraeteParticles(_particleSystem.transform.position, Quaternion.identity, transform.localScale.x);
+                _destruction.CraeteParticles(
+                    _particleSystem.transform.position,
+                    Quaternion.identity,
+                    transform.localScale.x);
 
                 _explosionSequence.Play();
             }

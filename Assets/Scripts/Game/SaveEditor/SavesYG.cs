@@ -71,7 +71,7 @@ namespace YG
         {
             if (balance < MinCurrentValue)
             {
-                Debug.LogWarning($"TryGetBalance: баланс {balance} меньше минимального {MinCurrentValue}. Установлено {MinCurrentValue}.");
+                Debug.LogWarning($"Balance {balance} -> {MinCurrentValue} (below min)");
                 return MinCurrentValue;
             }
 

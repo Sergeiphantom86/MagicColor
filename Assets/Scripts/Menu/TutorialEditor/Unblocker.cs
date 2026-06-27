@@ -67,8 +67,17 @@ namespace Menu.TutorialEditor
 
             SetLiftingHeight();
 
-            AddWaypointToSequence(_firstPointTarget, GetAngleRotation(), _moveDuration, _rotationDuration);
-            AddWaypointToSequence(_endPoint.transform.position, GetAngleRotation(_angleX), _moveDuration, _rotationDuration);
+            AddWaypointToSequence(
+                _firstPointTarget,
+                GetAngleRotation(),
+                _moveDuration,
+                _rotationDuration);
+
+            AddWaypointToSequence(
+                _endPoint.transform.position,
+                GetAngleRotation(_angleX),
+                _moveDuration,
+                _rotationDuration);
 
             _movementSequence.Pause();
         }
@@ -83,7 +92,11 @@ namespace Menu.TutorialEditor
             _collider.enabled = true;
         }
 
-        private void AddWaypointToSequence(Vector3 position, Vector3 angleRotation, float moveDuration, float rotationDuration)
+        private void AddWaypointToSequence(
+            Vector3 position,
+            Vector3 angleRotation,
+            float moveDuration,
+            float rotationDuration)
         {
             Rotate(angleRotation, rotationDuration);
 

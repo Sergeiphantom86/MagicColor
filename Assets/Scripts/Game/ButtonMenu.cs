@@ -1,4 +1,4 @@
-using Game.Exit;
+﻿using Game.Exit;
 using UnityEngine;
 using UnityEngine.UI;
 

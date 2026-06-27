@@ -30,7 +30,7 @@ public static class AutoFixEventNaming
         "OnTriggerEnter2D", "OnTriggerStay2D", "OnTriggerExit2D"
     };
 
-    [MenuItem("Tools/Автоматическое исправление именования событий")]
+    //[MenuItem("Tools/Автоматическое исправление именования событий")]
     public static void FixAll()
     {
         if (!EditorUtility.DisplayDialog("Warning",

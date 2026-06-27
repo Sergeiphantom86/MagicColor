@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using PuzzleEditor.Counter;
 using PuzzleEditor.SoundEditor;
@@ -99,7 +99,7 @@ namespace PuzzleEditor.Stars
         {
             if (count < 0)
             {
-                Debug.LogWarning($"SetCountStars: star count {count} is out of valid range (minimum: {MinIndexValue}). Clamping to {MinIndexValue}.");
+                Debug.LogWarning($"Stars {count} = {MinIndexValue} (min)", this);
                 YG2.saves.Stars = MinIndexValue;
                 return;
             }

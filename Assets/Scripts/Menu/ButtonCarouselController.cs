@@ -65,7 +65,12 @@ namespace Menu
 
             _currentIndex = Mathf.Clamp(_defaultIndex, 0, _data.Buttons.Length - 1);
 
-            _layout = new CarouselLayoutCalculator(_data.Buttons, _data.OriginalPositions, _centerScale, _sideScale, _distanceFromCenter);
+            _layout = new CarouselLayoutCalculator(
+                _data.Buttons,
+                _data.OriginalPositions,
+                _centerScale,
+                _sideScale,
+                _distanceFromCenter);
 
             _animator = new CarouselAnimator(_animationDuration);
 
@@ -93,12 +98,22 @@ namespace Menu
         {
             if (instant)
             {
-                _animator.ApplyImmediate(_data.Buttons[index], _data.CanvasGroups[index], state.PositionX, state.Scale, state.Alpha);
+                _animator.ApplyImmediate(
+                    _data.Buttons[index],
+                    _data.CanvasGroups[index],
+                    state.PositionX,
+                    state.Scale,
+                    state.Alpha);
 
                 return;
             }
 
-            _animator.ApplyAnimated(_data.Buttons[index], _data.CanvasGroups[index], state.PositionX, state.Scale, state.Alpha);
+            _animator.ApplyAnimated(
+                _data.Buttons[index],
+                _data.CanvasGroups[index],
+                state.PositionX,
+                state.Scale,
+                state.Alpha);
         }
 
         private ButtonVisualState CalculateVisualState(int index)
