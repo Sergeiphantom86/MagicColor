@@ -1,5 +1,5 @@
-using Game.LoadingScreen;
 using UnityEngine;
+using YG;
 
 namespace Game.Exit
 {
@@ -38,10 +38,13 @@ namespace Game.Exit
         {
             SwitchTime(false, _speedTimePassing);
 
-            if (SceneLoader.Instance != null)
+            if (YG2.saves.SceneLoader == null)
             {
-                SceneLoader.Instance.LoadSceneAsyncWithSplash(sceneName);
+                Debug.LogError("SceneLoader instance not found! Using default load.");
+                return;
             }
+
+            YG2.saves.SceneLoader.LoadSceneAsyncWithSplash(sceneName);
         }
 
         private void SwitchTime(bool isOn, int speedTimePassing)

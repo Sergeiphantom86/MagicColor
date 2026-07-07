@@ -1,28 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
-using PuzzleEditor.InkEditor;
+using PuzzleEditor.InkResources;
 using UnityEngine;
 
 namespace PuzzleEditor.PenEditor.Placeholder
 {
     public class SequentialSpawner : MonoBehaviour
     {
+        private const float Duration = 1;
+
         [Header("Spawn Settings")]
         [SerializeField] private Placeholder _objectToSpawn;
 
         private float _nextSpawnYPosition;
-        private float _defaultDuration;
         private Transform _transform;
         private Placeholder _placeholder;
         private List<Placeholder> _placeholders;
         private Color _currentColor;
+        private WaitForSeconds _waitForSeconds;
 
         private void Awake()
         {
-            _defaultDuration = 1;
             _transform = transform;
             _nextSpawnYPosition = 0f;
             _placeholders = new List<Placeholder>();
+            _waitForSeconds = new WaitForSeconds(Duration);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -85,14 +87,9 @@ namespace PuzzleEditor.PenEditor.Placeholder
                 spawnedObject.ShowFillings(color, _nextSpawnYPosition);
             }
 
-            yield return new WaitForSeconds(GetDelayTime(spawnedObject.Duration));
+            yield return _waitForSeconds;
 
             AssignNextSpawnPosition(spawnedObject.PositionEndPoint);
-        }
-
-        private float GetDelayTime(float duration)
-        {
-            return duration > 0 ? duration : _defaultDuration;
         }
 
         private void AssignNextSpawnPosition(Vector3 position)

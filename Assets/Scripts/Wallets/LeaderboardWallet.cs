@@ -30,6 +30,17 @@ namespace Wallets
             _wallet.OnBalanceChanged -= OnSavePlayerBalance;
         }
 
+        private string ConvertName(string original)
+        {
+            if (string.IsNullOrEmpty(original))
+                return Default;
+
+            if (original.EndsWith(Suffix))
+                return original[..^Suffix.Length];
+
+            return original;
+        }
+
         private void OnSavePlayerBalance(long balance, string walletName)
         {
             _leaderboardName = ConvertName(walletName);
@@ -41,17 +52,6 @@ namespace Wallets
             }
 
             YG2.SetLeaderboard(_leaderboardName, (int)balance);
-        }
-
-        private string ConvertName(string original)
-        {
-            if (string.IsNullOrEmpty(original))
-                return Default;
-
-            if (original.EndsWith(Suffix))
-                return original[..^Suffix.Length];
-
-            return original;
         }
     }
 }

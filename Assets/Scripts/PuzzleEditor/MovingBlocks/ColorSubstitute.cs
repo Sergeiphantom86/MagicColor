@@ -4,7 +4,6 @@ namespace PuzzleEditor.MovingBlocks
 {
     public class ColorSubstitute : ColorableObject
     {
-        [Header("��������� �����")]
         [SerializeField] private bool _changeOnAwake = true;
         [SerializeField] private bool _useSaturationRange = false;
         [SerializeField][Range(0f, 1f)] private float _minSaturation = 0.5f;

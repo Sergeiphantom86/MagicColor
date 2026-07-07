@@ -48,32 +48,6 @@ namespace Menu.HomeScreenSaver
 
         public void ResumeAnimations() => DOTweenExtensions.SafePlay(_shineSequence);
 
-        private void OnStartShineAnimation()
-        {
-            if (_appearanceAnimator.Fragments.Count == 0)
-                return;
-
-            _validFragments = _appearanceAnimator
-            .Fragments.Where(f => f != null && f.Renderer != null)
-            .ToList();
-
-            if (_validFragments.Count == 0)
-                return;
-
-            CreateShineSequence();
-            StoreOriginalColors();
-
-            _shineSequence.OnComplete(() =>
-            {
-                RestoreOriginalColors();
-
-                Glistened?.Invoke(_validFragments);
-            });
-
-            _particleSystem.gameObject.SetActive(true);
-            _particleSystem.Play();
-        }
-
         private void StoreOriginalColors()
         {
             _originalColors.Clear();
@@ -131,6 +105,32 @@ namespace Menu.HomeScreenSaver
             }
 
             _shineSequence = null;
+        }
+
+        private void OnStartShineAnimation()
+        {
+            if (_appearanceAnimator.Fragments.Count == 0)
+                return;
+
+            _validFragments = _appearanceAnimator
+            .Fragments.Where(f => f != null && f.Renderer != null)
+            .ToList();
+
+            if (_validFragments.Count == 0)
+                return;
+
+            CreateShineSequence();
+            StoreOriginalColors();
+
+            _shineSequence.OnComplete(() =>
+            {
+                RestoreOriginalColors();
+
+                Glistened?.Invoke(_validFragments);
+            });
+
+            _particleSystem.gameObject.SetActive(true);
+            _particleSystem.Play();
         }
     }
 }

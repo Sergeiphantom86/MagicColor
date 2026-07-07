@@ -64,6 +64,7 @@ namespace PuzzleEditor.UI.LoadingScreen
         }
 
         private void OnAnyButton() { }
+
         private void OnPuzzleCompleted()
         {
             _menuButtons.ShowResumeButton();

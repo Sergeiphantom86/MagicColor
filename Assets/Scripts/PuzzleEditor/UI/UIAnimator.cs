@@ -28,6 +28,14 @@ namespace PuzzleEditor.UI
             _rectTransform = GetComponent<RectTransform>();
         }
 
+        private void OnDestroy()
+        {
+            if (_sequence != null && _sequence.IsActive())
+            {
+                _sequence.Kill();
+            }
+        }
+
         public Sequence Move(RectTransform canvasRect)
         {
             return GetSequence(canvasRect, 0, _positionY, 0);
@@ -52,14 +60,6 @@ namespace PuzzleEditor.UI
                 positionX,
                 positionY,
                 positionZ);
-        }
-
-        private void OnDestroy()
-        {
-            if (_sequence != null && _sequence.IsActive())
-            {
-                _sequence.Kill();
-            }
         }
     }
 }

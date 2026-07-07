@@ -1,6 +1,6 @@
 using DG.Tweening;
 using PuzzleEditor.PoolEffects;
-using PuzzleEditor.SoundEditor;
+using PuzzleEditor.Audio;
 using UnityEngine;
 
 namespace PuzzleEditor.Spawners

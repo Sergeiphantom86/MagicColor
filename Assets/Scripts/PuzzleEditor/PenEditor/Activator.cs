@@ -1,13 +1,18 @@
 using System;
 using System.Collections;
 using PuzzleEditor.PenEditor.Placeholder;
-using PuzzleEditor.SoundEditor;
+using PuzzleEditor.Audio;
 using UnityEngine;
 
 namespace PuzzleEditor.PenEditor
 {
     public class Activator : MonoBehaviour, IActivatable
     {
+        private const float Delay = 3;
+        private const float Duration = 0.3f;
+        private const float TransitionReducing = 0.295f;
+        private const float DelayBeforeProcessing = 1.2f;
+
         [SerializeField] private AudioClip _winn;
         [SerializeField] private AudioClip _pixelSound;
         [SerializeField] private Transform _transformPenHolder;
@@ -15,9 +20,6 @@ namespace PuzzleEditor.PenEditor
         [SerializeField] private SequentialSpawner _sequentialSpawner;
         [SerializeField] private TextureInitializer _textureInitializer;
 
-        private float _delay;
-        private float _duration;
-        private float _transitionReducing;
         private bool _isProcessing;
         private int _totalCountPixel;
         private Voiceover _voiceover;
@@ -26,6 +28,7 @@ namespace PuzzleEditor.PenEditor
         private FragmentQueueProcessor _queueProcessor;
         private PuzzleProgressTracker _progressTracker;
         private FillSpeedController _speedController;
+        private WaitForSeconds _waitBeforeProcessing;
 
         public event Action PuzzleCompleted;
 
@@ -35,10 +38,8 @@ namespace PuzzleEditor.PenEditor
 
         private void Awake()
         {
-            _delay = 3;
-            _duration = 0.3f;
-            _transitionReducing = 0.295f;
-            _delayWait = new WaitForSeconds(_delay);
+            _delayWait = new WaitForSeconds(Delay);
+            _waitBeforeProcessing = new WaitForSeconds(DelayBeforeProcessing);
 
             _voiceover = GetComponent<Voiceover>();
             _colorPrecision = new ColorPrecision();
@@ -114,22 +115,22 @@ namespace PuzzleEditor.PenEditor
         private IEnumerator ProcessingRoutine()
         {
             _isProcessing = true;
-            yield return new WaitForSeconds(_duration * 4);
-            yield return _queueProcessor.ProcessQueueRoutine(_duration, _transitionReducing);
+            yield return _waitBeforeProcessing;
+            yield return _queueProcessor.ProcessQueueRoutine(Duration, TransitionReducing);
 
             _isProcessing = false;
-        }
-
-        private void OnSpeedIncreaseRequested(float remainingTime)
-        {
-            StartCoroutine(SpeedRoutine(remainingTime));
         }
 
         private IEnumerator SpeedRoutine(float remainingTime)
         {
             yield return _delayWait;
 
-            _speedController.TryAccelerate(remainingTime, Approached, _queueProcessor.SpeedUpMovement);
+            _speedController.Increase(remainingTime, Approached, _queueProcessor.SpeedUpMovement);
+        }
+
+        private void OnSpeedIncreaseRequested(float remainingTime)
+        {
+            StartCoroutine(SpeedRoutine(remainingTime));
         }
 
         private void OnPuzzleFinished()

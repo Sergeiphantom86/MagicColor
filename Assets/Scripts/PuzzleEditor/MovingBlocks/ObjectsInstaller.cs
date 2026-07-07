@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Menu.TutorialEditor;
-using PuzzleEditor.LockEditor;
+using Menu.Tutorials;
+using PuzzleEditor.LockMechanics;
 using UnityEngine;
 using YG;
 
@@ -53,7 +53,7 @@ namespace PuzzleEditor.MovingBlocks
             if (_isTutorial == false)
             return;
 
-            _lockInstaller.TryPlaceLock(colorables);
+            _lockInstaller.RightPlace(colorables);
         }
 
         private void OnPlaceKeyOnUnrepaintedBlock(List<IColorable> colorables)
@@ -61,7 +61,7 @@ namespace PuzzleEditor.MovingBlocks
             if (_isTutorial == false)
             return;
 
-            _keyInstaller.TryPlaceKey(colorables);
+            _keyInstaller.RightPlace(colorables);
         }
     }
 }

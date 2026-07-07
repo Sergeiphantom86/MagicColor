@@ -44,6 +44,11 @@ namespace Menu.HomeScreenSaver
             StopAllAnimations();
         }
 
+        private void OnDestroy()
+        {
+            StopAllAnimations();
+        }
+
         public void AddSprite(List<Sprite> sprites)
         {
             _spriteSequence = sprites;
@@ -113,11 +118,6 @@ namespace Menu.HomeScreenSaver
             DOTweenExtensions.SafeKill(_transitionSequence, true);
             _animationController.PauseAllAnimations();
             DOTween.Kill(this);
-        }
-
-        private void OnDestroy()
-        {
-            StopAllAnimations();
         }
     }
 }

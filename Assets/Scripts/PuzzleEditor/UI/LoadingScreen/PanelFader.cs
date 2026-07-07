@@ -24,6 +24,11 @@ namespace PuzzleEditor.UI.LoadingScreen
             _currentTween?.Kill();
         }
 
+        private void OnDestroy()
+        {
+            _currentTween?.Kill();
+        }
+
         public void FadeIn(Action onComplete = null)
         {
             Fade(_blackout, true).OnComplete(() => onComplete?.Invoke());
@@ -39,7 +44,7 @@ namespace PuzzleEditor.UI.LoadingScreen
             _currentTween?.Kill();
 
             if (_canvasGroup == null)
-            _canvasGroup = GetComponent<CanvasGroup>();
+                _canvasGroup = GetComponent<CanvasGroup>();
 
             _currentTween = _canvasGroup
             .DOFade(targetAlpha, _fadeDuration)
@@ -51,13 +56,9 @@ namespace PuzzleEditor.UI.LoadingScreen
                     _canvasGroup.interactable = isInteractable;
                     _canvasGroup.blocksRaycasts = isInteractable;
                 }
-                });
-                return _currentTween;
-            }
+            });
 
-            private void OnDestroy()
-            {
-                _currentTween?.Kill();
-            }
+            return _currentTween;
         }
     }
+}

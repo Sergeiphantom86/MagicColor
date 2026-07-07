@@ -1,36 +1,39 @@
 using UnityEngine;
 
-public class SpriteStorage
+namespace Game.SaveEditor
 {
-    private Sprite _new;
-    private Sprite _current;
-
-    public Sprite New => _new;
-    public Sprite Current => _current;
-
-    public void SetNew(Sprite sprite)
+    public class SpriteStorage
     {
-        if (sprite == null)
+        private Sprite _new;
+        private Sprite _current;
+
+        public Sprite New => _new;
+        public Sprite Current => _current;
+
+        public void SetNew(Sprite sprite)
         {
-            Debug.LogWarning("SpriteStorage: null sprite assignment ignored");
-            return;
+            if (sprite == null)
+            {
+                Debug.LogWarning("SpriteStorage: null sprite assignment ignored");
+                return;
+            }
+
+            if (_new == sprite) return;
+
+            _new = sprite;
         }
 
-        if (_new == sprite) return;
-
-        _new = sprite;
-    }
-
-    public void SetCurrent(Sprite sprite)
-    {
-        if (sprite == null)
+        public void SetCurrent(Sprite sprite)
         {
-            Debug.LogWarning("SpriteStorage: attempt to set a null sprite");
-            return;
+            if (sprite == null)
+            {
+                Debug.LogWarning("SpriteStorage: attempt to set a null sprite");
+                return;
+            }
+
+            if (_current == sprite) return;
+
+            _current = sprite;
         }
-
-        if (_current == sprite) return;
-
-        _current = sprite;
     }
 }

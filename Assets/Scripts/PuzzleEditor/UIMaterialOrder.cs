@@ -28,6 +28,12 @@ namespace PuzzleEditor
             }
         }
 
+        private void OnDestroy()
+        {
+            if (_uiGraphic != null && _originalMaterial != null)
+                _uiGraphic.material = _originalMaterial;
+        }
+
         public void SetUIBackground()
         {
             if (_clonedMaterial != null)
@@ -40,12 +46,6 @@ namespace PuzzleEditor
             {
                 _renderer.material.renderQueue = _uiBackgroundQueue;
             }
-        }
-
-        private void OnDestroy()
-        {
-            if (_uiGraphic != null && _originalMaterial != null)
-            _uiGraphic.material = _originalMaterial;
         }
     }
 }

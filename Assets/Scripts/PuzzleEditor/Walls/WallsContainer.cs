@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using Menu.TutorialEditor.TutorialPuzzle;
-using PuzzleEditor.LockEditor;
+using Menu.Tutorials.TutorialPuzzle;
+using PuzzleEditor.LockMechanics;
 using PuzzleEditor.PenEditor;
-using PuzzleEditor.RouletteEditor;
-using PuzzleEditor.Walls.WallEngineEditor;
+using PuzzleEditor.MinigamesRoulette;
+using PuzzleEditor.Walls.WallEngineResource;
 using UnityEngine;
-using Wallets.WalletEditor;
+using Wallets.WalletEconomy;
 
 namespace PuzzleEditor.Walls
 {

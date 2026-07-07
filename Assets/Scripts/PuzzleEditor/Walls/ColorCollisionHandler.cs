@@ -1,8 +1,8 @@
-using Menu.TutorialEditor;
-using Menu.TutorialEditor.TutorialPuzzle;
-using PuzzleEditor.RouletteEditor;
-using PuzzleEditor.Walls.WallEditor;
-using PuzzleEditor.Walls.WallEngineEditor;
+using Menu.Tutorials;
+using Menu.Tutorials.TutorialPuzzle;
+using PuzzleEditor.MinigamesRoulette;
+using PuzzleEditor.Walls.WallResources;
+using PuzzleEditor.Walls.WallEngineResource;
 using UnityEngine;
 
 namespace PuzzleEditor.Walls
@@ -45,6 +45,16 @@ namespace PuzzleEditor.Walls
             _collisionHandler.Enter -= OnEnter;
             _collisionHandler.Exit -= OnExit;
             _destroySequence.IsTouched -= UnblockWall;
+        }
+
+        public void UnblockWall()
+        {
+            if (_wall.IsBlocked)
+            {
+                _unlockPolicy.Use();
+                _wall.Unblock();
+                _lockHandler.Unblock();
+            }
         }
 
         public bool Initialize(
@@ -119,16 +129,6 @@ namespace PuzzleEditor.Walls
         private void OnExit(Collider other)
         {
             _collisionProcessor.ProcessExit(other);
-        }
-
-        public void UnblockWall()
-        {
-            if (_wall.IsBlocked)
-            {
-                _unlockPolicy.Use();
-                _wall.Unblock();
-                _lockHandler.Unblock();
-            }
         }
     }
 }

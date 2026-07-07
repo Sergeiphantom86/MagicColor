@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PuzzleEditor.MovingBlocks.BlockEditor;
+using PuzzleEditor.MovingBlocks.GridLogic;
+using PuzzleEditor.MovingBlocks;
 using PuzzleEditor.PoolEffects;
 using PuzzleEditor.Spawners;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace PuzzleEditor
         [SerializeField] private Effecter _effectImpact;
         [SerializeField] private Effecter _effectDestruct;
         [SerializeField] private Effecter _effectSmock;
+        [SerializeField] private GridSystem _gridSystem;
 
         private List<Block> _blocks;
         private int _initialBlocksCount;
@@ -26,7 +28,7 @@ namespace PuzzleEditor
         private bool _isInitialize;
         private float _delayTime;
 
-        public event Action EverythDestroyed;
+        public event Action EverythingDestroyed;
 
         public event Action Destroyed;
 
@@ -53,20 +55,6 @@ namespace PuzzleEditor
         {
             _repainter.RecoloredBlock -= OnSubscribe;
             _blockSpawner.BlockSpawned -= OnRegister;
-        }
-
-        private void OnRegister(Block block)
-        {
-            _blocks.Add(block);
-
-            block.Initialize(
-                _effectImpact,
-                _effectSmock,
-                _effectDestruct,
-                _soundDestruction,
-                _soundDragg,
-                _soundRaise,
-                _matchSound);
         }
 
         private void CalculateStartTimeGame(Block block)
@@ -104,12 +92,27 @@ namespace PuzzleEditor
 
             if (_initialBlocksCount == 0)
             {
-                EverythDestroyed?.Invoke();
+                EverythingDestroyed?.Invoke();
             }
 
             _blocks.Remove(block);
 
             block.Destroyed -= OnHandleBlockDestroyed;
+        }
+
+        private void OnRegister(Block block)
+        {
+            _blocks.Add(block);
+
+            block.Initialize(
+                _effectImpact,
+                _effectSmock,
+                _effectDestruct,
+                _soundDestruction,
+                _soundDragg,
+                _soundRaise,
+                _matchSound,
+                _gridSystem);
         }
     }
 }

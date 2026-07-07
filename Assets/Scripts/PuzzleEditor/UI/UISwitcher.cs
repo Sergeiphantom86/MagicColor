@@ -1,8 +1,8 @@
 using Game;
-using Menu.ButtonEditor.Ability;
+using Menu.Interaction.Ability;
 using PuzzleEditor.Counter;
 using UnityEngine;
-using Wallets.WalletEditor;
+using Wallets.WalletEconomy;
 
 namespace PuzzleEditor.UI
 {
@@ -36,14 +36,6 @@ namespace PuzzleEditor.UI
             _animatorPuzzle.AnimationComplete -= OnTupnOffUI;
         }
 
-        private void OnTupnOffUI()
-        {
-            _timer.gameObject.SetActive(false);
-            _bagKey.gameObject.SetActive(false);
-            _pauseButton.gameObject.SetActive(false);
-            _abilityButton.gameObject.SetActive(false);
-        }
-
         private bool Validate()
         {
             if (_timer == null)
@@ -71,6 +63,14 @@ namespace PuzzleEditor.UI
             }
 
             return true;
+        }
+
+        private void OnTupnOffUI()
+        {
+            _timer.gameObject.SetActive(false);
+            _bagKey.gameObject.SetActive(false);
+            _pauseButton.gameObject.SetActive(false);
+            _abilityButton.gameObject.SetActive(false);
         }
     }
 }

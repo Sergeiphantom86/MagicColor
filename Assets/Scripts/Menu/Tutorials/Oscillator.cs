@@ -1,0 +1,74 @@
+using DG.Tweening;
+using PuzzleEditor;
+using UnityEngine;
+
+namespace Menu.Tutorials
+{
+    public class Oscillator : MonoBehaviour
+    {
+        [SerializeField] private Rotator _rotation;
+
+        private float _duration;
+        private float _amplitude;
+        private int _quantityCycles;
+        private Sequence _sequence;
+        private Vector3 _initialRotation;
+
+        private void Awake()
+        {
+            _amplitude = 10;
+            _duration = 0.2f;
+            _quantityCycles = 4;
+        }
+
+        private void OnEnable()
+        {
+            _rotation.Rotated += OnSetStartPosition;
+        }
+
+        private void OnDisable()
+        {
+            _rotation.Rotated -= OnSetStartPosition;
+        }
+
+        private void OnDestroy()
+        {
+            _sequence?.Kill();
+        }
+
+        public void Play()
+        {
+            if (_sequence != null && _sequence.IsPlaying())
+                return;
+
+            Rotate();
+        }
+
+        private void Rotate()
+        {
+            _sequence = DOTween.Sequence();
+
+            CreateSequence(0, 0, _amplitude);
+
+            CreateSequence(0, 0, -_amplitude);
+
+            _sequence
+            .SetLoops(_quantityCycles, LoopType.Restart)
+            .OnComplete(() => transform.eulerAngles = _initialRotation);
+
+            _sequence.SetEase(Ease.Linear);
+        }
+
+        private void CreateSequence(float amplitudeX = 0, float amplitudeY = 0, float amplitudeZ = 0)
+        {
+            _sequence.Append(transform
+            .DORotate(transform.eulerAngles + new Vector3(amplitudeX, amplitudeY, amplitudeZ), _duration)
+            .SetEase(Ease.InSine));
+        }
+
+        private void OnSetStartPosition()
+        {
+            _initialRotation = transform.eulerAngles;
+        }
+    }
+}

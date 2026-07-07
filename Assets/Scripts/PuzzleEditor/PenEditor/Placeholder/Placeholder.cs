@@ -11,8 +11,6 @@ namespace PuzzleEditor.PenEditor.Placeholder
 
         public Vector3 PositionEndPoint => _endPoint.transform.position;
 
-        public float Duration => _animatorPenFilling.GetDuration();
-
         private void Awake()
         {
             _colorable = GetComponent<IColorable>();

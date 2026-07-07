@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Menu.TutorialEditor;
-using PuzzleEditor.MovingBlocks.BlockEditor;
+using Menu.Tutorials;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -28,7 +27,7 @@ namespace PuzzleEditor.MovingBlocks
             }
         }
 
-        public void TryPlaceKey(List<IColorable> colorables)
+        public void RightPlace(List<IColorable> colorables)
         {
             if (CanPlace() == false)
             return;

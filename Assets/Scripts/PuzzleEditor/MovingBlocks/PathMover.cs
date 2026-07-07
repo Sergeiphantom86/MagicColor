@@ -29,6 +29,14 @@ namespace PuzzleEditor.MovingBlocks
             _originalScale = transform.localScale;
         }
 
+        private void OnDestroy()
+        {
+            if (_pathSequence != null && _pathSequence.IsActive())
+            {
+                _pathSequence.Kill();
+            }
+        }
+
         public void Move(Vector3 waypoint, Vector3 endPoint, Action onComplete = null)
         {
             _originalScale = transform.localScale;
@@ -60,14 +68,6 @@ namespace PuzzleEditor.MovingBlocks
         private void AddMovePoint(Sequence sequence, Vector3 targetPosition, float duration)
         {
             sequence.Append(transform.DOMove(targetPosition, duration));
-        }
-
-        private void OnDestroy()
-        {
-            if (_pathSequence != null && _pathSequence.IsActive())
-            {
-                _pathSequence.Kill();
-            }
         }
     }
 }

@@ -1,5 +1,5 @@
-using System.Collections;
-using PuzzleEditor.SoundEditor;
+﻿using System.Collections;
+using PuzzleEditor.Audio;
 using UnityEngine;
 
 namespace Fireworks
@@ -25,6 +25,8 @@ namespace Fireworks
         private ParticleSystem _particleSystem;
         private WaitForSeconds _waitSoundGlow;
         private WaitForSeconds _waitSoundExplosion;
+        private WaitForSeconds _additionalDelayBetweenShots;
+        private WaitForSeconds _additionalDelayBetweenFlashes;
 
         private void Awake()
         {
@@ -34,8 +36,20 @@ namespace Fireworks
             _particleSystem = GetComponent<ParticleSystem>();
             _waitSoundGlow = new WaitForSeconds(GlowDelay);
             _waitSoundExplosion = new WaitForSeconds(ExplosionToSparkleDelay);
-
+            _additionalDelayBetweenShots = new WaitForSeconds(GetAccidentalDelay(_minLaunchDelay, _maxLaunchDelay));
+            _additionalDelayBetweenFlashes = new WaitForSeconds(GetAccidentalDelay(SparkleMinDelay, SparkleMaxDelay));
             _audioSource.SetVolume(2);
+        }
+
+        private void OnDisable()
+        {
+            StopFireworks();
+        }
+
+        private void OnDestroy()
+        {
+            StopDesiredCoroutine(_launchCoroutine);
+            StopDesiredCoroutine(_explosioCoroutine);
         }
 
         public void StartFireworks()
@@ -47,9 +61,9 @@ namespace Fireworks
 
             _particleSystem.Play();
 
-            TryStopCoroutine(_launchCoroutine);
+            StopDesiredCoroutine(_launchCoroutine);
 
-            _launchCoroutine = StartCoroutine(FireworksRoutine());
+            _launchCoroutine = StartCoroutine(FireVolley());
         }
 
         public void Stop()
@@ -63,13 +77,13 @@ namespace Fireworks
 
             _particleSystem.Stop();
 
-            TryStopCoroutine(_launchCoroutine);
-            TryStopCoroutine(_explosioCoroutine);
+            StopDesiredCoroutine(_launchCoroutine);
+            StopDesiredCoroutine(_explosioCoroutine);
 
             _audioSource.Stop();
         }
 
-        private void TryStopCoroutine(Coroutine coroutine)
+        private void StopDesiredCoroutine(Coroutine coroutine)
         {
             if (coroutine != null)
             {
@@ -77,23 +91,23 @@ namespace Fireworks
             }
         }
 
-        private IEnumerator FireworksRoutine()
+        private IEnumerator FireVolley()
         {
             while (_isRunning && _particleSystem.isPlaying)
             {
-                TryStopCoroutine(_explosioCoroutine);
+                StopDesiredCoroutine(_explosioCoroutine);
 
-                yield return _explosioCoroutine = StartCoroutine(PlaySingleFirework());
-                yield return new WaitForSeconds(GetAccidentalDelay());
+                yield return _explosioCoroutine = StartCoroutine(FireSingle());
+                yield return _additionalDelayBetweenShots;
             }
         }
 
-        private float GetAccidentalDelay()
+        private float GetAccidentalDelay(float min, float max)
         {
-            return Random.Range(_minLaunchDelay, _maxLaunchDelay);
+            return Random.Range(min, max);
         }
 
-        private IEnumerator PlaySingleFirework()
+        private IEnumerator FireSingle()
         {
             if (_soundPack == null)
                 yield break;
@@ -108,7 +122,7 @@ namespace Fireworks
             for (int i = 0; i < SparkleCount; i++)
             {
                 PlaySoundWithRandomPitch(_soundPack.SparkleSound);
-                yield return new WaitForSeconds(Random.Range(SparkleMinDelay, SparkleMaxDelay));
+                yield return _additionalDelayBetweenFlashes;
             }
 
             yield return _waitSoundGlow;
@@ -122,17 +136,6 @@ namespace Fireworks
             {
                 _audioSource.Play(clip);
             }
-        }
-
-        private void OnDisable()
-        {
-            StopFireworks();
-        }
-
-        private void OnDestroy()
-        {
-            TryStopCoroutine(_launchCoroutine);
-            TryStopCoroutine(_explosioCoroutine);
         }
     }
 }

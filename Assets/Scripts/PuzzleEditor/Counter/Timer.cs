@@ -19,6 +19,8 @@ namespace PuzzleEditor.Counter
         private bool _isRunning;
         private TimeSpan _span;
         private float _delayCompensation;
+        private WaitForSeconds _waitCompensation;
+        private WaitForSeconds _blockDelayWait;
 
         public event Action HasBegun;
 
@@ -30,6 +32,8 @@ namespace PuzzleEditor.Counter
         private void Awake()
         {
             _delayCompensation = 0.1f;
+            _waitCompensation = new WaitForSeconds(_delayCompensation);
+            _blockDelayWait = new WaitForSeconds(_blocksContainer.DelayTime - _delayCompensation);
         }
 
         private void Update()
@@ -48,9 +52,9 @@ namespace PuzzleEditor.Counter
 
         private IEnumerator Start()
         {
-            yield return new WaitForSeconds(_delayCompensation);
+            yield return _waitCompensation;
 
-            yield return new WaitForSeconds(_blocksContainer.DelayTime - _delayCompensation);
+            yield return _blockDelayWait;
 
             StartTimer();
 
@@ -59,12 +63,12 @@ namespace PuzzleEditor.Counter
 
         private void OnEnable()
         {
-            _blocksContainer.EverythDestroyed += StopAndSave;
+            _blocksContainer.EverythingDestroyed += StopAndSave;
         }
 
         private void OnDisable()
         {
-            _blocksContainer.EverythDestroyed -= StopAndSave;
+            _blocksContainer.EverythingDestroyed -= StopAndSave;
         }
 
         public void StartTimer()

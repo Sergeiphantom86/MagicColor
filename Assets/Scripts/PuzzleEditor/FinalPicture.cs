@@ -1,6 +1,6 @@
 using DG.Tweening;
 using Menu;
-using PuzzleEditor.SoundEditor;
+using PuzzleEditor.Audio;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -58,7 +58,7 @@ namespace PuzzleEditor
         private void OnEnable()
         {
             if (_activator == null)
-            return;
+                return;
 
             _activator.PuzzleCompleted += OnDemonstrate;
             _activator.Approached += OnZoomIn;
@@ -73,6 +73,42 @@ namespace PuzzleEditor
             }
 
             StopCurrentAnimation();
+        }
+
+        private void OnDestroy()
+        {
+            StopCurrentAnimation();
+        }
+
+        private Sequence GetCreatedSequence(float duration)
+        {
+            if (_currentSequence == null)
+            {
+                Debug.LogWarning("Sequence is null!");
+                return null;
+            }
+
+            if (duration <= 0f)
+            {
+                Debug.LogWarning("Duration must be greater than 0");
+                duration = 0.01f;
+            }
+
+            _currentSequence
+            .Join(transform.DOLocalMoveY(_targetYPosition, duration).SetEase(Ease.OutBack))
+            .Join(transform.DOLocalMoveZ(_targetZPosition, duration).SetEase(Ease.OutBack))
+            .Join(transform.DOScale(_targetScale, duration).SetEase(Ease.OutBack));
+
+            return _currentSequence;
+        }
+
+        private void StopCurrentAnimation()
+        {
+            if (_currentSequence != null && _currentSequence.IsActive())
+            {
+                _currentSequence.Kill();
+                _currentSequence = null;
+            }
         }
 
         private void OnZoomIn(float time)
@@ -92,56 +128,20 @@ namespace PuzzleEditor
             {
                 _activatable?.Deactivate();
                 _currentSequence = null;
-                });
-            }
+            });
+        }
 
-            private void OnDemonstrate()
+        private void OnDemonstrate()
+        {
+            StopCurrentAnimation();
+
+            if (_voiceover != null)
             {
-                StopCurrentAnimation();
-
-                if (_voiceover != null)
-                {
-                    _voiceover.Stop();
-                }
-
-                _currentSequence = DOTween.Sequence();
-                GetCreatedSequence(_moveYDuration);
+                _voiceover.Stop();
             }
 
-            private Sequence GetCreatedSequence(float duration)
-            {
-                if (_currentSequence == null)
-                {
-                    Debug.LogWarning("Sequence is null!");
-                    return null;
-                }
-
-                if (duration <= 0f)
-                {
-                    Debug.LogWarning("Duration must be greater than 0");
-                    duration = 0.01f;
-                }
-
-                _currentSequence
-                .Join(transform.DOLocalMoveY(_targetYPosition, duration).SetEase(Ease.OutBack))
-                .Join(transform.DOLocalMoveZ(_targetZPosition, duration).SetEase(Ease.OutBack))
-                .Join(transform.DOScale(_targetScale, duration).SetEase(Ease.OutBack));
-
-                return _currentSequence;
-            }
-
-            private void StopCurrentAnimation()
-            {
-                if (_currentSequence != null && _currentSequence.IsActive())
-                {
-                    _currentSequence.Kill();
-                    _currentSequence = null;
-                }
-            }
-
-            private void OnDestroy()
-            {
-                StopCurrentAnimation();
-            }
+            _currentSequence = DOTween.Sequence();
+            GetCreatedSequence(_moveYDuration);
         }
     }
+}

@@ -1,8 +1,8 @@
 using System.Collections;
 using DG.Tweening;
-using PuzzleEditor.InkEditor;
-using PuzzleEditor.MovingBlocks.BlockEditor;
+using PuzzleEditor.InkResources;
 using PuzzleEditor.Walls;
+using PuzzleEditor.MovingBlocks;
 using UnityEngine;
 using YG;
 

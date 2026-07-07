@@ -28,6 +28,25 @@ namespace Menu.HomeScreenSaver
             CreatePool();
         }
 
+        private void OnDestroy()
+        {
+            _pool?.Clear();
+        }
+
+        public void ReturnAllFragments(List<Fragment> fragments)
+        {
+            if (fragments == null)
+                return;
+
+            foreach (Fragment fragment in fragments)
+            {
+                if (fragment != null)
+                {
+                    _pool.Release(fragment);
+                }
+            }
+        }
+
         private void CreatePool()
         {
             _pool = new ObjectPool<Fragment>(
@@ -69,25 +88,6 @@ namespace Menu.HomeScreenSaver
             {
                 Destroy(pixel.gameObject);
             }
-        }
-
-        public void ReturnAllFragments(List<Fragment> fragments)
-        {
-            if (fragments == null)
-            return;
-
-            foreach (Fragment fragment in fragments)
-            {
-                if (fragment != null)
-                {
-                    _pool.Release(fragment);
-                }
-            }
-        }
-
-        private void OnDestroy()
-        {
-            _pool?.Clear();
         }
     }
 }

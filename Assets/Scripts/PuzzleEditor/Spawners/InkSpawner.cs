@@ -1,5 +1,5 @@
 using System.Collections;
-using PuzzleEditor.InkEditor;
+using PuzzleEditor.InkResources;
 using PuzzleEditor.ObjectPool;
 using UnityEngine;
 
@@ -31,27 +31,22 @@ namespace PuzzleEditor.Spawners
             StopAllCoroutines();
         }
 
-        public void ActivateInkDrops(Color color, float duration)
+        public void ActivateInkDrops(Color color, WaitForSeconds waitForDuration)
         {
             if (color == null)
             {
                 Debug.LogError($"{nameof(ActivateInkDrops)}: Color == null!", this);
             }
 
-            if (duration < 0)
-            {
-                Debug.LogError($"{nameof(ActivateInkDrops)}: Duration < 0!", this);
-            }
-
             if (_spawnRoutine != null)
             StopCoroutine(_spawnRoutine);
 
-            _spawnRoutine = StartCoroutine(SpawnAndActivateRoutine(color, duration));
+            _spawnRoutine = StartCoroutine(SpawnAndActivateRoutine(color, waitForDuration));
         }
 
-        private IEnumerator SpawnAndActivateRoutine(Color color, float duration)
+        private IEnumerator SpawnAndActivateRoutine(Color color, WaitForSeconds waitForDuration)
         {
-            yield return new WaitForSeconds(duration);
+            yield return waitForDuration;
 
             for (int i = 0; i < _quantity; i++)
             {
@@ -67,19 +62,16 @@ namespace PuzzleEditor.Spawners
 
             Drop inkDrop = SpawnObject(_spawnPosition, _ink.transform);
 
-            TrySetColor(inkDrop, color);
+            if (inkDrop.TryGetComponent(out IColorable colorable))
+            {
+                colorable.SetColor(color);
+            }
 
             if (inkDrop.TryGetComponent(out IDropAnimation animator))
             {
                 animator.Play(_spawnPosition);
                 inkDrop.PlaySoundSpawn();
             }
-        }
-
-        private void TrySetColor(Drop inkDrop, Color color)
-        {
-            if (inkDrop.TryGetComponent(out IColorable colorable))
-            colorable.SetColor(color);
         }
     }
 }

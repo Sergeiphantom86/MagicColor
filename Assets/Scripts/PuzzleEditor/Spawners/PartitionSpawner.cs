@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using PuzzleEditor.MovingBlocks.GridEditor;
+using PuzzleEditor.MovingBlocks.GridLogic;
 using PuzzleEditor.Walls.Partitions;
 using UnityEngine;
 using YG;
@@ -37,36 +37,7 @@ namespace PuzzleEditor.Spawners
             _gridSystem.Initialized -= OnSpawnRandom;
         }
 
-        private void OnSpawnRandom()
-        {
-            _gridHelper = new GridPositionHelper(_gridSystem);
-            _chainSpawner = new PartitionChainSpawner(_gridSystem);
-
-            if (_gridHelper == null)
-            {
-                Debug.LogError("GridPositionHelper: GridHelper is null");
-            }
-
-            if (_chainSpawner == null)
-            {
-                Debug.LogError("PartitionChainSpawner: GridHelper is null");
-            }
-
-            if (_gridSystem == null)
-            {
-                Debug.LogError("GridSystem: GridHelper is null");
-            }
-
-            if (YG2.saves.IsUnlockAbilities == false)
-                return;
-
-            for (int i = 0; i < _chainCount; i++)
-            {
-                TrySpawnSingle();
-            }
-        }
-
-        private void TrySpawnSingle()
+        private void SpawnSingle()
         {
             Partition partition = SpawnObjectWithCurrentIndex(Vector3.zero, transform);
 
@@ -94,18 +65,8 @@ namespace PuzzleEditor.Spawners
                 Spacing = _chainSpacing,
             };
 
-            _chainSpawner.TrySpawnChain(_chainSpawnData, () =>
+            _chainSpawner.Begin(_chainSpawnData, () =>
             SpawnObjectWithCurrentIndex(Vector3.zero, transform), PlacePartition);
-        }
-
-        private void OnClearCell(IGridOccupant gridOccupant)
-        {
-            _gridSystem.ClearCell(gridOccupant);
-
-            if (gridOccupant is Partition partition)
-            {
-                partition.Destroyed -= OnClearCell;
-            }
         }
 
         private Vector2Int GetCentr(List<Vector2Int> availableCenters)
@@ -136,6 +97,45 @@ namespace PuzzleEditor.Spawners
             partition.SetGridPosition(origin);
 
             partition.Destroyed += OnClearCell;
+        }
+
+        private void OnSpawnRandom()
+        {
+            _gridHelper = new GridPositionHelper(_gridSystem);
+            _chainSpawner = new PartitionChainSpawner(_gridSystem);
+
+            if (_gridHelper == null)
+            {
+                Debug.LogError("GridPositionHelper: GridHelper is null");
+            }
+
+            if (_chainSpawner == null)
+            {
+                Debug.LogError("PartitionChainSpawner: GridHelper is null");
+            }
+
+            if (_gridSystem == null)
+            {
+                Debug.LogError("GridSystem: GridHelper is null");
+            }
+
+            if (YG2.saves.IsUnlockAbilities == false)
+                return;
+
+            for (int i = 0; i < _chainCount; i++)
+            {
+                SpawnSingle();
+            }
+        }
+
+        private void OnClearCell(IGridOccupant gridOccupant)
+        {
+            _gridSystem.ClearCell(gridOccupant);
+
+            if (gridOccupant is Partition partition)
+            {
+                partition.Destroyed -= OnClearCell;
+            }
         }
     }
 }

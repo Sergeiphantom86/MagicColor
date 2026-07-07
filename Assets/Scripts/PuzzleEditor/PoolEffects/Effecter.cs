@@ -24,6 +24,11 @@ namespace PuzzleEditor.PoolEffects
             InitializePools();
         }
 
+        private void OnDestroy()
+        {
+            _pool.Clear();
+        }
+
         public void CraeteParticles(Vector3 position, Quaternion quaternion, float scale)
         {
             ParticleSystem particles = _pool.Get();
@@ -48,9 +53,9 @@ namespace PuzzleEditor.PoolEffects
         {
             _pool = new ObjectPool<ParticleSystem>(
             createFunc: CreatePooledItem,
-            actionOnGet: OnTakeFromPool,
-            actionOnRelease: OnReturnedToPool,
-            actionOnDestroy: OnDestroyPoolObject,
+            actionOnGet: TakeFromPool,
+            actionOnRelease: ReturnedToPool,
+            actionOnDestroy: DestroyPoolObject,
             collectionCheck: _collectionCheck,
             defaultCapacity: _defaultPoolSize,
             maxSize: _maxPoolSize);
@@ -61,7 +66,7 @@ namespace PuzzleEditor.PoolEffects
             StartCoroutine(ReturnAfterDelay(particles));
         }
 
-        private void OnTakeFromPool(ParticleSystem particles)
+        private void TakeFromPool(ParticleSystem particles)
         {
             particles.gameObject.SetActive(true);
 
@@ -82,7 +87,7 @@ namespace PuzzleEditor.PoolEffects
             particles.transform.localScale = Vector3.one * scale;
         }
 
-        private void OnReturnedToPool(ParticleSystem particles)
+        private void ReturnedToPool(ParticleSystem particles)
         {
             particles.gameObject.SetActive(false);
 
@@ -92,17 +97,12 @@ namespace PuzzleEditor.PoolEffects
             }
         }
 
-        private void OnDestroyPoolObject(ParticleSystem particles)
+        private void DestroyPoolObject(ParticleSystem particles)
         {
             if (particles != null)
             {
                 Destroy(particles);
             }
-        }
-
-        private void OnDestroy()
-        {
-            _pool.Clear();
         }
 
         private IEnumerator ReturnAfterDelay(ParticleSystem particles)

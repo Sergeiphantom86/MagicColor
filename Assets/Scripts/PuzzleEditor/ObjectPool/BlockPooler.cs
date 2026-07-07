@@ -1,4 +1,4 @@
-using PuzzleEditor.MovingBlocks.BlockEditor;
+using PuzzleEditor.MovingBlocks;
 
 namespace PuzzleEditor.ObjectPool
 {

@@ -30,10 +30,10 @@ namespace Menu
 
         private void Update()
         {
-            TryChangeLocation();
+            ChangeLocation();
         }
 
-        private void TryChangeLocation()
+        private void ChangeLocation()
         {
             if (Screen.width != _lastWidth || Screen.height != _lastHeight)
             {

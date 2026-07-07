@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Menu.ButtonEditor;
+using Menu.Interaction;
 using UnityEngine;
 
 namespace Menu

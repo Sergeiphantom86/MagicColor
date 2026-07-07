@@ -39,20 +39,6 @@ namespace Menu.HomeScreenSaver
 
         public void ResumeAnimations() => DOTweenExtensions.SafePlay(_currentSequence);
 
-        private void OnAnimate()
-        {
-            _currentSequence = DOTween.Sequence();
-
-            _sortedPixels = _sorter.Fragments;
-
-            for (int i = 0; i < _sortedPixels.Count; i++)
-            {
-                _currentSequence.Insert(GetDelayPixels(i), GetPixelTransform(_sortedPixels, i)
-                .DOMove(GetTargetPosition(_sortedPixels, i), _animationDuration)
-                .SetEase(Ease.InOutFlash));
-            }
-        }
-
         private Vector3 GetTargetPosition(List<Fragment> sortedPixels, int index)
         {
             return sortedPixels[index].transform.position + Vector3.down * _moveDistance;
@@ -66,6 +52,20 @@ namespace Menu.HomeScreenSaver
         private Transform GetPixelTransform(List<Fragment> sortedPixels, int index)
         {
             return sortedPixels[index].transform;
+        }
+
+        private void OnAnimate()
+        {
+            _currentSequence = DOTween.Sequence();
+
+            _sortedPixels = _sorter.Fragments;
+
+            for (int i = 0; i < _sortedPixels.Count; i++)
+            {
+                _currentSequence.Insert(GetDelayPixels(i), GetPixelTransform(_sortedPixels, i)
+                .DOMove(GetTargetPosition(_sortedPixels, i), _animationDuration)
+                .SetEase(Ease.InOutFlash));
+            }
         }
     }
 }

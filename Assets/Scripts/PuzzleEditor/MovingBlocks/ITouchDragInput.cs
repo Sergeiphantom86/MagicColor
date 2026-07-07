@@ -12,6 +12,7 @@ namespace PuzzleEditor.MovingBlocks
         public event Action Dropped;
 
         public bool IsSelected { get; }
-        public void ThrowOff();
+
+        public void OnThrowOff();
     }
 }

@@ -1,6 +1,6 @@
 using System;
-using PuzzleEditor.MovingBlocks.GridEditor;
-using PuzzleEditor.SoundEditor;
+using PuzzleEditor.MovingBlocks.GridLogic;
+using PuzzleEditor.Audio;
 using UnityEngine;
 
 namespace PuzzleEditor.MovingBlocks
@@ -18,13 +18,13 @@ namespace PuzzleEditor.MovingBlocks
         private Voiceover _voiceover;
         private Outline _outline;
 
-        public bool IsSelected => _isSelected;
-
         public event Action<Vector2> Touched;
 
         public event Action<Vector2> TouchDrag;
 
         public event Action Dropped;
+
+        public bool IsSelected => _isSelected;
 
         private void Awake()
         {
@@ -60,14 +60,27 @@ namespace PuzzleEditor.MovingBlocks
         {
             _inputHandler.Selected += OnSelectBlock;
             _inputHandler.Moved += OnMove;
-            _inputHandler.Throwed += ThrowOff;
+            _inputHandler.Throwed += OnThrowOff;
         }
 
         private void OnDisable()
         {
             _inputHandler.Selected -= OnSelectBlock;
             _inputHandler.Moved -= OnMove;
-            _inputHandler.Throwed -= ThrowOff;
+            _inputHandler.Throwed -= OnThrowOff;
+        }
+
+        public void OnThrowOff()
+        {
+            if (_isSelected)
+            {
+                _isSelected = false;
+                _outline.enabled = false;
+                _selectable.Deselect();
+                _colorable.Disable();
+                _colorable.SetStartRenderQueueSelectedItem();
+                Dropped?.Invoke();
+            }
         }
 
         private void OnSelectBlock(Vector2 position)
@@ -85,19 +98,6 @@ namespace PuzzleEditor.MovingBlocks
             if (_isSelected)
             {
                 TouchDrag?.Invoke(position);
-            }
-        }
-
-        public void ThrowOff()
-        {
-            if (_isSelected)
-            {
-                _isSelected = false;
-                _outline.enabled = false;
-                _selectable.Deselect();
-                _colorable.Disable();
-                _colorable.SetStartRenderQueueSelectedItem();
-                Dropped?.Invoke();
             }
         }
     }

@@ -1,19 +1,19 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using Wallets.WalletEditor;
+using Wallets.WalletEconomy;
 using YG;
 
 namespace Wallets
 {
     public class Wallet : MonoBehaviour
     {
-        [SerializeField] private bool autoLoadFromSave;
+        [SerializeField] private bool _autoLoadFromSave;
 
         private long _balance;
         private float _delay;
         private float _callDelay;
-        private bool isInitialized;
+        private bool _isInitialized;
         private WaitForSeconds _waitFor;
         private IProcessTransacter _transacter;
 
@@ -33,7 +33,7 @@ namespace Wallets
 
         private void Start()
         {
-            if (autoLoadFromSave)
+            if (_autoLoadFromSave)
             {
                 LoadFromSave();
             }
@@ -41,7 +41,7 @@ namespace Wallets
 
         private void OnEnable()
         {
-            if (autoLoadFromSave)
+            if (_autoLoadFromSave)
             {
                 YG2.onGetSDKData += OnYGDataLoaded;
             }
@@ -49,7 +49,7 @@ namespace Wallets
 
         private void OnDisable()
         {
-            if (autoLoadFromSave)
+            if (_autoLoadFromSave)
             {
                 YG2.onGetSDKData -= OnYGDataLoaded;
             }
@@ -78,14 +78,6 @@ namespace Wallets
             return success;
         }
 
-        private void OnYGDataLoaded()
-        {
-            if (autoLoadFromSave && isInitialized == false)
-            {
-                Invoke(nameof(LoadFromSave), _callDelay);
-            }
-        }
-
         private void LoadFromSave()
         {
 
@@ -98,7 +90,7 @@ namespace Wallets
                 StartCoroutine(Wait(YG2.saves.CurrentCrystal));
             }
 
-            isInitialized = true;
+            _isInitialized = true;
         }
 
         private void SetInitialBalance(long amount)
@@ -117,6 +109,14 @@ namespace Wallets
             yield return _waitFor;
 
             SetInitialBalance(savedCrystals);
+        }
+
+        private void OnYGDataLoaded()
+        {
+            if (_autoLoadFromSave && _isInitialized == false)
+            {
+                Invoke(nameof(LoadFromSave), _callDelay);
+            }
         }
     }
 }

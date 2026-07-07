@@ -1,4 +1,4 @@
-using PuzzleEditor.InkEditor;
+using PuzzleEditor.InkResources;
 
 namespace PuzzleEditor.ObjectPool
 {

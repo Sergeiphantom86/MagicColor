@@ -1,6 +1,6 @@
-using Menu.ButtonEditor;
-using Menu.TutorialEditor;
-using PuzzleEditor.SoundEditor;
+using Menu.Interaction;
+using Menu.Tutorials;
+using PuzzleEditor.Audio;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -20,6 +20,7 @@ namespace Menu
         private ButtonSoundHandler _buttonSoundHandler;
         private WindowInitializer _windowInitializer;
         private ICarousel _carousel;
+        private WaitForSeconds _waitForSeconds;
 
         private void Awake()
         {
@@ -27,6 +28,7 @@ namespace Menu
             _buttonKeeper = GetComponent<ButtonKeeper>();
             _windowInitializer = GetComponent<WindowInitializer>();
             _carousel = GetComponent<ICarousel>();
+            _waitForSeconds = new WaitForSeconds(_carousel.ScrollDuration);
 
             _windowInitializer.Initialize();
 
@@ -38,7 +40,7 @@ namespace Menu
             CreateButtons();
         }
 
-        public void OnButtonClicked(Button button)
+        public void HandleButtonClick(Button button)
         {
             int buttonIndex = GetButtonIndex(button);
             string windowName = button.name;
@@ -51,7 +53,7 @@ namespace Menu
 
             if (buttonIndex != _carousel.CurrentIndex)
             {
-                StartCoroutine(WaitScroll(windowName, _carousel.ScrollDuration));
+                StartCoroutine(WaitScroll(windowName));
                 _carousel.ScrollToButton(buttonIndex);
                 return;
             }
@@ -59,9 +61,9 @@ namespace Menu
             ExecuteButtonAction(windowName);
         }
 
-        private IEnumerator WaitScroll(string windowName, float duration)
+        private IEnumerator WaitScroll(string windowName)
         {
-            yield return new WaitForSeconds(duration);
+            yield return _waitForSeconds;
             ExecuteButtonAction(windowName);
         }
 

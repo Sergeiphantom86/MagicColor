@@ -1,5 +1,5 @@
-using Menu.TutorialEditor;
-using PuzzleEditor.RouletteEditor;
+using Menu.Tutorials;
+using PuzzleEditor.MinigamesRoulette;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using YG;
@@ -41,7 +41,7 @@ namespace PuzzleEditor.UI.LoadingScreen
 
         public void Initialize()
         {
-            Sprite sprite = TryGetSprite(YG2.saves.Current);
+            Sprite sprite = GetSprite(YG2.saves.Current);
 
             if (sprite == null)
             {
@@ -76,7 +76,7 @@ namespace PuzzleEditor.UI.LoadingScreen
             _menuLoader.TargetScene(Roulette);
         }
 
-        private Sprite TryGetSprite(Sprite sprite)
+        private Sprite GetSprite(Sprite sprite)
         {
             return _tutorialPuzzle != null
                 ? _tutorialPuzzle.Sprite

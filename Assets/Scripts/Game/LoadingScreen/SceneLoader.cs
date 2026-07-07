@@ -24,16 +24,10 @@ namespace Game.LoadingScreen
         private CanvasGroup _canvasGroup;
         private Coroutine _loadingCoroutine;
 
-        public static SceneLoader Instance { get; private set; }
         private void Awake()
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
+            YG2.saves.SceneLoader = this;
 
-            Instance = this;
             DontDestroyOnLoad(gameObject);
 
             _maxLoad = 0.9f;
@@ -114,9 +108,6 @@ namespace Game.LoadingScreen
 
         private void OnDestroy()
         {
-            if (Instance == this)
-                Instance = null;
-
             _canvasGroup.DOKill();
         }
     }

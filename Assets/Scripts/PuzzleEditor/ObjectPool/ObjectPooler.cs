@@ -26,6 +26,19 @@ namespace PuzzleEditor.ObjectPool
             CreatePool();
         }
 
+        private void OnDestroy()
+        {
+            _pool?.Clear();
+
+            if (_prefabPools != null)
+            {
+                foreach (var pool in _prefabPools.Values)
+                {
+                    pool?.Clear();
+                }
+            }
+        }
+
         public T GetFromPrefab(int prefabIndex)
         {
             if (_fallbackPrefabs != null && _fallbackPrefabs.Count > 0)
@@ -127,9 +140,11 @@ namespace PuzzleEditor.ObjectPool
             return item;
         }
 
-        private void OnTakeFromPool(T item) => item.gameObject.SetActive(true);
+        private void OnTakeFromPool(T item) =>
+            item.gameObject.SetActive(true);
 
-        private void OnReturnedToPool(T item) => item.gameObject.SetActive(false);
+        private void OnReturnedToPool(T item) =>
+            item.gameObject.SetActive(false);
 
         private void OnDestroyPoolObject(T item)
         {
@@ -139,19 +154,6 @@ namespace PuzzleEditor.ObjectPool
             _objectToPrefabIndex?.Remove(item);
 
             Destroy(item.gameObject);
-        }
-
-        private void OnDestroy()
-        {
-            _pool?.Clear();
-
-            if (_prefabPools != null)
-            {
-                foreach (var pool in _prefabPools.Values)
-                {
-                    pool?.Clear();
-                }
-            }
         }
     }
 }

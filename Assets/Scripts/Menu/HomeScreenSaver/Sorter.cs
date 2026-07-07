@@ -16,6 +16,22 @@ namespace Menu.HomeScreenSaver
 
         public List<Fragment> Fragments => _fragments;
 
+        private void Awake()
+        {
+            _fragmentCollector = GetComponent<FragmentCollector>();
+            _fragments = new List<Fragment>();
+        }
+
+        private void OnEnable()
+        {
+            _fragmentCollector.PixelsRendered += OnSortFragments;
+        }
+
+        private void OnDisable()
+        {
+            _fragmentCollector.PixelsRendered -= OnSortFragments;
+        }
+
         private static int CompareFragments(Fragment first, Fragment second)
         {
             if (first == null || second == null)
@@ -50,22 +66,6 @@ namespace Menu.HomeScreenSaver
         private static int CompareByX(Vector3 positionA, Vector3 positionB)
         {
             return positionB.x.CompareTo(positionA.x);
-        }
-
-        private void Awake()
-        {
-            _fragmentCollector = GetComponent<FragmentCollector>();
-            _fragments = new List<Fragment>();
-        }
-
-        private void OnEnable()
-        {
-            _fragmentCollector.PixelsRendered += OnSortFragments;
-        }
-
-        private void OnDisable()
-        {
-            _fragmentCollector.PixelsRendered -= OnSortFragments;
         }
 
         private void OnSortFragments(List<Fragment> fragments)

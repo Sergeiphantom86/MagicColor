@@ -1,6 +1,6 @@
 using System;
 using DG.Tweening;
-using PuzzleEditor.SoundEditor;
+using PuzzleEditor.Audio;
 using TMPro;
 using UnityEngine;
 
@@ -60,14 +60,14 @@ namespace Wallets
             _balanceTween?.Kill();
         }
 
-        private void OnHandleBalanceChanged(long newBalance, string name)
-        {
-            OnHandleBalanceChanged(newBalance);
-        }
-
         private void UpdateBalanceText()
         {
             _textMeshPro.text = _numberFormatter.FormatNumber(_displayedBalance);
+        }
+
+        private void OnHandleBalanceChanged(long newBalance, string name)
+        {
+            OnHandleBalanceChanged(newBalance);
         }
 
         private void OnHandleBalanceChanged(long newBalance)

@@ -23,6 +23,11 @@ namespace PuzzleEditor.MovingBlocks
             _transform = transform;
         }
 
+        private void OnDestroy()
+        {
+            _scaleTween?.Kill();
+        }
+
         public Tween Select()
         {
             _scaleTween = ChangeSize(_originalScale * _selectedScale);
@@ -40,11 +45,6 @@ namespace PuzzleEditor.MovingBlocks
         public Tween ChangeSize(Vector3 scale)
         {
             return _transform.DOScale(scale, _animationDuration);
-        }
-
-        private void OnDestroy()
-        {
-            _scaleTween?.Kill();
         }
     }
 }

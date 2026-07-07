@@ -1,6 +1,8 @@
-using PuzzleEditor.RouletteEditor;
-using PuzzleEditor.SoundEditor;
+using PuzzleEditor.MinigamesRoulette;
+using PuzzleEditor.Audio;
 using UnityEngine;
+using Game.SaveEditor;
+using Game.LoadingScreen;
 
 namespace YG
 {
@@ -12,6 +14,9 @@ namespace YG
         private const float StartingVolumeValue = 0.3f;
 
         [SerializeField] private int _indexUnblockingTutorial = IndexUnblockingTutorial;
+
+        private SpriteStorage _spriteStorage;
+        private VolumeStorage _volumeStorage;
 
         [field: SerializeField] public int Spins { get; set; }
         [field: SerializeField] public int Stars { get; set; }
@@ -31,20 +36,24 @@ namespace YG
         [field: SerializeField] public bool IsAutomaticallyNewLevel { get; set; }
 
         public int CountQuest { get; set; }
+
         public int Reward { get; set; }
 
-        private SpriteStorage _spriteStorage;
-        private VolumeStorage _volumeStorage;
-
         public Sprite New => _spriteStorage?.New;
+
         public Sprite Current => _spriteStorage?.Current;
+
         public float MusicVolume => _volumeStorage?.MusicVolume ?? StartingVolumeValue;
+
         public float SoundVolume => _volumeStorage?.SoundVolume ?? StartingVolumeValue;
 
         public float MusicTime { get; set; }
 
         public int IndexSecondQuest => _indexUnblockingTutorial;
+
         public int ObstacleDeactivatIndex => IndexAbilityTutorial;
+
+        public SceneLoader SceneLoader { get; set; }
 
         public void SetCurrency(Currency currency, long balance)
         {
@@ -59,15 +68,15 @@ namespace YG
 
             if (currency is Coin)
             {
-                CurrentCoin += TryGetBalance(balance);
+                CurrentCoin += GetBalance(balance);
             }
             else if (currency is Crystal)
             {
-                CurrentCrystal += TryGetBalance(balance);
+                CurrentCrystal += GetBalance(balance);
             }
         }
 
-        private long TryGetBalance(long balance)
+        private long GetBalance(long balance)
         {
             if (balance < MinCurrentValue)
             {

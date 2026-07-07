@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using PuzzleEditor.MovingBlocks.BlockEditor;
-using PuzzleEditor.MovingBlocks.GridEditor;
+using PuzzleEditor.MovingBlocks;
+using PuzzleEditor.MovingBlocks.GridLogic;
 using PuzzleEditor.ObjectPool;
 using PuzzleEditor.PoolEffects;
 using UnityEngine;
@@ -20,13 +20,12 @@ namespace PuzzleEditor.Spawners
         private GridPositionHelper _gridHelper;
         private WaitForSeconds _timeInterval;
         private WaitForSeconds _waitBeforePuttPlace;
+        private System.Func<int> _indexProvider;
         private float _delay;
         private float _transparency;
         private float _delayAppearance;
 
         public event System.Action<Block> BlockSpawned;
-
-        public System.Func<int> IndexProvider;
 
         public event System.Action SpawnerReadyed;
 
@@ -58,6 +57,11 @@ namespace PuzzleEditor.Spawners
             SpawnerReadyed?.Invoke();
         }
 
+        public void SetIndexProvider(System.Func<int> provider)
+        {
+            _indexProvider = provider;
+        }
+
         public void SpawnNecessaryBlocks()
         {
             for (int i = 0; i < _count; i++)
@@ -70,13 +74,13 @@ namespace PuzzleEditor.Spawners
 
         private void SpawnBlocks(int index)
         {
-            int finalIndex = IndexProvider != null ? IndexProvider.Invoke() : index;
+            int finalIndex = _indexProvider != null ? _indexProvider.Invoke() : index;
 
             ChangeBlockPrefabIndex(finalIndex);
-            TrySpawnSingleBlock();
+            SpawnSingleBlock();
         }
 
-        private void TrySpawnSingleBlock()
+        private void SpawnSingleBlock()
         {
             Block block = SpawnObject(Vector3.zero, transform, _index);
 

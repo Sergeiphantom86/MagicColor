@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
-using PuzzleEditor.MovingBlocks.BlockEditor;
-using PuzzleEditor.Walls.WallEditor;
+using PuzzleEditor.MovingBlocks;
+using PuzzleEditor.Walls.WallResources;
 using UnityEngine;
 
 namespace PuzzleEditor.Walls
@@ -18,18 +18,18 @@ namespace PuzzleEditor.Walls
 
         public event Action IsTouched;
 
-        public void Initialize(PenEditor.Activator activator)
-        {
-            _activator = activator;
-            _pointer = GetComponent<IPointer>();
-        }
-
         private void Awake()
         {
             _delayShutdown = 0.1f;
             _delayActivat = 2;
             _waitShutdown = new WaitForSeconds(_delayShutdown);
             _waitActivat = new WaitForSeconds(_delayActivat);
+        }
+
+        public void Initialize(PenEditor.Activator activator)
+        {
+            _activator = activator;
+            _pointer = GetComponent<IPointer>();
         }
 
         public void WaitStart(IColorable colorable, Color color)

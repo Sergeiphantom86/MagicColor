@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using PuzzleEditor.MovingBlocks.GridEditor;
+using PuzzleEditor.MovingBlocks.GridLogic;
 using UnityEngine;
 
 namespace PuzzleEditor.Walls.Partitions
@@ -9,10 +9,13 @@ namespace PuzzleEditor.Walls.Partitions
 
     public class Partition : MonoBehaviour, IGridOccupant
     {
+        private const float DelayDisableAfter = 1;
+
         [SerializeField] private Vector2Int _sizeInCells;
 
         private Rigidbody _rigidbody;
         private bool _isDestroyed;
+        private WaitForSeconds _waitDisableAfter;
 
         public event Action<Partition> Destroyed;
 
@@ -26,6 +29,7 @@ namespace PuzzleEditor.Walls.Partitions
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _waitDisableAfter = new WaitForSeconds(DelayDisableAfter);
         }
 
         private void OnDisable()
@@ -51,7 +55,7 @@ namespace PuzzleEditor.Walls.Partitions
 
         private IEnumerator DisableAfterDelay()
         {
-            yield return new WaitForSeconds(1);
+            yield return _waitDisableAfter;
 
             gameObject.SetActive(false);
         }

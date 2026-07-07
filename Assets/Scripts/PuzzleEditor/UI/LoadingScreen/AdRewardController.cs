@@ -1,4 +1,4 @@
-using Menu.TutorialEditor;
+using Menu.Tutorials;
 using System;
 using UnityEngine;
 using YG;

@@ -7,16 +7,17 @@ namespace PuzzleEditor.MovingBlocks
     {
         private Touch _touch;
 
-        public Vector3 Point { get; private set; }
         public event Action<Vector2> Selected;
         public event Action<Vector2> Moved;
         public event Action Throwed;
+
+        public Vector3 Point { get; private set; }
 
         private void Update()
         {
             if (Input.touchCount > 0)
             {
-                HandleTochInput();
+                HandleTouchInput();
             }
             else
             {
@@ -24,7 +25,7 @@ namespace PuzzleEditor.MovingBlocks
             }
         }
 
-        private void HandleTochInput()
+        private void HandleTouchInput()
         {
             _touch = Input.GetTouch(0);
 
@@ -41,7 +42,6 @@ namespace PuzzleEditor.MovingBlocks
                 case TouchPhase.Ended:
                 case TouchPhase.Canceled:
                     Throwed?.Invoke();
-                    Debug.Log(Input.imeIsSelected);
                     break;
             }
         }

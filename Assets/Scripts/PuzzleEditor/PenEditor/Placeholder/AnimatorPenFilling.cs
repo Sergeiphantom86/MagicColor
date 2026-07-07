@@ -59,8 +59,6 @@ namespace PuzzleEditor.PenEditor.Placeholder
             return 0;
         }
 
-        public float GetDuration() => _duration;
-
         public void ChangeSize(Placeholder placeholder, float occupancy)
         {
             placeholder.transform.DOScale(GetNewScaleY(occupancy), _duration).SetEase(Ease.OutQuad);

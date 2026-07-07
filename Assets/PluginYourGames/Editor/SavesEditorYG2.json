@@ -13,14 +13,14 @@
         false,
         false
     ],
-    "idSave": 19491,
+    "idSave": 19559,
     "_indexUnblockingTutorial": 4,
     "<Spins>k__BackingField": 0,
     "<Stars>k__BackingField": 5,
-    "<QuestIndex>k__BackingField": 0,
+    "<QuestIndex>k__BackingField": 13,
     "<CurrentCoin>k__BackingField": 10300,
     "<CurrentCrystal>k__BackingField": 10200,
-    "<QuantityAbilities>k__BackingField": 0,
+    "<QuantityAbilities>k__BackingField": 7,
     "<MaxReachedQuestIndex>k__BackingField": 1,
     "<CurrentLanguage>k__BackingField": "en",
     "<IsTutorialBasics>k__BackingField": true,
@@ -29,6 +29,6 @@
     "<IsMenuTutorial>k__BackingField": true,
     "<IsTransparency>k__BackingField": false,
     "<IsUnlockKey>k__BackingField": false,
-    "<IsUnlockAbilities>k__BackingField": false,
+    "<IsUnlockAbilities>k__BackingField": true,
     "<IsAutomaticallyNewLevel>k__BackingField": false
 }

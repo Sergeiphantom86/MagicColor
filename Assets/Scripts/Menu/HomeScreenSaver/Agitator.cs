@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using PuzzleEditor;
 using PuzzleEditor.PoolEffects;
-using PuzzleEditor.SoundEditor;
+using PuzzleEditor.Audio;
 using UnityEngine;
 
 namespace Menu.HomeScreenSaver
@@ -55,9 +55,14 @@ namespace Menu.HomeScreenSaver
             _pixelShine.Glistened -= TriggerExplosion;
         }
 
-        public void PauseAnimations() => DOTweenExtensions.SafePause(_explosionSequence);
+        private void OnDestroy() =>
+            DOTweenExtensions.SafeKill(_explosionSequence);
 
-        public void ResumeAnimations() => DOTweenExtensions.SafePlay(_explosionSequence);
+        public void PauseAnimations() =>
+            DOTweenExtensions.SafePause(_explosionSequence);
+
+        public void ResumeAnimations() =>
+            DOTweenExtensions.SafePlay(_explosionSequence);
 
         public void TriggerExplosion(List<Fragment> pixels)
         {
@@ -193,11 +198,6 @@ namespace Menu.HomeScreenSaver
                 _particleSystem.Stop();
                 _particleSystem.gameObject.SetActive(false);
             }
-        }
-
-        private void OnDestroy()
-        {
-            DOTweenExtensions.SafeKill(_explosionSequence);
         }
     }
 }

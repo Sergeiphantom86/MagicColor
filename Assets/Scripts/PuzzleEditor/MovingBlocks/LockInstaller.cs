@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using PuzzleEditor.LockEditor;
-using PuzzleEditor.Walls.WallEditor;
+using PuzzleEditor.LockMechanics;
+using PuzzleEditor.Walls.WallResources;
 using UnityEngine;
 
 namespace PuzzleEditor.MovingBlocks
@@ -26,7 +26,7 @@ namespace PuzzleEditor.MovingBlocks
             }
         }
 
-        public void TryPlaceLock(List<IColorable> colorables)
+        public void RightPlace(List<IColorable> colorables)
         {
             if (CanPlace() == false)
             return;

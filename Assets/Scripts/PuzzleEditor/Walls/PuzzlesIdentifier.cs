@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using Menu;
-using Menu.TutorialEditor.TutorialPuzzle;
-using PuzzleEditor.LockEditor;
-using PuzzleEditor.MovingBlocks.GridEditor;
+using Menu.Tutorials.TutorialPuzzle;
+using PuzzleEditor.LockMechanics;
+using PuzzleEditor.MovingBlocks.GridLogic;
 using PuzzleEditor.PenEditor;
-using PuzzleEditor.RouletteEditor;
+using PuzzleEditor.MinigamesRoulette;
 using PuzzleEditor.Spawners;
 using PuzzleEditor.UI;
 using UnityEngine;
-using Wallets.WalletEditor;
+using Wallets.WalletEconomy;
 
 namespace PuzzleEditor.Walls
 {
@@ -17,19 +17,15 @@ namespace PuzzleEditor.Walls
         [SerializeField] private BagKey _bag;
         [SerializeField] private Lock _lock;
         [SerializeField] private Messager _hintKey;
+        [SerializeField] private GridSystem _gridSystem;
         [SerializeField] private AnimatorPuzzle _animator;
         [SerializeField] private ErrorPanel _errorPanel;
         [SerializeField] private Activator _activator;
         [SerializeField] private AudioClip _audioClip;
-
-        [SerializeField]
-
-        private List<WallsContainer> _wallPrefabs;
-
+        [SerializeField] private List<WallsContainer> _wallPrefabs;
         [SerializeField] private int _index;
 
         private Rotator _rotation;
-        private GridSystem _gridSystem;
         private BlockSpawner _blockSpawner;
         private ColorPrecision _colorPrecision;
         private ZoomChanger _zoomChanger;
@@ -53,18 +49,16 @@ namespace PuzzleEditor.Walls
                 Debug.LogError("BlockSpawner == null");
                 return;
             }
+
+            if (_gridSystem == null)
+            {
+                Debug.LogError("GridSystem == null");
+                return;
+            }
         }
 
         private void Start()
         {
-            _gridSystem = GridSystem.Instance;
-
-            if (_gridSystem == null)
-            {
-                Debug.LogError("GridSystem.Instance is NULL in Start");
-                return;
-            }
-
             PickUp();
         }
 

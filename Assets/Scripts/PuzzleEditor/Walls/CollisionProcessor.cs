@@ -1,6 +1,5 @@
 using PuzzleEditor.MovingBlocks;
-using PuzzleEditor.MovingBlocks.BlockEditor;
-using PuzzleEditor.Walls.WallEngineEditor;
+using PuzzleEditor.Walls.WallEngineResource;
 using UnityEngine;
 
 namespace PuzzleEditor.Walls
@@ -38,7 +37,7 @@ namespace PuzzleEditor.Walls
             if (_colorMatch.Match(colorable, out Color color) == false)
                 return;
 
-            _blockInteraction.TryHandle(colorable, color, _unlockPolicy);
+            _blockInteraction.ProcessColoredObject(colorable, color, _unlockPolicy);
         }
 
         public void ProcessExit(Collider other)

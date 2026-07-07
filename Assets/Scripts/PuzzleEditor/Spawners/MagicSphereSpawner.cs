@@ -1,8 +1,8 @@
-using Menu.ButtonEditor.Ability;
+using Menu.Interaction.Ability;
 using PuzzleEditor.EnergyField;
 using PuzzleEditor.MovingBlocks;
-using PuzzleEditor.MovingBlocks.GridEditor;
-using PuzzleEditor.SoundEditor;
+using PuzzleEditor.MovingBlocks.GridLogic;
+using PuzzleEditor.Audio;
 using UnityEngine;
 
 namespace PuzzleEditor.Spawners
@@ -22,6 +22,7 @@ namespace PuzzleEditor.Spawners
 
             _input = GetComponent<IInputHandler>();
             _voiceover = GetComponent<Voiceover>();
+            _grid = GetComponent<GridSystem>();
 
             if (_input == null)
                 Debug.LogError("InputHandler == null");
@@ -29,8 +30,8 @@ namespace PuzzleEditor.Spawners
 
         private void Start()
         {
-            if (_grid == null)
-                _grid = GridSystem.Instance;
+            //if (_grid == null)
+            //    _grid = GridSystem.Instance;
         }
 
         private void OnEnable()
@@ -48,6 +49,20 @@ namespace PuzzleEditor.Spawners
             if (_input != null)
             {
                 _input.Selected -= OnTrySpawnAtWorldPos;
+            }
+        }
+
+        private Vector2Int WorldToGrid(Vector3 worldPos)
+        {
+            Vector3Int cell = _grid.GetComponent<Grid>().WorldToCell(worldPos);
+            return new Vector2Int(cell.x, cell.y);
+        }
+
+        public void DespawnAll()
+        {
+            for (int i = SpawnedObjects.Count - 1; i >= 0; i--)
+            {
+                Despawn(SpawnedObjects[i]);
             }
         }
 
@@ -73,20 +88,6 @@ namespace PuzzleEditor.Spawners
             _grid.PlaceObject(origin, sphere);
 
             _abilitySelectionManager.ClearSelection();
-        }
-
-        private Vector2Int WorldToGrid(Vector3 worldPos)
-        {
-            Vector3Int cell = _grid.GetComponent<Grid>().WorldToCell(worldPos);
-            return new Vector2Int(cell.x, cell.y);
-        }
-
-        public void DespawnAll()
-        {
-            for (int i = SpawnedObjects.Count - 1; i >= 0; i--)
-            {
-                Despawn(SpawnedObjects[i]);
-            }
         }
     }
 }

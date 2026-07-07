@@ -1,13 +1,13 @@
-using Menu.TutorialEditor.TutorialPuzzle;
+using Menu.Tutorials.TutorialPuzzle;
 using PuzzleEditor;
-using PuzzleEditor.SoundEditor;
+using PuzzleEditor.Audio;
 using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Wallets;
-using Wallets.WalletEditor;
+using Wallets.WalletEconomy;
 using YG;
 
 namespace Menu.Shop
@@ -29,6 +29,13 @@ namespace Menu.Shop
         private IActivatable _activatable;
         private PaymentType _currentPaymentType;
         private long _result;
+        private WaitForSeconds _waitForSeconds;
+
+        private enum PaymentType
+        {
+            Coins,
+            Ads,
+        }
 
         public event Action Clicked;
 
@@ -40,6 +47,7 @@ namespace Menu.Shop
         {
             _button = GetComponent<Button>();
             _voiceover = GetComponent<Voiceover>();
+            _waitForSeconds = new WaitForSeconds(_audioClip.length);
             _button.interactable = true;
 
             if (long.TryParse(_paymentCoin.text, out long result))
@@ -57,7 +65,7 @@ namespace Menu.Shop
                 _shine.Stop();
             }
 
-            TryChangeTypePayment();
+            ChangeTypePayment();
         }
 
         private void Start()
@@ -83,7 +91,42 @@ namespace Menu.Shop
 
             _voiceover.PlayOneShot(_audioClip);
 
-            StartCoroutine(WaitTurnOnButton(_audioClip.length));
+            StartCoroutine(WaitTurnOnButton());
+        }
+
+        private IEnumerator WaitTurnOnButton()
+        {
+            yield return _waitForSeconds;
+
+            _button.interactable = true;
+        }
+
+        private void ChangeTypePayment()
+        {
+            if (_paymentCoin == null)
+            return;
+
+            if (_paymentAdv == null)
+            return;
+
+            if (YG2.saves.CurrentCoin >= _result)
+            {
+                _currentPaymentType = PaymentType.Coins;
+
+                _paymentCoin.gameObject.SetActive(true);
+                _paymentAdv.gameObject.SetActive(false);
+                return;
+            }
+
+            _currentPaymentType = PaymentType.Ads;
+
+            _paymentCoin.gameObject.SetActive(false);
+            _paymentAdv.gameObject.SetActive(true);
+        }
+
+        private void OnTurnOnButton()
+        {
+            _button.interactable = true;
         }
 
         private void OnBuy()
@@ -106,51 +149,10 @@ namespace Menu.Shop
             }
 
             if (_result <= 0)
-            return;
+                return;
 
             CoinPurchased?.Invoke(_result);
-            TryChangeTypePayment();
+            ChangeTypePayment();
         }
-
-        private void OnTurnOnButton()
-        {
-            StartCoroutine(WaitTurnOnButton());
-        }
-
-        private IEnumerator WaitTurnOnButton(float delay = 0)
-        {
-            yield return new WaitForSecondsRealtime(delay);
-
-            _button.interactable = true;
-        }
-
-        private void TryChangeTypePayment()
-        {
-            if (_paymentCoin == null)
-            return;
-
-            if (_paymentAdv == null)
-            return;
-
-            if (YG2.saves.CurrentCoin >= _result)
-            {
-                _currentPaymentType = PaymentType.Coins;
-
-                _paymentCoin.gameObject.SetActive(true);
-                _paymentAdv.gameObject.SetActive(false);
-                return;
-            }
-
-            _currentPaymentType = PaymentType.Ads;
-
-            _paymentCoin.gameObject.SetActive(false);
-            _paymentAdv.gameObject.SetActive(true);
-        }
-    }
-
-    public enum PaymentType
-    {
-        Coins,
-        Ads,
     }
 }

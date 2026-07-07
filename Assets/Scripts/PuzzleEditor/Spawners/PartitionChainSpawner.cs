@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using PuzzleEditor.MovingBlocks.GridEditor;
+using PuzzleEditor.MovingBlocks.GridLogic;
 using PuzzleEditor.Walls.Partitions;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ namespace PuzzleEditor.Spawners
             _grid = grid;
         }
 
-        public void TrySpawnChain(
+        public void Begin(
             ChainSpawnData chainSpawnData,
             Func<Partition> spawnFunc,
             Action<Partition, Vector2Int> placeFunc)
@@ -24,11 +24,11 @@ namespace PuzzleEditor.Spawners
 
             foreach (var direction in directions)
             {
-                TrySpawnSingleDirectionChain(chainSpawnData, direction, spawnFunc, placeFunc);
+                PositionOneDirection(chainSpawnData, direction, spawnFunc, placeFunc);
             }
         }
 
-        private void TrySpawnSingleDirectionChain(
+        private void PositionOneDirection(
             ChainSpawnData chainSpawnData,
             Vector2Int direction,
             Func<Partition> spawnFunc,
@@ -38,12 +38,12 @@ namespace PuzzleEditor.Spawners
 
             for (int i = 0; i < chainSpawnData.Count; i++)
             {
-                if (TrySpawnNext(chainSpawnData, direction, spawnFunc, placeFunc) == false)
+                if (Next(chainSpawnData, direction, spawnFunc, placeFunc) == false)
                     break;
             }
         }
 
-        private bool TrySpawnNext(
+        private bool Next(
             ChainSpawnData chainSpawnData,
             Vector2Int direction,
             Func<Partition> spawnFunc,

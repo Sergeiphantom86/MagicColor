@@ -1628,7 +1628,6 @@ GameObject:
   - component: {fileID: 2102423756019690229}
   - component: {fileID: 4221645563466575537}
   - component: {fileID: 6816939883026791728}
-  - component: {fileID: 3922286138089321365}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1743,19 +1742,6 @@ MonoBehaviour:
   _activator: {fileID: 0}
   _victoryPlaque: {fileID: 6239714654906964090}
   _fireworks: {fileID: 0}
---- !u!114 &3922286138089321365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6195724758608525701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57f4886a80e266547a897ba31a320754, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mobileScaleMultiplier: 0
 --- !u!1 &6214934162949292788
 GameObject:
   m_ObjectHideFlags: 0
@@ -5460,33 +5446,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7347508435972239107, guid: 31f1ea35ab01299469f2a28a4edc4302, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2357817641119500851}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31f1ea35ab01299469f2a28a4edc4302, type: 3}
 --- !u!224 &373361494395535400 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4135294025843479415, guid: 31f1ea35ab01299469f2a28a4edc4302, type: 3}
   m_PrefabInstance: {fileID: 4345400024754246495}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6465587635736607836 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7347508435972239107, guid: 31f1ea35ab01299469f2a28a4edc4302, type: 3}
-  m_PrefabInstance: {fileID: 4345400024754246495}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2357817641119500851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6465587635736607836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a65444fd939b82e45b4b796e99cc92ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5073140323068760168
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6731,7 +6697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c83042e382de9498b1daa567ab0af2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoLoadFromSave: 1
+  _autoLoadFromSave: 0
 --- !u!114 &5279928753088212784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6976,7 +6942,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393cd0d73744d0c4f8c95a31587fd255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoLoadFromSave: 1
+  _autoLoadFromSave: 0
 --- !u!114 &7099004014522835960
 MonoBehaviour:
   m_ObjectHideFlags: 0

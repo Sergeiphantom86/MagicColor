@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using PuzzleEditor.Counter;
-using PuzzleEditor.SoundEditor;
+using PuzzleEditor.Audio;
 using UnityEngine;
 using YG;
 
@@ -60,11 +60,6 @@ namespace PuzzleEditor.Stars
             }
         }
 
-        public void OnTimerStarted()
-        {
-            StartCoroutine(DeactivateByTime());
-        }
-
         private IEnumerator DeactivateByTime()
         {
             int minStars = _starsCounter.MinStars;
@@ -105,6 +100,11 @@ namespace PuzzleEditor.Stars
             }
 
             YG2.saves.Stars = count;
+        }
+
+        private void OnTimerStarted()
+        {
+            StartCoroutine(DeactivateByTime());
         }
     }
 }

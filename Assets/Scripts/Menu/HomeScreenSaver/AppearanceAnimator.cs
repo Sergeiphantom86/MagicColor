@@ -42,28 +42,11 @@ namespace Menu.HomeScreenSaver
             _sorter.HasSorted -= OnAnimateAppearance;
         }
 
-        public void PauseAnimations() => DOTweenExtensions.SafePause(_currentSequence);
+        public void PauseAnimations() =>
+            DOTweenExtensions.SafePause(_currentSequence);
 
-        public void ResumeAnimations() => DOTweenExtensions.SafePlay(_currentSequence);
-
-        private void OnAnimateAppearance()
-        {
-            ResetAnimation();
-
-            _currentSequence = DOTween.Sequence();
-
-            _fragments = _sorter.Fragments;
-
-            for (int i = 0; i < _fragments.Count; i++)
-            {
-                CustomizeFragment(i, _fragments[i]);
-            }
-
-            _currentSequence.OnComplete(() =>
-            {
-                AppearanceCompleted?.Invoke();
-            });
-        }
+        public void ResumeAnimations() =>
+            DOTweenExtensions.SafePlay(_currentSequence);
 
         private void CustomizeFragment(int index, Fragment fragment)
         {
@@ -108,6 +91,25 @@ namespace Menu.HomeScreenSaver
             }
 
             _currentSequence = null;
+        }
+
+        private void OnAnimateAppearance()
+        {
+            ResetAnimation();
+
+            _currentSequence = DOTween.Sequence();
+
+            _fragments = _sorter.Fragments;
+
+            for (int i = 0; i < _fragments.Count; i++)
+            {
+                CustomizeFragment(i, _fragments[i]);
+            }
+
+            _currentSequence.OnComplete(() =>
+            {
+                AppearanceCompleted?.Invoke();
+            });
         }
     }
 }

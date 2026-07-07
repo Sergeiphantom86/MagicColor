@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using PuzzleEditor.MovingBlocks.BlockEditor;
+using PuzzleEditor.MovingBlocks;
 using PuzzleEditor.Walls;
 using UnityEngine;
 
@@ -71,11 +71,6 @@ namespace PuzzleEditor
             }
 
             return colorables;
-        }
-
-        private void OnUpdateSystem(List<Color> colors)
-        {
-            StartCoroutine(Wait(colors));
         }
 
         private void UpdateColors(List<Color> colors)
@@ -155,6 +150,11 @@ namespace PuzzleEditor
 
             ReplaceColors(_blocks);
             RecoloredBlock?.Invoke(_blocks);
+        }
+
+        private void OnUpdateSystem(List<Color> colors)
+        {
+            StartCoroutine(Wait(colors));
         }
     }
 }

@@ -7,6 +7,11 @@ namespace PuzzleEditor.Walls
         private IColorable _colorable;
         private IColorPrecision _precision;
 
+        public void Reset()
+        {
+            _colorable.Disable();
+        }
+
         public void Initialize(IColorPrecision precision)
         {
             _precision = precision;
@@ -29,11 +34,6 @@ namespace PuzzleEditor.Walls
 
             matchedColor = otherColor;
             return true;
-        }
-
-        public void Reset()
-        {
-            _colorable.Disable();
         }
     }
 }

@@ -1,5 +1,5 @@
 using System;
-using PuzzleEditor.MovingBlocks.GridEditor;
+using PuzzleEditor.MovingBlocks.GridLogic;
 using UnityEngine;
 
 namespace PuzzleEditor.Table
@@ -40,69 +40,47 @@ namespace PuzzleEditor.Table
             _grid.Initialized -= OnStartSpawn;
         }
 
-        public void OnStartSpawn()
+        private void OnDestroy()
         {
-            if (_planePrefab == null)
-            {
-                Debug.LogError($"{nameof(GridPlaneFiller)}: Plane prefab is not assigned!", this);
-                return;
-            }
+            CleanupInstance();
+        }
 
-            if (_grid == null)
-            {
-                Debug.LogError($"{nameof(GridPlaneFiller)}: GridSystem instance is null!", this);
-                return;
-            }
-
-            if (ValidateGridSize() == false)
-            {
-                Debug.LogError("ValidateGridSize");
-                return;
-            }
-
-            _positionY = _planeHeight;
-            _scaleMultiplier = _scaleDivider;
-            _multiplierPositions = _positionDivider;
-
-            try
-            {
-                _planeInstance = Instantiate(_planePrefab, transform);
-
-                if (TryGetRenderer() == false)
-                {
-                    CleanupInstance();
-                    Debug.LogError("ValidateGridSize");
-                    return;
-                }
-
-                SetScale();
-                SetPosition();
-
-                HasChanged?.Invoke(_renderer.material, _grid.GridSizeX, _grid.GridSizeY, _grid.CellSize);
-            }
-            catch (Exception exception)
-            {
-                Debug.LogError($"{nameof(GridPlaneFiller)}: Failed to spawn plane. Error: {exception.Message}", this);
-                CleanupInstance();
-            }
+        private void OnValidate()
+        {
+            _planeHeight = Mathf.Max(0.01f, _planeHeight);
+            _scaleDivider = Mathf.Max(1, _scaleDivider);
+            _positionDivider = Mathf.Max(1, _positionDivider);
+            _scaleMultiplierX = Mathf.Clamp(_scaleMultiplierX, 0.5f, 2f);
+            _scaleMultiplierZ = Mathf.Clamp(_scaleMultiplierZ, 0.5f, 2f);
         }
 
         private bool ValidateGridSize()
         {
             bool isValid = true;
-
             string errors = "";
+
             if (_grid.GridSizeX <= 0)
+            {
                 errors += $"GridSizeX={_grid.GridSizeX} ";
+                isValid = false;
+            }
 
             if (_grid.GridSizeY <= 0)
+            {
                 errors += $"GridSizeY={_grid.GridSizeY} ";
+                isValid = false;
+            }
 
             if (_grid.CellSize <= 0)
+            {
                 errors += $"CellSize={_grid.CellSize} ";
+                isValid = false;
+            }
 
-            if (string.IsNullOrEmpty(errors) == false)
+            if (isValid == false)
+            {
                 Debug.LogError($"Invalid grid params: {errors}", this);
+            }
 
             return isValid;
         }
@@ -185,18 +163,51 @@ namespace PuzzleEditor.Table
             }
         }
 
-        private void OnValidate()
+        private void OnStartSpawn()
         {
-            _planeHeight = Mathf.Max(0.01f, _planeHeight);
-            _scaleDivider = Mathf.Max(1, _scaleDivider);
-            _positionDivider = Mathf.Max(1, _positionDivider);
-            _scaleMultiplierX = Mathf.Clamp(_scaleMultiplierX, 0.5f, 2f);
-            _scaleMultiplierZ = Mathf.Clamp(_scaleMultiplierZ, 0.5f, 2f);
-        }
+            if (_planePrefab == null)
+            {
+                Debug.LogError($"{nameof(GridPlaneFiller)}: Plane prefab is not assigned!", this);
+                return;
+            }
 
-        private void OnDestroy()
-        {
-            CleanupInstance();
+            if (_grid == null)
+            {
+                Debug.LogError($"{nameof(GridPlaneFiller)}: GridSystem instance is null!", this);
+                return;
+            }
+
+            if (ValidateGridSize() == false)
+            {
+                Debug.LogError($"{nameof(GridPlaneFiller)}: Grid size validation failed.");
+                return;
+            }
+
+            _positionY = _planeHeight;
+            _scaleMultiplier = _scaleDivider;
+            _multiplierPositions = _positionDivider;
+
+            try
+            {
+                _planeInstance = Instantiate(_planePrefab, transform);
+
+                if (TryGetRenderer() == false)
+                {
+                    CleanupInstance();
+                    Debug.LogError("ValidateGridSize");
+                    return;
+                }
+
+                SetScale();
+                SetPosition();
+
+                HasChanged?.Invoke(_renderer.material, _grid.GridSizeX, _grid.GridSizeY, _grid.CellSize);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogError($"{nameof(GridPlaneFiller)}: Failed to spawn plane. Error: {exception.Message}", this);
+                CleanupInstance();
+            }
         }
     }
 }

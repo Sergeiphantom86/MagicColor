@@ -1,6 +1,6 @@
-using PuzzleEditor.RouletteEditor;
-using PuzzleEditor.Walls.WallEditor;
-using PuzzleEditor.Walls.WallEngineEditor;
+using PuzzleEditor.MinigamesRoulette;
+using PuzzleEditor.Walls.WallResources;
+using PuzzleEditor.Walls.WallEngineResource;
 using UnityEngine;
 
 namespace PuzzleEditor.Walls
@@ -52,7 +52,7 @@ namespace PuzzleEditor.Walls
             _errorPanel = errorPanel;
         }
 
-        public void TryHandle(IColorable colorable, Color color, IUnlockPolicy unlockPolicy)
+        public void ProcessColoredObject(IColorable colorable, Color color, IUnlockPolicy unlockPolicy)
         {
             if (color == null)
             {

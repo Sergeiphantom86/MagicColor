@@ -1,5 +1,5 @@
 using System.Collections;
-using PuzzleEditor.MovingBlocks.GridEditor;
+using PuzzleEditor.MovingBlocks.GridLogic;
 using PuzzleEditor.PoolEffects;
 using UnityEngine;
 

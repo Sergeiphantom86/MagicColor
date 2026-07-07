@@ -1,10 +1,10 @@
-using PuzzleEditor.Walls.WallEngineEditor;
+using PuzzleEditor.Walls.WallEngineResource;
 using UnityEngine;
 
 namespace PuzzleEditor.Walls
 {
     public interface IBlockInteractionService
     {
-        void TryHandle(IColorable colorable, Color color, IUnlockPolicy unlockPolicy);
+        void ProcessColoredObject(IColorable colorable, Color color, IUnlockPolicy unlockPolicy);
     }
 }

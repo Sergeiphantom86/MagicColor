@@ -1,4 +1,4 @@
-using PuzzleEditor.RouletteEditor;
+using PuzzleEditor.MinigamesRoulette;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

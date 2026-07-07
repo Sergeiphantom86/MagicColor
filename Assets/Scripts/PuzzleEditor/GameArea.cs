@@ -6,21 +6,25 @@ namespace PuzzleEditor
 {
     public class GameArea : MonoBehaviour
     {
+        private const float PositionX = 50;
+        private const float DurationDivider = 10;
+
         private Rotator _rotation;
         private Tween _moveTween;
-        private float _positionX;
-        private float _durationDivider;
 
         private void Awake()
         {
-            _positionX = 50;
-            _durationDivider = 10;
             _rotation = GetComponent<Rotator>();
         }
 
         private void Start()
         {
             YG2.SaveProgress();
+        }
+
+        private void OnDestroy()
+        {
+            _moveTween?.Kill();
         }
 
         public void Return(float duration)
@@ -46,17 +50,12 @@ namespace PuzzleEditor
 
         private float GetPositionX()
         {
-            return transform.position.x - _positionX;
+            return transform.position.x - PositionX;
         }
 
         private float GetDuration(float duration)
         {
-            return duration / _durationDivider;
-        }
-
-        private void OnDestroy()
-        {
-            _moveTween?.Kill();
+            return duration / DurationDivider;
         }
     }
 }

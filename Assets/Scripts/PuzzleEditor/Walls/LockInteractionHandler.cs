@@ -1,5 +1,5 @@
-using Menu.TutorialEditor.TutorialPuzzle;
-using PuzzleEditor.LockEditor;
+using Menu.Tutorials.TutorialPuzzle;
+using PuzzleEditor.LockMechanics;
 using UnityEngine;
 
 namespace PuzzleEditor.Walls

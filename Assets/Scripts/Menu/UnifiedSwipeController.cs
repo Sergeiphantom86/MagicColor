@@ -1,5 +1,5 @@
-using Menu.TutorialEditor;
-using PuzzleEditor.SoundEditor;
+using Menu.Tutorials;
+using PuzzleEditor.Audio;
 using UnityEngine;
 using UnityEngine.EventSystems;
 

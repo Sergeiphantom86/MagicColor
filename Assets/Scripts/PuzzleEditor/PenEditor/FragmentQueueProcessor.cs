@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using PuzzleEditor.SoundEditor;
+using PuzzleEditor.Audio;
 using UnityEngine;
 
 namespace PuzzleEditor.PenEditor
@@ -41,7 +41,7 @@ namespace PuzzleEditor.PenEditor
 
             if (_blocksContainer != null)
             {
-                _blocksContainer.EverythDestroyed += OnRequestSpeedBoost;
+                _blocksContainer.EverythingDestroyed += OnRequestSpeedBoost;
             }
         }
 
@@ -55,7 +55,7 @@ namespace PuzzleEditor.PenEditor
         {
             if (_blocksContainer != null)
             {
-                _blocksContainer.EverythDestroyed -= OnRequestSpeedBoost;
+                _blocksContainer.EverythingDestroyed -= OnRequestSpeedBoost;
             }
         }
 
@@ -90,7 +90,7 @@ namespace PuzzleEditor.PenEditor
 
                 PlayActivationSound();
 
-                TryRequestSpeedIncrease();
+                RequestSpeedIncrease();
 
                 FragmentActivated?.Invoke();
             }
@@ -101,13 +101,7 @@ namespace PuzzleEditor.PenEditor
             _currentDuration = Mathf.Max(_minDuration, _currentDuration - _durationStep);
         }
 
-        private void OnRequestSpeedBoost()
-        {
-            _needSpeedBoost = true;
-            _isSoundOn = false;
-        }
-
-        private void TryRequestSpeedIncrease()
+        private void RequestSpeedIncrease()
         {
             if (_needSpeedBoost == false)
                 return;
@@ -140,6 +134,12 @@ namespace PuzzleEditor.PenEditor
             {
                 _voiceover.PlayOneShot(_pixelActivation);
             }
+        }
+
+        private void OnRequestSpeedBoost()
+        {
+            _needSpeedBoost = true;
+            _isSoundOn = false;
         }
     }
 }

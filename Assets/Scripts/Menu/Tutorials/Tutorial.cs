@@ -1,0 +1,72 @@
+using UnityEngine;
+using YG;
+
+namespace Menu.Tutorials
+{
+    [RequireComponent(typeof(EngineTutorialMenu))]
+
+    public class Tutorial : MonoBehaviour
+    {
+        private bool _isFinished;
+        private EngineTutorialMenu _engineTutorialMenu;
+
+        public bool IsSwipeAllowed { get; private set; }
+        public bool IsClickAllowed { get; private set; }
+        public bool IsTutorialActive => gameObject.activeSelf;
+
+        private void Awake()
+        {
+            _engineTutorialMenu = GetComponent<EngineTutorialMenu>();
+
+            _isFinished = YG2.saves.IsMenuTutorial;
+
+            if (_isFinished)
+            {
+                gameObject.SetActive(false);
+            }
+        }
+
+        private void Start()
+        {
+            Play();
+        }
+
+        public void SetPositionButton(Vector3 position)
+        {
+            _engineTutorialMenu.SetPosition(position);
+        }
+
+        public void Play()
+        {
+            IsSwipeAllowed = true;
+            IsClickAllowed = false;
+
+            _engineTutorialMenu.StartAnimationMovements();
+        }
+
+        public void CompleteSwapStep()
+        {
+            _engineTutorialMenu.StartAnimationClicks();
+
+            IsSwipeAllowed = false;
+            IsClickAllowed = true;
+        }
+
+        public void CompleteClickStep()
+        {
+            Finish();
+
+            _engineTutorialMenu.StopAnimation();
+        }
+
+        private void Finish()
+        {
+            gameObject.SetActive(false);
+
+            IsSwipeAllowed = false;
+            IsClickAllowed = false;
+
+            YG2.saves.IsMenuTutorial = true;
+        }
+    }
+}

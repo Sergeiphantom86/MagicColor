@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using PuzzleEditor.Spawners;
 using PuzzleEditor.Walls;
 using UnityEngine;
@@ -9,11 +8,10 @@ namespace PuzzleEditor
 {
     public class IndexQualifier : MonoBehaviour
     {
+        private readonly List<int> _allowedIndexes = new();
+
         private BlockSpawner _spawner;
         private PuzzlesIdentifier _identifier;
-
-        private readonly List<int> _allowedIndexes = new();
-        private MethodInfo _setPrefabIndexMethod;
 
         private void Awake()
         {
@@ -36,13 +34,6 @@ namespace PuzzleEditor
             _spawner.SpawnerReadyed -= OnSpawnerReady;
         }
 
-        private void OnSpawnerReady()
-        {
-            BuildAllowedIndexes();
-
-            _spawner.IndexProvider = GetFilteredIndex;
-        }
-
         private void Start()
         {
             StartCoroutine(InitAfterPuzzleCreated());
@@ -54,7 +45,7 @@ namespace PuzzleEditor
 
             BuildAllowedIndexes();
 
-            _spawner.IndexProvider = GetFilteredIndex;
+            _spawner.SetIndexProvider(GetFilteredIndex);
 
             _spawner.SpawnNecessaryBlocks();
         }
@@ -83,6 +74,13 @@ namespace PuzzleEditor
         private int GetFilteredIndex()
         {
             return _allowedIndexes[Random.Range(0, _allowedIndexes.Count)];
+        }
+
+        private void OnSpawnerReady()
+        {
+            BuildAllowedIndexes();
+
+            _spawner.SetIndexProvider(GetFilteredIndex);
         }
     }
 }
