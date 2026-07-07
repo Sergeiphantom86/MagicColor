@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
-using PuzzleEditor;
+using PuzzleResources;
 using UnityEngine;
 
 namespace Menu.HomeScreenSaver

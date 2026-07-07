@@ -1,7 +1,7 @@
 using System;
 using Menu.Tutorials.TutorialPuzzle;
-using PuzzleEditor.Audio;
-using PuzzleEditor.UI.LoadingScreen;
+using PuzzleResources.Audio;
+using PuzzleResources.UI.LoadingScreen;
 using UnityEngine;
 
 namespace Menu.Tutorials

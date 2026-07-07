@@ -1,5 +1,5 @@
 using DG.Tweening;
-using PuzzleEditor;
+using PuzzleResources;
 using UnityEngine;
 
 namespace Menu.Tutorials

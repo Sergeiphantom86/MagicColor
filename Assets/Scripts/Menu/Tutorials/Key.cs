@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using DG.Tweening;
-using PuzzleEditor;
-using PuzzleEditor.MovingBlocks;
-using PuzzleEditor.MinigamesRoulette;
-using PuzzleEditor.Audio;
+using PuzzleResources;
+using PuzzleResources.MovingBlocks;
+using PuzzleResources.MinigamesRoulette;
+using PuzzleResources.Audio;
 using UnityEngine;
 
 namespace Menu.Tutorials
@@ -15,11 +15,11 @@ namespace Menu.Tutorials
     {
         [SerializeField]
 
-        private PuzzleEditor.Walls.Point _startPoint;
+        private PuzzleResources.Walls.Point _startPoint;
 
         [SerializeField]
 
-        private PuzzleEditor.Walls.Point _endPoint;
+        private PuzzleResources.Walls.Point _endPoint;
 
         [SerializeField] private AudioClip _flight;
         [SerializeField] private AudioClip _hiding;

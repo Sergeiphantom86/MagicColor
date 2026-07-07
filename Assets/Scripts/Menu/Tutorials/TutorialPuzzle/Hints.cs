@@ -1,4 +1,4 @@
-using PuzzleEditor.Audio;
+using PuzzleResources.Audio;
 using UnityEngine;
 
 namespace Menu.Tutorials.TutorialPuzzle

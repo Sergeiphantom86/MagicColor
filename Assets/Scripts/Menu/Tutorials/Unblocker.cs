@@ -1,7 +1,7 @@
 using DG.Tweening;
-using PuzzleEditor;
-using PuzzleEditor.Walls;
-using PuzzleEditor.Walls.WallResources;
+using PuzzleResources;
+using PuzzleResources.Walls;
+using PuzzleResources.Walls.WallResources;
 using UnityEngine;
 
 namespace Menu.Tutorials

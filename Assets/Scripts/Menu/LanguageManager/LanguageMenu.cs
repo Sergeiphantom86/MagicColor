@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Menu.Interaction;
-using PuzzleEditor;
-using PuzzleEditor.Audio;
+using PuzzleResources;
+using PuzzleResources.Audio;
 using UnityEngine;
 using UnityEngine.UI;
 using YG;

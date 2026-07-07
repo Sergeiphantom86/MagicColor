@@ -1,4 +1,4 @@
-using PuzzleEditor.Stars;
+using PuzzleResources.Stars;
 using UnityEngine;
 
 namespace Menu.Tutorials.TutorialUI

@@ -1,7 +1,7 @@
 using System.Collections;
 using DG.Tweening;
-using PuzzleEditor.MovingBlocks;
-using PuzzleEditor.MovingBlocks.GridLogic;
+using PuzzleResources.MovingBlocks;
+using PuzzleResources.MovingBlocks.GridLogic;
 using UnityEngine;
 using YG;
 

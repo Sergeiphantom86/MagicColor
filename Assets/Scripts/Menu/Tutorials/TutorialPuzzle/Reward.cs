@@ -1,4 +1,4 @@
-using PuzzleEditor.MinigamesRoulette;
+using PuzzleResources.MinigamesRoulette;
 using UnityEngine;
 using Wallets;
 using YG;

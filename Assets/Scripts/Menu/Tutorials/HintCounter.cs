@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using PuzzleEditor;
+using PuzzleResources;
 using UnityEngine;
 using YG;
 

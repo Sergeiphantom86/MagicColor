@@ -1,8 +1,8 @@
 using System.Collections;
 using DG.Tweening;
 using Menu.Tutorials.TutorialUI;
-using PuzzleEditor.Counter;
-using PuzzleEditor.Stars;
+using PuzzleResources.Counter;
+using PuzzleResources.Stars;
 using UnityEngine;
 
 namespace Menu.Tutorials.TutorialPuzzle.TutorialStateMachine

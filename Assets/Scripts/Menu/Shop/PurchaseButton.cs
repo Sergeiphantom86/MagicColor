@@ -1,6 +1,6 @@
 using Menu.Tutorials.TutorialPuzzle;
-using PuzzleEditor;
-using PuzzleEditor.Audio;
+using PuzzleResources;
+using PuzzleResources.Audio;
 using System;
 using System.Collections;
 using TMPro;

@@ -1,5 +1,5 @@
 using Menu.Tutorials.TutorialPuzzle;
-using PuzzleEditor.PenEditor;
+using PuzzleResources.PenEditor;
 using UnityEngine;
 
 namespace Menu.Tutorials

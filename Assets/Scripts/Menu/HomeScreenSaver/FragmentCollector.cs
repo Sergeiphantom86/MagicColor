@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using PuzzleEditor;
+using PuzzleResources;
 using UnityEngine;
 
 namespace Menu.HomeScreenSaver

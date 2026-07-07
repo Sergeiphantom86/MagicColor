@@ -1,5 +1,5 @@
 using System;
-using PuzzleEditor.LockMechanics;
+using PuzzleResources.LockMechanics;
 using UnityEngine;
 
 namespace Menu.Tutorials.TutorialPuzzle

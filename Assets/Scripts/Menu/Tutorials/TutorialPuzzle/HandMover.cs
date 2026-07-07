@@ -1,6 +1,6 @@
 using System;
 using DG.Tweening;
-using PuzzleEditor.MovingBlocks;
+using PuzzleResources.MovingBlocks;
 using UnityEngine;
 
 namespace Menu.Tutorials.TutorialPuzzle

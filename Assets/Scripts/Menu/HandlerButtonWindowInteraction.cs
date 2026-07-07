@@ -1,6 +1,6 @@
 using Menu.Interaction;
 using Menu.Tutorials;
-using PuzzleEditor.Audio;
+using PuzzleResources.Audio;
 using System;
 using System.Collections;
 using UnityEngine;

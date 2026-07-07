@@ -1,5 +1,5 @@
 using UnityEngine;
-using PuzzleEditor.UI;
+using PuzzleResources.UI;
 
 public class FlipPad : MonoBehaviour
 {

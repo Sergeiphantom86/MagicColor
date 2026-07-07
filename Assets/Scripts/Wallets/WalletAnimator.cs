@@ -1,6 +1,6 @@
 using System;
 using DG.Tweening;
-using PuzzleEditor.Audio;
+using PuzzleResources.Audio;
 using TMPro;
 using UnityEngine;
 

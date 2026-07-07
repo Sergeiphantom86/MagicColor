@@ -1,6 +1,6 @@
 using System;
 using DG.Tweening;
-using PuzzleEditor;
+using PuzzleResources;
 using UnityEngine;
 using UnityEngine.UI;
 

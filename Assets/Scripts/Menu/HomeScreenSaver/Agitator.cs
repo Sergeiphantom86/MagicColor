@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using DG.Tweening;
-using PuzzleEditor;
-using PuzzleEditor.PoolEffects;
-using PuzzleEditor.Audio;
+using PuzzleResources;
+using PuzzleResources.PoolEffects;
+using PuzzleResources.Audio;
 using UnityEngine;
 
 namespace Menu.HomeScreenSaver

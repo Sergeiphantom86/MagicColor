@@ -1,5 +1,5 @@
 using Menu.Tutorials;
-using PuzzleEditor.Audio;
+using PuzzleResources.Audio;
 using UnityEngine;
 using UnityEngine.EventSystems;
 

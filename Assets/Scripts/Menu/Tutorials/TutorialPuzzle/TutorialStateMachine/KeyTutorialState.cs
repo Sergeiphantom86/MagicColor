@@ -1,5 +1,5 @@
 using DG.Tweening;
-using PuzzleEditor.LockMechanics;
+using PuzzleResources.LockMechanics;
 using YG;
 
 namespace Menu.Tutorials.TutorialPuzzle.TutorialStateMachine

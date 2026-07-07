@@ -1,9 +1,9 @@
 using Game;
-using Menu.Interaction.Ability;
+using Menu.Interaction.Abilitys;
 using Menu.Shop;
 using Menu.Tutorials.TutorialPuzzle;
 using Menu.Tutorials.TutorialPuzzle.TutorialStateMachine;
-using PuzzleEditor.MovingBlocks;
+using PuzzleResources.MovingBlocks;
 using TMPro;
 using UnityEngine;
 

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.IO;
 using DG.Tweening;
-using PuzzleEditor.UI.LoadingScreen;
+using PuzzleResources.UI.LoadingScreen;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using YG;

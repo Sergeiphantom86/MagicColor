@@ -1,7 +1,7 @@
 using Game;
-using Menu.Interaction.Ability;
+using Menu.Interaction.Abilitys;
 using Menu.Shop;
-using PuzzleEditor.MovingBlocks;
+using PuzzleResources.MovingBlocks;
 using TMPro;
 using UnityEngine;
 using YG;

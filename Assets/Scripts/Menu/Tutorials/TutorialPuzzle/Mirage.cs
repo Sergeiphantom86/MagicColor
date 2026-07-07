@@ -1,8 +1,8 @@
 using System.Collections;
-using PuzzleEditor.MovingBlocks;
-using PuzzleEditor.Audio;
-using PuzzleEditor.Walls;
-using PuzzleEditor.Walls.WallResources;
+using PuzzleResources.MovingBlocks;
+using PuzzleResources.Audio;
+using PuzzleResources.Walls;
+using PuzzleResources.Walls.WallResources;
 using UnityEngine;
 
 namespace Menu.Tutorials.TutorialPuzzle

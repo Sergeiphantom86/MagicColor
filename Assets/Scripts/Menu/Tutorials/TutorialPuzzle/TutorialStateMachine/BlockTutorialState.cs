@@ -1,8 +1,8 @@
 using System.Linq;
-using PuzzleEditor;
-using PuzzleEditor.MovingBlocks;
-using PuzzleEditor.MovingBlocks.GridLogic;
-using PuzzleEditor.Stars;
+using PuzzleResources;
+using PuzzleResources.MovingBlocks;
+using PuzzleResources.MovingBlocks.GridLogic;
+using PuzzleResources.Stars;
 using UnityEngine;
 using YG;
 

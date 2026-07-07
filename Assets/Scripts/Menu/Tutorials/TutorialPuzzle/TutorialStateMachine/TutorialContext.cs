@@ -1,7 +1,7 @@
-using PuzzleEditor;
-using PuzzleEditor.Counter;
-using PuzzleEditor.LockMechanics;
-using PuzzleEditor.Spawners;
+using PuzzleResources;
+using PuzzleResources.Counter;
+using PuzzleResources.LockMechanics;
+using PuzzleResources.Spawners;
 using UnityEngine;
 
 namespace Menu.Tutorials.TutorialPuzzle.TutorialStateMachine
