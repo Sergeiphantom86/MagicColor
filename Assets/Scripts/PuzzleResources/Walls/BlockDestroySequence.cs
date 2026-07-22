@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using PuzzleResources.MovingBlocks;
+using PuzzleResources.ColoringObjects;
 using PuzzleResources.Walls.WallResources;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ namespace PuzzleResources.Walls
             _pointer = GetComponent<IPointer>();
         }
 
-        public void WaitStart(IColorable colorable, Color color)
+        public void WaitStart(IColorModifiable colorable, Color color)
         {
             if (colorable is not Block block)
             return;

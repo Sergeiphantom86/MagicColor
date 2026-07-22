@@ -1,7 +1,8 @@
+using UnityEngine;
 using PuzzleResources.MinigamesRoulette;
 using PuzzleResources.Walls.WallResources;
-using PuzzleResources.Walls.WallEngineResource;
-using UnityEngine;
+using PuzzleResources.Walls.WallEngineResources;
+using PuzzleResources.ColoringObjects;
 
 namespace PuzzleResources.Walls
 {
@@ -52,7 +53,7 @@ namespace PuzzleResources.Walls
             _errorPanel = errorPanel;
         }
 
-        public void ProcessColoredObject(IColorable colorable, Color color, IUnlockPolicy unlockPolicy)
+        public void ProcessColoredObject(IColorModifiable colorable, Color color, IUnlockPolicy unlockPolicy)
         {
             if (color == null)
             {

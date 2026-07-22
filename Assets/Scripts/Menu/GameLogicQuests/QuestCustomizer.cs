@@ -15,7 +15,7 @@ namespace Menu.GameLogicQuests
         public QuestCustomizer()
         {
             _indexUnblockingTutorial = YG2.saves.IndexSecondQuest;
-            _indexAbilityTutorial = YG2.saves.ObstacleDeactivatIndex;
+            _indexAbilityTutorial = YG2.saves.ObstacleDeactivateIndex;
 
             _isTutorialBasics = YG2.saves.IsTutorialBasics;
             _isUnblockingTutorial = YG2.saves.IsUnblockingTutorial;

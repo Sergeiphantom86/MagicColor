@@ -1,10 +1,11 @@
-using PuzzleResources.Walls.WallEngineResource;
 using UnityEngine;
+using PuzzleResources.Walls.WallEngineResources;
+using PuzzleResources.ColoringObjects;
 
 namespace PuzzleResources.Walls
 {
     public interface IBlockInteractionService
     {
-        void ProcessColoredObject(IColorable colorable, Color color, IUnlockPolicy unlockPolicy);
+        void ProcessColoredObject(IColorModifiable colorable, Color color, IUnlockPolicy unlockPolicy);
     }
 }

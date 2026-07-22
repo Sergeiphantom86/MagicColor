@@ -6,53 +6,47 @@ using YG;
 
 namespace Wallets
 {
-    public class Wallet : MonoBehaviour
+    public abstract class Wallet : MonoBehaviour
     {
         [SerializeField] private bool _autoLoadFromSave;
 
         private long _balance;
-        private float _delay;
         private float _callDelay;
         private bool _isInitialized;
-        private WaitForSeconds _waitFor;
         private IProcessTransacter _transacter;
+        private WaitForSeconds _waitForSeconds;
 
-        public event Action<long, string> OnBalanceChanged;
-
+        public event Action<long, string> BalanceChanged;
         public long Balance => _balance;
-
         public string Name => GetType().Name;
+
+        protected abstract long LoadBalanceFromSave();
+        protected abstract void SaveBalanceToSave(long balance);
+        protected virtual float GetLoadDelay() => 0f;
 
         private void Awake()
         {
-            _delay = 1.5f;
             _callDelay = 0.1f;
-            _waitFor = new WaitForSeconds(_delay);
             _transacter = new ProcessTransacter();
+            _waitForSeconds = new WaitForSeconds(GetLoadDelay());
         }
 
         private void Start()
         {
             if (_autoLoadFromSave)
-            {
                 LoadFromSave();
-            }
         }
 
         private void OnEnable()
         {
             if (_autoLoadFromSave)
-            {
                 YG2.onGetSDKData += OnYGDataLoaded;
-            }
         }
 
         private void OnDisable()
         {
             if (_autoLoadFromSave)
-            {
                 YG2.onGetSDKData -= OnYGDataLoaded;
-            }
         }
 
         public bool SpendFunds(long amount)
@@ -65,14 +59,8 @@ namespace Wallets
             if (success)
             {
                 _balance -= amount;
-
-                YG2.saves.CurrentCoin = _balance;
-
-                OnBalanceChanged?.Invoke(_balance, Name);
-            }
-            else
-            {
-                Debug.LogWarning($"Insufficient: {amount} > {_balance}", this);
+                SaveBalanceToSave(_balance);
+                BalanceChanged?.Invoke(_balance, Name);
             }
 
             return success;
@@ -80,43 +68,33 @@ namespace Wallets
 
         private void LoadFromSave()
         {
-
-            if (this is CoinWallet)
-            {
-                SetInitialBalance(YG2.saves.CurrentCoin);
-            }
-            else if (this is CrystalWallet)
-            {
-                StartCoroutine(Wait(YG2.saves.CurrentCrystal));
-            }
+            StartCoroutine(LoadBalanceCoroutine());
 
             _isInitialized = true;
+        }
+
+        private IEnumerator LoadBalanceCoroutine()
+        {
+            yield return _waitForSeconds;
+
+            long loadedBalance = LoadBalanceFromSave();
+
+            SetInitialBalance(loadedBalance);
         }
 
         private void SetInitialBalance(long amount)
         {
             _balance = amount;
-            OnBalanceChanged?.Invoke(_balance, Name);
+            BalanceChanged?.Invoke(_balance, Name);
         }
 
-        private bool CanSpend(long amount)
-        {
-            return amount > 0 && _balance >= amount;
-        }
-
-        private IEnumerator Wait(long savedCrystals)
-        {
-            yield return _waitFor;
-
-            SetInitialBalance(savedCrystals);
-        }
+        private bool CanSpend(long amount) => 
+            amount > 0 && _balance >= amount;
 
         private void OnYGDataLoaded()
         {
-            if (_autoLoadFromSave && _isInitialized == false)
-            {
+            if (_autoLoadFromSave && !_isInitialized)
                 Invoke(nameof(LoadFromSave), _callDelay);
-            }
         }
     }
 }

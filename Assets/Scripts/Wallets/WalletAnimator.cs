@@ -50,12 +50,12 @@ namespace Wallets
 
         private void OnEnable()
         {
-            _wallet.OnBalanceChanged += OnHandleBalanceChanged;
+            _wallet.BalanceChanged += OnHandleBalanceChanged;
         }
 
         private void OnDestroy()
         {
-            _wallet.OnBalanceChanged -= OnHandleBalanceChanged;
+            _wallet.BalanceChanged -= OnHandleBalanceChanged;
 
             _balanceTween?.Kill();
         }

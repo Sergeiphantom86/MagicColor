@@ -63,12 +63,12 @@ namespace PuzzleResources.Counter
 
         private void OnEnable()
         {
-            _blocksContainer.EverythingDestroyed += StopAndSave;
+            _blocksContainer.EverythingDestroyed += OnLevelComplete;
         }
 
         private void OnDisable()
         {
-            _blocksContainer.EverythingDestroyed -= StopAndSave;
+            _blocksContainer.EverythingDestroyed -= OnLevelComplete;
         }
 
         public void StartTimer()
@@ -80,7 +80,7 @@ namespace PuzzleResources.Counter
             _value = 0f;
         }
 
-        public void StopAndSave()
+        private void OnLevelComplete()
         {
             if (_starCounter == null)
             {

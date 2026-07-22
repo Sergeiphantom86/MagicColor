@@ -31,15 +31,15 @@ namespace Menu.Shop
         private long _result;
         private WaitForSeconds _waitForSeconds;
 
+        public event Action Clicked;
+
+        public event Action<long> CoinPurchased;
+
         private enum PaymentType
         {
             Coins,
             Ads,
         }
-
-        public event Action Clicked;
-
-        public event Action<long> CoinPurchased;
 
         public Button Button => _button;
 

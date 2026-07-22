@@ -1,26 +1,30 @@
 using System;
-using PuzzleResources.MovingBlocks.GridLogic;
-using PuzzleResources.Audio;
 using UnityEngine;
+using PuzzleResources.Audio;
+using PuzzleResources.ColoringObjects;
+using PuzzleResources.MovingBlocks.GridLogic;
 
 namespace PuzzleResources.MovingBlocks
 {
-    [RequireComponent(typeof(GridDragMovement), typeof(Magnifier), typeof(IInputHandler))]
-    [RequireComponent(typeof(IColorable), typeof(Voiceover))]
+    [RequireComponent(typeof(IRenderQueueConfigurable), typeof(IDisable), typeof(IRepaintable))]
+    [RequireComponent(typeof(IInputHandler), typeof(IRenderQueueConfigurable))]
+    [RequireComponent(typeof(Voiceover), typeof(GridDragMovement), typeof(Magnifier))]
 
     public class TouchDragInput : MonoBehaviour, ITouchDragInput
     {
         private bool _isSelected;
-        private Magnifier _selectable;
-        private IColorable _colorable;
-        private GridDragMovement _dragMovement;
-        private IInputHandler _inputHandler;
-        private Voiceover _voiceover;
         private Outline _outline;
+        private Voiceover _voiceover;
+        private Magnifier _selectable;
+        private GridDragMovement _dragMovement;
+        private IDisable _disable;
+        private IRepaintable _repaintable;
+        private IInputHandler _inputHandler;
+        private IRenderQueueConfigurable _renderQueueConfigurable;
 
         public event Action<Vector2> Touched;
 
-        public event Action<Vector2> TouchDrag;
+        public event Action<Vector2> Dragging;
 
         public event Action Dropped;
 
@@ -28,12 +32,14 @@ namespace PuzzleResources.MovingBlocks
 
         private void Awake()
         {
-            _colorable = GetComponent<IColorable>();
+            _outline = GetComponent<Outline>();
             _selectable = GetComponent<Magnifier>();
             _voiceover = GetComponent<Voiceover>();
-            _inputHandler = GetComponent<IInputHandler>();
             _dragMovement = GetComponent<GridDragMovement>();
-            _outline = GetComponent<Outline>();
+            _disable = GetComponent<IDisable>();
+            _repaintable = GetComponent<IRepaintable>();
+            _inputHandler = GetComponent<IInputHandler>();
+            _renderQueueConfigurable = GetComponent<IRenderQueueConfigurable>();
 
             if (_dragMovement == null)
             {
@@ -43,11 +49,6 @@ namespace PuzzleResources.MovingBlocks
             if (_selectable == null)
             {
                 Debug.LogError("SelectableObject not assigned in TouchDragInput", this);
-            }
-
-            if (_colorable == null)
-            {
-                Debug.LogError("IColorable not assigned in TouchDragInput", this);
             }
 
             if (_voiceover == null)
@@ -77,8 +78,8 @@ namespace PuzzleResources.MovingBlocks
                 _isSelected = false;
                 _outline.enabled = false;
                 _selectable.Deselect();
-                _colorable.Disable();
-                _colorable.SetStartRenderQueueSelectedItem();
+                _disable.Disable();
+                _renderQueueConfigurable.SetStartRenderQueueSelectedItem();
                 Dropped?.Invoke();
             }
         }
@@ -87,9 +88,9 @@ namespace PuzzleResources.MovingBlocks
         {
             _isSelected = true;
             _outline.enabled = true;
-            _colorable.SetRenderQueueSelectedItem();
+            _renderQueueConfigurable.SetRenderQueueSelectedItem();
             _selectable.Select();
-            _colorable.AssignOriginal();
+            _repaintable.AssignOriginal();
             Touched?.Invoke(position);
         }
 
@@ -97,7 +98,7 @@ namespace PuzzleResources.MovingBlocks
         {
             if (_isSelected)
             {
-                TouchDrag?.Invoke(position);
+                Dragging?.Invoke(position);
             }
         }
     }

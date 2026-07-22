@@ -1,4 +1,5 @@
 using PuzzleResources.Audio;
+using PuzzleResources.ColoringObjects;
 using UnityEngine;
 
 namespace PuzzleResources.InkResources

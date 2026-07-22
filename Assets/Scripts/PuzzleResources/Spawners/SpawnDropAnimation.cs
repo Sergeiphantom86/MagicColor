@@ -1,10 +1,13 @@
 using DG.Tweening;
 using PuzzleResources.PoolEffects;
 using PuzzleResources.Audio;
+using PuzzleResources.ColoringObjects;
 using UnityEngine;
 
 namespace PuzzleResources.Spawners
 {
+    [RequireComponent(typeof(IAlphaModifiable), typeof(Collider), typeof(Voiceover))]
+
     public class SpawnDropAnimation : MonoBehaviour
     {
         [SerializeField] private float _startYOffset;
@@ -14,7 +17,7 @@ namespace PuzzleResources.Spawners
 
         private Tween _tween;
         private Vector3 _targetWorldPosition;
-        private ColorableObject _targetColor;
+        private IAlphaModifiable _targetColor;
         private Collider _collider;
         private Voiceover _voiceover;
         private float _valueTransparency;
@@ -23,7 +26,7 @@ namespace PuzzleResources.Spawners
 
         private void Awake()
         {
-            _targetColor = GetComponent<ColorableObject>();
+            _targetColor = GetComponent<IAlphaModifiable>();
             _collider = GetComponent<Collider>();
             _voiceover = GetComponent<Voiceover>();
             _valueTransparency = 0.6f;
@@ -35,7 +38,7 @@ namespace PuzzleResources.Spawners
             _tween?.Play();
 
             if (_voiceover != null && _fall != null)
-            _voiceover.PlayOneShot(_fall);
+                _voiceover.PlayOneShot(_fall);
         }
 
         public void Create(Effecter effecter)
@@ -55,19 +58,19 @@ namespace PuzzleResources.Spawners
                 effecter.CraeteParticles(transform.position, Quaternion.identity, 0.5f);
 
                 _targetColor.SetAlpha(_valueTransparency);
-                })
+            })
                 .SetEase(_ease)
                 .Pause();
-            }
+        }
 
-            private void SetStartPosition()
-            {
-                transform.position = _targetWorldPosition + Vector3.up * _startYOffset;
-            }
+        private void SetStartPosition()
+        {
+            transform.position = _targetWorldPosition + Vector3.up * _startYOffset;
+        }
 
-            private void SetTargetPosition()
-            {
-                _targetWorldPosition = transform.position;
-            }
+        private void SetTargetPosition()
+        {
+            _targetWorldPosition = transform.position;
         }
     }
+}

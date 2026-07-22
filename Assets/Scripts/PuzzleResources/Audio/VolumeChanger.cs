@@ -14,7 +14,7 @@ namespace PuzzleResources.Audio
         private float _temporaryVolume;
         private bool _isOn;
 
-        public event Action<VolumeChanger, float> OnVolumeChange;
+        public event Action<VolumeChanger, float> VolumeChanged;
 
         private void Awake()
         {
@@ -76,7 +76,7 @@ namespace PuzzleResources.Audio
                 _toggleBase.TurnOn(true);
             }
 
-            OnVolumeChange?.Invoke(this, volume);
+            VolumeChanged?.Invoke(this, volume);
 
             YG2.saves.SetVolume(this, volume);
         }

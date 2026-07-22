@@ -2,7 +2,7 @@ using System;
 using PuzzleResources.MovingBlocks;
 using UnityEngine;
 
-namespace PuzzleResources.Walls.WallEngineResource
+namespace PuzzleResources.Walls.WallEngineResources
 {
     [RequireComponent(typeof(IInputHandler), typeof(ColorCollisionHandler))]
 

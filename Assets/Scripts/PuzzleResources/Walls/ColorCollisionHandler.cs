@@ -2,7 +2,7 @@ using Menu.Tutorials;
 using Menu.Tutorials.TutorialPuzzle;
 using PuzzleResources.MinigamesRoulette;
 using PuzzleResources.Walls.WallResources;
-using PuzzleResources.Walls.WallEngineResource;
+using PuzzleResources.Walls.WallEngineResources;
 using UnityEngine;
 
 namespace PuzzleResources.Walls
@@ -35,15 +35,15 @@ namespace PuzzleResources.Walls
 
         private void OnEnable()
         {
-            _collisionHandler.Enter += OnEnter;
-            _collisionHandler.Exit += OnExit;
+            _collisionHandler.Entered += OnEnter;
+            _collisionHandler.Exited += OnExit;
             _destroySequence.IsTouched += UnblockWall;
         }
 
         private void OnDisable()
         {
-            _collisionHandler.Enter -= OnEnter;
-            _collisionHandler.Exit -= OnExit;
+            _collisionHandler.Entered -= OnEnter;
+            _collisionHandler.Exited -= OnExit;
             _destroySequence.IsTouched -= UnblockWall;
         }
 
@@ -57,14 +57,22 @@ namespace PuzzleResources.Walls
             }
         }
 
-        public bool Initialize(
+        public void Initialize(
             IColorPrecision colorPrecision,
             Messager hintKey,
             ErrorPanel errorPanel,
             IUnlockPolicy unlockPolicy)
         {
-            if (Validate(colorPrecision, hintKey, errorPanel, _lockHandler, unlockPolicy) == false)
-                return false;
+            if (ValidationHelper.AllNotNull(
+                this, 
+                (colorPrecision, nameof(colorPrecision)), 
+                (hintKey, nameof(hintKey)), 
+                (errorPanel, nameof(errorPanel)), 
+                (_lockHandler, nameof(_lockHandler)), 
+                (unlockPolicy, nameof(unlockPolicy))) == false)
+            {
+                return;
+            }
 
             _lockHandler.SetHint(hintKey);
             _blockInteraction.SetPanelError(errorPanel);
@@ -72,62 +80,25 @@ namespace PuzzleResources.Walls
             _unlockPolicy = unlockPolicy;
 
             _collisionProcessor = new CollisionProcessor(_colorMatch, _blockInteraction, _unlockPolicy);
-
-            return true;
-        }
-
-        private bool Validate(
-            IColorPrecision colorPrecision,
-            Messager hintKey,
-            ErrorPanel errorPanel,
-            LockInteractionHandler lockHandler,
-            IUnlockPolicy bagUnlockPolicy)
-        {
-            if (_colorMatch == null)
-                return Log(nameof(_colorMatch));
-
-            if (_lockFeedback == null)
-                return Log(nameof(_lockFeedback));
-
-            if (_collisionHandler == null)
-                return Log(nameof(_collisionHandler));
-
-            if (_destroySequence == null)
-                return Log(nameof(_destroySequence));
-
-            if (colorPrecision == null)
-                return Log(nameof(colorPrecision));
-
-            if (hintKey == null)
-                return Log(nameof(hintKey));
-
-            if (errorPanel == null)
-                return Log(nameof(errorPanel));
-
-            if (lockHandler == null)
-                return Log(nameof(lockHandler));
-
-            if (bagUnlockPolicy == null)
-                return Log(nameof(bagUnlockPolicy));
-
-            return true;
-        }
-
-        private bool Log(string name)
-        {
-            Debug.LogError($"{nameof(ColorCollisionHandler)} missing dependency: {name}", this);
-            return false;
         }
 
         private void OnEnter(Collider other)
         {
-            _collisionProcessor.ProcessEnter(other);
+            if (_collisionProcessor == null)
+            {
+                Debug.LogWarning($"[{name}] Not initialized, collision ignored", this);
+                return;
+            }
 
-            _lockHandler.Set(other);
+            _collisionProcessor.ProcessEnter(other);
+            _lockHandler?.Set(other);
         }
 
         private void OnExit(Collider other)
         {
+            if (_collisionProcessor == null) 
+                return;
+
             _collisionProcessor.ProcessExit(other);
         }
     }

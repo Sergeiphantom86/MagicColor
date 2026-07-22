@@ -17,8 +17,8 @@ namespace Menu.GameLogicQuests
 
         private void OnEnable()
         {
-            _offerPanel.Consent += LoadTutorial;
-            _offerPanelMobile.Consent += LoadTutorial;
+            _offerPanel.Consented += LoadTutorial;
+            _offerPanelMobile.Consented += LoadTutorial;
 
             _offerPanel.Cancelled += LoadPuzzle;
             _offerPanelMobile.Cancelled += LoadPuzzle;
@@ -26,8 +26,8 @@ namespace Menu.GameLogicQuests
 
         private void OnDisable()
         {
-            _offerPanel.Consent -= LoadTutorial;
-            _offerPanelMobile.Consent -= LoadTutorial;
+            _offerPanel.Consented -= LoadTutorial;
+            _offerPanelMobile.Consented -= LoadTutorial;
 
             _offerPanel.Cancelled -= LoadPuzzle;
             _offerPanelMobile.Cancelled -= LoadPuzzle;

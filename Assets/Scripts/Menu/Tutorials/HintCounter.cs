@@ -8,9 +8,9 @@ namespace Menu.Tutorials
 {
     public class HintCounter : MonoBehaviour
     {
-        private const float HintDelay = 60;
-
         [SerializeField] private BlocksContainer _container;
+        [SerializeField] private int _requiredCoins = 3000;
+        [SerializeField] private float _hintDelaySeconds = 60f;
 
         private Coroutine _hintCoroutine;
         private WaitForSeconds _waitForSeconds;
@@ -21,7 +21,7 @@ namespace Menu.Tutorials
 
         private void Awake()
         {
-            _waitForSeconds = new WaitForSeconds(HintDelay);
+            _waitForSeconds = new WaitForSeconds(_hintDelaySeconds);
         }
 
         private void OnEnable()
@@ -33,14 +33,14 @@ namespace Menu.Tutorials
         private void OnDisable()
         {
             _container.Destroyed -= StartTimer;
-            _container.EverythingDestroyed += OnStopTimer;
+            _container.EverythingDestroyed -= OnStopTimer;
         }
 
         public void StartTimer()
         {
             Rested?.Invoke();
 
-            if (YG2.saves.IsUnlockAbilities && YG2.saves.CurrentCoin >= 3000)
+            if (YG2.saves.IsUnlockAbilities && YG2.saves.CurrentCoin >= _requiredCoins)
             {
                 ResetTimer();
             }

@@ -3,13 +3,14 @@ using PuzzleResources.LockMechanics;
 using PuzzleResources.PenEditor;
 using PuzzleResources.MinigamesRoulette;
 using PuzzleResources.Audio;
-using PuzzleResources.Walls.WallResources;
 using UnityEngine;
 using Wallets.WalletEconomy;
 
-namespace PuzzleResources.Walls.WallEngineResource
+namespace PuzzleResources.Walls.WallEngineResources
 {
-    [RequireComponent(typeof(Wall), typeof(WallMovement))]
+    [RequireComponent(typeof(WallLayoutUpdater), typeof(WallMovement), typeof(Voiceover))]
+    [RequireComponent(typeof(ColorCollisionHandler), typeof(WallInteractionController), typeof(LockFeedbackService))]
+    [RequireComponent(typeof(BlockDestroySequence))]
 
     public class WallEngine : MonoBehaviour, IWallInteractor
     {
@@ -45,8 +46,16 @@ namespace PuzzleResources.Walls.WallEngineResource
             Activator activator,
             AudioClip audioClip)
         {
-            if (ValidateDependencies(colorPrecision, bag, rotator, hintKey, @lock) == false)
+            if (ValidationHelper.AllNotNull(
+                this,
+                (bag, nameof(bag)),
+                (@lock, nameof(@lock)),
+                (hintKey, nameof(hintKey)),
+                (rotator, nameof(rotator)),
+                (colorPrecision, nameof(colorPrecision))) == false)
+            {
                 return false;
+            }
 
             if (ValidateComponents(
                 out ColorCollisionHandler collisionHandler,
@@ -75,6 +84,7 @@ namespace PuzzleResources.Walls.WallEngineResource
                 activator);
 
             _audioClip = audioClip;
+
             return true;
         }
 
@@ -86,7 +96,7 @@ namespace PuzzleResources.Walls.WallEngineResource
                 _voiceover.PlayOneShot(_audioClip);
         }
 
-        private void InitSystems(
+        private bool InitSystems(
             ColorCollisionHandler collisionHandler,
             WallInteractionController interactionController,
             LockFeedbackService lockFeedback,
@@ -105,6 +115,8 @@ namespace PuzzleResources.Walls.WallEngineResource
 
             _blockDestroySequence.Initialize(activator);
             _blockDestroySequence.IsTouched += OnMove;
+
+            return true;
         }
 
         private void InitMovement()
@@ -114,30 +126,6 @@ namespace PuzzleResources.Walls.WallEngineResource
 
             _movement.CacheStartPosition();
             _rotation.Rotated += _movement.CacheStartPosition;
-        }
-
-        private bool ValidateDependencies(IColorPrecision colorPrecision,
-            BagKey bag,
-            Rotator rotator,
-            Messager hintKey,
-            Lock @lock)
-        {
-            if (colorPrecision == null)
-                return LogNull(nameof(colorPrecision));
-
-            if (bag == null)
-                return LogNull(nameof(bag));
-
-            if (rotator == null)
-                return LogNull(nameof(rotator));
-
-            if (hintKey == null)
-                return LogNull(nameof(hintKey));
-
-            if (@lock == null)
-                return LogNull(nameof(@lock));
-
-            return true;
         }
 
         private bool ValidateComponents(
@@ -151,29 +139,13 @@ namespace PuzzleResources.Walls.WallEngineResource
             lockFeedback = GetComponent<LockFeedbackService>();
             blockDestroySequence = GetComponent<BlockDestroySequence>();
 
-            if (collisionHandler == null)
-                return LogNull(nameof(ColorCollisionHandler));
-
-            if (interactionController == null)
-                return LogNull(nameof(WallInteractionController));
-
-            if (_layoutUpdater == null)
-                return LogNull(nameof(WallLayoutUpdater));
-
-            if (lockFeedback == null)
-                return LogNull(nameof(LockFeedbackService));
-
-            if (blockDestroySequence == null)
-                return LogNull(nameof(BlockDestroySequence));
-
-            return true;
-        }
-
-        private bool LogNull(string dependencyName)
-        {
-            Debug.LogError($"[{nameof(WallEngine)}] Initialization failed: {dependencyName} missing", this);
-
-            return false;
+            return ValidationHelper.AllNotNull(
+                this,
+                (collisionHandler, nameof(collisionHandler)),
+                (interactionController, nameof(interactionController)),
+                (_layoutUpdater, nameof(_layoutUpdater)),
+                (lockFeedback, nameof(lockFeedback)),
+                (blockDestroySequence, nameof(blockDestroySequence)));
         }
 
         private void OnMove()

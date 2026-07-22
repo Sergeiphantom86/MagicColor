@@ -35,13 +35,13 @@ namespace PuzzleResources.MovingBlocks.GridLogic
         private void OnEnable()
         {
             _touchDragInput.Touched += BeginInteraction;
-            _touchDragInput.TouchDrag += ProcessInput;
+            _touchDragInput.Dragging += ProcessInput;
         }
 
         private void OnDisable()
         {
             _touchDragInput.Touched -= BeginInteraction;
-            _touchDragInput.TouchDrag -= ProcessInput;
+            _touchDragInput.Dragging -= ProcessInput;
         }
 
         public void SetGridSystem(GridSystem gridSystem)

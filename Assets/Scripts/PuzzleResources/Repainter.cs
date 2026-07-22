@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using PuzzleResources.MovingBlocks;
+using PuzzleResources.ColoringObjects;
 using PuzzleResources.Walls;
 using UnityEngine;
 
@@ -39,12 +40,12 @@ namespace PuzzleResources
 
         private void OnEnable()
         {
-            _textureInitializer.CanPaint += OnUpdateSystem;
+            _textureInitializer.PaintAllowed += OnUpdateSystem;
         }
 
         private void OnDisable()
         {
-            _textureInitializer.CanPaint -= OnUpdateSystem;
+            _textureInitializer.PaintAllowed -= OnUpdateSystem;
         }
 
         private List<IColorable> GetColorablesFromContainer(Transform container)
@@ -121,7 +122,7 @@ namespace PuzzleResources
             for (int i = 0; i < Mathf.Min(colors.Count, colorables.Count); i++)
             {
                 colorables[i]?.InstallRepainted();
-                colorables[i]?.SetColor(colors[i]);
+                colorables[i]?.SetOriginalColor(colors[i]);
 
                 if (colorables[i] is Block block)
                 {

@@ -1,7 +1,7 @@
 using System;
 using Wallets.WalletEconomy;
 
-namespace PuzzleResources.Walls.WallEngineResource
+namespace PuzzleResources.Walls.WallEngineResources
 {
     public class BagUnlockPolicy : IUnlockPolicy
     {

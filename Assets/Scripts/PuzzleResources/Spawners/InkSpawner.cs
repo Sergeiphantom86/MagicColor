@@ -1,7 +1,8 @@
 using System.Collections;
+using UnityEngine;
 using PuzzleResources.InkResources;
 using PuzzleResources.ObjectPool;
-using UnityEngine;
+using PuzzleResources.ColoringObjects;
 
 namespace PuzzleResources.Spawners
 {
@@ -62,7 +63,7 @@ namespace PuzzleResources.Spawners
 
             Drop inkDrop = SpawnObject(_spawnPosition, _ink.transform);
 
-            if (inkDrop.TryGetComponent(out IColorable colorable))
+            if (inkDrop.TryGetComponent(out IColorModifiable colorable))
             {
                 colorable.SetColor(color);
             }

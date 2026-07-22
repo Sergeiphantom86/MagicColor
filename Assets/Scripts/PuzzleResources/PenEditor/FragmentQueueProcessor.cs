@@ -47,7 +47,7 @@ namespace PuzzleResources.PenEditor
 
         public event Action FragmentActivated;
 
-        public event Action<float> IncreaseSpeed;
+        public event Action<float> SpeedIncreased;
 
         public event Action<Color> ColorHasChanged;
 
@@ -108,7 +108,7 @@ namespace PuzzleResources.PenEditor
 
             _needSpeedBoost = false;
 
-            IncreaseSpeed?.Invoke(CalculateRemainingTime());
+            SpeedIncreased?.Invoke(CalculateRemainingTime());
         }
 
         private float CalculateRemainingTime()

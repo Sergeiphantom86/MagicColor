@@ -1,4 +1,5 @@
 using UnityEngine;
+using PuzzleResources.ColoringObjects;
 
 namespace PuzzleResources.Walls.WallResources
 {

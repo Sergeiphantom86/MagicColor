@@ -1,6 +1,7 @@
-using PuzzleResources.MovingBlocks;
-using PuzzleResources.Walls.WallEngineResource;
 using UnityEngine;
+using PuzzleResources.MovingBlocks;
+using PuzzleResources.Walls.WallEngineResources;
+using PuzzleResources.ColoringObjects;
 
 namespace PuzzleResources.Walls
 {
@@ -28,7 +29,7 @@ namespace PuzzleResources.Walls
             if (block.TryGetComponent(out ITouchDragInput touchDragInput) == false)
                 return;
 
-            if (block.TryGetComponent(out IColorable colorable) == false)
+            if (block.TryGetComponent(out IColorModifiable colorable) == false)
                 return;
 
             if (touchDragInput.IsSelected == false)

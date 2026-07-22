@@ -37,7 +37,7 @@ namespace Menu.Tutorials
         private SpriteRenderer _spriteRenderer;
         private WaitForSeconds _waitForSeconds;
 
-        public event Action Shift;
+        public event Action Shifted;
 
         public event Action Selected;
 
@@ -86,15 +86,15 @@ namespace Menu.Tutorials
         private void OnEnable()
         {
             _inputHandler.Selected += OnPlay;
-            _collisionHandler.Exit += OnShow;
-            _collisionHandler.Enter += OnHide;
+            _collisionHandler.Exited += OnShow;
+            _collisionHandler.Entered += OnHide;
         }
 
         private void OnDisable()
         {
             _inputHandler.Selected -= OnPlay;
-            _collisionHandler.Exit -= OnShow;
-            _collisionHandler.Enter -= OnHide;
+            _collisionHandler.Exited -= OnShow;
+            _collisionHandler.Entered -= OnHide;
         }
 
         private void OnDestroy()
@@ -192,7 +192,7 @@ namespace Menu.Tutorials
 
             _voiceover.PlayOneShot(_appearance);
 
-            Shift?.Invoke();
+            Shifted?.Invoke();
         }
 
         private void OnHide(Collider collider)

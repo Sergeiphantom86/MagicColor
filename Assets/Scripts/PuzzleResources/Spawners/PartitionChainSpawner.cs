@@ -18,7 +18,8 @@ namespace PuzzleResources.Spawners
         public void Begin(
             ChainSpawnData chainSpawnData,
             Func<Partition> spawnFunc,
-            Action<Partition, Vector2Int> placeFunc)
+            Action<Partition,
+                Vector2Int> placeFunc)
         {
             List<Vector2Int> directions = GetDirections(chainSpawnData.Direction);
 
@@ -32,37 +33,37 @@ namespace PuzzleResources.Spawners
             ChainSpawnData chainSpawnData,
             Vector2Int direction,
             Func<Partition> spawnFunc,
-            Action<Partition, Vector2Int> placeFunc)
+            Action<Partition,
+                Vector2Int> placeFunc)
         {
             Vector2Int currentOrigin = chainSpawnData.StartOrigin;
 
             for (int i = 0; i < chainSpawnData.Count; i++)
             {
-                if (Next(chainSpawnData, direction, spawnFunc, placeFunc) == false)
+                if (TryPlaceNext(ref currentOrigin, direction, chainSpawnData.Spacing, chainSpawnData.Size, spawnFunc, placeFunc) == false)
                     break;
             }
         }
 
-        private bool Next(
-            ChainSpawnData chainSpawnData,
-            Vector2Int direction,
-            Func<Partition> spawnFunc,
-            Action<Partition, Vector2Int> placeFunc)
+        private bool TryPlaceNext(
+            ref Vector2Int currentOrigin,
+            Vector2Int direction, int spacing,
+            Vector2Int size, Func<Partition> spawnFunc,
+            Action<Partition,
+                Vector2Int> placeFunc)
         {
-            Vector2Int nextOrigin = chainSpawnData.StartOrigin + direction * chainSpawnData.Spacing;
+            Vector2Int nextOrigin = currentOrigin + direction * spacing;
 
-            if (_grid.CanPlaceBlock(nextOrigin, chainSpawnData.Size) == false)
+            if (!_grid.CanPlaceBlock(nextOrigin, size))
                 return false;
 
             Partition partition = spawnFunc();
-
             if (partition == null)
                 return false;
 
             placeFunc(partition, nextOrigin);
 
-            chainSpawnData.StartOrigin = nextOrigin;
-
+            currentOrigin = nextOrigin;
             return true;
         }
 

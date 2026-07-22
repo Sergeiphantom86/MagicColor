@@ -24,7 +24,7 @@ namespace Menu.Tutorials.TutorialPuzzle
             if (_lock == null)
                 return;
 
-            _key.Shift -= OnMovePointer;
+            _key.Shifted -= OnMovePointer;
             _key.Selected -= OnMovePointerClick;
             _lock.Unblocking -= OnComplete;
         }
@@ -46,7 +46,7 @@ namespace Menu.Tutorials.TutorialPuzzle
 
         private void SubscribeEvents()
         {
-            _key.Shift += OnMovePointer;
+            _key.Shifted += OnMovePointer;
             _key.Selected += OnMovePointerClick;
             _lock.Unblocking += OnComplete;
         }

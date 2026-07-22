@@ -1,9 +1,9 @@
 using System.Linq;
-using PuzzleResources;
+using UnityEngine;
+using PuzzleResources.ColoringObjects;
 using PuzzleResources.MovingBlocks;
 using PuzzleResources.MovingBlocks.GridLogic;
 using PuzzleResources.Stars;
-using UnityEngine;
 using YG;
 
 namespace Menu.Tutorials.TutorialPuzzle.TutorialStateMachine
@@ -42,8 +42,7 @@ namespace Menu.Tutorials.TutorialPuzzle.TutorialStateMachine
             }
 
             _starsCounter.EnableOneStar();
-
-            ShowHintsAndContinue();
+            PrepareForInteraction();
         }
 
         public override void Exit()
@@ -102,18 +101,28 @@ namespace Menu.Tutorials.TutorialPuzzle.TutorialStateMachine
             _context.Key.gameObject.SetActive(false);
         }
 
-        private void ShowHintsAndContinue()
+        private void PrepareForInteraction()
+        {
+            SetupVisuals();
+            AnimateHand();
+            DisableUnnecessaryComponents();
+            SubscribeToInput();
+        }
+
+        private void SetupVisuals()
         {
             SetBlock(BlockIndex);
-
             _context.Visualizer.gameObject.SetActive(true);
-
             _context.AdjustPositions(_block.transform.position, _block.transform.position, yOffset: _yOffset);
+        }
 
+        private void AnimateHand()
+        {
             _context.HandMover.EnableScaleAnimation();
+        }
 
-            DisableUnnecessaryComponents();
-
+        private void SubscribeToInput()
+        {
             _input.Touched += OnClick;
         }
 

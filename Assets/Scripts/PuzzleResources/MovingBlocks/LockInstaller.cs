@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PuzzleResources.LockMechanics;
 using PuzzleResources.Walls.WallResources;
+using PuzzleResources.ColoringObjects;
 using UnityEngine;
 
 namespace PuzzleResources.MovingBlocks

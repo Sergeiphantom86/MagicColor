@@ -24,7 +24,7 @@ namespace Menu.Tutorials
         private Scaler _scaling;
         private Voiceover _voiceover;
 
-        public event Action Consent;
+        public event Action Consented;
 
         public event Action Cancelled;
 
@@ -69,7 +69,7 @@ namespace Menu.Tutorials
 
             TurnOnSound(_click);
 
-            Consent?.Invoke();
+            Consented?.Invoke();
 
             TurnOff();
         }

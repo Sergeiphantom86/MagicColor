@@ -48,6 +48,12 @@ namespace PuzzleResources.Audio
             YG2.SaveProgress();
         }
 
+        private void OnValidate()
+        {
+            if (_musicGroup != null && _musicSource != null)
+                _musicSource.outputAudioMixerGroup = _musicGroup;
+        }
+
         private void PlayBackgroundMusic(float time)
         {
             if (_backgroundMusic == null || _musicSource.isPlaying)
@@ -63,12 +69,6 @@ namespace PuzzleResources.Audio
             _volumeDB = volume > MinVolume ? Mathf.Log10(volume) * DBLinearRatio : MinDecibels;
 
             _musicGroup.audioMixer.SetFloat(nameSlider, _volumeDB);
-        }
-
-        private void OnValidate()
-        {
-            if (_musicGroup != null && _musicSource != null)
-            _musicSource.outputAudioMixerGroup = _musicGroup;
         }
     }
 }

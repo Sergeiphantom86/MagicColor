@@ -2,7 +2,7 @@ using DG.Tweening;
 using PuzzleResources.Walls.WallResources;
 using UnityEngine;
 
-namespace PuzzleResources.Walls.WallEngineResource
+namespace PuzzleResources.Walls.WallEngineResources
 {
     public class WallMovement : MonoBehaviour
     {

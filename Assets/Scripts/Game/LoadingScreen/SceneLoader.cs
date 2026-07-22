@@ -43,6 +43,11 @@ namespace Game.LoadingScreen
             LoadSceneAsyncWithSplash(Menu);
         }
 
+        private void OnDestroy()
+        {
+            _canvasGroup.DOKill();
+        }
+
         public void LoadSceneAsyncWithSplash(string sceneName)
         {
             if (_loadingCoroutine != null)
@@ -104,11 +109,6 @@ namespace Game.LoadingScreen
             SceneManager.LoadSceneAsync(Menu);
             Debug.LogError($"Scene '{sceneName}' not found in build settings!");
             return false;
-        }
-
-        private void OnDestroy()
-        {
-            _canvasGroup.DOKill();
         }
     }
 }

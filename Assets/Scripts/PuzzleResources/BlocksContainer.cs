@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using PuzzleResources.MovingBlocks.GridLogic;
+using PuzzleResources.ColoringObjects;
 using PuzzleResources.MovingBlocks;
 using PuzzleResources.PoolEffects;
 using PuzzleResources.Spawners;
@@ -70,7 +71,7 @@ namespace PuzzleResources
             }
         }
 
-        private void OnSubscribe(List<IColorable> colorableObjects)
+        private void OnSubscribe(List<IColorable> _)
         {
             foreach (var block in _blocks)
             {

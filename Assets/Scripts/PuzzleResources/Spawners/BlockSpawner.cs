@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using PuzzleResources.ColoringObjects;
 using PuzzleResources.MovingBlocks;
 using PuzzleResources.MovingBlocks.GridLogic;
 using PuzzleResources.ObjectPool;

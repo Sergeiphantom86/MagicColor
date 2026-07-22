@@ -8,6 +8,9 @@ namespace PuzzleResources
 {
     public class IndexQualifier : MonoBehaviour
     {
+        private const int MaxGridSizeForExclusion = 13;
+        private static readonly List<int> ExcludedIndexesForSmallGrid = new() { 0, 3 };
+
         private readonly List<int> _allowedIndexes = new();
 
         private BlockSpawner _spawner;
@@ -64,10 +67,12 @@ namespace PuzzleResources
 
             int gridSize = container.GridSize.y;
 
-            if (gridSize <= 13)
+            if (gridSize <= MaxGridSizeForExclusion)
             {
-                _allowedIndexes.Remove(0);
-                _allowedIndexes.Remove(3);
+                foreach (int index in ExcludedIndexesForSmallGrid)
+                {
+                    _allowedIndexes.Remove(index);
+                }
             }
         }
 

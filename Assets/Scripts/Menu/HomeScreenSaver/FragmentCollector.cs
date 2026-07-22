@@ -22,7 +22,7 @@ namespace Menu.HomeScreenSaver
         {
             if (_textureInitializer != null)
             {
-                _textureInitializer.Initialize += OnCollect;
+                _textureInitializer.Initialized += OnCollect;
             }
         }
 
@@ -30,7 +30,7 @@ namespace Menu.HomeScreenSaver
         {
             if (_textureInitializer != null)
             {
-                _textureInitializer.Initialize -= OnCollect;
+                _textureInitializer.Initialized -= OnCollect;
             }
         }
 

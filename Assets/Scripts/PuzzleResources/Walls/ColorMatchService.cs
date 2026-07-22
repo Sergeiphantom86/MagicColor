@@ -1,36 +1,43 @@
 using UnityEngine;
+using PuzzleResources.ColoringObjects;
 
 namespace PuzzleResources.Walls
 {
+    [RequireComponent(typeof(IColorModifiable), typeof(IDisable), typeof(IRepaintable))]
+    
     public class ColorMatchService : MonoBehaviour, IColorMatchService
     {
-        private IColorable _colorable;
+        private IColorModifiable _colorable;
         private IColorPrecision _precision;
+        private IDisable _disable;
+        private IRepaintable _repaintable;
 
         public void Reset()
         {
-            _colorable.Disable();
+            _disable.Disable();
         }
 
         public void Initialize(IColorPrecision precision)
         {
             _precision = precision;
-            _colorable = GetComponent<IColorable>();
+            _colorable = GetComponent<IColorModifiable>();
+            _disable = GetComponent<IDisable>();
+            _repaintable = GetComponent<IRepaintable>();
         }
 
-        public bool Match(IColorable other, out Color matchedColor)
+        public bool Match(IColorModifiable other, out Color matchedColor)
         {
             matchedColor = default;
 
-            _colorable.AssignOriginal();
-
+            _repaintable.AssignOriginal();
+            
             Color otherColor = other.GetColor();
 
             if (otherColor == Color.white)
-            return false;
+                return false;
 
             if (_precision.Match(_colorable.GetColor(), otherColor) == false)
-            return false;
+                return false;
 
             matchedColor = otherColor;
             return true;

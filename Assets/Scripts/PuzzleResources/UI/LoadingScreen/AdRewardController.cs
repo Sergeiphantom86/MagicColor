@@ -11,13 +11,13 @@ namespace PuzzleResources.UI.LoadingScreen
 
         [SerializeField] private OfferPanel _offerPanel;
 
-        private Action OnComplete;
+        private Action _onComplete;
 
         private void OnEnable()
         {
             if (_offerPanel != null)
             {
-                _offerPanel.Consent += ShowAd;
+                _offerPanel.Consented += ShowAd;
                 _offerPanel.Cancelled += Complete;
             }
 
@@ -29,7 +29,7 @@ namespace PuzzleResources.UI.LoadingScreen
         {
             if (_offerPanel != null)
             {
-                _offerPanel.Consent -= ShowAd;
+                _offerPanel.Consented -= ShowAd;
                 _offerPanel.Cancelled -= Complete;
             }
 
@@ -39,7 +39,7 @@ namespace PuzzleResources.UI.LoadingScreen
 
         public void ShowRewardAd(Action onComplete)
         {
-            OnComplete = onComplete;
+            _onComplete = onComplete;
 
             if (_offerPanel == null)
                 return;
@@ -61,7 +61,7 @@ namespace PuzzleResources.UI.LoadingScreen
 
         private void Complete()
         {
-            OnComplete?.Invoke();
+            _onComplete?.Invoke();
         }
     }
 }

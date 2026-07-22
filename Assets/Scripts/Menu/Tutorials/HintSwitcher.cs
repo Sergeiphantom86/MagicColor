@@ -26,10 +26,10 @@ namespace Menu.Tutorials
 
         private void OnEnable()
         {
-            _hintCounter.Rested += OnDisableEveryth;
+            _hintCounter.Rested += OnDisableEverything;
             _hintCounter.Worked += OnTurnOnBacklightPause;
             _handMover.Destroyed += OnResetTimer;
-            _activator.PuzzleCompleted += OnDisableEveryth;
+            _activator.PuzzleCompleted += OnDisableEverything;
 
             _backlightAbility.Completed += OnComplete;
             _backlightPause.Completed += OnTurnOnBacklightPurchase;
@@ -38,10 +38,10 @@ namespace Menu.Tutorials
 
         private void OnDisable()
         {
-            _hintCounter.Rested += OnDisableEveryth;
+            _hintCounter.Rested -= OnDisableEverything;
             _hintCounter.Worked -= OnTurnOnBacklightPause;
             _handMover.Destroyed -= OnResetTimer;
-            _activator.PuzzleCompleted -= OnDisableEveryth;
+            _activator.PuzzleCompleted -= OnDisableEverything;
 
             _backlightAbility.Completed -= OnComplete;
             _backlightPause.Completed -= OnTurnOnBacklightPurchase;
@@ -86,7 +86,7 @@ namespace Menu.Tutorials
             TurnOffHand();
         }
 
-        private void OnDisableEveryth()
+        private void OnDisableEverything()
         {
             _backlightAbility.Stop();
             _backlightPause.Stop();
@@ -97,7 +97,7 @@ namespace Menu.Tutorials
 
         private void OnResetTimer()
         {
-            OnDisableEveryth();
+            OnDisableEverything();
             _hintCounter.StartTimer();
         }
     }

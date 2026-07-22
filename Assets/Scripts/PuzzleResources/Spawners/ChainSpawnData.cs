@@ -7,10 +7,34 @@ namespace PuzzleResources.Spawners
 
     public struct ChainSpawnData
     {
-        public Vector2Int StartOrigin;
-        public Vector2Int Size;
-        public ChainSpawnDirection Direction;
-        public int Count;
-        public int Spacing;
+        private readonly ChainSpawnDirection _direction;
+        private readonly int _count;
+        private readonly int _spacing;
+
+        private Vector2Int _startOrigin;
+        private Vector2Int _size;
+
+        public ChainSpawnData(Vector2Int startOrigin,
+            Vector2Int size,
+            ChainSpawnDirection direction,
+            int count,
+            int spacing)
+        {
+            _startOrigin = startOrigin;
+            _size = size;
+            _direction = direction;
+            _count = count;
+            _spacing = spacing;
+        }
+
+        public readonly Vector2Int StartOrigin => _startOrigin;
+
+        public readonly Vector2Int Size => _size;
+
+        public readonly ChainSpawnDirection Direction => _direction;
+
+        public readonly int Count => _count;
+
+        public readonly int Spacing => _spacing;
     }
 }

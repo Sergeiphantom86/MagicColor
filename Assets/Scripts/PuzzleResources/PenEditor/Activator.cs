@@ -56,7 +56,7 @@ namespace PuzzleResources.PenEditor
         private void OnEnable()
         {
             _queueProcessor.ColorHasChanged += ColorHasChanged;
-            _queueProcessor.IncreaseSpeed += OnSpeedIncreaseRequested;
+            _queueProcessor.SpeedIncreased += OnSpeedIncreaseRequested;
             _queueProcessor.FragmentActivated += _progressTracker.OnFragmentActivated;
 
             _progressTracker.PuzzleCompleted += OnPuzzleFinished;
@@ -65,7 +65,7 @@ namespace PuzzleResources.PenEditor
         private void OnDisable()
         {
             _queueProcessor.ColorHasChanged -= ColorHasChanged;
-            _queueProcessor.IncreaseSpeed -= OnSpeedIncreaseRequested;
+            _queueProcessor.SpeedIncreased -= OnSpeedIncreaseRequested;
             _queueProcessor.FragmentActivated -= _progressTracker.OnFragmentActivated;
 
             _progressTracker.PuzzleCompleted -= OnPuzzleFinished;

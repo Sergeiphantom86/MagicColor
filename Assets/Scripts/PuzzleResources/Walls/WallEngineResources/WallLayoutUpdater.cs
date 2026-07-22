@@ -1,8 +1,7 @@
-using System;
 using PuzzleResources.Walls.WallResources;
 using UnityEngine;
 
-namespace PuzzleResources.Walls.WallEngineResource
+namespace PuzzleResources.Walls.WallEngineResources
 {
     [RequireComponent(typeof(Wall))]
 
@@ -56,16 +55,9 @@ namespace PuzzleResources.Walls.WallEngineResource
         private bool ValidateDependencies(Rotator rotator)
         {
             if (rotator == null)
-                return LogNull(nameof(rotator));
+                return ValidationHelper.AllNotNull(this, (rotator, nameof(rotator)));
 
             return true;
-        }
-
-        private bool LogNull(string dependencyName)
-        {
-            Debug.LogError($"{nameof(WallEngine)} initialization failed: {dependencyName} is NULL", this);
-
-            return false;
         }
 
         private void OnRotated()

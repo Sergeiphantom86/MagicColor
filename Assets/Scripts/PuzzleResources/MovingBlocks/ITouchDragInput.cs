@@ -7,7 +7,7 @@ namespace PuzzleResources.MovingBlocks
     {
         public event Action<Vector2> Touched;
 
-        public event Action<Vector2> TouchDrag;
+        public event Action<Vector2> Dragging;
 
         public event Action Dropped;
 

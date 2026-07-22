@@ -5,7 +5,7 @@ namespace Wallets.WalletEconomy
 {
     public class KeyCollector : MonoBehaviour
     {
-        [SerializeField] private BagKey bagKey;
+        [SerializeField] private BagKey _bagKey;
 
         private ICollisionHandler _collisionHandler;
 
@@ -16,12 +16,12 @@ namespace Wallets.WalletEconomy
 
         private void OnEnable()
         {
-            _collisionHandler.Enter += OnAdd;
+            _collisionHandler.Entered += OnAdd;
         }
 
         private void OnDisable()
         {
-            _collisionHandler.Enter -= OnAdd;
+            _collisionHandler.Entered -= OnAdd;
         }
 
         private void OnAdd(Collider collider)
@@ -31,7 +31,7 @@ namespace Wallets.WalletEconomy
                 if (key == null)
                 return;
 
-                bagKey.Add();
+                _bagKey.Add();
                 key.gameObject.SetActive(false);
             }
         }

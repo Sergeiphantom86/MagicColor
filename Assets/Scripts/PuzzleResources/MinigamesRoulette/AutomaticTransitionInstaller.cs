@@ -7,7 +7,7 @@ namespace PuzzleResources.MinigamesRoulette
 {
     public class AutomaticTransitionInstaller : MonoBehaviour
     {
-        [SerializeField] private ButtonHome ButtonHome;
+        [SerializeField] private ButtonHome _buttonHome;
 
         private Sprite _newSprite;
         private Button _nextPuzzle;
@@ -36,7 +36,7 @@ namespace PuzzleResources.MinigamesRoulette
 
             _firstTutorial = 0;
             _secondTutorial = YG2.saves.IndexSecondQuest;
-            _thirdTutorial = YG2.saves.ObstacleDeactivatIndex;
+            _thirdTutorial = YG2.saves.ObstacleDeactivateIndex;
             _maxReachedQuestIndex = YG2.saves.MaxReachedQuestIndex;
 
             if (_nextPuzzle == null)
@@ -54,6 +54,7 @@ namespace PuzzleResources.MinigamesRoulette
             if (_newSprite == null)
             {
                 Debug.LogError("NewSprite == null");
+                return;
             }
 
             Show();
@@ -89,7 +90,7 @@ namespace PuzzleResources.MinigamesRoulette
         private void OnSetValue()
         {
             YG2.saves.IsAutomaticallyNewLevel = true;
-            ButtonHome.GoMenu();
+            _buttonHome.GoMenu();
         }
     }
 }

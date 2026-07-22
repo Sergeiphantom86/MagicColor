@@ -51,7 +51,7 @@ namespace YG
 
         public int IndexSecondQuest => _indexUnblockingTutorial;
 
-        public int ObstacleDeactivatIndex => IndexAbilityTutorial;
+        public int ObstacleDeactivateIndex => IndexAbilityTutorial;
 
         public SceneLoader SceneLoader { get; set; }
 

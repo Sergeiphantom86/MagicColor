@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using PuzzleResources.ColoringObjects;
 
 namespace PuzzleResources.Walls
 {
@@ -7,6 +8,6 @@ namespace PuzzleResources.Walls
     {
         public event Action IsTouched;
 
-        public void WaitStart(IColorable colorable, Color color);
+        public void WaitStart(IColorModifiable colorable, Color color);
     }
 }

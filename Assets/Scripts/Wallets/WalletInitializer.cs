@@ -4,7 +4,7 @@ namespace Wallets
 {
     public class WalletInitializer : MonoBehaviour
     {
-        [SerializeField] private CoinWallet coinWallet;
-        [SerializeField] private CrystalWallet crystalWallet;
+        [SerializeField] private CoinWallet _coinWallet;
+        [SerializeField] private CrystalWallet _crystalWallet;
     }
 }

@@ -51,25 +51,23 @@ namespace PuzzleResources.Spawners
                 return;
             }
 
-            Vector2Int center = GetCentr(centers);
+            Vector2Int center = GetCenter(centers);
             Vector2Int origin = _gridSystem.GetOriginFromCenter(center, partition.SizeInCells);
 
             PlacePartition(partition, origin);
 
-            _chainSpawnData = new ChainSpawnData
-            {
-                StartOrigin = origin,
-                Size = partition.SizeInCells,
-                Direction = _chainDirection,
-                Count = _chainCount,
-                Spacing = _chainSpacing,
-            };
+            _chainSpawnData = new ChainSpawnData(
+                origin,
+                partition.SizeInCells,
+                _chainDirection,
+                _chainCount,
+                _chainSpacing);
 
             _chainSpawner.Begin(_chainSpawnData, () =>
             SpawnObjectWithCurrentIndex(Vector3.zero, transform), PlacePartition);
         }
 
-        private Vector2Int GetCentr(List<Vector2Int> availableCenters)
+        private Vector2Int GetCenter(List<Vector2Int> availableCenters)
         {
             return availableCenters[Random.Range(0, availableCenters.Count)];
         }
@@ -103,21 +101,6 @@ namespace PuzzleResources.Spawners
         {
             _gridHelper = new GridPositionHelper(_gridSystem);
             _chainSpawner = new PartitionChainSpawner(_gridSystem);
-
-            if (_gridHelper == null)
-            {
-                Debug.LogError("GridPositionHelper: GridHelper is null");
-            }
-
-            if (_chainSpawner == null)
-            {
-                Debug.LogError("PartitionChainSpawner: GridHelper is null");
-            }
-
-            if (_gridSystem == null)
-            {
-                Debug.LogError("GridSystem: GridHelper is null");
-            }
 
             if (YG2.saves.IsUnlockAbilities == false)
                 return;

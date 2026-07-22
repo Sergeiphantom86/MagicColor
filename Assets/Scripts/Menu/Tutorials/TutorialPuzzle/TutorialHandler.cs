@@ -41,7 +41,15 @@ namespace Menu.Tutorials.TutorialPuzzle
 
             _tutorialAbilitiesHandler.SetContext(context);
 
-            context.InitScene(_key, _lock, _hints, _timer, _rotator, _container, _stateTutorial, _tutorialAbilitiesHandler.Abilities);
+            context.InitScene(
+                _key,
+                _lock,
+                _hints,
+                _timer,
+                _rotator,
+                _container,
+                _stateTutorial,
+                _tutorialAbilitiesHandler.Abilities);
 
             return context;
         }

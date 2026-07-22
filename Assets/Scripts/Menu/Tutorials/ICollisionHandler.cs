@@ -5,8 +5,8 @@ namespace Menu.Tutorials
 {
     public interface ICollisionHandler
     {
-        public event Action<Collider> Enter;
+        public event Action<Collider> Entered;
 
-        public event Action<Collider> Exit;
+        public event Action<Collider> Exited;
     }
 }

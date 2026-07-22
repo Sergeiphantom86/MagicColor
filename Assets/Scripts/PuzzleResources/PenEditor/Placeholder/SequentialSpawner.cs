@@ -1,7 +1,8 @@
 using System.Collections;
+using UnityEngine;
 using System.Collections.Generic;
 using PuzzleResources.InkResources;
-using UnityEngine;
+using PuzzleResources.ColoringObjects;
 
 namespace PuzzleResources.PenEditor.Placeholder
 {
@@ -31,7 +32,7 @@ namespace PuzzleResources.PenEditor.Placeholder
         {
             if (other.TryGetComponent(out Drop drop))
             {
-                if (drop.TryGetComponent(out IColorable component))
+                if (drop.TryGetComponent(out IColorModifiable component))
                 {
                     Color color = component.GetColor();
 

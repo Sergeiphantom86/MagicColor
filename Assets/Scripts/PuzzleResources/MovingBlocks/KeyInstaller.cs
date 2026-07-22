@@ -3,6 +3,7 @@ using System.Linq;
 using Menu.Tutorials;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using PuzzleResources.ColoringObjects;
 
 namespace PuzzleResources.MovingBlocks
 {

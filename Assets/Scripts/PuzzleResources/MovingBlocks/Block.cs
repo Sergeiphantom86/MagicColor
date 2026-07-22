@@ -5,6 +5,7 @@ using Menu;
 using PuzzleResources.MovingBlocks.GridLogic;
 using PuzzleResources.PoolEffects;
 using PuzzleResources.Audio;
+using PuzzleResources.ColoringObjects;
 using PuzzleResources.Spawners;
 using UnityEngine;
 
@@ -52,8 +53,6 @@ namespace PuzzleResources.MovingBlocks
         public Vector2Int GridPosition => _gridPosition;
 
         public GameObject GameObject => gameObject;
-
-        public GridSystem GridSystem => _gridSystem;
 
         private void Awake()
         {

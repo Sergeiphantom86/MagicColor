@@ -29,9 +29,9 @@ namespace PuzzleResources
         private List<Fragment> _fragmentsList;
         private Dictionary<Color, Queue<Fragment>> _fragments;
 
-        public event Action Initialize;
+        public event Action Initialized;
 
-        public event Action<List<Color>> CanPaint;
+        public event Action<List<Color>> PaintAllowed;
 
         public Dictionary<Color, Queue<Fragment>> Fragments => _fragments;
 
@@ -78,9 +78,9 @@ namespace PuzzleResources
 
             gameObject.transform.localScale = Vector3.one * _scaleMultiplier;
 
-            Initialize?.Invoke();
+            Initialized?.Invoke();
 
-            CanPaint?.Invoke(Fragments.Keys.ToList());
+            PaintAllowed?.Invoke(Fragments.Keys.ToList());
 
             if (_animator != null)
             {

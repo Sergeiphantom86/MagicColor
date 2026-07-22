@@ -6,22 +6,19 @@ namespace Menu.GameLogicQuests
     public class QuestTransitionService : IQuestTransitionService
     {
         private const string Puzzle = nameof(Puzzle);
-        private const int MinIndexValue = 0;
+        private const int MinTutorialIndex = 0;
+        private const int TransparentQuestIndex = 2;
 
         private readonly ZoomChanger _zoomChanger;
-        private readonly int _transparentIndex = 2;
-
-        private TransitionResult _result;
 
         public QuestTransitionService(ZoomChanger zoomChanger)
         {
             _zoomChanger = zoomChanger;
-            _result = new();
         }
 
         public TransitionResult ProcessQuest(Quest quest)
         {
-            if (quest.Index == _transparentIndex)
+            if (quest.Index == TransparentQuestIndex)
             {
                 YG2.saves.IsTransparency = true;
             }
@@ -31,22 +28,25 @@ namespace Menu.GameLogicQuests
                 quest.SetTutorial(true);
                 SetTutorial(quest.Index);
 
-                _result.ShowOffer = true;
-                _result.UseMobilePanel = _zoomChanger.IsMobileWithTallScreen();
-
-                return _result;
+                return new TransitionResult(
+                    showOffer: true,
+                    useMobilePanel: _zoomChanger.IsMobileWithTallScreen(),
+                    sceneName: null
+                );
             }
 
             YG2.saves.IsUnlockAbilities = true;
 
-            if (quest.Index < YG2.saves.ObstacleDeactivatIndex)
+            if (quest.Index < YG2.saves.ObstacleDeactivateIndex)
+            {
                 YG2.saves.IsUnlockAbilities = false;
-            else
-                YG2.saves.IsUnlockAbilities = true;
+            }
 
-            _result.SceneName = Puzzle;
-
-            return _result;
+            return new TransitionResult(
+                showOffer: false,
+                useMobilePanel: false,
+                sceneName: Puzzle
+            );
         }
 
         public void SaveSprite(Sprite sprite)
@@ -63,7 +63,7 @@ namespace Menu.GameLogicQuests
 
         private void SetTutorial(int index)
         {
-            if (index < MinIndexValue)
+            if (index < MinTutorialIndex)
             {
                 Debug.LogWarning($"SetTutorial: index {index} is out of the valid tutorial range");
                 return;
@@ -74,7 +74,7 @@ namespace Menu.GameLogicQuests
                 YG2.saves.IsUnlockKey = true;
             }
 
-            if (index >= YG2.saves.ObstacleDeactivatIndex)
+            if (index >= YG2.saves.ObstacleDeactivateIndex)
             {
                 YG2.saves.IsUnlockAbilities = true;
             }

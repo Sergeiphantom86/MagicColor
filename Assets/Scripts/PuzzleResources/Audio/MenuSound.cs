@@ -44,14 +44,14 @@ namespace PuzzleResources.Audio
 
         private void OnEnable()
         {
-            _musicVolumeChanger.OnVolumeChange += OnSetVolume;
-            _sounVolumeChanger.OnVolumeChange += OnSetVolume;
+            _musicVolumeChanger.VolumeChanged += OnSetVolume;
+            _sounVolumeChanger.VolumeChanged += OnSetVolume;
         }
 
         private void OnDisable()
         {
-            _musicVolumeChanger.OnVolumeChange -= OnSetVolume;
-            _sounVolumeChanger.OnVolumeChange -= OnSetVolume;
+            _musicVolumeChanger.VolumeChanged -= OnSetVolume;
+            _sounVolumeChanger.VolumeChanged -= OnSetVolume;
 
             YG2.saves.MusicTime = _musicSource.time;
         }

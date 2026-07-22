@@ -1,9 +1,18 @@
 namespace Menu.GameLogicQuests
 {
-    public struct TransitionResult
+    public class TransitionResult
     {
-        public bool ShowOffer;
-        public bool UseMobilePanel;
-        public string SceneName;
+        public TransitionResult(bool showOffer, bool useMobilePanel, string sceneName)
+        {
+            ShowOffer = showOffer;
+            UseMobilePanel = useMobilePanel;
+            SceneName = sceneName;
+        }
+
+        public bool ShowOffer { get; }
+
+        public bool UseMobilePanel { get; }
+
+        public string SceneName { get; }
     }
 }

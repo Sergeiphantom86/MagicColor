@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using UnityEngine;
 using Menu.Tutorials;
 using PuzzleResources.LockMechanics;
-using UnityEngine;
+using PuzzleResources.ColoringObjects;
 using YG;
 
 namespace PuzzleResources.MovingBlocks

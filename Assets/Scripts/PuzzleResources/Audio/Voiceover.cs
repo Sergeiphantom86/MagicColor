@@ -25,6 +25,12 @@ namespace PuzzleResources.Audio
             LoadVolumeSettings();
         }
 
+        private void OnValidate()
+        {
+            if (_sfxSource != null && _sfxGroup != null)
+                _sfxSource.outputAudioMixerGroup = _sfxGroup;
+        }
+
         public void PlayOneShot(AudioClip clip)
         {
             if (clip == false || _sfxSource == false || gameObject.activeInHierarchy == false)
@@ -60,12 +66,6 @@ namespace PuzzleResources.Audio
             {
                 _sfxGroup.audioMixer.SetFloat(SoundVolume, dbVolume);
             }
-        }
-
-        private void OnValidate()
-        {
-            if (_sfxSource != null && _sfxGroup != null)
-                _sfxSource.outputAudioMixerGroup = _sfxGroup;
         }
     }
 }

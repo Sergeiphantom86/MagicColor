@@ -30,6 +30,19 @@ namespace Menu
             _buttonSound = GetComponent<ButtonSoundHandler>();
         }
 
+        private bool ShouldBlockInput()
+        {
+            if (_blockInputWhenTutorialActive == false)
+                return false;
+
+            if (_tutorial == null)
+                return false;
+
+            return _tutorial.IsTutorialActive
+            && (_tutorial.IsSwipeAllowed && _isDragging) == false
+            && _tutorial.IsClickAllowed == false;
+        }
+
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (ShouldBlockInput())
@@ -69,19 +82,6 @@ namespace Menu
 
             if (Mathf.Abs(delta.x) < 80f)
             return;
-        }
-
-        private bool ShouldBlockInput()
-        {
-            if (_blockInputWhenTutorialActive == false)
-            return false;
-
-            if (_tutorial == null)
-            return false;
-
-            return _tutorial.IsTutorialActive
-            && (_tutorial.IsSwipeAllowed && _isDragging) == false
-            && _tutorial.IsClickAllowed == false;
         }
     }
 }

@@ -22,12 +22,12 @@ namespace Wallets
 
         private void OnEnable()
         {
-            _wallet.OnBalanceChanged += OnSavePlayerBalance;
+            _wallet.BalanceChanged += OnSavePlayerBalance;
         }
 
         private void OnDisable()
         {
-            _wallet.OnBalanceChanged -= OnSavePlayerBalance;
+            _wallet.BalanceChanged -= OnSavePlayerBalance;
         }
 
         private string ConvertName(string original)

@@ -1,4 +1,4 @@
-namespace PuzzleResources.Walls.WallEngineResource
+namespace PuzzleResources.Walls.WallEngineResources
 {
     public interface IWallInteractor
     {

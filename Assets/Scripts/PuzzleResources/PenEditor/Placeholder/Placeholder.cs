@@ -1,10 +1,14 @@
 using UnityEngine;
+using PuzzleResources.ColoringObjects;
 
 namespace PuzzleResources.PenEditor.Placeholder
 {
+    [RequireComponent(typeof(IColorModifiable), typeof(IAlphaModifiable), typeof(AnimatorPenFilling))]
+
     public class Placeholder : ColorableObject
     {
-        private IColorable _colorable;
+        private IColorModifiable _colorable;
+        private IAlphaModifiable _alphaModifiable;
         private AnimatorPenFilling _animatorPenFilling;
         private EndPoint _endPoint;
         private int _size;
@@ -13,7 +17,8 @@ namespace PuzzleResources.PenEditor.Placeholder
 
         private void Awake()
         {
-            _colorable = GetComponent<IColorable>();
+            _colorable = GetComponent<IColorModifiable>();
+            _alphaModifiable = GetComponent<IAlphaModifiable>();
             _animatorPenFilling = GetComponent<AnimatorPenFilling>();
             _endPoint = GetComponentInChildren<EndPoint>();
 
@@ -53,7 +58,7 @@ namespace PuzzleResources.PenEditor.Placeholder
         private void Repaint(Color color)
         {
             _colorable.SetColor(color);
-            _colorable.SetAlpha(1);
+            _alphaModifiable.SetAlpha(1);
             EnableEmission(color);
         }
 

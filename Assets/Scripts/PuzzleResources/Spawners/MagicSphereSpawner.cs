@@ -28,12 +28,6 @@ namespace PuzzleResources.Spawners
                 Debug.LogError("InputHandler == null");
         }
 
-        private void Start()
-        {
-            //if (_grid == null)
-            //    _grid = GridSystem.Instance;
-        }
-
         private void OnEnable()
         {
             if (_input != null)
