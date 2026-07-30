@@ -14,12 +14,12 @@ namespace PuzzleResources.PenEditor
 
         private void OnEnable()
         {
-            _activator.ColorHasChanged += SetColor;
+            _activator.OnColorHasChanged += OnSetColor;
         }
 
         private void OnDisable()
         {
-            _activator.ColorHasChanged -= SetColor;
+            _activator.OnColorHasChanged -= OnSetColor;
         }
     }
 }

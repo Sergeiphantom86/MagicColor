@@ -15,7 +15,7 @@ namespace PuzzleResources.Spawners
             _grid = grid;
         }
 
-        public void Begin(
+        public void Spawn(
             ChainSpawnData chainSpawnData,
             Func<Partition> spawnFunc,
             Action<Partition,
@@ -40,7 +40,13 @@ namespace PuzzleResources.Spawners
 
             for (int i = 0; i < chainSpawnData.Count; i++)
             {
-                if (TryPlaceNext(ref currentOrigin, direction, chainSpawnData.Spacing, chainSpawnData.Size, spawnFunc, placeFunc) == false)
+                if (TryPlaceNext(
+                    ref currentOrigin,
+                    direction,
+                    chainSpawnData.Spacing,
+                    chainSpawnData.Size,
+                    spawnFunc,
+                    placeFunc) == false)
                     break;
             }
         }

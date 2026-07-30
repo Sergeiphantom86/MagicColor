@@ -23,17 +23,17 @@ namespace PuzzleResources.UI
             _abilityButton = GetComponentInChildren<AbilityButton>();
 
             if (Validate() == false)
-            return;
+                return;
         }
 
         private void OnEnable()
         {
-            _animatorPuzzle.AnimationComplete += OnTupnOffUI;
+            _animatorPuzzle.AnimationCompleted += OnTurnOffUI;
         }
 
         private void OnDisable()
         {
-            _animatorPuzzle.AnimationComplete -= OnTupnOffUI;
+            _animatorPuzzle.AnimationCompleted -= OnTurnOffUI;
         }
 
         private bool Validate()
@@ -65,7 +65,7 @@ namespace PuzzleResources.UI
             return true;
         }
 
-        private void OnTupnOffUI()
+        private void OnTurnOffUI()
         {
             _timer.gameObject.SetActive(false);
             _bagKey.gameObject.SetActive(false);

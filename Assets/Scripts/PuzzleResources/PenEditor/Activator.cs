@@ -34,7 +34,7 @@ namespace PuzzleResources.PenEditor
 
         public event Action<float> Approached;
 
-        public event Action<Color> ColorHasChanged;
+        public event Action<Color> OnColorHasChanged;
 
         private void Awake()
         {
@@ -55,7 +55,7 @@ namespace PuzzleResources.PenEditor
 
         private void OnEnable()
         {
-            _queueProcessor.ColorHasChanged += ColorHasChanged;
+            _queueProcessor.ColorHasChanged += OnColorHasChanged;
             _queueProcessor.SpeedIncreased += OnSpeedIncreaseRequested;
             _queueProcessor.FragmentActivated += _progressTracker.OnFragmentActivated;
 
@@ -64,7 +64,7 @@ namespace PuzzleResources.PenEditor
 
         private void OnDisable()
         {
-            _queueProcessor.ColorHasChanged -= ColorHasChanged;
+            _queueProcessor.ColorHasChanged -= OnColorHasChanged;
             _queueProcessor.SpeedIncreased -= OnSpeedIncreaseRequested;
             _queueProcessor.FragmentActivated -= _progressTracker.OnFragmentActivated;
 

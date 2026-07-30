@@ -9,7 +9,8 @@ namespace PuzzleResources
     public class IndexQualifier : MonoBehaviour
     {
         private const int MaxGridSizeForExclusion = 13;
-        private static readonly List<int> ExcludedIndexesForSmallGrid = new() { 0, 3 };
+
+        private static readonly List<int> s_excludedIndexesForSmallGrid = new() { 0, 3 };
 
         private readonly List<int> _allowedIndexes = new();
 
@@ -69,7 +70,7 @@ namespace PuzzleResources
 
             if (gridSize <= MaxGridSizeForExclusion)
             {
-                foreach (int index in ExcludedIndexesForSmallGrid)
+                foreach (int index in s_excludedIndexesForSmallGrid)
                 {
                     _allowedIndexes.Remove(index);
                 }

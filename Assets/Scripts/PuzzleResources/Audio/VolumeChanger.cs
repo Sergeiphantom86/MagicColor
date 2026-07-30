@@ -46,16 +46,16 @@ namespace PuzzleResources.Audio
         private void OnEnable()
         {
             _volumeSlider.onValueChanged.AddListener(OnSetVolume);
-            _toggleBase.Disabling += ToggleSoundsMute;
+            _toggleBase.Disabling += OnToggleSoundsMute;
         }
 
         private void OnDisable()
         {
             _volumeSlider.onValueChanged.RemoveListener(OnSetVolume);
-            _toggleBase.Disabling -= ToggleSoundsMute;
+            _toggleBase.Disabling -= OnToggleSoundsMute;
         }
 
-        public void ToggleSoundsMute(bool isOn)
+        public void OnToggleSoundsMute(bool isOn)
         {
             _isOn = isOn;
 

@@ -8,8 +8,6 @@ namespace Menu
         [SerializeField] private float _multiplier;
 
         private ZoomChanger _zoomChanger;
-        private float _lastWidth;
-        private float _lastHeight;
         private float _startSize;
         private bool _isStandardSize;
 
@@ -30,18 +28,7 @@ namespace Menu
 
         private void Update()
         {
-            ChangeLocation();
-        }
-
-        private void ChangeLocation()
-        {
-            if (Screen.width != _lastWidth || Screen.height != _lastHeight)
-            {
-                _lastWidth = Screen.width;
-                _lastHeight = Screen.height;
-
-                SetSize();
-            }
+            _zoomChanger.ChangeLocation(SetSize);
         }
 
         private void SetSize()

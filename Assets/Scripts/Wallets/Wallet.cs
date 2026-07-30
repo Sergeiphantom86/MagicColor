@@ -20,10 +20,6 @@ namespace Wallets
         public long Balance => _balance;
         public string Name => GetType().Name;
 
-        protected abstract long LoadBalanceFromSave();
-        protected abstract void SaveBalanceToSave(long balance);
-        protected virtual float GetLoadDelay() => 0f;
-
         private void Awake()
         {
             _callDelay = 0.1f;
@@ -48,6 +44,13 @@ namespace Wallets
             if (_autoLoadFromSave)
                 YG2.onGetSDKData -= OnYGDataLoaded;
         }
+
+        protected abstract long LoadBalanceFromSave();
+
+        protected abstract void SaveBalanceToSave(long balance);
+
+        protected virtual float GetLoadDelay() => 
+            0f;
 
         public bool SpendFunds(long amount)
         {

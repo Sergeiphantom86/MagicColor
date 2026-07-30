@@ -5,46 +5,46 @@ namespace RenderingCamera
 {
     public class CameraPositionFitter : MonoBehaviour
     {
+        private const float VerticalOffsetRatio = 0.4f;
+        private const float StartPositionY = 12f;
+        private const float MobilePositionX = -0.25f;
+
         private Camera _camera;
         private ZoomChanger _zoomChanger;
-        private float _startPositionY;
-        private float _mobilePositionX;
 
         private void Awake()
         {
             _camera = GetComponent<Camera>();
             _zoomChanger = new ZoomChanger();
-            _startPositionY = 12f;
-            _mobilePositionX = -0.25f;
 
             SetInitialPosition();
+        }
+
+        private void LateUpdate()
+        {
+            Vector3 position = transform.position;
+
+            if (_zoomChanger.IsMobileWithTallScreen())
+            {
+                position.y = StartPositionY + _camera.orthographicSize * VerticalOffsetRatio;
+                position.x = MobilePositionX;
+            }
+            else
+            {
+                position.y = StartPositionY;
+            }
+
+            transform.position = position;
         }
 
         private void SetInitialPosition()
         {
             Vector3 pos = transform.position;
-            pos.y = _startPositionY;
+            pos.y = StartPositionY;
 
             if (_zoomChanger.IsMobileWithTallScreen())
             {
-                pos.x = _mobilePositionX;
-            }
-
-            transform.position = pos;
-        }
-
-        private void LateUpdate()
-        {
-            Vector3 pos = transform.position;
-
-            if (_zoomChanger.IsMobileWithTallScreen())
-            {
-                pos.y = _startPositionY + _camera.orthographicSize * 0.4f;
-                pos.x = _mobilePositionX;
-            }
-            else
-            {
-                pos.y = _startPositionY;
+                pos.x = MobilePositionX;
             }
 
             transform.position = pos;

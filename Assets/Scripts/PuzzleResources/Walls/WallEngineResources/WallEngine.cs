@@ -109,7 +109,7 @@ namespace PuzzleResources.Walls.WallEngineResources
             _layoutUpdater.Initialize(_rotation);
 
             BagUnlockPolicy bagUnlockPolicy = new(bag, 1);
-            lockFeedback.InitializComponents(@lock, hintKey);
+            lockFeedback.InitializeComponents(@lock, hintKey);
             interactionController.Initialize(bagUnlockPolicy, this);
             collisionHandler.Initialize(colorPrecision, hintKey, errorPanel, bagUnlockPolicy);
 

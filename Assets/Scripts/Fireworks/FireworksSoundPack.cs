@@ -6,8 +6,6 @@ namespace Fireworks
 
     public class FireworksSoundPack : ScriptableObject
     {
-        public AudioClip LaunchSound;
-
         public AudioClip ExplosionSound;
 
         public AudioClip SparkleSound;

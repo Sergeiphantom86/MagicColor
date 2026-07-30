@@ -18,8 +18,6 @@ namespace PuzzleResources.UI.LoadingScreen
             _sceneFlow = GetComponent<SceneFlowController>();
             _puzzleFlow = GetComponent<PuzzleFlowController>();
 
-            _menuButtons.Initialize(OnAnyButton, OnResumeClicked);
-
             if (_menuButtons == null)
             {
                 Debug.LogError("MenuButtons == null");
@@ -44,6 +42,8 @@ namespace PuzzleResources.UI.LoadingScreen
             {
                 Debug.LogError("PuzzleFlowController == null");
             }
+
+            _menuButtons.Initialize(OnAnyButton, OnResumeClicked);
         }
 
         private IEnumerator Start()
@@ -55,11 +55,17 @@ namespace PuzzleResources.UI.LoadingScreen
 
         private void OnEnable()
         {
+            if (_puzzleFlow == null)
+                return;
+
             _puzzleFlow.PuzzleCompleted += OnPuzzleCompleted;
         }
 
         private void OnDisable()
         {
+            if (_puzzleFlow == null)
+                return;
+
             _puzzleFlow.PuzzleCompleted -= OnPuzzleCompleted;
         }
 
@@ -77,7 +83,7 @@ namespace PuzzleResources.UI.LoadingScreen
             _panelFader.FadeIn(() =>
             {
                 _sceneFlow.LoadNext();
-                });
-            }
+            });
         }
     }
+}

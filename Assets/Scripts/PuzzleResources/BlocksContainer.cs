@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using PuzzleResources.MovingBlocks.GridLogic;
 using PuzzleResources.ColoringObjects;
 using PuzzleResources.MovingBlocks;
@@ -36,9 +35,6 @@ namespace PuzzleResources
         public Transform Transform => transform;
 
         public float DelayTime => _delayTime;
-
-        public int ActiveBlocksCount =>
-        _blocks.Count(block => block != null && block.gameObject.activeSelf);
 
         private void Awake()
         {

@@ -13,12 +13,12 @@ namespace PuzzleResources.UI.LoadingScreen
 
         private void OnEnable()
         {
-            _animator.AnimationComplete += OnComplete;
+            _animator.AnimationCompleted += OnComplete;
         }
 
         private void OnDisable()
         {
-            _animator.AnimationComplete -= OnComplete;
+            _animator.AnimationCompleted -= OnComplete;
         }
 
         private void OnComplete()

@@ -12,7 +12,7 @@ namespace PuzzleResources.MinigamesRoulette
         private bool _localBlock;
         private bool _isSpin;
 
-        public event Func<bool> GlobalInteractableCondition;
+        public event Func<bool> GlobalInteractabled;
 
         public event Action Turned;
 
@@ -28,9 +28,9 @@ namespace PuzzleResources.MinigamesRoulette
             _button.onClick.AddListener(OnHandleClick);
         }
 
-        public void Initialize(Func<bool> globalInteractableCondition, Action onClickAction = null)
+        public void Initialize(Func<bool> globalInteractabled, Action onClickAction = null)
         {
-            GlobalInteractableCondition = globalInteractableCondition;
+            GlobalInteractabled = globalInteractabled;
             Turned = onClickAction;
 
             UpdateState();
@@ -46,7 +46,7 @@ namespace PuzzleResources.MinigamesRoulette
         public void UpdateState()
         {
             bool isInteractable =
-            _localBlock == false && (GlobalInteractableCondition?.Invoke() ?? false);
+            _localBlock == false && (GlobalInteractabled?.Invoke() ?? false);
 
             _button.interactable = isInteractable;
         }

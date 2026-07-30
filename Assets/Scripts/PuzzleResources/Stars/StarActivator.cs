@@ -10,12 +10,12 @@ namespace PuzzleResources.Stars
 
         private void OnEnable()
         {
-            _animatorPuzzle.AnimationComplete += OnSetActive;
+            _animatorPuzzle.AnimationCompleted += OnSetActive;
         }
 
         private void OnDisable()
         {
-            _animatorPuzzle.AnimationComplete -= OnSetActive;
+            _animatorPuzzle.AnimationCompleted -= OnSetActive;
         }
 
         private void OnSetActive()

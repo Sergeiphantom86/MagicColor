@@ -13,7 +13,7 @@ namespace PuzzleResources.UI
         [SerializeField] private VictoryPlaque _victoryPlaque;
         [SerializeField] private FireworksController _fireworks;
 
-        public event System.Action AnimationComplete;
+        public event System.Action AnimationCompleted;
 
         private void Awake()
         {
@@ -48,7 +48,7 @@ namespace PuzzleResources.UI
 
         private void OnLaunchFinal()
         {
-            AnimationComplete?.Invoke();
+            AnimationCompleted?.Invoke();
             _victoryPlaque.TurnOn();
             _fireworks.Play();
         }

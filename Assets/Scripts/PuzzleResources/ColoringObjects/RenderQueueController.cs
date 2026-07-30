@@ -13,7 +13,6 @@ namespace PuzzleResources.ColoringObjects
             _material = material;
         }
 
-
         public void SaveStartQueue()
         {
             _startRenderQueue = _material.renderQueue;
@@ -28,7 +27,5 @@ namespace PuzzleResources.ColoringObjects
         {
             _material.renderQueue = _startRenderQueue;
         }
-
-        public int StartQueue => _startRenderQueue;
     }
 }

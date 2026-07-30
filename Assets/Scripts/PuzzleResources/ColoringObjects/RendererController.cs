@@ -20,7 +20,5 @@ namespace PuzzleResources.ColoringObjects
         {
             _renderer.enabled = false;
         }
-
-        public bool IsVisible => _renderer.enabled;
     }
 }

@@ -14,9 +14,6 @@ namespace Game
         private Canvas _canvas;
         private Camera _camera;
         private ZoomChanger _zoomChanger;
-
-        private float _lastWidth;
-        private float _lastHeight;
         private Coroutine _recalculateRoutine;
 
         private void Awake()
@@ -37,12 +34,7 @@ namespace Game
 
         private void Update()
         {
-            if (Screen.width != _lastWidth || Screen.height != _lastHeight)
-            {
-                _lastWidth = Screen.width;
-                _lastHeight = Screen.height;
-                StartRecalculate();
-            }
+            _zoomChanger.ChangeLocation(StartRecalculate);
         }
 
         private void StartRecalculate()
@@ -57,6 +49,12 @@ namespace Game
         {
             yield return null;
             yield return null;
+
+            if (_canvas == null)
+            {
+                Debug.LogError("Camera.main == null");
+                yield return null;
+            }
 
             float scale = _zoomChanger.GetScreenSize(_camera);
 

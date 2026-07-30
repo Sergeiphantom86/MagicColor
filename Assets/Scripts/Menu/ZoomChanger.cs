@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using YG;
 
@@ -12,6 +13,8 @@ namespace Menu
         private float _currentAspect;
         private float _width;
         private float _height;
+        private float _lastWidth;
+        private float _lastHeight;
 
         public float MobileAspectRatio => _mobileAspectRatio;
 
@@ -36,6 +39,22 @@ namespace Menu
             return screenSizeMultiplier;
         }
 
+        public float GetAspect()
+        {
+            return (float)Screen.height / Screen.width;
+        }
+
+        public void ChangeLocation(Action action)
+        {
+            if (Screen.width != _lastWidth || Screen.height != _lastHeight)
+            {
+                _lastWidth = Screen.width;
+                _lastHeight = Screen.height;
+
+                action();
+            }
+        }
+
         public bool IsMobileWithTallScreen()
         {
             return YG2.envir.isMobile && IsMobileLike();
@@ -44,11 +63,6 @@ namespace Menu
         private bool IsMobileLike()
         {
             return GetAspect() > MobileAspectRatio;
-        }
-
-        private float GetAspect()
-        {
-            return (float)Screen.height / Screen.width;
         }
     }
 }

@@ -80,6 +80,14 @@ namespace PuzzleResources.Counter
             _value = 0f;
         }
 
+        public void Stop()
+        {
+            if (_isRunning == false)
+                return;
+
+            _isRunning = false;
+        }
+
         private void OnLevelComplete()
         {
             if (_starCounter == null)
@@ -91,14 +99,6 @@ namespace PuzzleResources.Counter
             Stop();
 
             _starCounter.SavePlayerTime(_value);
-        }
-
-        public void Stop()
-        {
-            if (_isRunning == false)
-            return;
-
-            _isRunning = false;
         }
     }
 }

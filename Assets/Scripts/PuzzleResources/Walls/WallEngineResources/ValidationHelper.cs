@@ -1,17 +1,20 @@
 using UnityEngine;
 
-public static class ValidationHelper
+namespace PuzzleResources.Walls.WallEngineResources
 {
-    public static bool AllNotNull(MonoBehaviour context, params (object dependency, string name)[] dependencies)
+    public static class ValidationHelper
     {
-        foreach (var (dependency, name) in dependencies)
+        public static bool AllNotNull(MonoBehaviour context, params (object dependency, string name)[] dependencies)
         {
-            if (dependency == null)
+            foreach (var (dependency, name) in dependencies)
             {
-                Debug.LogError($"[{context.GetType().Name}] Initialization failed: {name} is NULL", context);
-                return false;
+                if (dependency == null)
+                {
+                    Debug.LogError($"[{context.GetType().Name}] Initialization failed: {name} is NULL", context);
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
     }
 }

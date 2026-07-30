@@ -14,6 +14,16 @@ namespace PuzzleResources.Spawners
         private Vector2Int _startOrigin;
         private Vector2Int _size;
 
+        public readonly Vector2Int StartOrigin => _startOrigin;
+
+        public readonly Vector2Int Size => _size;
+
+        public readonly ChainSpawnDirection Direction => _direction;
+
+        public readonly int Count => _count;
+
+        public readonly int Spacing => _spacing;
+
         public ChainSpawnData(Vector2Int startOrigin,
             Vector2Int size,
             ChainSpawnDirection direction,
@@ -26,15 +36,5 @@ namespace PuzzleResources.Spawners
             _count = count;
             _spacing = spacing;
         }
-
-        public readonly Vector2Int StartOrigin => _startOrigin;
-
-        public readonly Vector2Int Size => _size;
-
-        public readonly ChainSpawnDirection Direction => _direction;
-
-        public readonly int Count => _count;
-
-        public readonly int Spacing => _spacing;
     }
 }

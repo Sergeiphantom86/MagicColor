@@ -4,17 +4,17 @@ namespace PuzzleResources.Audio
 {
     public class DontDestroy : MonoBehaviour
     {
-        private static DontDestroy _instance;
+        private static DontDestroy s_instance;
 
         private void Awake()
         {
-            if (_instance != null)
+            if (s_instance != null)
             {
                 Destroy(gameObject);
             }
             else
             {
-                _instance = this;
+                s_instance = this;
                 DontDestroyOnLoad(gameObject);
             }
         }

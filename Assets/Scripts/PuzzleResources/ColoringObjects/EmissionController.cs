@@ -4,10 +4,10 @@ namespace PuzzleResources.ColoringObjects
 {
     public sealed class EmissionController
     {
-        private static readonly int EmissionColorId =
+        private static readonly int s_emissionColorId =
             Shader.PropertyToID("_EmissionColor");
 
-        private static readonly int EmissionIntensityId =
+        private static readonly int s_emissionIntensityId =
             Shader.PropertyToID("_EmissionIntensity");
 
         private readonly Material _material;
@@ -24,11 +24,11 @@ namespace PuzzleResources.ColoringObjects
             _material.EnableKeyword("_EMISSION");
 
             _material.SetFloat(
-                EmissionIntensityId,
+                s_emissionIntensityId,
                 Mathf.Clamp01(intensity));
 
             _material.SetColor(
-                EmissionColorId,
+                s_emissionColorId,
                 emissionColor * Mathf.Clamp01(brightness));
         }
 

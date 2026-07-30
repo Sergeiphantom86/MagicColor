@@ -8,7 +8,14 @@ namespace PuzzleResources.ColoringObjects
 {
     [RequireComponent(typeof(Renderer))]
 
-    public class ColorableObject : MonoBehaviour, IColorable, IColorModifiable, IAlphaModifiable, IRepaintable, IRenderQueueConfigurable, IDisable
+    public class ColorableObject :
+        MonoBehaviour,
+        IColorable,
+        IColorModifiable,
+        IAlphaModifiable,
+        IRepaintable,
+        IRenderQueueConfigurable,
+        IDisable
     {
         [SerializeField] private bool _isTransparent;
         [SerializeField] private float _delaySeconds = 10f;
@@ -129,6 +136,9 @@ namespace PuzzleResources.ColoringObjects
         {
             return _transparencyController.FadeTo(_colorController.OriginalColor);
         }
+
+        public void OnSetColor(Color color) =>
+          SetColor(color);
 
         private void StopRecoloringCoroutine()
         {

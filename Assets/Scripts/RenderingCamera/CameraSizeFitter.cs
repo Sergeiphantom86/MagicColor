@@ -9,8 +9,6 @@ namespace RenderingCamera
         private Camera _camera;
         private ZoomChanger _zoomChanger;
         private float _baseOrthoSize;
-        private float _lastWidth;
-        private float _lastHeight;
         private Coroutine _recalculateRoutine;
 
         private void Awake()
@@ -22,8 +20,6 @@ namespace RenderingCamera
 
         private void Start()
         {
-            _lastWidth = Screen.width;
-            _lastHeight = Screen.height;
             StartRecalculate();
         }
 
@@ -52,12 +48,7 @@ namespace RenderingCamera
 
         private float GetTargetOrthogonal()
         {
-            return _baseOrthoSize + (1f / GetCurrentAspect());
-        }
-
-        private float GetCurrentAspect()
-        {
-            return _lastWidth / _lastHeight;
+            return _baseOrthoSize + (1f / _zoomChanger.GetAspect());
         }
     }
 }

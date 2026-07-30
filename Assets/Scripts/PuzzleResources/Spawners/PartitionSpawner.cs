@@ -63,7 +63,7 @@ namespace PuzzleResources.Spawners
                 _chainCount,
                 _chainSpacing);
 
-            _chainSpawner.Begin(_chainSpawnData, () =>
+            _chainSpawner.Spawn(_chainSpawnData, () =>
             SpawnObjectWithCurrentIndex(Vector3.zero, transform), PlacePartition);
         }
 

@@ -9,7 +9,7 @@ namespace PuzzleResources.Walls
         private Lock _lock;
         private Messager _hint;
 
-        public void InitializComponents(Lock @lock, Messager hint)
+        public void InitializeComponents(Lock @lock, Messager hint)
         {
             SetLock(@lock);
             SetKey(hint);

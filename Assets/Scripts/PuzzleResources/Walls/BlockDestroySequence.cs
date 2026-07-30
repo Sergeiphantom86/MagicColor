@@ -36,7 +36,7 @@ namespace PuzzleResources.Walls
         public void WaitStart(IColorModifiable colorable, Color color)
         {
             if (colorable is not Block block)
-            return;
+                return;
 
             if (_isCollaps == false)
             {
@@ -55,6 +55,7 @@ namespace PuzzleResources.Walls
             yield return _waitShutdown;
 
             block.PlayMatchSound();
+
             yield return _waitShutdown;
 
             block.Destroy(_pointer.MiddlePoint, _pointer.EndPoint);

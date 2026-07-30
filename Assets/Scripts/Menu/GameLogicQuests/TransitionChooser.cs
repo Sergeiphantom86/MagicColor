@@ -17,20 +17,20 @@ namespace Menu.GameLogicQuests
 
         private void OnEnable()
         {
-            _offerPanel.Consented += LoadTutorial;
-            _offerPanelMobile.Consented += LoadTutorial;
+            _offerPanel.Consented += OnLoadTutorial;
+            _offerPanelMobile.Consented += OnLoadTutorial;
 
-            _offerPanel.Cancelled += LoadPuzzle;
-            _offerPanelMobile.Cancelled += LoadPuzzle;
+            _offerPanel.Cancelled += OnLoadPuzzle;
+            _offerPanelMobile.Cancelled += OnLoadPuzzle;
         }
 
         private void OnDisable()
         {
-            _offerPanel.Consented -= LoadTutorial;
-            _offerPanelMobile.Consented -= LoadTutorial;
+            _offerPanel.Consented -= OnLoadTutorial;
+            _offerPanelMobile.Consented -= OnLoadTutorial;
 
-            _offerPanel.Cancelled -= LoadPuzzle;
-            _offerPanelMobile.Cancelled -= LoadPuzzle;
+            _offerPanel.Cancelled -= OnLoadPuzzle;
+            _offerPanelMobile.Cancelled -= OnLoadPuzzle;
         }
 
         public void Initialize(ZoomChanger zoomChanger)
@@ -57,12 +57,6 @@ namespace Menu.GameLogicQuests
             LoadScene(result.SceneName);
         }
 
-        private void LoadPuzzle() =>
-            LoadScene(Puzzle);
-
-        private void LoadTutorial() =>
-            LoadScene(Tutorial);
-
         private void LoadScene(string sceneName)
         {
             _transitionService.SaveSprite(_cachedSprite);
@@ -75,5 +69,11 @@ namespace Menu.GameLogicQuests
 
             YG2.saves.SceneLoader.LoadSceneAsyncWithSplash(sceneName);
         }
+
+        private void OnLoadPuzzle() =>
+           LoadScene(Puzzle);
+
+        private void OnLoadTutorial() =>
+            LoadScene(Tutorial);
     }
 }
